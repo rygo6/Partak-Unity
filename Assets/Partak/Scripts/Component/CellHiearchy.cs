@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 namespace Partak
 {
-	public class CellHiearchy : MonoBehaviour 
+	public class CellHiearchy : MonoBehaviour
 	{
 		private int parentCellGridLevel { get { return _parentCellGridLevel; } }
 		[SerializeField]
 		private int _parentCellGridLevel = 3;
 	    
-	    private Vector2Int rootDimension { get { return _rootDimension; } }
+		private Vector2Int rootDimension { get { return _rootDimension; } }
 		[SerializeField]
 		private Vector2Int _rootDimension = new Vector2Int(192, 192);
 	
@@ -18,8 +18,8 @@ namespace Partak
 
 		public CellGroupGrid[] cellGroupGridArray { get; private set; }
 	    
-	    private void Awake()
-	    {
+		private void Awake()
+		{
 			particleCellGrid = new ParticleCellGrid(rootDimension);
 			cellGroupGridArray = new CellGroupGrid[parentCellGridLevel];
 			cellGroupGridArray[0] = new CellGroupGrid(particleCellGrid);
@@ -27,16 +27,16 @@ namespace Partak
 			{
 				cellGroupGridArray[i] = new CellGroupGrid(cellGroupGridArray[i - 1]);
 			}
-	    }
+		}
 	    
-	    private void Start() 
-	    {
+		private void Start()
+		{
 	    
-	    }
+		}
 	    
-	    private void Update()
-	    {
+		private void Update()
+		{
 
-	    } 
+		}
 	}
 }

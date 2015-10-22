@@ -45,10 +45,10 @@ namespace Partak
 		{
 			PlayerParticleCount = new int[PlayerUtility.maxPlayerCount];
 			DirectionalCellGroupArray = new CellGroup[Direction12.Count];
-			this.CellGroupGrid = cellGroupGrid;
-			this.ChildParticleCellArray = childParticleCellArray;
-			this.ChildCellGroupArray = childCellGroupArray;
-			this.WorldPosition = ChildParticleAverageWorldPosition(childParticleCellArray);
+			CellGroupGrid = cellGroupGrid;
+			ChildParticleCellArray = childParticleCellArray;
+			ChildCellGroupArray = childCellGroupArray;
+			WorldPosition = ChildParticleAverageWorldPosition(childParticleCellArray);
 			SetChildCellGroupParentCellGroup(childCellGroupArray, this);
 			SetChildParticleArrayTopCellGroup(childParticleCellArray, this);
 		}

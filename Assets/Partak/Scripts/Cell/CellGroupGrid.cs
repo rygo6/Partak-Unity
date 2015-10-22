@@ -15,17 +15,17 @@ namespace Partak
 
 		public CellGroupGrid(CellGroupGrid cellGroupGrid)
 		{
-			this.ParentLevel = cellGroupGrid.ParentLevel + 1;
-			this.Dimension = cellGroupGrid.Dimension / 2;
-			this.Grid = BuildParentCellGroupLayer(cellGroupGrid, this);
-			this.FlatGrid = FlattenGrid(this.Grid);
+			ParentLevel = cellGroupGrid.ParentLevel + 1;
+			Dimension = cellGroupGrid.Dimension / 2;
+			Grid = BuildParentCellGroupLayer(cellGroupGrid, this);
+			FlatGrid = FlattenGrid(Grid);
 		}
 
 		public CellGroupGrid(ParticleCellGrid particleCellGrid)
 		{
-			this.Dimension = particleCellGrid.Dimension;
-			this.Grid = BuildCellGroupLayerFromParticleCellGrid(particleCellGrid, this);
-			this.FlatGrid = FlattenGrid(this.Grid);
+			Dimension = particleCellGrid.Dimension;
+			Grid = BuildCellGroupLayerFromParticleCellGrid(particleCellGrid, this);
+			FlatGrid = FlattenGrid(Grid);
 		}
 			
 		/// <summary>

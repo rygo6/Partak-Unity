@@ -52,11 +52,6 @@ namespace Partak
 
 		private bool Run { get; set; }
 
-		private void Awake()
-		{
-	
-		}
-
 		private void Start()
 		{
 			StartCoroutine(RunCoroutine());
