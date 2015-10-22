@@ -1,0 +1,128 @@
+fileFormatVersion: 2
+guid: 47872d5f8da54ac40a63d28639ec4b86
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: CenterSphere 2
+    100002: CenterSphere 1
+    100004: CenterSphere 3
+    100006: //RootNode
+    100008: Camera
+    100010: CenterSphere
+    100012: ParticleLayer
+    100014: Directional Light
+    100016: Surrouding
+    100018: Surrouding 3
+    100020: Surrouding 1
+    100022: Surrouding 2
+    100024: backGroundSphere
+    400000: CenterSphere 2
+    400002: CenterSphere 1
+    400004: CenterSphere 3
+    400006: //RootNode
+    400008: Camera
+    400010: CenterSphere
+    400012: ParticleLayer
+    400014: Directional Light
+    400016: Surrouding
+    400018: Surrouding 3
+    400020: Surrouding 1
+    400022: Surrouding 2
+    400024: backGroundSphere
+    2300000: CenterSphere 2
+    2300002: CenterSphere 1
+    2300004: CenterSphere 3
+    2300006: CenterSphere
+    2300008: ParticleLayer
+    2300010: Surrouding
+    2300012: Surrouding 3
+    2300014: Surrouding 1
+    2300016: Surrouding 2
+    2300018: backGroundSphere
+    3300000: CenterSphere 2
+    3300002: CenterSphere 1
+    3300004: CenterSphere 3
+    3300006: CenterSphere
+    3300008: ParticleLayer
+    3300010: Surrouding
+    3300012: Surrouding 3
+    3300014: Surrouding 1
+    3300016: Surrouding 2
+    3300018: backGroundSphere
+    4300000: Mesh
+    4300002: CenterSphere
+    4300004: CenterSphere
+    4300006: CenterSphere
+    4300008: CenterSphere
+    4300010: Surrouding
+    4300012: ParticleLayer
+    4300014: Surrouding
+    4300016: Surrouding
+    4300018: Surrouding
+    4300020: backGroundSphere
+    6400000: ParticleLayer
+    6400002: CenterSphere
+    6400004: CenterSphere 1
+    6400006: CenterSphere 3
+    6400008: CenterSphere 2
+    6400010: Surrouding
+    6400012: Surrouding 3
+    6400014: Surrouding 1
+    6400016: Surrouding 2
+    6400018: backGroundSphere
+    7400000: modo_Anim
+    11100000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00100000005
+    meshCompression: 3
+    addColliders: 1
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  additionalBone: 1
+  userData: 
