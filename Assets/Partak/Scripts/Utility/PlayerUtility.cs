@@ -10,6 +10,8 @@ namespace Partak
 
 		public const int maxPlayerCount = 4;
 
+		public const int maxParticleCount = 4000;
+
 	}
 
 }

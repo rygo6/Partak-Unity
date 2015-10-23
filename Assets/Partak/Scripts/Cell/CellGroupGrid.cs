@@ -82,6 +82,7 @@ namespace Partak
 						parentCellGroupGrid, 
 						null,
 						new ParticleCell[1]{ particleCellGridArray[i] });
+					particleCellGridArray[i].BottomCellGroup = cellGroupArray[i];
 				}
 			}
 

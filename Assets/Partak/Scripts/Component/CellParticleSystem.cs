@@ -9,23 +9,28 @@ namespace Partak
 		[SerializeField]
 		private ParticleSystem _particleSystem;
 
-		private ParticleSystem.Particle[] _particleArray;
+		public ParticleSystem.Particle[] ParticleArray { get; private set; }
 
 		private void Reset()
 		{
 			_particleSystem = GetComponent<ParticleSystem>();
 		}
 
-		public void Initialize(int particleCount, int particleSize)
+		public void Initialize(int particleCount, float particleSize)
 		{
-			_particleArray = new ParticleSystem.Particle[particleCount];
+			ParticleArray = new ParticleSystem.Particle[particleCount];
 
-			for (int i = 0; i < _particleArray.Length; ++i)
+			for (int i = 0; i < ParticleArray.Length; ++i)
 			{
-				_particleArray[i].size = particleSize;
+				ParticleArray[i].size = particleSize;
 			}
 
 			_particleSystem.maxParticles = particleCount;
+		}
+
+		public void UpdateParticleSystem(int maxParticles)
+		{
+			_particleSystem.SetParticles(ParticleArray, maxParticles);
 		}
 	}
 }

@@ -42,7 +42,13 @@ namespace Partak
 		public int InhabitedBy { get; set; }
 
 		/// <summary>
-		/// Top cell group this belongs to.
+		/// Lowest level CellGroup this belongs to.
+		/// Is possible for it to be the same as Top Cell Group.
+		/// </summary>
+		public CellGroup BottomCellGroup { get; set; }
+
+		/// <summary>
+		/// Highest level CellGroup this belongs to.
 		/// </summary>
 		public CellGroup TopCellGroup { get; set; }
 

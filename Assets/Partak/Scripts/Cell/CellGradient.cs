@@ -43,7 +43,7 @@ namespace Partak
 			{
 				if (_cellGroupStepArray == null)
 				{
-					_cellGroupStepArray = new CellGroup[_cellHiearchy.particleCellGrid.Grid.Length * 2];		
+					_cellGroupStepArray = new CellGroup[_cellHiearchy.ParticleCellGrid.Grid.Length * 2];		
 				}
 				return _cellGroupStepArray;
 			}
@@ -85,8 +85,8 @@ namespace Partak
 			{
 				ResetCellHiearchyInStepArray(_cellHiearchy);
 
-				int particleIndex = CellUtility.WorldPositionToGridIndex(_playerInputArray[playerIndex].position.x, _playerInputArray[playerIndex].position.z, _cellHiearchy.particleCellGrid.Dimension);
-				ParticleCell startParticleCell = _cellHiearchy.particleCellGrid.Grid[particleIndex];
+				int particleIndex = CellUtility.WorldPositionToGridIndex(_playerInputArray[playerIndex].position.x, _playerInputArray[playerIndex].position.z, _cellHiearchy.ParticleCellGrid.Dimension);
+				ParticleCell startParticleCell = _cellHiearchy.ParticleCellGrid.Grid[particleIndex];
 
 				if (startParticleCell != null)
 				{
@@ -153,13 +153,13 @@ namespace Partak
 
 		private void ResetCellHiearchyInStepArray(CellHiearchy cellhiearchy)
 		{
-			for (int i = 0; i < _cellHiearchy.cellGroupGridArray.Length; ++i)
+			for (int i = 0; i < _cellHiearchy.CellGroupGridArray.Length; ++i)
 			{
-				for (int o = 0; o < _cellHiearchy.cellGroupGridArray[i].Grid.Length; ++o)
+				for (int o = 0; o < _cellHiearchy.CellGroupGridArray[i].Grid.Length; ++o)
 				{
-					if (_cellHiearchy.cellGroupGridArray[i].Grid[o] != null)
+					if (_cellHiearchy.CellGroupGridArray[i].Grid[o] != null)
 					{
-						_cellHiearchy.cellGroupGridArray[i].Grid[o].InStepArray = false;
+						_cellHiearchy.CellGroupGridArray[i].Grid[o].InStepArray = false;
 					}
 				}
 			}

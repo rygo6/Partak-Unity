@@ -53,6 +53,24 @@ namespace Partak
 			SetChildParticleArrayTopCellGroup(childParticleCellArray, this);
 		}
 
+		public void AddPlayerParticle(int playerIndex)
+		{
+			PlayerParticleCount[playerIndex]++;
+			if (ParentCellGroup != null)
+			{
+				ParentCellGroup.AddPlayerParticle(playerIndex);
+			}
+		}
+
+		public void RemovePlayerParticle(int playerIndex)
+		{
+			PlayerParticleCount[playerIndex]--;
+			if (ParentCellGroup != null)
+			{
+				ParentCellGroup.RemovePlayerParticle(playerIndex);
+			}
+		}
+
 		public void SetPrimaryDirectionChldParticleCell(int direction, int playerIndex)
 		{
 			for (int i = 0; i < ChildParticleCellArray.Length; ++i)
