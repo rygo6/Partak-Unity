@@ -5,9 +5,7 @@ namespace Partak
 {
 	/// <summary>
 	/// Particle cell.
-	/// 
 	/// Cell which contains particle.
-	/// 
 	/// </summary>
 	public class ParticleCell
 	{
@@ -33,13 +31,39 @@ namespace Partak
 
 		public readonly ParticleCell[] DirectionalParticleCellArray;
 
-		//stores the primary direction for each players particles
+		/// <summary>
+		/// stores the primary direction for each players particles
+		/// </summary>
 		public readonly int[] PrimaryDirectionArray;
+
+		/// <summary>
+		/// CellParticle contained in this ParticleCell
+		/// </summary>
+		public CellParticle CellParticle 
+		{ 
+			get { return _cellParticle; }
+			set
+			{
+				if (value == null)
+				{
+					BottomCellGroup.RemovePlayerParticle(InhabitedBy);
+					InhabitedBy = -1;
+					_cellParticle = null;
+				}
+				else
+				{
+					_cellParticle = value;
+					InhabitedBy = _cellParticle.PlayerIndex;
+					BottomCellGroup.AddPlayerParticle(InhabitedBy);
+				}
+			}
+		}
+		private CellParticle _cellParticle;
 
 		/// <summary>
 		/// 0 1 2 3 player ID, -1 empty
 		/// </summary>
-		public int InhabitedBy { get; set; }
+		public int InhabitedBy { get; private set; }
 
 		/// <summary>
 		/// Lowest level CellGroup this belongs to.
@@ -62,8 +86,10 @@ namespace Partak
 			DirectionalParticleCellArray = new ParticleCell[Direction12.Count]; //this could be 8 and just the groups run on 12
 			PrimaryDirectionArray = new int[4];
 			InhabitedBy = -1;
-			this.ParticleCellGrid = particleCellGrid;
-			this.WorldPosition = worldPosition;
+			ParticleCellGrid = particleCellGrid;
+			WorldPosition = worldPosition;
 		}
+
+
 	}
 }

@@ -5,15 +5,11 @@ namespace Partak
 {
 	/// <summary>
 	/// Cell particle.
-	/// 
 	/// Particle which is contained in a cell.
-	/// 
 	/// </summary>
 	public class CellParticle
 	{
 		public ParticleCell ParticleCell { get; set; }
-
-		public bool UpdatePosition { get; set; }
 
 		public bool UpdateColor { get; set; }
 
@@ -27,7 +23,7 @@ namespace Partak
 				_life = Mathf.Clamp(value, 0, 255); 
 			}
 		}
-		private int _life;
+		private int _life = 255;
 
 		public Color32 Color
 		{

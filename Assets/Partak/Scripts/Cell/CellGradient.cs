@@ -4,6 +4,11 @@ using System.Threading;
 
 namespace Partak
 {
+	/// <summary>
+	/// Cell gradient.
+	/// Calculates the gradient for all players.
+	/// All players are done in one class for ease of multithreading.
+	/// </summary>
 	public class CellGradient : MonoBehaviour
 	{
 		[SerializeField]
@@ -36,21 +41,15 @@ namespace Partak
 			new int[] { 11, 8, 10, 1, 3, 4 }, 
 			new int[] { 0, 1, 8, 6, 9, 10 } 
 		};
-
-		private CellGroup[] CellGroupStepArray
-		{
-			get
-			{
-				if (_cellGroupStepArray == null)
-				{
-					_cellGroupStepArray = new CellGroup[_cellHiearchy.ParticleCellGrid.Grid.Length * 2];		
-				}
-				return _cellGroupStepArray;
-			}
-		}
+			
 		private CellGroup[] _cellGroupStepArray;
 
-		private bool Run { get; set; }
+		private bool _run;
+
+		private void Awake()
+		{
+			_cellGroupStepArray = new CellGroup[_cellHiearchy.ParticleCellGrid.Grid.Length * 2];	
+		}
 
 		private void Start()
 		{
@@ -59,8 +58,8 @@ namespace Partak
 
 		private void RunThread()
 		{
-			Run = true;
-			while (Run)
+			_run = true;
+			while (_run)
 			{
 				Thread.Sleep(0);
 				CalculateGradient();
@@ -69,8 +68,8 @@ namespace Partak
 
 		private IEnumerator RunCoroutine()
 		{
-			Run = true;
-			while (Run)
+			_run = true;
+			while (_run)
 			{
 				CalculateGradient();
 				yield return null;
@@ -99,34 +98,38 @@ namespace Partak
 		private void CalculatePlayerGradient(CellGroup startCellGroup, int playerIndex)
 		{
 			int currentIndex = 0;
+			int direction;
+			int primaryDirection;
+			int d;
 
 			AddFirstCellGroupToStepArray(startCellGroup);
 
 			bool runCalculation = true;
 			while (runCalculation)
 			{
-				CellGroup currentCellGroup = CellGroupStepArray[currentIndex];
+				CellGroup currentCellGroup = _cellGroupStepArray[currentIndex];
 				if (currentCellGroup != null)
 				{
-					for (int d = 0; d < _stepDirectionArray[CurrentStepDirectionIndex].Length; ++d)
+					for (d = 0; d < _stepDirectionArray[_currentStepDirectionIndex].Length; ++d)
 					{
-						int direction = _stepDirectionArray[CurrentStepDirectionIndex][d];
+						direction = _stepDirectionArray[_currentStepDirectionIndex][d];
 						CellGroup nextCellGroup = currentCellGroup.DirectionalCellGroupArray[direction];
 						if (nextCellGroup != null && !nextCellGroup.InStepArray)
 						{			
-							int primaryDirection = CellUtility.InvertDirection(direction);
+							primaryDirection = CellUtility.InvertDirection(direction);
 							nextCellGroup.SetPrimaryDirectionChldParticleCell(primaryDirection, playerIndex);
 							AddCellGroupToStepArray(nextCellGroup);
 						}
 					}
-						
+
+#if UNITY_EDITOR
 					Debug.DrawRay(currentCellGroup.WorldPosition, Vector3.up * _debugRayHeight);
 					_debugRayHeight += .001f;
+#endif
 
 					CurrentStepDirectionIndex++;
-					CellGroupStepArray[currentIndex] = null;
+					_cellGroupStepArray[currentIndex] = null;
 					currentIndex++;
-
 				}
 				else
 				{
@@ -137,7 +140,9 @@ namespace Partak
 
 		private void AddFirstCellGroupToStepArray(CellGroup cellGroup)
 		{
+#if UNITY_EDITOR			
 			_debugRayHeight = .01f;
+#endif
 			_lastAddedGroupStepArrayIndex = 0;
 			AddCellGroupToStepArray(cellGroup);
 		}
@@ -146,20 +151,31 @@ namespace Partak
 		private void AddCellGroupToStepArray(CellGroup cellGroup)
 		{
 			cellGroup.InStepArray = true;
-			CellGroupStepArray[_lastAddedGroupStepArrayIndex] = cellGroup;
+			_cellGroupStepArray[_lastAddedGroupStepArrayIndex] = cellGroup;
 			_lastAddedGroupStepArrayIndex++;
 		}
 		private int _lastAddedGroupStepArrayIndex;
 
+		/// <summary>
+		/// Iterates through entire CellHiearchy setting the bool InStepArray
+		/// to false to prepare for next cycle of calculation
+		/// </summary>
+		/// <param name="cellhiearchy">Cellhiearchy.</param>
 		private void ResetCellHiearchyInStepArray(CellHiearchy cellhiearchy)
 		{
-			for (int i = 0; i < _cellHiearchy.CellGroupGridArray.Length; ++i)
+			int hiearchyLimit = _cellHiearchy.CellGroupGridArray.Length;
+			int gridLimit;
+			int g;
+			int c;
+
+			for (c = 0; c < hiearchyLimit; ++c)
 			{
-				for (int o = 0; o < _cellHiearchy.CellGroupGridArray[i].Grid.Length; ++o)
+				gridLimit = _cellHiearchy.CellGroupGridArray[c].FlatGrid.Length;
+				for (g = 0; g < gridLimit; ++g)
 				{
-					if (_cellHiearchy.CellGroupGridArray[i].Grid[o] != null)
+					if (_cellHiearchy.CellGroupGridArray[c].FlatGrid[g] != null)
 					{
-						_cellHiearchy.CellGroupGridArray[i].Grid[o].InStepArray = false;
+						_cellHiearchy.CellGroupGridArray[c].FlatGrid[g].InStepArray = false;
 					}
 				}
 			}

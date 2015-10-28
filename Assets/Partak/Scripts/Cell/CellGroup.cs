@@ -43,7 +43,7 @@ namespace Partak
 
 		public CellGroup(CellGroupGrid cellGroupGrid, CellGroup[] childCellGroupArray, ParticleCell[] childParticleCellArray)
 		{
-			PlayerParticleCount = new int[PlayerUtility.maxPlayerCount];
+			PlayerParticleCount = new int[Persistent.Get<PlayerSettings>().PlayerCount];
 			DirectionalCellGroupArray = new CellGroup[Direction12.Count];
 			CellGroupGrid = cellGroupGrid;
 			ChildParticleCellArray = childParticleCellArray;

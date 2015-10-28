@@ -13,17 +13,20 @@ namespace Partak
 
 		private CellParticleSystem[] _cellParticleSystemArray;
 
-		private int _playerCount = 4;
+		private PlayerSettings _playerSettings;
 
 		private void Awake()
 		{
+			_playerSettings = Persistent.Get<PlayerSettings>();
+
 			int systemCount = _cellHiearchy.CellGroupGridArray.Length;
-			int particleCount = PlayerUtility.maxParticleCount;
+			int particleCount = _playerSettings.ParticleCount;
+
 			_cellParticleSystemArray = new CellParticleSystem[systemCount];
 			for (int i = 0; i < systemCount; ++i)
 			{
 				_cellParticleSystemArray[i] = Instantiate(_cellParticleSystemPrefab).GetComponent<CellParticleSystem>();
-				_cellParticleSystemArray[i].Initialize(particleCount, ((float)i + 1f ) / 10f);
+				_cellParticleSystemArray[i].Initialize(particleCount, (((float)i + 1f) / 10f) * 1.1f);
 
 				particleCount /= 4;
 			}
@@ -45,6 +48,7 @@ namespace Partak
 				if (particleCell != null && particleCell.InhabitedBy == 0)
 				{
 					particleArray[currentParticle].position = particleCell.WorldPosition;
+					particleArray[currentParticle].color = particleCell.CellParticle.Color;
 					currentParticle++;
 				}
 			}
