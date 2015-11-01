@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using System.Linq;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace Partak
@@ -22,7 +24,7 @@ namespace Partak
 			get { return _currentStepDirectionIndex; }
 			set
 			{
-				_currentStepDirectionIndex = (int)Mathf.Repeat(value, _stepDirectionArray.Length);
+				_currentStepDirectionIndex = (int)Mathf.Repeat(value, _stepDirectionArray.GetLength(0));
 			}
 		}
 		private int _currentStepDirectionIndex;
@@ -30,17 +32,7 @@ namespace Partak
 		/// <summary>
 		/// Pseudo Random directions which the gradient will rotate around
 		/// </summary>
-		private static readonly int[][] _stepDirectionArray = { 
-			new int[] { 11, 8, 1, 4, 3, 0 }, 
-			new int[] { 8, 9, 7, 5, 1, 3 }, 
-			new int[] { 2, 9, 11, 1, 3, 7 }, 
-			new int[] { 5, 2, 0, 10, 9, 6 }, 
-			new int[] { 10, 9, 7, 4, 3, 0 }, 
-			new int[] { 1, 3, 4, 7, 5, 11 }, 
-			new int[] { 5, 3, 1, 11, 8, 7 }, 
-			new int[] { 11, 8, 10, 1, 3, 4 }, 
-			new int[] { 0, 1, 8, 6, 9, 10 } 
-		};
+		private int[,] _stepDirectionArray;
 			
 		private CellGroup[] _cellGroupStepArray;
 
@@ -48,7 +40,23 @@ namespace Partak
 
 		private void Awake()
 		{
-			_cellGroupStepArray = new CellGroup[_cellHiearchy.ParticleCellGrid.Grid.Length * 2];	
+			_cellGroupStepArray = new CellGroup[_cellHiearchy.ParticleCellGrid.Grid.Length * 2];
+
+			//pre-generate random numbers
+			int[] randomArray;
+			_stepDirectionArray = new int[1000, 6];
+			for (int x = 0; x < _stepDirectionArray.GetLength(0); ++x)
+			{
+				//generate non repeating array of 6 random numbers between 0 and 12
+				randomArray = Enumerable.Range(0, Direction12.Count)
+					.OrderBy(t => Random.Range(0, Direction12.Count))
+					.Take(_stepDirectionArray.GetLength(1))
+					.ToArray();
+				for (int y = 0; y < _stepDirectionArray.GetLength(1); ++y)
+				{
+					_stepDirectionArray[x, y] = randomArray[y];
+				}
+			}
 		}
 
 		private void Start()
@@ -110,9 +118,9 @@ namespace Partak
 				CellGroup currentCellGroup = _cellGroupStepArray[currentIndex];
 				if (currentCellGroup != null)
 				{
-					for (d = 0; d < _stepDirectionArray[_currentStepDirectionIndex].Length; ++d)
+					for (d = 0; d < _stepDirectionArray.GetLength(1); ++d)
 					{
-						direction = _stepDirectionArray[_currentStepDirectionIndex][d];
+						direction = _stepDirectionArray[_currentStepDirectionIndex, d];
 						CellGroup nextCellGroup = currentCellGroup.DirectionalCellGroupArray[direction];
 						if (nextCellGroup != null && !nextCellGroup.InStepArray)
 						{			
@@ -123,7 +131,12 @@ namespace Partak
 					}
 
 #if UNITY_EDITOR
-					Debug.DrawRay(currentCellGroup.WorldPosition, Vector3.up * _debugRayHeight);
+					CellGroup nextGroup = currentCellGroup.DirectionalCellGroupArray[currentCellGroup.ChildParticleCellArray[0].PrimaryDirectionArray[playerIndex]];
+					if (nextGroup != null)
+					{
+						Debug.DrawRay(currentCellGroup.WorldPosition, (currentCellGroup.WorldPosition - nextGroup.WorldPosition), Color.cyan);
+					}
+//					Debug.DrawRay(currentCellGroup.WorldPosition, Vector3.up * _debugRayHeight);
 					_debugRayHeight += .001f;
 #endif
 

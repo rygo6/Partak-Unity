@@ -39,7 +39,7 @@ namespace Partak
 		/// <summary>
 		/// CellParticle contained in this ParticleCell
 		/// </summary>
-		public CellParticle CellParticle 
+		public CellParticle CellParticle
 		{ 
 			get { return _cellParticle; }
 			set

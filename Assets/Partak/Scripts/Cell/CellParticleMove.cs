@@ -22,12 +22,14 @@ namespace Partak
 			ParticleCell currentParticleCell;
 			ParticleCell nextParticleCell;
 			int limit = cellParticleArray.Length;
-			int directionLimit = cellParticleArray.Length;
+			int directionLimit = RotateDirectionMove.Length;
 			int checkDirection;
+			int d;
+			int p;
 
-			for (int p = 0; p < limit; ++p)
+			for (p = 0; p < limit; ++p)
 			{
-				for (int d = 0; d < directionLimit; ++d)
+				for (d = 0; d < directionLimit; ++d)
 				{
 					currentCellParticle = cellParticleArray[p];
 					currentParticleCell = currentCellParticle.ParticleCell;
@@ -42,15 +44,14 @@ namespace Partak
 					{
 						if (nextParticleCell.InhabitedBy == -1)
 						{
-							nextParticleCell.CellParticle = currentCellParticle;
-//							nextParticleCell.InhabitedBy = currentCellParticle.PlayerIndex;
-//							nextParticleCell.a
-
+							currentCellParticle.ParticleCell = nextParticleCell;
+							d = directionLimit;
 						}
 					}
 
 				}
 			}
+
 
 		}
 

@@ -9,7 +9,20 @@ namespace Partak
 	/// </summary>
 	public class CellParticle
 	{
-		public ParticleCell ParticleCell { get; set; }
+		public ParticleCell ParticleCell
+		{ 
+			get { return _particleCell; }
+			set
+			{
+				if (_particleCell != null)
+				{
+					_particleCell.CellParticle = null;
+				}
+				_particleCell = value;
+				_particleCell.CellParticle = this;
+			}
+		}
+		private ParticleCell _particleCell;
 
 		public bool UpdateColor { get; set; }
 
