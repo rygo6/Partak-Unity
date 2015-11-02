@@ -45,7 +45,7 @@ namespace Partak
 			{
 				ParticleCell particleCell = _cellHiearchy.ParticleCellGrid.Grid[i];
 
-				if (particleCell != null && particleCell.InhabitedBy == 0)
+				if (particleCell != null && particleCell.InhabitedBy != -1)
 				{
 					particleArray[currentParticle].position = particleCell.WorldPosition;
 					particleArray[currentParticle].color = particleCell.CellParticle.Color;

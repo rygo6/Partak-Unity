@@ -6,13 +6,13 @@ namespace Partak
 	public class CellParticleSpawn : MonoBehaviour
 	{
 		[SerializeField]
+		private Transform[] _spawnTransform;
+
+		[SerializeField]
 		private CellHiearchy _cellHiearchy;
 
 		[SerializeField]
 		private CellParticleStore _cellParticleStore;
-
-		[SerializeField]
-		private int _playerIndex;
 
 		private PlayerSettings _playerSettings;
 
@@ -23,20 +23,26 @@ namespace Partak
 
 		private void Start()
 		{
-			int particleCount = _playerSettings.ParticleCount;
-			int particleIndex = CellUtility.WorldPositionToGridIndex(transform.position.x, transform.position.z, _cellHiearchy.ParticleCellGrid.Dimension);
-			ParticleCell startParticleCell = _cellHiearchy.ParticleCellGrid.Grid[particleIndex];
-			StartCoroutine(SpawnPlayerParticles(startParticleCell, _playerIndex, particleCount));
+			int spawnCount = _playerSettings.ParticleCount / _playerSettings.PlayerCount;
+			int startIndex = 0;
+			for (int i = 0; i < _spawnTransform.Length; ++i)
+			{
+				int particleIndex = CellUtility.WorldPositionToGridIndex(_spawnTransform[i].position.x, _spawnTransform[i].position.z, _cellHiearchy.ParticleCellGrid.Dimension);
+				ParticleCell startParticleCell = _cellHiearchy.ParticleCellGrid.Grid[particleIndex];
+				StartCoroutine(SpawnPlayerParticles(startParticleCell, i, startIndex, spawnCount));
+				startIndex += spawnCount;
+			}
 		}
 
-		private IEnumerator SpawnPlayerParticles(ParticleCell startParticleCell, int playerIndex, int spawnCount)
+		private IEnumerator SpawnPlayerParticles(ParticleCell startParticleCell, int playerIndex, int startIndex, int spawnCount)
 		{
-			int currentIndex = 0;
-			int maxIndex = 1;
-			ParticleCell[] spawnArray = new ParticleCell[spawnCount];
-			spawnArray[0] = startParticleCell;
+			int currentIndex = startIndex;
+			int endIndex = startIndex + spawnCount;
+			int spawnArrayIndex = currentIndex + 1;
+			ParticleCell[] spawnArray = new ParticleCell[spawnCount*4];
+			spawnArray[currentIndex] = startParticleCell;
 
-			while (currentIndex < spawnCount)
+			while (currentIndex < endIndex)
 			{
 				ParticleCell currentParticleCell = spawnArray[currentIndex];
 				CellParticle currentCellParticle = _cellParticleStore.CellParticleArray[currentIndex];
@@ -47,15 +53,15 @@ namespace Partak
 				for (int d = 0; d < Direction12.Count; ++d)
 				{
 					ParticleCell directionalParticleCell = currentParticleCell.DirectionalParticleCellArray[d];
-					if (directionalParticleCell != null && directionalParticleCell.CellParticle == null && maxIndex < spawnCount)
+					if (directionalParticleCell != null && directionalParticleCell.CellParticle == null && spawnArrayIndex < endIndex)
 					{
-						directionalParticleCell.CellParticle = _cellParticleStore.CellParticleArray[maxIndex];
-						spawnArray[maxIndex] = directionalParticleCell;
-						maxIndex++;
+						directionalParticleCell.CellParticle = _cellParticleStore.CellParticleArray[spawnArrayIndex];
+						spawnArray[spawnArrayIndex] = directionalParticleCell;
+						spawnArrayIndex++;
 					}
 				}
 				currentIndex++;
-//				yield return null;
+				yield return null;
 			}
 			yield return null;
 			Debug.Log("Spawned " + currentIndex + " Particles");
