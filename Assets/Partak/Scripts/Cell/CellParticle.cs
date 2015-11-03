@@ -24,8 +24,6 @@ namespace Partak
 		}
 		private ParticleCell _particleCell;
 
-		public bool UpdateColor { get; set; }
-
 		public int PlayerIndex { get; set; }
 
 		public int Life
@@ -38,15 +36,13 @@ namespace Partak
 		}
 		private int _life = 255;
 
-		public Color32 Color
+		public void ChangePlayer(int newPlayerIndex)
 		{
-			get	{ return _color; }
-			set
-			{ 
-				UpdateColor = true;
-				_color = value; 
-			}
+			ParticleCell.BottomCellGroup.RemovePlayerParticle(PlayerIndex);
+			PlayerIndex = newPlayerIndex;
+			Life = 255;
+			ParticleCell.InhabitedBy = newPlayerIndex;
+			ParticleCell.BottomCellGroup.AddPlayerParticle(PlayerIndex);
 		}
-		public Color32 _color;
 	}
 }

@@ -63,7 +63,7 @@ namespace Partak
 		/// <summary>
 		/// 0 1 2 3 player ID, -1 empty
 		/// </summary>
-		public int InhabitedBy { get; private set; }
+		public int InhabitedBy { get; set; }
 
 		/// <summary>
 		/// Lowest level CellGroup this belongs to.
@@ -89,7 +89,5 @@ namespace Partak
 			ParticleCellGrid = particleCellGrid;
 			WorldPosition = worldPosition;
 		}
-
-
 	}
 }

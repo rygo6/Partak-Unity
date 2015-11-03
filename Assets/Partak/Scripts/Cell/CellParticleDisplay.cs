@@ -48,7 +48,7 @@ namespace Partak
 				if (particleCell != null && particleCell.InhabitedBy != -1)
 				{
 					particleArray[currentParticle].position = particleCell.WorldPosition;
-					particleArray[currentParticle].color = particleCell.CellParticle.Color;
+					particleArray[currentParticle].color = _playerSettings.PlayerColor[particleCell.InhabitedBy];
 					currentParticle++;
 				}
 			}

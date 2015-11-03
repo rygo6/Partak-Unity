@@ -86,7 +86,7 @@ namespace Partak
 
 		private void CalculateGradient()
 		{
-			CurrentStepDirectionIndex++; //TODO is this needed here?
+//			CurrentStepDirectionIndex++; //TODO is this needed here?
 
 			for (int playerIndex = 0; playerIndex < _playerInputArray.Length; playerIndex++)
 			{
