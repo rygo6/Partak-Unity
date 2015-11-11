@@ -13,9 +13,10 @@ TagManager:
   - UI
   - 
   - 
-  - particleLayer
-  - obstacle
-  - particleSystem
+  - Particle
+  - Obstacle
+  - ParticleSystem
+  - Cursor
   - 
   - 
   - 
@@ -34,9 +35,8 @@ TagManager:
   - 
   - 
   - 
-  - rayCastTouch+GUIDisplay
-  - GUIDisplay
-  - raycastTouch
+  - 
+  - 
   m_SortingLayers:
   - name: Default
     uniqueID: 0

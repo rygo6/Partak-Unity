@@ -23,6 +23,7 @@ namespace Partak
 
 		private void Start()
 		{
+			int particleCount = Persistent.Get<PlayerSettings>().ParticleCount;
 			int spawnCount = _playerSettings.ParticleCount / _playerSettings.PlayerCount;
 			int startIndex = 0;
 			for (int i = 0; i < _spawnTransform.Length; ++i)
@@ -40,22 +41,22 @@ namespace Partak
 			int endIndex = startIndex + spawnCount;
 			int currentAddedIndex = currentIndex + 1;
 			ParticleCell[] spawnArray = new ParticleCell[spawnCount * 4];
+
 			spawnArray[currentIndex] = startParticleCell;
+			_cellParticleStore.CellParticleArray[currentIndex] = new CellParticle(playerIndex, startParticleCell); 
 
 			while (currentIndex < endIndex)
 			{
 				ParticleCell currentParticleCell = spawnArray[currentIndex];
 				CellParticle currentCellParticle = _cellParticleStore.CellParticleArray[currentIndex];
-//				currentCellParticle.PlayerColor = _playerSettings.PlayerColor[playerIndex];
-				currentCellParticle.ParticleCell = currentParticleCell;
-				currentCellParticle.PlayerIndex = playerIndex;
-				currentParticleCell.CellParticle = currentCellParticle;
+				_cellParticleStore.CellParticleArray[currentIndex] = currentCellParticle;
 				for (int d = 0; d < Direction12.Count; ++d)
 				{
 					ParticleCell directionalParticleCell = currentParticleCell.DirectionalParticleCellArray[d];
 					if (directionalParticleCell != null && directionalParticleCell.CellParticle == null && currentAddedIndex < endIndex)
 					{
-						directionalParticleCell.CellParticle = _cellParticleStore.CellParticleArray[currentAddedIndex];
+						_cellParticleStore.CellParticleArray[currentAddedIndex] = new CellParticle(playerIndex, directionalParticleCell);
+//						directionalParticleCell.CellParticle = _cellParticleStore.CellParticleArray[currentAddedIndex];
 						spawnArray[currentAddedIndex] = directionalParticleCell;
 						currentAddedIndex++;
 					}

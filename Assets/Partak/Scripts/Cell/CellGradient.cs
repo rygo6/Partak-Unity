@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//#define DEBUG_GRADIENT
+
+using UnityEngine;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -129,14 +131,14 @@ namespace Partak
 							AddCellGroupToStepArray(nextCellGroup);
 						}
 					}
-
-#if UNITY_EDITOR
+				
+#if DEBUG_GRADIENT
 					CellGroup nextGroup = currentCellGroup.DirectionalCellGroupArray[currentCellGroup.ChildParticleCellArray[0].PrimaryDirectionArray[playerIndex]];
 					if (nextGroup != null)
 					{
 						Debug.DrawRay(currentCellGroup.WorldPosition, (currentCellGroup.WorldPosition - nextGroup.WorldPosition), Color.cyan);
 					}
-//					Debug.DrawRay(currentCellGroup.WorldPosition, Vector3.up * _debugRayHeight);
+					Debug.DrawRay(currentCellGroup.WorldPosition, Vector3.up * _debugRayHeight);
 					_debugRayHeight += .001f;
 #endif
 
@@ -153,7 +155,7 @@ namespace Partak
 
 		private void AddFirstCellGroupToStepArray(CellGroup cellGroup)
 		{
-#if UNITY_EDITOR			
+#if DEBUG_GRADIENT		
 			_debugRayHeight = .01f;
 #endif
 			_lastAddedGroupStepArrayIndex = 0;

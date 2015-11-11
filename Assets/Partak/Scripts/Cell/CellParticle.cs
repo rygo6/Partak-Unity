@@ -34,14 +34,25 @@ namespace Partak
 				_life = Mathf.Clamp(value, 0, 255); 
 			}
 		}
-		private int _life = 255;
+		private int _life;
+
+		public Color PlayerColor { get; set; }
+
+		public CellParticle(int playerIndex, ParticleCell particleCell)
+		{
+			PlayerIndex = playerIndex;
+			Life = 255;
+			PlayerColor = Persistent.Get<PlayerSettings>().PlayerColor[PlayerIndex];
+			ParticleCell = particleCell;
+		}
 
 		public void ChangePlayer(int newPlayerIndex)
 		{
 			ParticleCell.BottomCellGroup.RemovePlayerParticle(PlayerIndex);
 			PlayerIndex = newPlayerIndex;
 			Life = 255;
-			ParticleCell.InhabitedBy = newPlayerIndex;
+			PlayerColor = Persistent.Get<PlayerSettings>().PlayerColor[PlayerIndex];
+			ParticleCell.InhabitedBy = PlayerIndex;
 			ParticleCell.BottomCellGroup.AddPlayerParticle(PlayerIndex);
 		}
 	}
