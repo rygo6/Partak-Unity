@@ -1,4 +1,4 @@
-﻿#define DEBUG_GRADIENT
+﻿//#define DEBUG_GRADIENT
 
 using UnityEngine;
 using System.Linq;
@@ -65,10 +65,10 @@ namespace Partak
 
 		private void Start()
 		{
-//			_thread = new Thread(RunThread);
-//			_thread.Priority = System.Threading.ThreadPriority.Lowest;
-//			_thread.Start();
-			StartCoroutine(RunCoroutine());
+			_thread = new Thread(RunThread);
+			_thread.Priority = System.Threading.ThreadPriority.Lowest;
+			_thread.Start();
+//			StartCoroutine(RunCoroutine());
 		}
 
 		private void OnDestroy()

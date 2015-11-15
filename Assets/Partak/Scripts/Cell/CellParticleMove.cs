@@ -36,10 +36,10 @@ namespace Partak
 		public void StartThread()
 		{
 			_run = true;
-//			_thread = new Thread(RunThread);
-//			_thread.Priority = System.Threading.ThreadPriority.Highest;
-//			_thread.Start();
-			StartCoroutine(RunCoroutine());
+			_thread = new Thread(RunThread);
+			_thread.Priority = System.Threading.ThreadPriority.Highest;
+			_thread.Start();
+//			StartCoroutine(RunCoroutine());
 		}
 
 		private void StopThread()
