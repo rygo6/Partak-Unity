@@ -140,7 +140,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11475812, guid: dd8c3adf0beb049709e3ff0458ad33c1, type: 2}
       propertyPath: _particleCount
-      value: 6000
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 11475812, guid: dd8c3adf0beb049709e3ff0458ad33c1, type: 2}
+      propertyPath: _playerCount
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dd8c3adf0beb049709e3ff0458ad33c1, type: 2}
@@ -714,22 +718,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 11450704, guid: 426b8963cb15f4f59aba9c7902f17cc8, type: 2}
-      propertyPath: _playerInputArray.Array.data[0]
-      value: 
-      objectReference: {fileID: 78120904}
-    - target: {fileID: 11450704, guid: 426b8963cb15f4f59aba9c7902f17cc8, type: 2}
-      propertyPath: _playerInputArray.Array.data[1]
-      value: 
-      objectReference: {fileID: 1748430006}
-    - target: {fileID: 11450704, guid: 426b8963cb15f4f59aba9c7902f17cc8, type: 2}
-      propertyPath: _playerInputArray.Array.data[2]
-      value: 
-      objectReference: {fileID: 182498941}
-    - target: {fileID: 11450704, guid: 426b8963cb15f4f59aba9c7902f17cc8, type: 2}
-      propertyPath: _playerInputArray.Array.data[3]
-      value: 
-      objectReference: {fileID: 405986968}
     - target: {fileID: 11455060, guid: 426b8963cb15f4f59aba9c7902f17cc8, type: 2}
       propertyPath: _spawnTransform.Array.data[0]
       value: 

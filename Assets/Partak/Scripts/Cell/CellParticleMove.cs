@@ -35,10 +35,11 @@ namespace Partak
 
 		public void StartThread()
 		{
-			_thread = new Thread(RunThread);
-			_thread.Priority = System.Threading.ThreadPriority.Highest;
 			_run = true;
-			_thread.Start();
+//			_thread = new Thread(RunThread);
+//			_thread.Priority = System.Threading.ThreadPriority.Highest;
+//			_thread.Start();
+			StartCoroutine(RunCoroutine());
 		}
 
 		private void StopThread()
@@ -50,13 +51,24 @@ namespace Partak
 			}
 		}
 
+		private IEnumerator RunCoroutine()
+		{
+			while (_run)
+			{
+				MoveParticles();
+				yield return null;
+			}
+		}
+
 		private void RunThread()
 		{
-			while (_run) {
-				while (!_processCycle) {
+			while (_run)
+			{
+				while (!_processCycle)
+				{
 				}
 				_processCycle = false;
-				MoveParticles ();
+				MoveParticles();
 			}
 		}
 
@@ -65,15 +77,15 @@ namespace Partak
 			Stopwatch stopWatch = new Stopwatch();
 			while (_run)
 			{
-				stopWatch.Reset ();
+				stopWatch.Reset();
 				while (!_processCycle)
 				{
 				}
-				stopWatch.Start ();
+				stopWatch.Start();
 				_processCycle = false;
 				MoveParticles();
 				_time = stopWatch.ElapsedMilliseconds;
-				stopWatch.Stop ();
+				stopWatch.Stop();
 			}
 		}
 

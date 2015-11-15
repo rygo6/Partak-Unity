@@ -1,4 +1,4 @@
-﻿//#define DEBUG_GRADIENT
+﻿#define DEBUG_GRADIENT
 
 using UnityEngine;
 using System.Linq;
@@ -48,7 +48,7 @@ namespace Partak
 
 			//pre-generate random numbers
 			int[] randomArray;
-			_stepDirectionArray = new int[1000, 6];
+			_stepDirectionArray = new int[1000, 7];
 			for (int x = 0; x < _stepDirectionArray.GetLength(0); ++x)
 			{
 				//generate non repeating array of 6 random numbers between 0 and 12
@@ -207,10 +207,7 @@ namespace Partak
 				gridLimit = _cellHiearchy.CellGroupGridArray[c].FlatGrid.Length;
 				for (g = 0; g < gridLimit; ++g)
 				{
-					if (_cellHiearchy.CellGroupGridArray[c].FlatGrid[g] != null)
-					{
-						_cellHiearchy.CellGroupGridArray[c].FlatGrid[g].InStepArray = false;
-					}
+					_cellHiearchy.CellGroupGridArray[c].FlatGrid[g].InStepArray = false;
 				}
 			}
 		}

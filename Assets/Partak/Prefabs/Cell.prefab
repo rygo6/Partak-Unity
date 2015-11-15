@@ -252,11 +252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d36027acb6b5f4b7c9b9a284da89afb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerInputArray:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  _cursorStore: {fileID: 0}
   _cellHiearchy: {fileID: 11410384}
 --- !u!114 &11455060
 MonoBehaviour:
