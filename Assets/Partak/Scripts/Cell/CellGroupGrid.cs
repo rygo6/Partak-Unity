@@ -173,7 +173,7 @@ namespace Partak
 							childCellGroupArray[2].DirectionalCellGroupArray[Direction12.NWW],//9
 							childCellGroupArray[2].DirectionalCellGroupArray[Direction12.NW],//10
 							childCellGroupArray[2].DirectionalCellGroupArray[Direction12.NNW],//11
-							childCellGroupArray[2].DirectionalCellGroupArray[Direction12.NNW],
+							childCellGroupArray[2].DirectionalCellGroupArray[Direction12.NNE],
 						};
 
 						for (int i = 0; i < neigborCellGroupArray.Length; ++i)
