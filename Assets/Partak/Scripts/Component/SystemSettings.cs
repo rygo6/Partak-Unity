@@ -5,6 +5,6 @@ public class SystemSettings : MonoBehaviour
 {
 	private void Awake()
 	{
-		Application.targetFrameRate = 60;
+		Application.targetFrameRate = 30;
 	}
 }

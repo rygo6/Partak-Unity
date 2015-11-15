@@ -16,7 +16,7 @@ namespace Partak
 	public class CellGradient : MonoBehaviour
 	{
 		[SerializeField]
-		private Transform[] _playerInputArray;
+		private CursorStore _cursorStore;
 
 		[SerializeField]
 		private CellHiearchy _cellHiearchy;
@@ -39,6 +39,8 @@ namespace Partak
 		private CellGroup[] _cellGroupStepArray;
 
 		private bool _run;
+
+		private Thread _thread;
 
 		private void Awake()
 		{
@@ -63,7 +65,24 @@ namespace Partak
 
 		private void Start()
 		{
+//			_thread = new Thread(RunThread);
+//			_thread.Priority = System.Threading.ThreadPriority.Lowest;
+//			_thread.Start();
 			StartCoroutine(RunCoroutine());
+		}
+
+		private void OnDestroy()
+		{
+			StopThread();
+		}
+
+		private void StopThread()
+		{
+			_run = false;
+			_thread.Abort();
+			while (_thread.IsAlive)
+			{
+			}
 		}
 
 		private void RunThread()
@@ -71,7 +90,6 @@ namespace Partak
 			_run = true;
 			while (_run)
 			{
-				Thread.Sleep(0);
 				CalculateGradient();
 			}
 		}
@@ -88,13 +106,14 @@ namespace Partak
 
 		private void CalculateGradient()
 		{
-//			CurrentStepDirectionIndex++; //TODO is this needed here?
-
-			for (int playerIndex = 0; playerIndex < _playerInputArray.Length; playerIndex++)
+			for (int playerIndex = 0; playerIndex < Persistent.Get<PlayerSettings>().PlayerCount; playerIndex++)
 			{
 				ResetCellHiearchyInStepArray(_cellHiearchy);
 
-				int particleIndex = CellUtility.WorldPositionToGridIndex(_playerInputArray[playerIndex].position.x, _playerInputArray[playerIndex].position.z, _cellHiearchy.ParticleCellGrid.Dimension);
+				int particleIndex = CellUtility.WorldPositionToGridIndex(
+					                    _cursorStore.CursorPositions[playerIndex].x, 
+					                    _cursorStore.CursorPositions[playerIndex].z, 
+					                    _cellHiearchy.ParticleCellGrid.Dimension);
 				ParticleCell startParticleCell = _cellHiearchy.ParticleCellGrid.Grid[particleIndex];
 
 				if (startParticleCell != null)

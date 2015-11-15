@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Threading;
+using System.Diagnostics;
 
 namespace Partak
 {
@@ -10,12 +12,69 @@ namespace Partak
 
 		static private readonly int[] RotateDirectionMove = new int[9]{ 0, -1, 1, -2, 2, -3, 3, -4, 4 };
 
+		private bool _processCycle;
+
+		private bool _run;
+
+		private Thread _thread;
+
 		[SerializeField]
 		public int _attackMultiplier = 1;
 
-		private void Update()
+		private long _time;
+
+		private void FixedUpdate()
 		{
-			MoveParticles();
+			_processCycle = true;
+		}
+
+		private void OnDestroy()
+		{
+			StopThread();
+		}
+
+		public void StartThread()
+		{
+			_thread = new Thread(RunThread);
+			_thread.Priority = System.Threading.ThreadPriority.Highest;
+			_run = true;
+			_thread.Start();
+		}
+
+		private void StopThread()
+		{
+			_run = false;
+			_thread.Abort();
+			while (_thread.IsAlive)
+			{
+			}
+		}
+
+		private void RunThread()
+		{
+			while (_run) {
+				while (!_processCycle) {
+				}
+				_processCycle = false;
+				MoveParticles ();
+			}
+		}
+
+		private void RunTimedThread()
+		{
+			Stopwatch stopWatch = new Stopwatch();
+			while (_run)
+			{
+				stopWatch.Reset ();
+				while (!_processCycle)
+				{
+				}
+				stopWatch.Start ();
+				_processCycle = false;
+				MoveParticles();
+				_time = stopWatch.ElapsedMilliseconds;
+				stopWatch.Stop ();
+			}
 		}
 
 		private void MoveParticles()
@@ -55,22 +114,12 @@ namespace Partak
 						//if other player, take life
 						else if (currentParticleCell.InhabitedBy != nextParticleCell.InhabitedBy)
 						{	
-
-//								life = ( particle[nextParticleIndex].life - ((5-rotateDirectionMove[iDirection])*(attackMultiplier*2)) );
-							life = nextParticleCell.CellParticle.Life - ((5 - Mathf.Abs(RotateDirectionMove[d])) * _attackMultiplier);								
+							life = nextParticleCell.CellParticle.Life - ((5 - Mathf.Abs(RotateDirectionMove[d])) * _attackMultiplier);	
 
 							if (life <= 0)
-							{
-								//tick particle counts
-//								PlayerData.player[playerID].particleCount++;
-//								PlayerData.player[nparticlePlayer].particleCount--;
-
 								nextParticleCell.CellParticle.ChangePlayer(currentCellParticle.PlayerIndex);
-							}
 							else
-							{
 								nextParticleCell.CellParticle.Life = life;
-							}
 
 							if (d > 2)
 								d = directionLimit;
@@ -79,19 +128,13 @@ namespace Partak
 						else if (currentParticleCell.InhabitedBy == nextParticleCell.InhabitedBy)
 						{	
 							nextParticleCell.CellParticle.Life++;
+
 							if (d > 2)
 								d = directionLimit;
 						}
-
-
 					}
-
-
 				}
 			}
-
-
 		}
-
 	}
 }

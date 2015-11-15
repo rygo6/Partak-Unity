@@ -5,7 +5,6 @@ namespace Partak
 {
 	public class PlayerSettings : MonoBehaviour
 	{
-
 		public int PlayerCount
 		{
 			get { return _playerCount; }

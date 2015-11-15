@@ -14,27 +14,32 @@ namespace Partak
 		[SerializeField]
 		private CellParticleStore _cellParticleStore;
 
-		private PlayerSettings _playerSettings;
+		[SerializeField]
+		private CellParticleMove _cellParticleMove;
 
-		private void Awake()
+		private IEnumerator Start()
 		{
-			_playerSettings = Persistent.Get<PlayerSettings>();
-		}
-
-		private void Start()
-		{
-			int particleCount = Persistent.Get<PlayerSettings>().ParticleCount;
-			int spawnCount = _playerSettings.ParticleCount / _playerSettings.PlayerCount;
+			PlayerSettings playerSettings = Persistent.Get<PlayerSettings>();
+			YieldInstruction[] spawnYield = new YieldInstruction[playerSettings.PlayerCount];
+			int particleCount = playerSettings.ParticleCount;
+			int spawnCount = playerSettings.ParticleCount / playerSettings.PlayerCount;
 			int startIndex = 0;
-			for (int i = 0; i < _spawnTransform.Length; ++i)
+			for (int playerIndex = 0; playerIndex < playerSettings.PlayerCount; ++playerIndex)
 			{
-				int particleIndex = CellUtility.WorldPositionToGridIndex(_spawnTransform[i].position.x, _spawnTransform[i].position.z, _cellHiearchy.ParticleCellGrid.Dimension);
+				int particleIndex = CellUtility.WorldPositionToGridIndex(_spawnTransform[playerIndex].position.x, _spawnTransform[playerIndex].position.z, _cellHiearchy.ParticleCellGrid.Dimension);
 				ParticleCell startParticleCell = _cellHiearchy.ParticleCellGrid.Grid[particleIndex];
-				StartCoroutine(SpawnPlayerParticles(startParticleCell, i, startIndex, spawnCount));
+				spawnYield[playerIndex] = StartCoroutine(SpawnPlayerParticles(startParticleCell, playerIndex, startIndex, spawnCount));
 				startIndex += spawnCount;
 			}
-		}
 
+			for (int i = 0; i < spawnYield.Length; ++i)
+			{
+				yield return spawnYield[i];
+			}
+
+			_cellParticleMove.StartThread();
+		}
+			
 		private IEnumerator SpawnPlayerParticles(ParticleCell startParticleCell, int playerIndex, int startIndex, int spawnCount)
 		{
 			int currentIndex = startIndex;
@@ -56,13 +61,12 @@ namespace Partak
 					if (directionalParticleCell != null && directionalParticleCell.CellParticle == null && currentAddedIndex < endIndex)
 					{
 						_cellParticleStore.CellParticleArray[currentAddedIndex] = new CellParticle(playerIndex, directionalParticleCell);
-//						directionalParticleCell.CellParticle = _cellParticleStore.CellParticleArray[currentAddedIndex];
 						spawnArray[currentAddedIndex] = directionalParticleCell;
 						currentAddedIndex++;
 					}
 				}
 				currentIndex++;
-				if (currentIndex % 4 == 0)
+				if (currentIndex % 16 == 0)
 				{
 					yield return null;
 				}

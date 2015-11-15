@@ -127,12 +127,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerCount: 4
-  _particleCount: 1000
+  _particleCount: 4000
   _playerColor:
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 0, g: 1, b: 0, a: 1}
-  - {r: 0, g: 0, b: 1, a: 1}
-  - {r: .944827676, g: 1, b: 0, a: 1}
+  - {r: .866666734, g: .145098045, b: .0980392247, a: 1}
+  - {r: .909803987, g: .737254918, b: .168627456, a: 1}
+  - {r: .129411772, g: .0784313753, b: .619607866, a: 1}
+  - {r: .101960793, g: .662745118, b: .250980407, a: 1}
 --- !u!114 &11487638
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -158,15 +158,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: _playerColor.Array.data[0].r
-      value: 1
+      value: .866666734
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: _playerColor.Array.data[0].g
-      value: 0
+      value: .145098045
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: _playerColor.Array.data[0].b
-      value: 0
+      value: .0980392247
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: _playerColor.Array.data[0].a
@@ -174,7 +174,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: _playerColor.Array.data[1].g
-      value: 1
+      value: .737254918
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: _playerColor.Array.data[1].a
@@ -182,7 +182,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: _playerColor.Array.data[2].b
-      value: 1
+      value: .619607866
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: _playerColor.Array.data[2].a
@@ -190,19 +190,39 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: _playerColor.Array.data[3].r
-      value: .944827676
+      value: .101960793
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: _playerColor.Array.data[3].g
-      value: 1
+      value: .662745118
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: _playerColor.Array.data[3].b
-      value: 0
+      value: .250980407
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: _playerColor.Array.data[3].a
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: _particleCount
+      value: 4000
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: _playerColor.Array.data[1].r
+      value: .909803987
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: _playerColor.Array.data[1].b
+      value: .168627456
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: _playerColor.Array.data[2].r
+      value: .129411772
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: _playerColor.Array.data[2].g
+      value: .0784313753
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

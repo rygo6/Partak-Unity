@@ -13,14 +13,12 @@ namespace Partak
 
 		private CellParticleSystem[] _cellParticleSystemArray;
 
-		private PlayerSettings _playerSettings;
-
 		private void Awake()
 		{
-			_playerSettings = Persistent.Get<PlayerSettings>();
-
 			int systemCount = _cellHiearchy.CellGroupGridArray.Length;
-			int particleCount = _playerSettings.ParticleCount;
+			//you add 100 onto the particle count as a buffer in case when it is reading in
+			//particle positions one of the particles is updated from another thread and ends up registering twice
+			int particleCount = Persistent.Get<PlayerSettings>().ParticleCount + 100;
 
 			_cellParticleSystemArray = new CellParticleSystem[systemCount];
 			for (int i = 0; i < systemCount; ++i)
@@ -44,12 +42,15 @@ namespace Partak
 			for (int i = 0; i < _cellHiearchy.ParticleCellGrid.Grid.Length; ++i)
 			{
 				ParticleCell particleCell = _cellHiearchy.ParticleCellGrid.Grid[i];
-
-				if (particleCell != null && particleCell.InhabitedBy != -1)
+				if (particleCell != null)
 				{
-					particleArray[currentParticle].position = particleCell.WorldPosition;
-					particleArray[currentParticle].color = particleCell.CellParticle.PlayerColor;
-					currentParticle++;
+					CellParticle cellparticle = particleCell.CellParticle;
+					if (cellparticle != null)
+					{
+						particleArray[currentParticle].position = particleCell.WorldPosition;
+						particleArray[currentParticle].color = cellparticle.PlayerColor;
+						currentParticle++;
+					}
 				}
 			}
 			_cellParticleSystemArray[0].UpdateParticleSystem(currentParticle);
