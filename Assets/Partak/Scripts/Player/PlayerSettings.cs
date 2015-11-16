@@ -10,9 +10,9 @@ namespace Partak
 			get { return _playerCount; }
 		}
 
-		public Color[] PlayerColor
+		public Color[] PlayerColors
 		{
-			get { return _playerColor; }
+			get { return _playerColors; }
 		}
 
 		public int ParticleCount
@@ -27,6 +27,7 @@ namespace Partak
 		private int _particleCount;
 
 		[SerializeField]
-		private Color[] _playerColor;
+		[UnityEngine.Serialization.FormerlySerializedAs("_playerColor")]
+		private Color[] _playerColors;
 	}
 }

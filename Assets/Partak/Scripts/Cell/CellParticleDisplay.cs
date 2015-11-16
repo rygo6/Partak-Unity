@@ -11,49 +11,101 @@ namespace Partak
 		[SerializeField]
 		private CellHiearchy _cellHiearchy;
 
-		private CellParticleSystem[] _cellParticleSystemArray;
+		private CellParticleSystem[] _cellParticleSystems;
+
+		private Color[] _playerColors;
+
+		private PlayerSettings _playerSettings;
+
+		private int[] _levelCount;
 
 		private void Awake()
 		{
+			_playerSettings = Persistent.Get<PlayerSettings>();
 			int systemCount = _cellHiearchy.CellGroupGridArray.Length;
-			//you add 100 onto the particle count as a buffer in case when it is reading in
-			//particle positions one of the particles is updated from another thread and ends up registering twice
-			int particleCount = Persistent.Get<PlayerSettings>().ParticleCount + 100;
 
-			_cellParticleSystemArray = new CellParticleSystem[systemCount];
+			//you add additional positions onto the particle count as a buffer in case when it is reading in
+			//particle positions one of the particles is updated from another thread and ends up registering twice
+			int particleCount = _playerSettings.ParticleCount + (_playerSettings.ParticleCount / 4);
+
+			_cellParticleSystems = new CellParticleSystem[systemCount];
 			for (int i = 0; i < systemCount; ++i)
 			{
-				_cellParticleSystemArray[i] = Instantiate(_cellParticleSystemPrefab).GetComponent<CellParticleSystem>();
-				_cellParticleSystemArray[i].Initialize(particleCount, (((float)i + 1f) / 10f) * 1.1f);
+				_cellParticleSystems[i] = Instantiate(_cellParticleSystemPrefab).GetComponent<CellParticleSystem>();
+				float particleSize = Mathf.Pow(2, i);
+				particleSize /= 10f;
+				_cellParticleSystems[i].Initialize(particleCount, particleSize);
 
-				particleCount /= 4;
+				particleCount /= 2;
 			}
 		}
 
 		private void Update()
 		{
-			TestDraw();
+			DrawParticleSystems();
 		}
 
-		private void TestDraw()
+		private void DrawCellGroup(CellGroup cellGroup)
 		{
-			int currentParticle = 0;
-			ParticleSystem.Particle[] particleArray = _cellParticleSystemArray[0].ParticleArray;
-			for (int i = 0; i < _cellHiearchy.ParticleCellGrid.Grid.Length; ++i)
+			int parentLevel = cellGroup.CellGroupGrid.ParentLevel;
+			int levelCount = (int)Mathf.Pow(4, parentLevel) - (parentLevel + 1);
+			for (int playerIndex = 0; playerIndex < _playerSettings.PlayerCount; ++playerIndex)
 			{
-				ParticleCell particleCell = _cellHiearchy.ParticleCellGrid.Grid[i];
-				if (particleCell != null)
+				if (cellGroup.PlayerParticleCount[playerIndex] > levelCount)
 				{
-					CellParticle cellparticle = particleCell.CellParticle;
-					if (cellparticle != null)
-					{
-						particleArray[currentParticle].position = particleCell.WorldPosition;
-						particleArray[currentParticle].color = cellparticle.PlayerColor;
-						currentParticle++;
-					}
+					_cellParticleSystems[parentLevel].SetNextParticle(
+						cellGroup.WorldPosition,
+						_playerSettings.PlayerColors[playerIndex]);
+					return;
 				}
 			}
-			_cellParticleSystemArray[0].UpdateParticleSystem(currentParticle);
+
+			if (cellGroup.ChildCellGroupArray != null)
+			{
+				for (int i = 0; i < cellGroup.ChildCellGroupArray.Length; ++i)
+				{
+					DrawCellGroup(cellGroup.ChildCellGroupArray[i]);
+				}
+			}
 		}
+
+		private void ResetParticleSystemsCount()
+		{
+			for (int i = 0; i < _cellParticleSystems.Length; ++i)
+			{
+				_cellParticleSystems[i].ResetCount();
+			}
+		}
+
+		private void UpdateParticleSystems()
+		{
+			for (int i = 0; i < _cellParticleSystems.Length; ++i)
+			{
+				_cellParticleSystems[i].UpdateParticleSystem();
+			}
+		}
+
+		private void DrawParticleSystems()
+		{
+			ResetParticleSystemsCount();
+
+			CellGroup cellGroup;
+			CellGroupGrid cellGroupGrid;
+			int cellIndex;
+			int cellLimit;
+			for (int levelIndex = 0; levelIndex < _cellHiearchy.CellGroupGridArray.Length; ++levelIndex)
+			{
+				cellGroupGrid = _cellHiearchy.CellGroupGridArray[levelIndex];
+				cellLimit = cellGroupGrid.FlatGrid.Length;
+				for (cellIndex = 0; cellIndex < cellLimit; ++cellIndex)
+				{
+					DrawCellGroup(cellGroupGrid.FlatGrid[cellIndex]);
+				}
+			}
+
+			UpdateParticleSystems();
+		}
+								
+
 	}
 }

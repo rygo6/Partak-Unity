@@ -7,11 +7,7 @@
 Shader "Mobile/Particles/Flat" 
 {	
 Category {	
-	Tags { "Queue"="Geometry" "IgnoreProjector"="True" "LightMode"="Always" }
-	Lighting OFF
-	ZWrite OFF
-	Cull BACK
-	
+
 	BindChannels 
 	{
 		Bind "Color", color

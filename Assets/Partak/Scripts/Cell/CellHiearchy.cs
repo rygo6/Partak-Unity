@@ -29,6 +29,10 @@ namespace Partak
 			{
 				CellGroupGridArray[i] = new CellGroupGrid(CellGroupGridArray[i - 1]);
 			}
+			for (int i = 0; i < CellGroupGridArray.Length; ++i)
+			{
+				CellGroupGridArray[i].FlattenGrid();
+			}
 		}
 	}
 }

@@ -18,14 +18,12 @@ namespace Partak
 			ParentLevel = cellGroupGrid.ParentLevel + 1;
 			Dimension = cellGroupGrid.Dimension / 2;
 			Grid = BuildParentCellGroupLayer(cellGroupGrid, this);
-			FlatGrid = FlattenGrid(Grid);
 		}
 
 		public CellGroupGrid(ParticleCellGrid particleCellGrid)
 		{
 			Dimension = particleCellGrid.Dimension;
 			Grid = BuildCellGroupLayerFromParticleCellGrid(particleCellGrid, this);
-			FlatGrid = FlattenGrid(Grid);
 		}
 			
 		/// <summary>
@@ -34,10 +32,12 @@ namespace Partak
 		/// and no entries which have a parent. Flattened grid
 		/// representing the minimum cells one must iterate through
 		/// to touch every ParticleCell in the CellHiearchy.
+		/// This must only be called after the entire cellHiearchy is
+		/// construct.
 		/// </summary>
 		/// <returns>The flattened grid.</returns>
 		/// <param name="cellGroupArray">Cell group array to flatten.</param>
-		public CellGroup[] FlattenGrid(CellGroup[] cellGroupArray)
+		public void FlattenGrid()
 		{
 			int nonNullCount = 0;
 			for (int i = 0; i < Grid.Length; ++i)
@@ -60,7 +60,7 @@ namespace Partak
 				}
 			}
 
-			return flattenedGrid;
+			FlatGrid = flattenedGrid;
 		}
 
 		/// <summary>

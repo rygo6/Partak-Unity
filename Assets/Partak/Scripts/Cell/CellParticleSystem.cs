@@ -9,28 +9,52 @@ namespace Partak
 		[SerializeField]
 		private ParticleSystem _particleSystem;
 
-		public ParticleSystem.Particle[] ParticleArray { get; private set; }
+		private ParticleSystem.Particle[] _particleArray;
+
+		private int _currentIndex;
+
+		private int maxparticle;
 
 		private void Reset()
+		{
+			Init();
+		}
+
+		[ContextMenu("Init")]
+		private void Init()
 		{
 			_particleSystem = GetComponent<ParticleSystem>();
 		}
 
 		public void Initialize(int particleCount, float particleSize)
 		{
-			ParticleArray = new ParticleSystem.Particle[particleCount];
+			maxparticle = particleCount;
 
-			for (int i = 0; i < ParticleArray.Length; ++i)
+			_particleArray = new ParticleSystem.Particle[particleCount];
+
+			for (int i = 0; i < _particleArray.Length; ++i)
 			{
-				ParticleArray[i].size = particleSize;
+				_particleArray[i].size = particleSize;
 			}
 
 			_particleSystem.maxParticles = particleCount;
 		}
 
-		public void UpdateParticleSystem(int maxParticles)
+		public void ResetCount()
 		{
-			_particleSystem.SetParticles(ParticleArray, maxParticles);
+			_currentIndex = 0;
+		}
+
+		public void SetNextParticle(Vector3 position, Color color)
+		{
+			_particleArray[_currentIndex].position = position;
+			_particleArray[_currentIndex].color = color;
+			_currentIndex++;
+		}
+
+		public void UpdateParticleSystem()
+		{
+			_particleSystem.SetParticles(_particleArray, _currentIndex);
 		}
 	}
 }

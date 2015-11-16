@@ -42,7 +42,7 @@ namespace Partak
 		{
 			PlayerIndex = playerIndex;
 			Life = 255;
-			PlayerColor = Persistent.Get<PlayerSettings>().PlayerColor[PlayerIndex];
+			PlayerColor = Persistent.Get<PlayerSettings>().PlayerColors[PlayerIndex];
 			ParticleCell = particleCell;
 		}
 
@@ -51,7 +51,7 @@ namespace Partak
 			ParticleCell.BottomCellGroup.RemovePlayerParticle(PlayerIndex);
 			PlayerIndex = newPlayerIndex;
 			Life = 255;
-			PlayerColor = Persistent.Get<PlayerSettings>().PlayerColor[PlayerIndex];
+			PlayerColor = Persistent.Get<PlayerSettings>().PlayerColors[PlayerIndex];
 			ParticleCell.InhabitedBy = PlayerIndex;
 			ParticleCell.BottomCellGroup.AddPlayerParticle(PlayerIndex);
 		}
