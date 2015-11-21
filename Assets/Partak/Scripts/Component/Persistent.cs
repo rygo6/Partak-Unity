@@ -11,21 +11,21 @@ namespace Partak
 
 		private readonly Dictionary<Type, Component> ComponentDictionary = new Dictionary<Type, Component>();
 
-		private void Awake()
+		static private void Init()
 		{
-			DontDestroyOnLoad(gameObject);
-			if (_instance == null)
-			{
-				_instance = this;
-			}
-			else
-			{
-				Destroy(gameObject);
-			}
+			GameObject prefab = (GameObject)Resources.Load("Persistent");
+			GameObject instance = Instantiate(prefab);
+			_instance = instance.GetComponent<Persistent>();
+			DontDestroyOnLoad(instance);
 		}
 
 		static public T Get<T>() where T : Component
 		{
+			if (_instance == null)
+			{
+				Init();
+			}
+
 			Component component;
 			_instance.ComponentDictionary.TryGetValue(typeof(T), out component);
 			if (component != null)

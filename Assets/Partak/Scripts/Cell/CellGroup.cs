@@ -16,7 +16,7 @@ namespace Partak
 		/// <summary>
 		/// How many particles of each player this group contains.
 		/// </summary>
-		public readonly int[] PlayerParticleCount;
+		public readonly int[] PlayerParticleCount =  new int[PlayerSettings.MaxPlayers];
 		
 		public CellGroup ParentCellGroup { get; set; }
 
@@ -43,7 +43,6 @@ namespace Partak
 
 		public CellGroup(CellGroupGrid cellGroupGrid, CellGroup[] childCellGroupArray, ParticleCell[] childParticleCellArray)
 		{
-			PlayerParticleCount = new int[Persistent.Get<PlayerSettings>().PlayerCount];
 			DirectionalCellGroupArray = new CellGroup[Direction12.Count];
 			CellGroupGrid = cellGroupGrid;
 			ChildParticleCellArray = childParticleCellArray;

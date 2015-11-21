@@ -26,7 +26,7 @@ namespace Partak
 			get { return _currentStepDirectionIndex; }
 			set
 			{
-				_currentStepDirectionIndex = (int)Mathf.Repeat(value, _stepDirectionArray.GetLength(0));
+				_currentStepDirectionIndex = (int)Mathf.Repeat(value, _stepDirectionArray.Length);
 			}
 		}
 		private int _currentStepDirectionIndex;
@@ -34,31 +34,37 @@ namespace Partak
 		/// <summary>
 		/// Pseudo Random directions which the gradient will rotate around
 		/// </summary>
-		private int[,] _stepDirectionArray;
+		private int[][] _stepDirectionArray;
 			
 		private CellGroup[] _cellGroupStepArray;
+
+		private readonly CellGroup[] PriorStartCell = new CellGroup[PlayerSettings.MaxPlayers];
 
 		private bool _run;
 
 		private Thread _thread;
 
+		private PlayerSettings _playerSettings;
+
 		private void Awake()
 		{
+			_playerSettings = Persistent.Get<PlayerSettings>();
 			_cellGroupStepArray = new CellGroup[_cellHiearchy.ParticleCellGrid.Grid.Length * 2];
 
 			//pre-generate random numbers
 			int[] randomArray;
-			_stepDirectionArray = new int[1000, 7];
-			for (int x = 0; x < _stepDirectionArray.GetLength(0); ++x)
+			_stepDirectionArray = new int[1000][];
+			for (int x = 0; x < _stepDirectionArray.Length; ++x)
 			{
+				_stepDirectionArray[x] = new int[Random.Range(5, 7)];
 				//generate non repeating array of 6 random numbers between 0 and 12
 				randomArray = Enumerable.Range(0, Direction12.Count)
 					.OrderBy(t => Random.Range(0, Direction12.Count))
-					.Take(_stepDirectionArray.GetLength(1))
+					.Take(_stepDirectionArray[x].Length)
 					.ToArray();
-				for (int y = 0; y < _stepDirectionArray.GetLength(1); ++y)
+				for (int y = 0; y < _stepDirectionArray[x].Length; ++y)
 				{
-					_stepDirectionArray[x, y] = randomArray[y];
+					_stepDirectionArray[x][y] = randomArray[y];
 				}
 			}
 		}
@@ -106,20 +112,30 @@ namespace Partak
 
 		private void CalculateGradient()
 		{
-			for (int playerIndex = 0; playerIndex < Persistent.Get<PlayerSettings>().PlayerCount; playerIndex++)
+			for (int playerIndex = 0; playerIndex < PlayerSettings.MaxPlayers; playerIndex++)
 			{
-				ResetCellHiearchyInStepArray(_cellHiearchy);
-
-				int particleIndex = CellUtility.WorldPositionToGridIndex(
-					                    _cursorStore.CursorPositions[playerIndex].x, 
-					                    _cursorStore.CursorPositions[playerIndex].z, 
-					                    _cellHiearchy.ParticleCellGrid.Dimension);
-				ParticleCell startParticleCell = _cellHiearchy.ParticleCellGrid.Grid[particleIndex];
-
-				if (startParticleCell != null)
+				if (_playerSettings.PlayerActive(playerIndex))
 				{
-					CellGroup startCellGroup = startParticleCell.TopCellGroup;
-					CalculatePlayerGradient(startCellGroup, playerIndex);
+					ResetCellHiearchyInStepArray(_cellHiearchy);
+
+					CurrentStepDirectionIndex++;
+
+					int particleIndex = CellUtility.WorldPositionToGridIndex(
+						                   _cursorStore.CursorPositions[playerIndex].x, 
+						                   _cursorStore.CursorPositions[playerIndex].z, 
+						                   _cellHiearchy.ParticleCellGrid.Dimension);
+					ParticleCell startParticleCell = _cellHiearchy.ParticleCellGrid.Grid[particleIndex];
+
+					if (startParticleCell != null)
+					{
+						CellGroup startCellGroup = startParticleCell.TopCellGroup;
+						CalculatePlayerGradient(startCellGroup, playerIndex);
+						PriorStartCell[playerIndex] = startCellGroup;
+					}
+					else
+					{
+						CalculatePlayerGradient(PriorStartCell[playerIndex], playerIndex);
+					}
 				}
 			}
 		}
@@ -139,9 +155,9 @@ namespace Partak
 				CellGroup currentCellGroup = _cellGroupStepArray[currentIndex];
 				if (currentCellGroup != null)
 				{
-					for (d = 0; d < _stepDirectionArray.GetLength(1); ++d)
+					for (d = 0; d < _stepDirectionArray[_currentStepDirectionIndex].Length; ++d)
 					{
-						direction = _stepDirectionArray[_currentStepDirectionIndex, d];
+						direction = _stepDirectionArray[_currentStepDirectionIndex][d];
 						CellGroup nextCellGroup = currentCellGroup.DirectionalCellGroupArray[direction];
 						if (nextCellGroup != null && !nextCellGroup.InStepArray)
 						{			

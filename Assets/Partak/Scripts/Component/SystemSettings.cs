@@ -3,8 +3,5 @@ using System.Collections;
 
 public class SystemSettings : MonoBehaviour 
 {
-	private void Awake()
-	{
-		Application.targetFrameRate = 30;
-	}
+
 }

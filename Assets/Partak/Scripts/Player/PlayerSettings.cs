@@ -5,11 +5,13 @@ namespace Partak
 {
 	public class PlayerSettings : MonoBehaviour
 	{
-		public int PlayerCount
-		{
-			get { return _playerCount; }
-		}
+		public const int MaxPlayers = 4;
 
+		public PlayerMode[] PlayerModes
+		{
+			get { return _playerModes; }
+		}
+			
 		public Color[] PlayerColors
 		{
 			get { return _playerColors; }
@@ -21,13 +23,37 @@ namespace Partak
 		}
 
 		[SerializeField]
-		private int _playerCount;
+		private PlayerMode[] _playerModes;
 
 		[SerializeField]
 		private int _particleCount;
 
 		[SerializeField]
-		[UnityEngine.Serialization.FormerlySerializedAs("_playerColor")]
 		private Color[] _playerColors;
+
+		public bool PlayerActive(int playerIndex)
+		{
+			if (_playerModes[playerIndex] != PlayerMode.None)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		public int ActivePlayerCount()
+		{
+			int count = 0;
+			for (int i = 0; i < _playerModes.Length; ++i)
+			{
+				if (_playerModes[i] != PlayerMode.None)
+				{
+					count++;
+				}
+			}
+			return count;
+		}
 	}
 }

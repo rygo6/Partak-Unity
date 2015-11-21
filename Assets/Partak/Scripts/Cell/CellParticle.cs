@@ -9,6 +9,8 @@ namespace Partak
 	/// </summary>
 	public class CellParticle
 	{
+		private CellParticleStore _cellParticleStore;
+
 		public ParticleCell ParticleCell
 		{ 
 			get { return _particleCell; }
@@ -24,7 +26,7 @@ namespace Partak
 		}
 		private ParticleCell _particleCell;
 
-		public int PlayerIndex { get; set; }
+		public int PlayerIndex { get; private set; }
 
 		public int Life
 		{
@@ -38,22 +40,26 @@ namespace Partak
 
 		public Color PlayerColor { get; set; }
 
-		public CellParticle(int playerIndex, ParticleCell particleCell)
+		public CellParticle(int playerIndex, ParticleCell particleCell, CellParticleStore cellParticleStore)
 		{
+			_cellParticleStore = cellParticleStore;
 			PlayerIndex = playerIndex;
 			Life = 255;
 			PlayerColor = Persistent.Get<PlayerSettings>().PlayerColors[PlayerIndex];
 			ParticleCell = particleCell;
+			_cellParticleStore.IncrementPlayerParticleCount(PlayerIndex);
 		}
 
 		public void ChangePlayer(int newPlayerIndex)
 		{
+			_cellParticleStore.DecrementPlayerParticleCount(PlayerIndex);
 			ParticleCell.BottomCellGroup.RemovePlayerParticle(PlayerIndex);
 			PlayerIndex = newPlayerIndex;
 			Life = 255;
 			PlayerColor = Persistent.Get<PlayerSettings>().PlayerColors[PlayerIndex];
 			ParticleCell.InhabitedBy = PlayerIndex;
 			ParticleCell.BottomCellGroup.AddPlayerParticle(PlayerIndex);
+			_cellParticleStore.IncrementPlayerParticleCount(PlayerIndex);
 		}
 	}
 }

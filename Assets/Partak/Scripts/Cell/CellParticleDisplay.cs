@@ -49,9 +49,10 @@ namespace Partak
 		{
 			int parentLevel = cellGroup.CellGroupGrid.ParentLevel;
 			int levelCount = (int)Mathf.Pow(4, parentLevel) - (parentLevel + 1);
-			for (int playerIndex = 0; playerIndex < _playerSettings.PlayerCount; ++playerIndex)
+			for (int playerIndex = 0; playerIndex < PlayerSettings.MaxPlayers; ++playerIndex)
 			{
-				if (cellGroup.PlayerParticleCount[playerIndex] > levelCount)
+				if (_playerSettings.PlayerActive(playerIndex) &&
+				    cellGroup.PlayerParticleCount[playerIndex] > levelCount)
 				{
 					_cellParticleSystems[parentLevel].SetNextParticle(
 						cellGroup.WorldPosition,

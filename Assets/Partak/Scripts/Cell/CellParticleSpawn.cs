@@ -6,7 +6,7 @@ namespace Partak
 	public class CellParticleSpawn : MonoBehaviour
 	{
 		[SerializeField]
-		private Transform[] _spawnTransform;
+		private CursorStore _cursorStore;
 
 		[SerializeField]
 		private CellHiearchy _cellHiearchy;
@@ -15,29 +15,33 @@ namespace Partak
 		private CellParticleStore _cellParticleStore;
 
 		[SerializeField]
-		private CellParticleMove _cellParticleMove;
+		private CellParticleMover _cellParticleMover;
 
 		private IEnumerator Start()
 		{
 			PlayerSettings playerSettings = Persistent.Get<PlayerSettings>();
-			YieldInstruction[] spawnYield = new YieldInstruction[playerSettings.PlayerCount];
+			YieldInstruction[] spawnYield = new YieldInstruction[PlayerSettings.MaxPlayers];
 			int particleCount = playerSettings.ParticleCount;
-			int spawnCount = playerSettings.ParticleCount / playerSettings.PlayerCount;
+			int spawnCount = playerSettings.ParticleCount / playerSettings.ActivePlayerCount();
 			int startIndex = 0;
-			for (int playerIndex = 0; playerIndex < playerSettings.PlayerCount; ++playerIndex)
+			for (int playerIndex = 0; playerIndex < PlayerSettings.MaxPlayers; ++playerIndex)
 			{
-				int particleIndex = CellUtility.WorldPositionToGridIndex(_spawnTransform[playerIndex].position.x, _spawnTransform[playerIndex].position.z, _cellHiearchy.ParticleCellGrid.Dimension);
-				ParticleCell startParticleCell = _cellHiearchy.ParticleCellGrid.Grid[particleIndex];
-				spawnYield[playerIndex] = StartCoroutine(SpawnPlayerParticles(startParticleCell, playerIndex, startIndex, spawnCount));
-				startIndex += spawnCount;
+				if (playerSettings.PlayerActive(playerIndex))
+				{
+					int particleIndex = CellUtility.WorldPositionToGridIndex(_cursorStore.CursorPositions[playerIndex].x, _cursorStore.CursorPositions[playerIndex].z, _cellHiearchy.ParticleCellGrid.Dimension);
+					ParticleCell startParticleCell = _cellHiearchy.ParticleCellGrid.Grid[particleIndex];
+					spawnYield[playerIndex] = StartCoroutine(SpawnPlayerParticles(startParticleCell, playerIndex, startIndex, spawnCount));
+					startIndex += spawnCount;
+				}
 			}
 
 			for (int i = 0; i < spawnYield.Length; ++i)
 			{
-				yield return spawnYield[i];
+				if (spawnYield[i] != null)
+					yield return spawnYield[i];
 			}
 
-			_cellParticleMove.StartThread();
+			_cellParticleMover.StartThread();
 		}
 			
 		private IEnumerator SpawnPlayerParticles(ParticleCell startParticleCell, int playerIndex, int startIndex, int spawnCount)
@@ -48,7 +52,7 @@ namespace Partak
 			ParticleCell[] spawnArray = new ParticleCell[spawnCount * 4];
 
 			spawnArray[currentIndex] = startParticleCell;
-			_cellParticleStore.CellParticleArray[currentIndex] = new CellParticle(playerIndex, startParticleCell); 
+			_cellParticleStore.CellParticleArray[currentIndex] = new CellParticle(playerIndex, startParticleCell, _cellParticleStore); 
 
 			while (currentIndex < endIndex)
 			{
@@ -60,7 +64,7 @@ namespace Partak
 					ParticleCell directionalParticleCell = currentParticleCell.DirectionalParticleCellArray[d];
 					if (directionalParticleCell != null && directionalParticleCell.CellParticle == null && currentAddedIndex < endIndex)
 					{
-						_cellParticleStore.CellParticleArray[currentAddedIndex] = new CellParticle(playerIndex, directionalParticleCell);
+						_cellParticleStore.CellParticleArray[currentAddedIndex] = new CellParticle(playerIndex, directionalParticleCell, _cellParticleStore);
 						spawnArray[currentAddedIndex] = directionalParticleCell;
 						currentAddedIndex++;
 					}
