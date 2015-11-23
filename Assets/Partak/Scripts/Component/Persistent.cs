@@ -11,6 +11,11 @@ namespace Partak
 
 		private readonly Dictionary<Type, Component> ComponentDictionary = new Dictionary<Type, Component>();
 
+		private void Awake()
+		{
+			_instance = this;
+		}
+
 		static private void Init()
 		{
 			GameObject prefab = (GameObject)Resources.Load("Persistent");
@@ -21,11 +26,12 @@ namespace Partak
 
 		static public T Get<T>() where T : Component
 		{
+#if UNITY_EDITOR
 			if (_instance == null)
 			{
 				Init();
 			}
-
+#endif
 			Component component;
 			_instance.ComponentDictionary.TryGetValue(typeof(T), out component);
 			if (component != null)

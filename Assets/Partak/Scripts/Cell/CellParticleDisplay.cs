@@ -48,7 +48,7 @@ namespace Partak
 		private void DrawCellGroup(CellGroup cellGroup)
 		{
 			int parentLevel = cellGroup.CellGroupGrid.ParentLevel;
-			int levelCount = (int)Mathf.Pow(4, parentLevel) - (parentLevel + 1);
+			int levelCount = (int)Mathf.Pow(4, parentLevel) - ((parentLevel / 2) + 1);
 			for (int playerIndex = 0; playerIndex < PlayerSettings.MaxPlayers; ++playerIndex)
 			{
 				if (_playerSettings.PlayerActive(playerIndex) &&
@@ -90,7 +90,6 @@ namespace Partak
 		{
 			ResetParticleSystemsCount();
 
-			CellGroup cellGroup;
 			CellGroupGrid cellGroupGrid;
 			int cellIndex;
 			int cellLimit;

@@ -13,8 +13,6 @@ namespace Partak
 
 		private int _currentIndex;
 
-		private int maxparticle;
-
 		private void Reset()
 		{
 			Init();
@@ -28,8 +26,6 @@ namespace Partak
 
 		public void Initialize(int particleCount, float particleSize)
 		{
-			maxparticle = particleCount;
-
 			_particleArray = new ParticleSystem.Particle[particleCount];
 
 			for (int i = 0; i < _particleArray.Length; ++i)

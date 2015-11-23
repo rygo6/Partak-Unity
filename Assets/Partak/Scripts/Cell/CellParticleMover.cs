@@ -12,6 +12,8 @@ namespace Partak
 
 		static private readonly int[] RotateDirectionMove = new int[9]{ 0, -1, 1, -2, 2, -3, 3, -4, 4 };
 
+		public bool Pause { get; set; }
+
 		private bool _processCycle;
 
 		private bool _run;
@@ -22,6 +24,11 @@ namespace Partak
 		public int _attackMultiplier = 1;
 
 		private long _time;
+
+		private void Awake()
+		{
+			FindObjectOfType<CellParticleSpawn>().SpawnComplete += StartThread;
+		}
 
 		private void FixedUpdate()
 		{
@@ -64,7 +71,7 @@ namespace Partak
 		{
 			while (_run)
 			{
-				while (!_processCycle)
+				while (!_processCycle || Pause)
 				{
 				}
 				_processCycle = false;

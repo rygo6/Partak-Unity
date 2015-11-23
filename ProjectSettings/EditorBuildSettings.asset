@@ -6,4 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Partak/Scenes/TestLevel.unity
+    path: Assets/Partak/Scenes/OpenMenu.unity
+  - enabled: 1
+    path: Assets/Partak/Scenes/Level1.unity
+  - enabled: 1
+    path: Assets/Partak/Scenes/Level2.unity

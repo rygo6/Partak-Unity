@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 namespace Partak
@@ -17,11 +18,12 @@ namespace Partak
 		[SerializeField]
 		private CellParticleMover _cellParticleMover;
 
+		public event Action SpawnComplete;
+
 		private IEnumerator Start()
 		{
 			PlayerSettings playerSettings = Persistent.Get<PlayerSettings>();
 			YieldInstruction[] spawnYield = new YieldInstruction[PlayerSettings.MaxPlayers];
-			int particleCount = playerSettings.ParticleCount;
 			int spawnCount = playerSettings.ParticleCount / playerSettings.ActivePlayerCount();
 			int startIndex = 0;
 			for (int playerIndex = 0; playerIndex < PlayerSettings.MaxPlayers; ++playerIndex)
@@ -41,7 +43,7 @@ namespace Partak
 					yield return spawnYield[i];
 			}
 
-			_cellParticleMover.StartThread();
+			SpawnComplete();
 		}
 			
 		private IEnumerator SpawnPlayerParticles(ParticleCell startParticleCell, int playerIndex, int startIndex, int spawnCount)

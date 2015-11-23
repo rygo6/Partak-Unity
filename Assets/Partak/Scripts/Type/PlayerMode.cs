@@ -1,6 +1,6 @@
 ﻿public enum PlayerMode
 {
-	Human,
-	Comp,
-	None,
+	Human = 0,
+	Comp = 1,
+	None = 2,
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿//#define DISABLE_PLAYERPREF
+using UnityEngine;
 using System.Collections;
 
 namespace Partak
@@ -7,11 +8,6 @@ namespace Partak
 	{
 		public const int MaxPlayers = 4;
 
-		public PlayerMode[] PlayerModes
-		{
-			get { return _playerModes; }
-		}
-			
 		public Color[] PlayerColors
 		{
 			get { return _playerColors; }
@@ -21,6 +17,25 @@ namespace Partak
 		{
 			get { return _particleCount; }
 		}
+			
+		public int LevelCount
+		{
+			get { return _levelCount; }
+		}
+
+		public int LevelIndex
+		{ 	
+			get { return _levelIndex; } 
+			set
+			{
+				_levelIndex = (int)Mathf.Repeat(value, _levelCount);
+				PlayerPrefs.SetInt("LevelIndex", _levelIndex);
+			}
+		}
+		private int _levelIndex;
+
+		[SerializeField]
+		private int _levelCount;
 
 		[SerializeField]
 		private PlayerMode[] _playerModes;
@@ -30,6 +45,28 @@ namespace Partak
 
 		[SerializeField]
 		private Color[] _playerColors;
+
+		private void Awake()
+		{
+#if !DISABLE_PLAYERPREF
+			_levelIndex = PlayerPrefs.GetInt("LevelIndex");
+			for (int i = 0; i < _playerModes.Length; ++i)
+			{
+				_playerModes[i] = (PlayerMode)PlayerPrefs.GetInt("PlayerMode" + i);
+			}
+#endif
+		}
+
+		public PlayerMode GetPlayerMode(int PlayerIndex)
+		{
+			return _playerModes[PlayerIndex];
+		}
+
+		public void SetPlayerMode(int playerIndex, PlayerMode playerMode)
+		{
+			_playerModes[playerIndex] = playerMode;
+			PlayerPrefs.SetInt("PlayerMode" + playerIndex, (int)playerMode);
+		}
 
 		public bool PlayerActive(int playerIndex)
 		{

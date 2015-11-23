@@ -18,19 +18,23 @@ namespace Partak
 
 		private bool _recalculatePercentages;
 
+		private bool _update;
+
 		private void Awake()
 		{
 			_playerSettings = Persistent.Get<PlayerSettings>();
 			CellParticleArray = new CellParticle[Persistent.Get<PlayerSettings>().ParticleCount];
 			_startParticleCount = _playerSettings.ParticleCount / _playerSettings.ActivePlayerCount();
+
+			FindObjectOfType<CellParticleSpawn>().SpawnComplete += () => { _update = true; };
 		}
 
 		private void LateUpdate()
 		{
-			if (_recalculatePercentages)
+			if (_recalculatePercentages && _update)
 			{
 				_recalculatePercentages = false;
-				SetPlayerCursorMorphs();
+				CalculatePercentages();
 			}
 		}
 
@@ -46,7 +50,7 @@ namespace Partak
 			_recalculatePercentages = true;
 		}
 
-		private void SetPlayerCursorMorphs()
+		private void CalculatePercentages()
 		{
 			for (int playerIndex = 0; playerIndex < PlayerParticleCount.Length; ++playerIndex)
 			{
@@ -54,6 +58,17 @@ namespace Partak
 				                   (float)(_playerSettings.ParticleCount - _startParticleCount);
 				percentage = Mathf.Clamp(percentage, 0f, 1f) * 100f;	
 				_cursorStore.SetPlayerCursorMorph(playerIndex, percentage);
+
+				if (percentage == 100f)
+				{
+					FindObjectOfType<CameraOrbit>().PlayerWin();
+					FindObjectOfType<UI.GameMenuUI>().ShowWinMenu();
+					_cursorStore.PlayerWin(playerIndex);
+				}
+				else if (percentage == 0f)
+				{
+//					_cursorStore.PlayerLose(playerIndex);
+				}
 			}
 		}
 	}

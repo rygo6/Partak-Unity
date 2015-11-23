@@ -1,15 +1,34 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
-public class SetPlayerMode : MonoBehaviour {
+namespace Partak.UI
+{
+	public class SetPlayerMode : MonoBehaviour
+	{
+		[SerializeField]
+		private int _playerIndex;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+		[SerializeField]
+		private PlayerMode _playerMode;
+
+		private void Start()
+		{
+			Toggle toggle = GetComponent<Toggle>();
+			if (Persistent.Get<PlayerSettings>().GetPlayerMode(_playerIndex) == _playerMode)
+				toggle.isOn = true;
+			else
+				toggle.isOn = false;
+
+			toggle.onValueChanged.AddListener(SetPersistent);
+		}
+
+		public void SetPersistent(bool state)
+		{
+			if (state)
+			{
+				Persistent.Get<PlayerSettings>().SetPlayerMode(_playerIndex, _playerMode);
+			}
+		}
 	}
 }
