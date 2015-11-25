@@ -4008,8 +4008,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelBounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
+    m_Center: {x: 9.60000038, y: 0, z: 9.60000038}
+    m_Extent: {x: 9.60000038, y: 0, z: 9.60000038}
+  _rootDimension:
+    _x: 192
+    _y: 192
   _fps: 60
 --- !u!4 &1069250574
 Transform:

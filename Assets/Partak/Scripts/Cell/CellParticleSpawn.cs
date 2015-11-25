@@ -60,8 +60,6 @@ namespace Partak
 			int currentAddedIndex = currentIndex + 1;
 			ParticleCell[] spawnArray = new ParticleCell[spawnCount * 4];
 
-			Debug.Log(endIndex);
-
 			spawnArray[currentIndex] = startParticleCell;
 			_cellParticleStore.CellParticleArray[currentIndex] = new CellParticle(playerIndex, startParticleCell, _cellParticleStore); 
 

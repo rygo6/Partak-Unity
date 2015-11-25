@@ -11,3 +11,35 @@ EditorBuildSettings:
     path: Assets/Partak/Scenes/Level1.unity
   - enabled: 1
     path: Assets/Partak/Scenes/Level2.unity
+  - enabled: 1
+    path: Assets/Partak/Scenes/Level10.unity
+  - enabled: 1
+    path: Assets/Partak/Scenes/Level11.unity
+  - enabled: 1
+    path: Assets/Partak/Scenes/Level12.unity
+  - enabled: 1
+    path: Assets/Partak/Scenes/Level13.unity
+  - enabled: 1
+    path: Assets/Partak/Scenes/Level14.unity
+  - enabled: 1
+    path: Assets/Partak/Scenes/Level15.unity
+  - enabled: 1
+    path: Assets/Partak/Scenes/Level16.unity
+  - enabled: 1
+    path: Assets/Partak/Scenes/Level17.unity
+  - enabled: 1
+    path: Assets/Partak/Scenes/Level18.unity
+  - enabled: 1
+    path: Assets/Partak/Scenes/Level3.unity
+  - enabled: 1
+    path: Assets/Partak/Scenes/Level4.unity
+  - enabled: 1
+    path: Assets/Partak/Scenes/Level5.unity
+  - enabled: 1
+    path: Assets/Partak/Scenes/Level6.unity
+  - enabled: 1
+    path: Assets/Partak/Scenes/Level7.unity
+  - enabled: 1
+    path: Assets/Partak/Scenes/Level8.unity
+  - enabled: 1
+    path: Assets/Partak/Scenes/Level9.unity

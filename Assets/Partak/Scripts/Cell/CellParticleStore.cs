@@ -10,6 +10,9 @@ namespace Partak
 
 		private readonly int[] PlayerParticleCount = new int[PlayerSettings.MaxPlayers];
 
+		/// <summary> Keeps track of which players have lost. </summary>
+		public readonly bool[] PlayerLose = new bool[PlayerSettings.MaxPlayers];
+
 		[SerializeField]
 		private CursorStore _cursorStore;
 
@@ -66,11 +69,13 @@ namespace Partak
 
 				if (percentage == 100f)
 				{
+					_update = false;
 					_cursorStore.PlayerWin(playerIndex);
 					WinEvent();
 				}
-				else if (PlayerParticleCount[playerIndex] == 0f)
+				else if (PlayerParticleCount[playerIndex] == 0f && !PlayerLose[playerIndex])
 				{
+					PlayerLose[playerIndex] = true;
 					_cursorStore.PlayerLose(playerIndex);
 					LoseEvent(playerIndex);
 				}
