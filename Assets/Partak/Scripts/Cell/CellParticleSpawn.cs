@@ -26,14 +26,21 @@ namespace Partak
 			YieldInstruction[] spawnYield = new YieldInstruction[PlayerSettings.MaxPlayers];
 			int spawnCount = playerSettings.ParticleCount / playerSettings.ActivePlayerCount();
 			int startIndex = 0;
+			int trailingSpawn = 0;
 			for (int playerIndex = 0; playerIndex < PlayerSettings.MaxPlayers; ++playerIndex)
 			{
 				if (playerSettings.PlayerActive(playerIndex))
 				{
+					//in odd numbers, 3, first player may need a few extra particles to produce an even number of particles and have the system work
+					if (playerIndex == 0)		
+						trailingSpawn = playerSettings.ParticleCount - (spawnCount * playerSettings.ActivePlayerCount());
+					else
+						trailingSpawn = 0;
+
 					int particleIndex = CellUtility.WorldPositionToGridIndex(_cursorStore.CursorPositions[playerIndex].x, _cursorStore.CursorPositions[playerIndex].z, _cellHiearchy.ParticleCellGrid.Dimension);
 					ParticleCell startParticleCell = _cellHiearchy.ParticleCellGrid.Grid[particleIndex];
-					spawnYield[playerIndex] = StartCoroutine(SpawnPlayerParticles(startParticleCell, playerIndex, startIndex, spawnCount));
-					startIndex += spawnCount;
+					spawnYield[playerIndex] = StartCoroutine(SpawnPlayerParticles(startParticleCell, playerIndex, startIndex, spawnCount + trailingSpawn));
+					startIndex += spawnCount + trailingSpawn;
 				}
 			}
 
@@ -42,7 +49,7 @@ namespace Partak
 				if (spawnYield[i] != null)
 					yield return spawnYield[i];
 			}
-
+				
 			SpawnComplete();
 		}
 			
@@ -52,6 +59,8 @@ namespace Partak
 			int endIndex = startIndex + spawnCount;
 			int currentAddedIndex = currentIndex + 1;
 			ParticleCell[] spawnArray = new ParticleCell[spawnCount * 4];
+
+			Debug.Log(endIndex);
 
 			spawnArray[currentIndex] = startParticleCell;
 			_cellParticleStore.CellParticleArray[currentIndex] = new CellParticle(playerIndex, startParticleCell, _cellParticleStore); 

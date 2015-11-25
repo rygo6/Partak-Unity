@@ -1,4 +1,4 @@
-﻿//#define DEBUG_GRADIENT
+﻿#define DEBUG_GRADIENT
 
 using UnityEngine;
 using System.Linq;
