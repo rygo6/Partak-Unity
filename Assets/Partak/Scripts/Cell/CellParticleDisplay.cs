@@ -19,6 +19,8 @@ namespace Partak
 
 		private int[] _levelCount;
 
+		private bool _floatParticles;
+
 		private void Awake()
 		{
 			_playerSettings = Persistent.Get<PlayerSettings>();
@@ -38,11 +40,18 @@ namespace Partak
 
 				particleCount /= 2;
 			}
+
+			FindObjectOfType<CellParticleStore>().WinEvent += () =>
+			{
+				_floatParticles = true;
+			};
 		}
 
 		private void Update()
 		{
 			DrawParticleSystems();
+			if (_floatParticles)
+				FloatParticles();
 		}
 
 		private void DrawCellGroup(CellGroup cellGroup)
@@ -86,6 +95,30 @@ namespace Partak
 			}
 		}
 
+		private void FloatParticles()
+		{
+			CellGroupGrid cellGroupGrid;
+			CellGroup cellGroup;
+			Vector3 newPos;
+			int cellIndex;
+			int cellLimit;
+			for (int levelIndex = 0; levelIndex < _cellHiearchy.CellGroupGridArray.Length; ++levelIndex)
+			{
+				cellGroupGrid = _cellHiearchy.CellGroupGridArray[levelIndex];
+				cellLimit = cellGroupGrid.Grid.Length;
+				for (cellIndex = 0; cellIndex < cellLimit; ++cellIndex)
+				{
+					cellGroup = cellGroupGrid.Grid[cellIndex];
+					if (cellGroup != null)
+					{
+						newPos = cellGroup.WorldPosition;
+						newPos.y += Time.deltaTime * ((float)cellIndex / (float)cellLimit);
+						cellGroup.WorldPosition = newPos;
+					}
+				}
+			}
+		}
+
 		private void DrawParticleSystems()
 		{
 			ResetParticleSystemsCount();
@@ -105,7 +138,5 @@ namespace Partak
 
 			UpdateParticleSystems();
 		}
-								
-
 	}
 }

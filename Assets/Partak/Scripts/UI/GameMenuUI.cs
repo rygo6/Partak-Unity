@@ -30,6 +30,8 @@ namespace Partak.UI
 			_replayButton.onClick.AddListener(Replay);
 			_nextButton.onClick.AddListener(Next);
 			_mainButton.onClick.AddListener(MainMenu);
+
+			FindObjectOfType<CellParticleStore>().WinEvent += ShowWinMenu;
 		}
 
 		private void ShowPauseMenu()
@@ -39,7 +41,7 @@ namespace Partak.UI
 			_pauseButtons[1].gameObject.SetActive(false);
 			_replayButton.gameObject.SetActive(false);
 			_mainButton.gameObject.SetActive(true);
-			_nextButton.gameObject.SetActive(false);
+			_nextButton.gameObject.SetActive(true);
 			_resumeButton.gameObject.SetActive(true);
 			FindObjectOfType<CellParticleMover>().Pause = true;
 		}

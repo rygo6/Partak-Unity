@@ -9,7 +9,7 @@ namespace Partak
 	/// </summary>
 	public class CellGroup
 	{
-		public readonly Vector3 WorldPosition;
+		public Vector3 WorldPosition { get; set; }
 
 		public readonly CellGroupGrid CellGroupGrid;
 

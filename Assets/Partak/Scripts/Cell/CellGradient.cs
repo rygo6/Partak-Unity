@@ -56,7 +56,8 @@ namespace Partak
 			_stepDirectionArray = new int[1000][];
 			for (int x = 0; x < _stepDirectionArray.Length; ++x)
 			{
-				_stepDirectionArray[x] = new int[Random.Range(5, 7)];
+//				_stepDirectionArray[x] = new int[Random.Range(6, 6)];
+				_stepDirectionArray[x] = new int[6];
 				//generate non repeating array of 6 random numbers between 0 and 12
 				randomArray = Enumerable.Range(0, Direction12.Count)
 					.OrderBy(t => Random.Range(0, Direction12.Count))
@@ -67,6 +68,8 @@ namespace Partak
 					_stepDirectionArray[x][y] = randomArray[y];
 				}
 			}
+
+			FindObjectOfType<CellParticleStore>().WinEvent += StopThread;
 		}
 
 		private void Start()
@@ -84,10 +87,13 @@ namespace Partak
 
 		private void StopThread()
 		{
-			_run = false;
-			_thread.Abort();
-			while (_thread.IsAlive)
+			if (_thread != null)
 			{
+				_run = false;
+				_thread.Abort();
+				while (_thread.IsAlive)
+				{
+				}
 			}
 		}
 

@@ -178,7 +178,13 @@ Prefab:
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6400000, guid: 1c7219ecbb8e89348b5dc9d6e932d07c, type: 3}
+    - {fileID: 6400016, guid: 1c7219ecbb8e89348b5dc9d6e932d07c, type: 3}
+    - {fileID: 6400014, guid: 1c7219ecbb8e89348b5dc9d6e932d07c, type: 3}
+    - {fileID: 6400012, guid: 1c7219ecbb8e89348b5dc9d6e932d07c, type: 3}
+    - {fileID: 6400018, guid: 1c7219ecbb8e89348b5dc9d6e932d07c, type: 3}
+    - {fileID: 6400010, guid: 1c7219ecbb8e89348b5dc9d6e932d07c, type: 3}
   m_ParentPrefab: {fileID: 100100000, guid: 1c7219ecbb8e89348b5dc9d6e932d07c, type: 3}
   m_IsPrefabParent: 0
 --- !u!1001 &571751099
@@ -533,8 +539,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelBounds:
-    m_Center: {x: 9.60000038, y: .200000003, z: 9.60000038}
+    m_Center: {x: 9.60000038, y: 0, z: 9.60000038}
     m_Extent: {x: 9.60000038, y: 0, z: 9.60000038}
+  _rootDimension:
+    _x: 192
+    _y: 192
   _fps: 30
 --- !u!4 &1134140259
 Transform:

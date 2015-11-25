@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 namespace Partak
@@ -19,6 +20,10 @@ namespace Partak
 		private bool _recalculatePercentages;
 
 		private bool _update;
+
+		public event Action WinEvent;
+
+		public event Action<int> LoseEvent;
 
 		private void Awake()
 		{
@@ -61,13 +66,13 @@ namespace Partak
 
 				if (percentage == 100f)
 				{
-					FindObjectOfType<CameraOrbit>().PlayerWin();
-					FindObjectOfType<UI.GameMenuUI>().ShowWinMenu();
 					_cursorStore.PlayerWin(playerIndex);
+					WinEvent();
 				}
-				else if (percentage == 0f)
+				else if (PlayerParticleCount[playerIndex] == 0f)
 				{
-//					_cursorStore.PlayerLose(playerIndex);
+					_cursorStore.PlayerLose(playerIndex);
+					LoseEvent(playerIndex);
 				}
 			}
 		}

@@ -68,7 +68,7 @@ namespace Partak
 
 		public void PlayerLose(int playerIndex)
 		{
-			StartCoroutine(LoseCursorTweenCoroutine(_cursorTranforms[playerIndex]));		
+			StartCoroutine(LoseCursorTweenCoroutine(playerIndex));		
 		}
 
 		private IEnumerator WinCursorTweenCoroutine(Transform cursorTransform)
@@ -86,20 +86,24 @@ namespace Partak
 			}
 		}
 
-		private IEnumerator LoseCursorTweenCoroutine(Transform cursorTransform)
+		private IEnumerator LoseCursorTweenCoroutine(int playerIndex)
 		{
-			Vector3 startPos = cursorTransform.position;
-			Vector3 endPos = new Vector3(startPos.x, startPos.y, startPos.z - 20f);
+			Vector3 startScale = Vector3.one;
+			Vector3 endScale = Vector3.zero;
+			Vector3 newEuler;
 
 			float time = 0f;
 			while (time < 1f)
 			{
 				time += Time.deltaTime;
-				cursorTransform.position = Vector3.Lerp(startPos, endPos, time);
+				_cursorTranforms[playerIndex].localScale = Vector3.Lerp(startScale, endScale, time);
+				newEuler = _cursorTranforms[playerIndex].eulerAngles;
+				newEuler.y += Time.deltaTime * 120f;
+				_cursorTranforms[playerIndex].eulerAngles = newEuler;
 				yield return null;
 			}
 
-			cursorTransform.gameObject.SetActive(false);
+			_cursorTranforms[playerIndex].gameObject.SetActive(false);
 		}
 
 	}

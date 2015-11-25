@@ -366,6 +366,10 @@ Prefab:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11422770, guid: ef6f5db894d21442fb3956ef7f45a349, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ef6f5db894d21442fb3956ef7f45a349, type: 2}
   m_IsPrefabParent: 0
@@ -439,8 +443,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelBounds:
-    m_Center: {x: 9.60000038, y: .200000003, z: 9.60000038}
+    m_Center: {x: 9.60000038, y: 0, z: 9.60000038}
     m_Extent: {x: 9.60000038, y: 0, z: 9.60000038}
+  _rootDimension:
+    _x: 192
+    _y: 192
   _fps: 30
 --- !u!4 &1134140259
 Transform:

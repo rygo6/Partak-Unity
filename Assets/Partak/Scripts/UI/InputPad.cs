@@ -31,8 +31,13 @@ namespace Partak.UI
 		{
 			PlayerSettings playerSettings = Persistent.Get<PlayerSettings>();
 			_lineRenderer = GetComponentInChildren<LineRenderer>();
-			_lineRenderer.SetColors(playerSettings.PlayerColors[_playerIndex], playerSettings.PlayerColors[_playerIndex]);
 			_lineRenderer.SetVertexCount(2);
+			_lineRenderer.enabled = false;
+		}
+
+		public void Disable()
+		{
+			this.enabled = false;
 			_lineRenderer.enabled = false;
 		}
 

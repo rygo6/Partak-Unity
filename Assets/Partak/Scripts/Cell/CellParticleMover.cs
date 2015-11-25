@@ -28,6 +28,7 @@ namespace Partak
 		private void Awake()
 		{
 			FindObjectOfType<CellParticleSpawn>().SpawnComplete += StartThread;
+			_cellParticleStore.WinEvent += StopThread;
 		}
 
 		private void FixedUpdate()
@@ -51,10 +52,13 @@ namespace Partak
 
 		private void StopThread()
 		{
-			_run = false;
-			_thread.Abort();
-			while (_thread.IsAlive)
+			if (_thread != null)
 			{
+				_run = false;
+				_thread.Abort();
+				while (_thread.IsAlive)
+				{
+				}
 			}
 		}
 

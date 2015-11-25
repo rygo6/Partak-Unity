@@ -33,6 +33,13 @@ namespace Partak.UI
 			{
 				_horizontalBottom.SetActive(false);
 			}
+
+			FindObjectOfType<CellParticleStore>().LoseEvent += DisablePad;
+		}
+
+		private void DisablePad(int playerIndex)
+		{
+			_inputPads[playerIndex].Disable();
 		}
 	}
 }

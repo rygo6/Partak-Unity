@@ -39,7 +39,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 166984}
   m_LocalRotation: {x: -.0375907384, y: -.70807457, z: -.0384280384, w: .704088509}
-  m_LocalPosition: {x: 20.1506519, y: 2.02779007, z: 0}
+  m_LocalPosition: {x: 16.6200008, y: 2.41000009, z: -.0199999996}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 497588}
@@ -102,9 +102,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17a5e243d97dfce47b9e243ee0e91a12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateMultiplier: 16
-  tweenMainCameraDivider: 8
-  childCameraTransform: {fileID: 0}
+  _rotateMultiplier: 16
+  _tweenMainCameraDivider: 8
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

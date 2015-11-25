@@ -90,7 +90,7 @@ namespace Partak.UI
 			_leftButton.interactable = true;
 		}
 	
-		private void OnApplicationQuit()
+		private void OnDestroy()
 		{
 			_material.SetTexture("_Texture1", null);
 			_material.SetTexture("_Texture2", null);

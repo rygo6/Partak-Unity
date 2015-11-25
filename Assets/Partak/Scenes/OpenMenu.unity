@@ -4757,9 +4757,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rightButton: {fileID: 2001915296}
   _leftButton: {fileID: 1076492550}
-  _galleryIndex: 0
-  _galleryLength: 18
-  _galleryTransitionSpeed: 4
+  _transitionSpeed: 4
 --- !u!1 &1312103546
 GameObject:
   m_ObjectHideFlags: 0
