@@ -48,11 +48,18 @@ namespace Partak
 		private IEnumerator TimeoutCoroutine()
 		{
 			float blend = 0f;
+			int winningPlayer = 0;
+			int newWinningPlayer = 0;
 			while (true)
 			{
 				blend += Time.deltaTime;
 				_surroundMaterial.SetFloat("_Blend", Mathf.PingPong(blend, .5f));
-				_surroundMaterial.SetTexture("_Texture2", _playerColorTextures[_cellParticleStore.WinningPlayer()]);
+				newWinningPlayer = _cellParticleStore.WinningPlayer();
+				if (winningPlayer != newWinningPlayer)
+				{
+					winningPlayer = newWinningPlayer;
+					_surroundMaterial.SetTexture("_Texture2", _playerColorTextures[winningPlayer]);
+				}
 				yield return null;
 			}
 		}

@@ -37,8 +37,8 @@ namespace Partak.UI
 		private void ShowPauseMenu()
 		{
 			GetComponent<Animator>().Play("SlideIn");
-			_pauseButtons[0].gameObject.SetActive(false);
-			_pauseButtons[1].gameObject.SetActive(false);
+			_pauseButtons[0].interactable = false;
+			_pauseButtons[1].interactable = false;
 			_replayButton.gameObject.SetActive(false);
 			_mainButton.gameObject.SetActive(true);
 			_nextButton.gameObject.SetActive(true);
@@ -59,29 +59,35 @@ namespace Partak.UI
 
 		private void Resume()
 		{
-			_pauseButtons[0].gameObject.SetActive(true);
-			_pauseButtons[1].gameObject.SetActive(true);
+			_pauseButtons[0].interactable = true;
+			_pauseButtons[1].interactable = true;
 			GetComponent<Animator>().Play("SlideOut");
 			FindObjectOfType<CellParticleMover>().Pause = false;
 		}
 
 		private void MainMenu()
 		{
-			Prime31.EtceteraBinding.showActivityView();
-			Application.LoadLevel("OpenMenu");
+			StartCoroutine(LoadCoroutine("OpenMenu"));
 		}
 
 		private void Replay()
 		{
-			Prime31.EtceteraBinding.showActivityView();
-			Application.LoadLevel("Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1));
+			StartCoroutine(LoadCoroutine("Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1)));
 		}
 
 		private void Next()
 		{
-			Prime31.EtceteraBinding.showActivityView();
 			Persistent.Get<PlayerSettings>().LevelIndex++;
-			Application.LoadLevel("Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1));
+			StartCoroutine(LoadCoroutine("Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1)));
+		}
+
+		private IEnumerator LoadCoroutine(string levelName)
+		{
+			GetComponent<Animator>().Play("SlideOut");
+			Prime31.EtceteraBinding.showActivityView();
+			//done so sound can play
+			yield return new WaitForSeconds(.5f);
+			Application.LoadLevel(levelName);
 		}
 	}
 }

@@ -112,7 +112,7 @@ namespace Partak.UI
 
 		private void FadeOut()
 		{
-			if (_visible)
+			if (_visible && enabled)
 			{
 				StartCoroutine(FadeOutCoroutine());
 			}

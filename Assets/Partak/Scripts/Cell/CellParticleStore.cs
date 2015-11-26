@@ -8,7 +8,7 @@ namespace Partak
 	{
 		public CellParticle[] CellParticleArray { get; private set; }
 
-		private readonly int[] PlayerParticleCount = new int[PlayerSettings.MaxPlayers];
+		public readonly int[] PlayerParticleCount = new int[PlayerSettings.MaxPlayers];
 
 		/// <summary> Keeps track of which players have lost. </summary>
 		public readonly bool[] PlayerLose = new bool[PlayerSettings.MaxPlayers];
