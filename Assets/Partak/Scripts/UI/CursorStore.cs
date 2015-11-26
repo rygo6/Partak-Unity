@@ -12,8 +12,6 @@ namespace Partak
 
 		public readonly Vector3[] CursorPositions = new Vector3[PlayerSettings.MaxPlayers];
 
-		private readonly LineRenderer[] _lineRenderers = new LineRenderer[PlayerSettings.MaxPlayers];
-
 		private Bounds _levelBounds;
 
 		private bool _updateCursors = true;

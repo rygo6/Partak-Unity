@@ -118,7 +118,6 @@ namespace Partak
 			{
 				Stopwatch stopWatch = new Stopwatch();
 				stopWatch.Start();
-				int currentTime;
 				int startTime;
 				int deltaTime;
 				while (_runThread)

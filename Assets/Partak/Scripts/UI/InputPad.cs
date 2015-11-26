@@ -29,7 +29,6 @@ namespace Partak.UI
 		private void Start()
 		{
 			_cursorStore = FindObjectOfType<CursorStore>();
-			PlayerSettings playerSettings = Persistent.Get<PlayerSettings>();
 			_lineRenderer = GetComponentInChildren<LineRenderer>();
 			_lineRenderer.SetVertexCount(2);
 			_lineRenderer.enabled = false;
