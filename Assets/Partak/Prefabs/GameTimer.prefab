@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &195204
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 402534}
+  - 114: {fileID: 11487104}
+  m_Layer: 0
+  m_Name: GameTimer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &402534
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 195204}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 9.38241959, y: -.308743477, z: 9.57594299}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &11487104
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 195204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5dce713534a9f430497b324a547cf49a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _surroundMaterial: {fileID: 2100000, guid: b8ad81ebbf4551448be02e24fbb5c173, type: 2}
+  _timeLimit: 60
+  _playerColorTextures:
+  - {fileID: 2800000, guid: e6916bdc4f90e4928b6f30dc92675962, type: 3}
+  - {fileID: 2800000, guid: 9c812f519465e4204a3cddb50792914b, type: 3}
+  - {fileID: 2800000, guid: 7558e1d2e0964412c9479b87b35effda, type: 3}
+  - {fileID: 2800000, guid: 4ee6b06c7a076491ca0cee9bafbaccc9, type: 3}
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 195204}
+  m_IsPrefabParent: 1

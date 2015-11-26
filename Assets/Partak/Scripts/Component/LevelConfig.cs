@@ -29,18 +29,25 @@ public class LevelConfig : MonoBehaviour
 	private void Awake()
 	{
 		Application.targetFrameRate = _fps;
+		Prime31.EtceteraBinding.hideActivityView();
 	}
 
 	private void OnDrawGizmos()
 	{
-		_levelBounds.center = new Vector3(
+		Vector3 center = new Vector3(
 			(_rootDimension.x / 2f) / 10f,
 			0f,
 			(_rootDimension.y / 2f) / 10f);
-		_levelBounds.size = new Vector3(
+		Vector3 size = new Vector3(
 			_rootDimension.x / 10f,
 			0f, 
 			_rootDimension.y / 10f);
+
+		if (_levelBounds.center != center || _levelBounds.size != size)
+		{
+			_levelBounds.center = center;
+			_levelBounds.size = size;
+		}
 
 		Gizmos.color = Color.red;
 		Gizmos.DrawWireCube(_levelBounds.center, _levelBounds.size);

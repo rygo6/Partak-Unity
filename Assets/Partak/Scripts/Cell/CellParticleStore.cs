@@ -87,5 +87,20 @@ namespace Partak
 				}
 			}
 		}
+
+		public int WinningPlayer()
+		{
+			int count = 0;
+			int playerIndex = 0;
+			for (int i = 0; i < PlayerParticleCount.Length; ++i)
+			{
+				if (PlayerParticleCount[i] > count)
+				{
+					count = PlayerParticleCount[i];
+					playerIndex = i;
+				}
+			}
+			return playerIndex;
+		}
 	}
 }

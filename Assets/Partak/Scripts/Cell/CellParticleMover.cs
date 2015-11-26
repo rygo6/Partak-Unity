@@ -10,6 +10,8 @@ namespace Partak
 		[SerializeField]
 		private CellParticleStore _cellParticleStore;
 
+		public bool Timeout { get; set; }
+
 		private readonly int[] RotateDirectionMove = new int[9]{ 0, -1, 1, -2, 2, -3, 3, -4, 4 };
 
 		public bool Pause { get; set; }
@@ -100,6 +102,7 @@ namespace Partak
 			int d;
 			int p;
 			int life;
+			int winningPlayer = _cellParticleStore.WinningPlayer();
 
 			for (p = 0; p < limit; ++p)
 			{
@@ -125,7 +128,14 @@ namespace Partak
 						//if other player, take life
 						else if (currentParticleCell.InhabitedBy != nextParticleCell.InhabitedBy)
 						{	
-							life = nextParticleCell.CellParticle.Life - ((5 - Mathf.Abs(RotateDirectionMove[d])) * _attackMultiplier);	
+							if (Timeout && currentParticleCell.InhabitedBy == winningPlayer)
+							{
+								life = nextParticleCell.CellParticle.Life - ((5 - Mathf.Abs(RotateDirectionMove[d])) * _attackMultiplier * 3);	
+							}
+							else
+							{
+								life = nextParticleCell.CellParticle.Life - ((5 - Mathf.Abs(RotateDirectionMove[d])) * _attackMultiplier);	
+							}
 
 							if (life <= 0)
 								nextParticleCell.CellParticle.ChangePlayer(currentCellParticle.PlayerIndex);

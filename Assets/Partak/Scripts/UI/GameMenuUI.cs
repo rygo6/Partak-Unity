@@ -67,16 +67,19 @@ namespace Partak.UI
 
 		private void MainMenu()
 		{
+			Prime31.EtceteraBinding.showActivityView();
 			Application.LoadLevel("OpenMenu");
 		}
 
 		private void Replay()
 		{
+			Prime31.EtceteraBinding.showActivityView();
 			Application.LoadLevel("Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1));
 		}
 
 		private void Next()
 		{
+			Prime31.EtceteraBinding.showActivityView();
 			Persistent.Get<PlayerSettings>().LevelIndex++;
 			Application.LoadLevel("Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1));
 		}

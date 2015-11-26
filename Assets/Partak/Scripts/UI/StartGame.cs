@@ -8,6 +8,7 @@ namespace Partak.UI
 	{
 		public void OnPointerClick(PointerEventData eventData)
 		{
+			Prime31.EtceteraBinding.showActivityView();
 			Application.LoadLevel("Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1));
 		}
 	}
