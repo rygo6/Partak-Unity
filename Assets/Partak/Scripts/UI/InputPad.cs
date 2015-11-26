@@ -7,7 +7,6 @@ namespace Partak.UI
 {
 	public class InputPad : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IInitializePotentialDragHandler
 	{
-		[SerializeField]
 		private CursorStore _cursorStore;
 
 		private Vector3 _hitPosition;
@@ -29,6 +28,7 @@ namespace Partak.UI
 
 		private void Start()
 		{
+			_cursorStore = FindObjectOfType<CursorStore>();
 			PlayerSettings playerSettings = Persistent.Get<PlayerSettings>();
 			_lineRenderer = GetComponentInChildren<LineRenderer>();
 			_lineRenderer.SetVertexCount(2);
@@ -37,8 +37,9 @@ namespace Partak.UI
 
 		public void Disable()
 		{
-			this.enabled = false;
+			enabled = false;
 			_lineRenderer.enabled = false;
+			FadeOut();
 		}
 
 		private void LateUpdate()
@@ -95,13 +96,13 @@ namespace Partak.UI
 
 		public void OnPointerDown(PointerEventData eventData)
 		{
-			_lineRenderer.enabled = true;
-			_priorPosition = InputParticleLayerHit(eventData.position);
-			_hitPosition = _priorPosition;
-			_deltaPosition = Vector3.zero;
-			if (_visible)
+			if (enabled)
 			{
-				StartCoroutine(FadeOut());
+				_lineRenderer.enabled = true;
+				_priorPosition = InputParticleLayerHit(eventData.position);
+				_hitPosition = _priorPosition;
+				_deltaPosition = Vector3.zero;
+				FadeOut();
 			}
 		}
 
@@ -110,7 +111,15 @@ namespace Partak.UI
 			_lineRenderer.enabled = false;
 		}
 
-		private IEnumerator FadeOut()
+		private void FadeOut()
+		{
+			if (_visible)
+			{
+				StartCoroutine(FadeOutCoroutine());
+			}
+		}
+
+		private IEnumerator FadeOutCoroutine()
 		{
 			CanvasGroup canvasGroup = GetComponentInChildren<CanvasGroup>();
 			_visible = false;

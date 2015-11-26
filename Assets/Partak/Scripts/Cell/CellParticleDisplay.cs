@@ -25,10 +25,11 @@ namespace Partak
 		{
 			_playerSettings = Persistent.Get<PlayerSettings>();
 			int systemCount = _cellHiearchy.CellGroupGridArray.Length;
+			LevelConfig levelConfig = FindObjectOfType<LevelConfig>();
 
 			//you add additional positions onto the particle count as a buffer in case when it is reading in
 			//particle positions one of the particles is updated from another thread and ends up registering twice
-			int particleCount = _playerSettings.ParticleCount + (_playerSettings.ParticleCount / 4);
+			int particleCount = levelConfig.ParticleCount + (levelConfig.ParticleCount / 4);
 
 			_cellParticleSystems = new CellParticleSystem[systemCount];
 			for (int i = 0; i < systemCount; ++i)

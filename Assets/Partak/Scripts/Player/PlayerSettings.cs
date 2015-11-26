@@ -13,11 +13,6 @@ namespace Partak
 			get { return _playerColors; }
 		}
 
-		public int ParticleCount
-		{
-			get { return _particleCount; }
-		}
-			
 		public int LevelCount
 		{
 			get { return _levelCount; }
@@ -39,9 +34,6 @@ namespace Partak
 
 		[SerializeField]
 		private PlayerMode[] _playerModes;
-
-		[SerializeField]
-		private int _particleCount;
 
 		[SerializeField]
 		private Color[] _playerColors;

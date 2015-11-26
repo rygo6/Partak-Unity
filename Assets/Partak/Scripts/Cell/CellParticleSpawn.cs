@@ -6,7 +6,6 @@ namespace Partak
 {
 	public class CellParticleSpawn : MonoBehaviour
 	{
-		[SerializeField]
 		private CursorStore _cursorStore;
 
 		[SerializeField]
@@ -22,9 +21,11 @@ namespace Partak
 
 		private IEnumerator Start()
 		{
+			LevelConfig levelConfig = FindObjectOfType<LevelConfig>();
+			_cursorStore = FindObjectOfType<CursorStore>();
 			PlayerSettings playerSettings = Persistent.Get<PlayerSettings>();
 			YieldInstruction[] spawnYield = new YieldInstruction[PlayerSettings.MaxPlayers];
-			int spawnCount = playerSettings.ParticleCount / playerSettings.ActivePlayerCount();
+			int spawnCount = levelConfig.ParticleCount / playerSettings.ActivePlayerCount();
 			int startIndex = 0;
 			int trailingSpawn = 0;
 			for (int playerIndex = 0; playerIndex < PlayerSettings.MaxPlayers; ++playerIndex)
@@ -33,7 +34,7 @@ namespace Partak
 				{
 					//in odd numbers, 3, first player may need a few extra particles to produce an even number of particles and have the system work
 					if (playerIndex == 0)		
-						trailingSpawn = playerSettings.ParticleCount - (spawnCount * playerSettings.ActivePlayerCount());
+						trailingSpawn = levelConfig.ParticleCount - (spawnCount * playerSettings.ActivePlayerCount());
 					else
 						trailingSpawn = 0;
 

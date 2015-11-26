@@ -4,7 +4,7 @@
 QualitySettings:
   m_ObjectHideFlags: 0
   serializedVersion: 5
-  m_CurrentQuality: 5
+  m_CurrentQuality: 3
   m_QualitySettings:
   - serializedVersion: 2
     name: Fastest
@@ -80,11 +80,11 @@ QualitySettings:
     excludedTargetPlatforms: []
   - serializedVersion: 2
     name: Good
-    pixelLightCount: 2
-    shadows: 2
+    pixelLightCount: 1
+    shadows: 0
     shadowResolution: 1
     shadowProjection: 1
-    shadowCascades: 2
+    shadowCascades: 1
     shadowDistance: 40
     shadowNearPlaneOffset: 2
     shadowCascade2Split: .333333343
@@ -92,11 +92,11 @@ QualitySettings:
     blendWeights: 2
     textureQuality: 0
     anisotropicTextures: 1
-    antiAliasing: 0
+    antiAliasing: 4
     softParticles: 0
     softVegetation: 1
-    realtimeReflectionProbes: 1
-    billboardsFaceCameraPosition: 1
+    realtimeReflectionProbes: 0
+    billboardsFaceCameraPosition: 0
     vSyncCount: 1
     lodBias: 1
     maximumLODLevel: 0
@@ -129,7 +129,7 @@ QualitySettings:
   - serializedVersion: 2
     name: Fantastic
     pixelLightCount: 1
-    shadows: 1
+    shadows: 2
     shadowResolution: 2
     shadowProjection: 1
     shadowCascades: 4
@@ -151,16 +151,16 @@ QualitySettings:
     particleRaycastBudget: 4096
     excludedTargetPlatforms: []
   m_PerPlatformDefaultQuality:
-    Android: 5
+    Android: 3
     BlackBerry: 0
     FlashPlayer: 5
     GLES Emulation: 3
     PS3: 3
-    Samsung TV: 0
-    Standalone: 5
-    Tizen: 0
-    Web: 5
-    WebGL: 0
+    Samsung TV: 3
+    Standalone: 3
+    Tizen: 3
+    Web: 3
+    WebGL: 3
     Wii: 3
     XBOX360: 3
-    iPhone: 5
+    iPhone: 3

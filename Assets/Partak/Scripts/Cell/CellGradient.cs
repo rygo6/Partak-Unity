@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using System.Diagnostics;
 
 namespace Partak
 {
@@ -15,7 +16,6 @@ namespace Partak
 	/// </summary>
 	public class CellGradient : MonoBehaviour
 	{
-		[SerializeField]
 		private CursorStore _cursorStore;
 
 		[SerializeField]
@@ -40,24 +40,34 @@ namespace Partak
 
 		private readonly CellGroup[] PriorStartCell = new CellGroup[PlayerSettings.MaxPlayers];
 
-		private bool _run;
+		private bool _runThread;
 
 		private Thread _thread;
 
 		private PlayerSettings _playerSettings;
 
+		[SerializeField]
+		private int _cycleTime = 33;
+
 		private void Awake()
 		{
+			_cursorStore = FindObjectOfType<CursorStore>();
 			_playerSettings = Persistent.Get<PlayerSettings>();
 			_cellGroupStepArray = new CellGroup[_cellHiearchy.ParticleCellGrid.Grid.Length * 2];
+
+//			_stepDirectionArray = new int[4][] {
+//				new int[6]{ 0, 1, 2, 3, 4, 5 },
+//				new int[6]{ 11, 10, 9, 8, 7, 6 },	
+//				new int[6]{ 0, 2, 4, 6, 8, 10 },	
+//				new int[6]{ 1, 3, 5, 7, 9, 11 },	
+//			};
 
 			//pre-generate random numbers
 			int[] randomArray;
 			_stepDirectionArray = new int[1000][];
 			for (int x = 0; x < _stepDirectionArray.Length; ++x)
 			{
-//				_stepDirectionArray[x] = new int[Random.Range(6, 6)];
-				_stepDirectionArray[x] = new int[6];
+				_stepDirectionArray[x] = new int[Random.Range(6, 10)];
 				//generate non repeating array of 6 random numbers between 0 and 12
 				randomArray = Enumerable.Range(0, Direction12.Count)
 					.OrderBy(t => Random.Range(0, Direction12.Count))
@@ -74,12 +84,15 @@ namespace Partak
 
 		private void Start()
 		{
+			_runThread = true;
 			_thread = new Thread(RunThread);
-			_thread.Priority = System.Threading.ThreadPriority.Lowest;
+			_thread.Name = "CellGradient";
+			_thread.IsBackground = true;
+			_thread.Priority = System.Threading.ThreadPriority.BelowNormal;
 			_thread.Start();
 //			StartCoroutine(RunCoroutine());
 		}
-
+			
 		private void OnDestroy()
 		{
 			StopThread();
@@ -89,8 +102,10 @@ namespace Partak
 		{
 			if (_thread != null)
 			{
-				_run = false;
-				_thread.Abort();
+#if UNITY_EDITOR
+				_thread.Abort();	
+#endif
+				_runThread = false;
 				while (_thread.IsAlive)
 				{
 				}
@@ -99,17 +114,31 @@ namespace Partak
 
 		private void RunThread()
 		{
-			_run = true;
-			while (_run)
+			while (_runThread)
 			{
-				CalculateGradient();
+				Stopwatch stopWatch = new Stopwatch();
+				stopWatch.Start();
+				int currentTime;
+				int startTime;
+				int deltaTime;
+				while (_runThread)
+				{
+					startTime = (int)stopWatch.ElapsedMilliseconds;
+					CalculateGradient();
+					deltaTime = (int)stopWatch.ElapsedMilliseconds - startTime;
+					if (deltaTime < _cycleTime)
+					{
+						Thread.Sleep(_cycleTime - deltaTime);
+					}
+					stopWatch.Reset();
+				}
 			}
 		}
 
 		private IEnumerator RunCoroutine()
 		{
-			_run = true;
-			while (_run)
+			_runThread = true;
+			while (_runThread)
 			{
 				CalculateGradient();
 				yield return null;

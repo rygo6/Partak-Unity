@@ -7,6 +7,10 @@ public class LevelConfig : MonoBehaviour
 
 	public Vector2Int RootDimension { get { return _rootDimension; } }
 
+	public int ParticleCount { get { return _particleCount; } }
+
+	public int MoveCycleTime { get { return _moveCycleTime; } }
+
 	[SerializeField]
 	private Bounds _levelBounds;
 
@@ -15,6 +19,12 @@ public class LevelConfig : MonoBehaviour
 
 	[SerializeField]
 	private int _fps = 30;
+
+	[SerializeField]
+	private int _particleCount = 5000;
+
+	[SerializeField]
+	private int _moveCycleTime = 16;
 
 	private void Awake()
 	{

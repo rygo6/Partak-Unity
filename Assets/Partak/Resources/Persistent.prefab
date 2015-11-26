@@ -128,11 +128,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levelCount: 18
   _playerModes: 00000000020000000200000002000000
-  _particleCount: 5000
+  _particleCount: 4000
   _playerColors:
   - {r: .866666734, g: .145098045, b: .0980392247, a: 1}
   - {r: .909803987, g: .737254918, b: .168627456, a: 1}
-  - {r: .129411772, g: .0784313753, b: .619607866, a: 1}
+  - {r: .101499535, g: .0615147986, b: .784313738, a: 1}
   - {r: .101960793, g: .662745118, b: .250980407, a: 1}
 --- !u!114 &11487638
 MonoBehaviour:
@@ -215,7 +215,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: _particleCount
-      value: 5000
+      value: 4000
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: _playerColor.Array.data[1].r
@@ -256,6 +256,18 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: _playerModes.Array.data[3]
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: _playerColors.Array.data[2].b
+      value: .784313738
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: _playerColors.Array.data[2].g
+      value: .0615147986
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: _playerColors.Array.data[2].r
+      value: .101499535
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

@@ -10,30 +10,24 @@ namespace Partak
 		[SerializeField]
 		private CellParticleStore _cellParticleStore;
 
-		static private readonly int[] RotateDirectionMove = new int[9]{ 0, -1, 1, -2, 2, -3, 3, -4, 4 };
+		private readonly int[] RotateDirectionMove = new int[9]{ 0, -1, 1, -2, 2, -3, 3, -4, 4 };
 
 		public bool Pause { get; set; }
 
-		private bool _processCycle;
-
-		private bool _run;
+		private bool _runThread;
 
 		private Thread _thread;
 
 		[SerializeField]
-		public int _attackMultiplier = 1;
+		public int _attackMultiplier = 3;
 
-		private long _time;
+		private int _cycleTime;
 
 		private void Awake()
 		{
+			_cycleTime = FindObjectOfType<LevelConfig>().MoveCycleTime;
 			FindObjectOfType<CellParticleSpawn>().SpawnComplete += StartThread;
 			_cellParticleStore.WinEvent += StopThread;
-		}
-
-		private void FixedUpdate()
-		{
-			_processCycle = true;
 		}
 
 		private void OnDestroy()
@@ -43,9 +37,11 @@ namespace Partak
 
 		public void StartThread()
 		{
-			_run = true;
+			_runThread = true;
 			_thread = new Thread(RunThread);
-			_thread.Priority = System.Threading.ThreadPriority.Highest;
+			_thread.IsBackground = true;
+			_thread.Priority = System.Threading.ThreadPriority.AboveNormal;
+			_thread.Name = "CellParticleMove";
 			_thread.Start();
 //			StartCoroutine(RunCoroutine());
 		}
@@ -54,8 +50,10 @@ namespace Partak
 		{
 			if (_thread != null)
 			{
-				_run = false;
-				_thread.Abort();
+#if UNITY_EDITOR
+				_thread.Abort();	
+#endif				
+				_runThread = false;
 				while (_thread.IsAlive)
 				{
 				}
@@ -64,7 +62,7 @@ namespace Partak
 
 		private IEnumerator RunCoroutine()
 		{
-			while (_run)
+			while (_runThread)
 			{
 				MoveParticles();
 				yield return null;
@@ -73,30 +71,21 @@ namespace Partak
 
 		private void RunThread()
 		{
-			while (_run)
-			{
-				while (!_processCycle || Pause)
-				{
-				}
-				_processCycle = false;
-				MoveParticles();
-			}
-		}
-
-		private void RunTimedThread()
-		{
 			Stopwatch stopWatch = new Stopwatch();
-			while (_run)
+			stopWatch.Start();
+			int currentTime;
+			int startTime;
+			int deltaTime;
+			while (_runThread)
 			{
-				stopWatch.Reset();
-				while (!_processCycle)
-				{
-				}
-				stopWatch.Start();
-				_processCycle = false;
+				startTime = (int)stopWatch.ElapsedMilliseconds;
 				MoveParticles();
-				_time = stopWatch.ElapsedMilliseconds;
-				stopWatch.Stop();
+				deltaTime = (int)stopWatch.ElapsedMilliseconds - startTime;
+				if (deltaTime < _cycleTime)
+				{
+					Thread.Sleep(_cycleTime - deltaTime);
+				}
+				stopWatch.Reset();
 			}
 		}
 
