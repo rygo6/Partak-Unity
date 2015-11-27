@@ -35,6 +35,8 @@ namespace Partak
 			for (int i = 0; i < systemCount; ++i)
 			{
 				_cellParticleSystems[i] = Instantiate(_cellParticleSystemPrefab).GetComponent<CellParticleSystem>();
+				_cellParticleSystems[i].transform.position = levelConfig.LevelBounds.center;
+				_cellParticleSystems[i].transform.parent = Camera.main.transform;
 				float particleSize = Mathf.Pow(2, i);
 				particleSize /= 10f;
 				_cellParticleSystems[i].Initialize(particleCount, particleSize);

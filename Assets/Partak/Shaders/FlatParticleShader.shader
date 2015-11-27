@@ -1,9 +1,3 @@
-// Simplified Alpha Blended Particle shader. Differences from regular Alpha Blended Particle one:
-// - no Tint color
-// - no Smooth particle support
-// - no AlphaTest
-// - no ColorMask
-
 Shader "Mobile/Particles/Flat" 
 {	
 Category {	

@@ -83,6 +83,7 @@ namespace Partak
 
 		public ParticleCell(ParticleCellGrid particleCellGrid, Vector3 worldPosition)
 		{
+			worldPosition.y += .2f;
 			DirectionalParticleCellArray = new ParticleCell[Direction12.Count]; //this could be 8 and just the groups run on 12
 			PrimaryDirectionArray = new int[4];
 			InhabitedBy = -1;
