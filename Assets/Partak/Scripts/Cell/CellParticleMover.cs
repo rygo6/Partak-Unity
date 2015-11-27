@@ -130,7 +130,7 @@ namespace Partak
 						{	
 							if (Timeout && currentParticleCell.InhabitedBy == winningPlayer)
 							{
-								life = nextParticleCell.CellParticle.Life - ((5 - Mathf.Abs(RotateDirectionMove[d])) * _attackMultiplier * 3);	
+								life = nextParticleCell.CellParticle.Life - ((5 - Mathf.Abs(RotateDirectionMove[d])) * _attackMultiplier * 2);	
 							}
 							else
 							{

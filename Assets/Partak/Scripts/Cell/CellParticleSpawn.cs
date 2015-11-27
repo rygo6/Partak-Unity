@@ -28,13 +28,17 @@ namespace Partak
 			int spawnCount = levelConfig.ParticleCount / playerSettings.ActivePlayerCount();
 			int startIndex = 0;
 			int trailingSpawn = 0;
+			bool trailingAdded = false;
 			for (int playerIndex = 0; playerIndex < PlayerSettings.MaxPlayers; ++playerIndex)
 			{
 				if (playerSettings.PlayerActive(playerIndex))
 				{
 					//in odd numbers, 3, first player may need a few extra particles to produce an even number of particles and have the system work
-					if (playerIndex == 0)		
+					if (!trailingAdded)
+					{	
+						trailingAdded = true;
 						trailingSpawn = levelConfig.ParticleCount - (spawnCount * playerSettings.ActivePlayerCount());
+					}
 					else
 						trailingSpawn = 0;
 
@@ -56,6 +60,9 @@ namespace Partak
 			
 		private IEnumerator SpawnPlayerParticles(ParticleCell startParticleCell, int playerIndex, int startIndex, int spawnCount)
 		{
+			yield return null;
+			yield return null;
+
 			int currentIndex = startIndex;
 			int endIndex = startIndex + spawnCount;
 			int currentAddedIndex = currentIndex + 1;

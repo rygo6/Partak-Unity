@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Partak.UI
 {
@@ -14,6 +16,9 @@ namespace Partak.UI
 
 		[SerializeField]
 		public Button _nextButton;
+
+		[SerializeField]
+		public Button _skipButton;
 
 		[SerializeField]
 		public Button _resumeButton;
@@ -30,6 +35,7 @@ namespace Partak.UI
 			_replayButton.onClick.AddListener(Replay);
 			_nextButton.onClick.AddListener(Next);
 			_mainButton.onClick.AddListener(MainMenu);
+			_skipButton.onClick.AddListener(Skip);
 
 			FindObjectOfType<CellParticleStore>().WinEvent += ShowWinMenu;
 		}
@@ -41,7 +47,8 @@ namespace Partak.UI
 			_pauseButtons[1].interactable = false;
 			_replayButton.gameObject.SetActive(false);
 			_mainButton.gameObject.SetActive(true);
-			_nextButton.gameObject.SetActive(true);
+			_nextButton.gameObject.SetActive(false);
+			_skipButton.gameObject.SetActive(true);
 			_resumeButton.gameObject.SetActive(true);
 			FindObjectOfType<CellParticleMover>().Pause = true;
 		}
@@ -54,6 +61,7 @@ namespace Partak.UI
 			_replayButton.gameObject.SetActive(true);
 			_mainButton.gameObject.SetActive(true);
 			_nextButton.gameObject.SetActive(true);
+			_skipButton.gameObject.SetActive(false);
 			_resumeButton.gameObject.SetActive(false);
 		}
 
@@ -72,7 +80,25 @@ namespace Partak.UI
 
 		private void Replay()
 		{
+			string levelName = "Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1);
+			Debug.Log("Replaying " + levelName);
+			Analytics.CustomEvent("ReplayLevel", new Dictionary<string, object>
+			{
+				{"LevelName", levelName},
+			});
 			StartCoroutine(LoadCoroutine("Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1)));
+		}
+
+		private void Skip()
+		{
+			Persistent.Get<PlayerSettings>().LevelIndex++;
+			string levelName = "Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1);
+			Debug.Log("Skipping " + levelName);
+			Analytics.CustomEvent("SkipLevel", new Dictionary<string, object>
+			{
+				{"LevelName", levelName},
+			});
+			StartCoroutine(LoadCoroutine(levelName));
 		}
 
 		private void Next()

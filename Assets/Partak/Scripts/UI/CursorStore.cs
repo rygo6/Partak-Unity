@@ -35,7 +35,14 @@ namespace Partak
 			}
 		}
 
-		public void SetCursorPositionClamp(int playerIndex, Vector3 deltaPosition)
+		public void SetCursorPositionClamp(int playerIndex, Vector3 position)
+		{
+			position.x = Mathf.Clamp(position.x, _levelBounds.min.x, _levelBounds.max.x);
+			position.z = Mathf.Clamp(position.z, _levelBounds.min.z, _levelBounds.max.z);
+			CursorPositions[playerIndex] = position;
+		}
+
+		public void SetCursorDeltaPositionClamp(int playerIndex, Vector3 deltaPosition)
 		{
 			Vector3 newPos = CursorPositions[playerIndex];
 			newPos.x += deltaPosition.x;

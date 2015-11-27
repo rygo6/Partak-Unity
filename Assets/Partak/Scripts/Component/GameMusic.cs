@@ -50,7 +50,6 @@ namespace Partak
 		
 			LevelConfig levelConfig = FindObjectOfType<LevelConfig>();
 			_cellParticleStore = FindObjectOfType<CellParticleStore>();
-			PlayerSettings playerSettings = Persistent.Get<PlayerSettings>();
 			_particleInterval = new int[3];
 			_particleInterval[0] = levelConfig.ParticleCount - (levelConfig.ParticleCount / 3);
 			_particleInterval[1] = levelConfig.ParticleCount - (levelConfig.ParticleCount / 8);

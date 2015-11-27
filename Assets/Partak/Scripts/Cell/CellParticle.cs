@@ -47,19 +47,19 @@ namespace Partak
 			Life = 255;
 			PlayerColor = Persistent.Get<PlayerSettings>().PlayerColors[PlayerIndex];
 			ParticleCell = particleCell;
-			_cellParticleStore.IncrementPlayerParticleCount(PlayerIndex);
+			_cellParticleStore.IncrementPlayerParticleCount(this);
 		}
 
 		public void ChangePlayer(int newPlayerIndex)
 		{
-			_cellParticleStore.DecrementPlayerParticleCount(PlayerIndex);
+			_cellParticleStore.DecrementPlayerParticleCount(this);
 			ParticleCell.BottomCellGroup.RemovePlayerParticle(PlayerIndex);
 			PlayerIndex = newPlayerIndex;
 			Life = 255;
 			PlayerColor = Persistent.Get<PlayerSettings>().PlayerColors[PlayerIndex];
 			ParticleCell.InhabitedBy = PlayerIndex;
 			ParticleCell.BottomCellGroup.AddPlayerParticle(PlayerIndex);
-			_cellParticleStore.IncrementPlayerParticleCount(PlayerIndex);
+			_cellParticleStore.IncrementPlayerParticleCount(this);
 		}
 	}
 }

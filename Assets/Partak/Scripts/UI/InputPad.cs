@@ -26,8 +26,11 @@ namespace Partak.UI
 
 		private LineRenderer _lineRenderer;
 
-		private void Start()
+		private CanvasGroup _overlayCanvasGroup;
+
+		private void Awake()
 		{
+			_overlayCanvasGroup = GetComponentInChildren<CanvasGroup>();
 			_cursorStore = FindObjectOfType<CursorStore>();
 			_lineRenderer = GetComponentInChildren<LineRenderer>();
 			_lineRenderer.SetVertexCount(2);
@@ -38,12 +41,12 @@ namespace Partak.UI
 		{
 			enabled = false;
 			_lineRenderer.enabled = false;
-			FadeOut();
+			_overlayCanvasGroup.alpha = 0f;
 		}
 
 		private void LateUpdate()
 		{
-			_cursorStore.SetCursorPositionClamp(_playerIndex, _deltaPosition);
+			_cursorStore.SetCursorDeltaPositionClamp(_playerIndex, _deltaPosition);
 
 			if (_dragging)
 				_deltaPosition = Vector3.zero;
@@ -120,16 +123,15 @@ namespace Partak.UI
 
 		private IEnumerator FadeOutCoroutine()
 		{
-			CanvasGroup canvasGroup = GetComponentInChildren<CanvasGroup>();
 			_visible = false;
 			float alpha = 1f;
 			while (alpha > 0f)
 			{
 				alpha -= Time.deltaTime * 2f;
-				canvasGroup.alpha = alpha;
+				_overlayCanvasGroup.alpha = alpha;
 				yield return null;
 			}
-			canvasGroup.alpha = 0f;
+			_overlayCanvasGroup.alpha = 0f;
 		}
 	}
 }

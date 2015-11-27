@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Analytics;
+using System.Collections.Generic;
 
 namespace Partak
 {
@@ -11,7 +13,7 @@ namespace Partak
 		[SerializeField]
 		private float _timeLimit = 60f;
 
-		private float _time;
+		public float GameTime { get; private set; }
 
 		private bool _limitReached;
 
@@ -26,12 +28,14 @@ namespace Partak
 		{
 			_cellParticleMover = FindObjectOfType<CellParticleMover>();
 			_cellParticleStore = FindObjectOfType<CellParticleStore>();
+
+			FindObjectOfType<CellParticleStore>().WinEvent += LogGameTime;
 		}
 
 		private void Update()
 		{
-			_time += Time.deltaTime;
-			if (_time > _timeLimit && !_limitReached)
+			GameTime += Time.deltaTime;
+			if (GameTime > _timeLimit && !_limitReached)
 			{
 				_limitReached = true;
 				_cellParticleMover.Timeout = true;
@@ -43,6 +47,17 @@ namespace Partak
 		{
 			_surroundMaterial.SetFloat("_Blend", 0f);
 			_surroundMaterial.SetTexture("_Texture2", null);
+		}
+
+		private void LogGameTime()
+		{
+			string levelName = "Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1);
+			Debug.Log("Time spent on " + levelName + " " + GameTime);
+			Analytics.CustomEvent("LevelTime", new Dictionary<string, object>
+			{
+				{"LevelName", levelName},
+				{"Time", GameTime},
+			});
 		}
 
 		private IEnumerator TimeoutCoroutine()

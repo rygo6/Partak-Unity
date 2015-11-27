@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Partak
 {
 	public class CellParticleStore : MonoBehaviour
 	{
 		public CellParticle[] CellParticleArray { get; private set; }
+
+		public readonly List<CellParticle>[] PlayerCellParticleArray = new List<CellParticle>[PlayerSettings.MaxPlayers];
 
 		public readonly int[] PlayerParticleCount = new int[PlayerSettings.MaxPlayers];
 
@@ -36,6 +39,11 @@ namespace Partak
 			_playerSettings = Persistent.Get<PlayerSettings>();
 			CellParticleArray = new CellParticle[_levelConfig.ParticleCount];
 			_startParticleCount = _levelConfig.ParticleCount / _playerSettings.ActivePlayerCount();
+			for (int playerIndex = 0; playerIndex < PlayerSettings.MaxPlayers; ++playerIndex)
+			{
+				PlayerCellParticleArray[playerIndex] = new List<CellParticle>();
+				PlayerCellParticleArray[playerIndex].Capacity = _levelConfig.ParticleCount;
+			}
 
 			FindObjectOfType<CellParticleSpawn>().SpawnComplete += () =>
 			{
@@ -52,15 +60,17 @@ namespace Partak
 			}
 		}
 
-		public void IncrementPlayerParticleCount(int playerIndex)
+		public void IncrementPlayerParticleCount(CellParticle cellParticle)
 		{
-			PlayerParticleCount[playerIndex]++;
+			PlayerCellParticleArray[cellParticle.PlayerIndex].Add(cellParticle);
+			PlayerParticleCount[cellParticle.PlayerIndex]++;
 			_recalculatePercentages = true;
 		}
 
-		public void DecrementPlayerParticleCount(int playerIndex)
+		public void DecrementPlayerParticleCount(CellParticle cellParticle)
 		{
-			PlayerParticleCount[playerIndex]--;
+			PlayerCellParticleArray[cellParticle.PlayerIndex].Remove(cellParticle);
+			PlayerParticleCount[cellParticle.PlayerIndex]--;
 			_recalculatePercentages = true;
 		}
 
@@ -95,6 +105,21 @@ namespace Partak
 			for (int i = 0; i < PlayerParticleCount.Length; ++i)
 			{
 				if (PlayerParticleCount[i] > count)
+				{
+					count = PlayerParticleCount[i];
+					playerIndex = i;
+				}
+			}
+			return playerIndex;
+		}
+
+		public int LosingPlayer()
+		{
+			int count = int.MaxValue;
+			int playerIndex = 0;
+			for (int i = 0; i < PlayerParticleCount.Length; ++i)
+			{
+				if (PlayerParticleCount[i] < count && !PlayerLose[i])
 				{
 					count = PlayerParticleCount[i];
 					playerIndex = i;

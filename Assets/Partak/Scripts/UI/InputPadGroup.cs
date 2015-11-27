@@ -35,6 +35,15 @@ namespace Partak.UI
 			}
 
 			FindObjectOfType<CellParticleStore>().LoseEvent += DisablePad;
+			FindObjectOfType<CellParticleStore>().WinEvent += DisableAllPads;
+		}
+
+		private void DisableAllPads()
+		{
+			for (int i = 0; i < _inputPads.Length; ++i)
+			{
+				DisablePad(i);
+			}
 		}
 
 		private void DisablePad(int playerIndex)
