@@ -122,6 +122,7 @@ namespace Partak
 						yield return new WaitForSeconds(.5f);
 					}
 				}
+				yield return null;
 			}
 		}
 	}

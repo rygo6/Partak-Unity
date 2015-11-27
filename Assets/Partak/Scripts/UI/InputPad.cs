@@ -69,12 +69,14 @@ namespace Partak.UI
 
 		public void OnDrag(PointerEventData eventData)
 		{
-			CalculateDeltaPosition(eventData.position);
+			if (eventData.pointerCurrentRaycast.gameObject == eventData.pointerPressRaycast.gameObject)
+				CalculateDeltaPosition(eventData.position);
 		}
 
 		public void OnEndDrag(PointerEventData eventData)
-		{		
-			CalculateDeltaPosition(eventData.position);
+		{	
+			if (eventData.pointerCurrentRaycast.gameObject == eventData.pointerPressRaycast.gameObject)	
+				CalculateDeltaPosition(eventData.position);
 			_dragging = false;
 		}
 
