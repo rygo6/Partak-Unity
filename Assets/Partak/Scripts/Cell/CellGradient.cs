@@ -67,7 +67,8 @@ namespace Partak
 			_stepDirectionArray = new int[1000][];
 			for (int x = 0; x < _stepDirectionArray.Length; ++x)
 			{
-				_stepDirectionArray[x] = new int[Random.Range(6, 10)];
+//				_stepDirectionArray[x] = new int[Random.Range(10, 10)];
+				_stepDirectionArray[x] = new int[11];
 				//generate non repeating array of 6 random numbers between 0 and 12
 				randomArray = Enumerable.Range(0, Direction12.Count)
 					.OrderBy(t => Random.Range(0, Direction12.Count))

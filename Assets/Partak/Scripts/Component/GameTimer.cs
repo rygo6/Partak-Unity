@@ -65,6 +65,7 @@ namespace Partak
 			float blend = 0f;
 			int winningPlayer = 0;
 			int newWinningPlayer = 0;
+			_surroundMaterial.SetTexture("_Texture2", _playerColorTextures[winningPlayer]);
 			while (true)
 			{
 				blend += Time.deltaTime;
