@@ -61,7 +61,7 @@ namespace Partak
 
 			FindObjectOfType<CellParticleStore>().WinEvent += () =>
 			{
-				StopThread();
+				_runThread = false;
 			};
 		}
 
@@ -79,11 +79,9 @@ namespace Partak
 		private void StopThread()
 		{
 			if (_thread != null)
-			{
-#if UNITY_EDITOR
-				_thread.Abort();	
-#endif				
+			{		
 				_runThread = false;
+				_thread.Join();
 				while (_thread.IsAlive)
 				{
 				}

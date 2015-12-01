@@ -12,7 +12,7 @@ namespace Partak
 
 		public bool Timeout { get; set; }
 
-		private readonly int[] RotateDirectionMove = new int[9]{ 0, -1, 1, -2, 2, -3, 3, -4, 4 };
+		private readonly int[] RotateDirectionMove = new int[]{ 0, -1, 1, -2, 2, -3, 3};
 
 		public bool Pause { get; set; }
 
@@ -25,11 +25,17 @@ namespace Partak
 
 		private int _cycleTime;
 
+		private Color[] _playerColors;
+
 		private void Awake()
 		{
+			_playerColors = Persistent.Get<PlayerSettings>().PlayerColors;
 			_cycleTime = FindObjectOfType<LevelConfig>().MoveCycleTime;
 			FindObjectOfType<CellParticleSpawn>().SpawnComplete += StartThread;
-			_cellParticleStore.WinEvent += StopThread;
+			_cellParticleStore.WinEvent += () =>
+			{
+				_runThread = false;
+			};
 		}
 
 		private void OnDestroy()
@@ -47,15 +53,13 @@ namespace Partak
 			_thread.Start();
 //			StartCoroutine(RunCoroutine());
 		}
-
+			
 		private void StopThread()
 		{
 			if (_thread != null)
-			{
-#if UNITY_EDITOR
-				_thread.Abort();	
-#endif				
+			{	
 				_runThread = false;
+				_thread.Join();
 				while (_thread.IsAlive)
 				{
 				}
@@ -73,6 +77,7 @@ namespace Partak
 
 		private void RunThread()
 		{
+			Thread.BeginThreadAffinity();
 			Stopwatch stopWatch = new Stopwatch();
 			stopWatch.Start();
 			int startTime, deltaTime;
@@ -85,19 +90,22 @@ namespace Partak
 					Thread.Sleep(_cycleTime - deltaTime);
 				stopWatch.Reset();
 			}
+			Thread.EndThreadAffinity();
 		}
-
+			
 		private void MoveParticles()
 		{
 			CellParticle[] cellParticleArray = _cellParticleStore.CellParticleArray;
 			CellParticle currentCellParticle;
 			ParticleCell currentParticleCell, nextParticleCell;
-			int limit = cellParticleArray.Length;
+			ParticleCell particleCell;
+			int particleLimit = cellParticleArray.Length;
 			int directionLimit = RotateDirectionMove.Length;
 			int winningPlayer = _cellParticleStore.WinningPlayer();
-			int checkDirection, d, p, life;
+			int checkDirection, d, p, i, life, limit, rotateDirection;
+			CellGroup bottomCellGroup;
 
-			for (p = 0; p < limit; ++p)
+			for (p = 0; p < particleLimit; ++p)
 			{
 				for (d = 0; d < directionLimit; ++d)
 				{
@@ -109,7 +117,7 @@ namespace Partak
 //						currentCellParticle.ParticleCell.PrimaryDirectionArray[currentCellParticle.PlayerIndex], 
 //						RotateDirectionMove[d]);
 
-					checkDirection = currentCellParticle.ParticleCell.PrimaryDirectionArray[currentCellParticle.PlayerIndex] + RotateDirectionMove[d];
+					checkDirection = currentParticleCell.PrimaryDirectionArray[currentCellParticle.PlayerIndex] + RotateDirectionMove[d];
 					if (checkDirection > 11)
 						checkDirection = checkDirection - 12;
 					else if (checkDirection < 0)
@@ -122,25 +130,61 @@ namespace Partak
 						//move
 						if (nextParticleCell.InhabitedBy == -1)
 						{
-							currentCellParticle.ParticleCell = nextParticleCell;
+							//commented and manually inlined. This is such intricate nasty inlining, generally you should undo it
+							//before trying to make future changes
+//							currentCellParticle.ParticleCell = nextParticleCell;
+
+							currentCellParticle._particleCell.BottomCellGroup.RemovePlayerParticle(currentCellParticle.PlayerIndex);
+							currentCellParticle._particleCell.InhabitedBy = -1;
+							currentCellParticle._particleCell._cellParticle = null;
+
+							currentCellParticle._particleCell = nextParticleCell;
+							currentCellParticle._particleCell._cellParticle = currentCellParticle;
+							currentCellParticle._particleCell.InhabitedBy = currentCellParticle.PlayerIndex;
+							currentCellParticle._particleCell.BottomCellGroup.AddPlayerParticle(currentCellParticle.PlayerIndex);
+
 							break;
 						}
 						//if other player, take life
 						else if (currentParticleCell.InhabitedBy != nextParticleCell.InhabitedBy)
 						{	
 							if (Timeout && currentParticleCell.InhabitedBy == winningPlayer)
-							{
-								life = nextParticleCell.CellParticle.Life - ((5 - Mathf.Abs(RotateDirectionMove[d])) * _attackMultiplier * 2);	
-							}
+								life = nextParticleCell._cellParticle.Life - (_attackMultiplier * 2);	
 							else
-							{
-								life = nextParticleCell.CellParticle.Life - ((5 - Mathf.Abs(RotateDirectionMove[d])) * _attackMultiplier);	
-							}
+								life = nextParticleCell._cellParticle.Life - _attackMultiplier;	
 
 							if (life <= 0)
-								nextParticleCell.CellParticle.ChangePlayer(currentCellParticle.PlayerIndex);
+							{
+								//commented and manually inlined. This is such intricate nasty inlining, generally you should undo it
+								//before trying to make future changes
+//								nextParticleCell._cellParticle.ChangePlayer(currentCellParticle.PlayerIndex);
+
+								_cellParticleStore.PlayerParticleCount[nextParticleCell._cellParticle.PlayerIndex]--;
+
+								//inlined below
+//								nextParticleCell.BottomCellGroup.RemovePlayerParticle(nextParticleCell._cellParticle.PlayerIndex);
+								bottomCellGroup = nextParticleCell.BottomCellGroup;
+								bottomCellGroup.PlayerParticleCount[nextParticleCell._cellParticle.PlayerIndex]--;
+								bottomCellGroup.PlayerParticleCount[currentCellParticle.PlayerIndex]++;
+								limit = bottomCellGroup.ParentCellGroups.Length;
+								for (i = 0; i < limit; ++i)
+								{
+									bottomCellGroup.ParentCellGroups[i].PlayerParticleCount[nextParticleCell._cellParticle.PlayerIndex]--;
+									bottomCellGroup.ParentCellGroups[i].PlayerParticleCount[currentCellParticle.PlayerIndex]++;
+								}
+
+								nextParticleCell._cellParticle.PlayerIndex = currentCellParticle.PlayerIndex;
+								nextParticleCell._cellParticle.Life = 255;
+								nextParticleCell._cellParticle.PlayerColor = _playerColors[currentCellParticle.PlayerIndex];
+								nextParticleCell.InhabitedBy = currentCellParticle.PlayerIndex;
+
+								//inlined above
+//								nextParticleCell.BottomCellGroup.AddPlayerParticle(currentCellParticle.PlayerIndex);
+
+								_cellParticleStore.PlayerParticleCount[currentCellParticle.PlayerIndex]++;
+							}
 							else
-								nextParticleCell.CellParticle.Life = life;
+								nextParticleCell._cellParticle.Life = life;
 
 							if (d > 2)
 								break;
@@ -148,7 +192,7 @@ namespace Partak
 						//if other cell is same player, give it additional life boost
 						else if (currentParticleCell.InhabitedBy == nextParticleCell.InhabitedBy)
 						{	
-							nextParticleCell.CellParticle.Life++;
+							nextParticleCell._cellParticle.Life++;
 
 							if (d > 2)
 								break;

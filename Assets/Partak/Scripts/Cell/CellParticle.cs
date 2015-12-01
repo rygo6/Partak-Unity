@@ -24,7 +24,8 @@ namespace Partak
 				_particleCell.CellParticle = this;
 			}
 		}
-		private ParticleCell _particleCell;
+		//made public to manually inline
+		public ParticleCell _particleCell;
 
 		public int Life
 		{
@@ -36,9 +37,9 @@ namespace Partak
 		}
 		private int _life;
 
-		public int PlayerIndex { get; private set; }
+		public int PlayerIndex { get; set; }
 
-		public Color PlayerColor { get; private set; }
+		public Color PlayerColor { get; set; }
 
 		private PlayerSettings _playerSettings;
 

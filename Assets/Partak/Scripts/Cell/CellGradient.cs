@@ -73,7 +73,7 @@ namespace Partak
 			{
 				if (x % 3 == 0)
 				{
-					_stepDirectionArray[x] = new int[6];
+					_stepDirectionArray[x] = new int[4];
 					randomArray = Enumerable.Range(0, Direction12.Count)
 											.OrderBy(t => Random.Range(0, Direction12.Count))
 											.Take(_stepDirectionArray[x].Length)
@@ -90,7 +90,7 @@ namespace Partak
 				}
 			}
 
-			FindObjectOfType<CellParticleStore>().WinEvent += StopThread;
+			FindObjectOfType<CellParticleStore>().WinEvent += () => { _runThread = false; };
 		}
 
 		private void Start()
@@ -113,10 +113,8 @@ namespace Partak
 		{
 			if (_thread != null)
 			{
-#if UNITY_EDITOR
-				_thread.Abort();	
-#endif
 				_runThread = false;
+				_thread.Join();
 				while (_thread.IsAlive)
 				{
 				}
@@ -161,7 +159,7 @@ namespace Partak
 			{
 				if (_playerSettings.PlayerActive(playerIndex))
 				{
-					ResetCellHiearchyInStepArray(_cellHiearchy);
+					ResetCellHiearchyInStepArray();
 
 					CurrentStepDirectionIndex++;
 
@@ -256,7 +254,7 @@ namespace Partak
 		/// to false to prepare for next cycle of calculation
 		/// </summary>
 		/// <param name="cellhiearchy">Cellhiearchy.</param>
-		private void ResetCellHiearchyInStepArray(CellHiearchy cellhiearchy)
+		private void ResetCellHiearchyInStepArray()
 		{
 			int limit = _cellHiearchy.CombinedFlatCellGroups.Length;
 			int i;

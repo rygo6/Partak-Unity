@@ -267,7 +267,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cellParticleStore: {fileID: 11421062}
-  _attackMultiplier: 4
+  _attackMultiplier: 14
 --- !u!114 &11430458
 MonoBehaviour:
   m_ObjectHideFlags: 1

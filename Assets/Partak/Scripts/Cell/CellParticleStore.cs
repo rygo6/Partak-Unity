@@ -40,18 +40,19 @@ namespace Partak
 
 			FindObjectOfType<CellParticleSpawn>().SpawnComplete += () =>
 			{
-				_update = true;
+//				_update = true;
+				InvokeRepeating("CalculatePercentages", 1f, .1f);
 			};
 		}
 
-		private void LateUpdate()
-		{
-			if (_recalculatePercentages && _update)
-			{
-				_recalculatePercentages = false;
-				CalculatePercentages();
-			}
-		}
+//		private void LateUpdate()
+//		{
+//			if (_recalculatePercentages && _update)
+//			{
+//				_recalculatePercentages = false;
+//				CalculatePercentages();
+//			}
+//		}
 
 		public void IncrementPlayerParticleCount(int playerIndex)
 		{
@@ -75,6 +76,7 @@ namespace Partak
 
 				if (percentage == 100f)
 				{
+					CancelInvoke();
 					_update = false;
 					_cursorStore.PlayerWin(playerIndex);
 					WinEvent();

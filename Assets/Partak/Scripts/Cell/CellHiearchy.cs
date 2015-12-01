@@ -31,6 +31,7 @@ namespace Partak
 			{
 				CellGroupGrids[i] = new CellGroupGrid(CellGroupGrids[i - 1]);
 			}
+
 			int combinedFlatCellGroupCount = 0;
 			for (int i = 0; i < CellGroupGrids.Length; ++i)
 			{
@@ -46,6 +47,15 @@ namespace Partak
 				{
 					CombinedFlatCellGroups[combinedFlatCellGroupIndex] = CellGroupGrids[i].FlatGrid[o];
 					combinedFlatCellGroupIndex++;
+				}
+			}
+				
+			for (int i = 0; i < CellGroupGrids.Length; ++i)
+			{
+				for (int o = 0; o < CellGroupGrids[i].Grid.Length; ++o)
+				{
+					if (CellGroupGrids[i].Grid[o] != null)
+						CellGroupGrids[i].Grid[o].FillParentCellGroups();
 				}
 			}
 		}

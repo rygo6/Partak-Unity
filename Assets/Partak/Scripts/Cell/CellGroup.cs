@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Partak
 {
@@ -19,6 +20,8 @@ namespace Partak
 		public readonly int[] PlayerParticleCount =  new int[PlayerSettings.MaxPlayers];
 		
 		public CellGroup ParentCellGroup { get; set; }
+
+		public CellGroup[] ParentCellGroups { get; set; }
 
 		/// <summary>
 		/// Left to Right, Bottom to Top array of children cells. Or only 1 index if root level group.
@@ -52,22 +55,33 @@ namespace Partak
 			SetChildParticleArrayTopCellGroup(childParticleCellArray, this);
 		}
 
-		//TODO could be made faster by storing parents in an array
+		public void FillParentCellGroups()
+		{
+			List<CellGroup> parentCellGroupList = new List<CellGroup>();
+			CellGroup parentCellGroup = ParentCellGroup;
+			while (parentCellGroup != null)
+			{
+				parentCellGroupList.Add(parentCellGroup);
+				parentCellGroup = parentCellGroup.ParentCellGroup;
+			}
+			ParentCellGroups = parentCellGroupList.ToArray();
+		}
+			
 		public void AddPlayerParticle(int playerIndex)
 		{
 			PlayerParticleCount[playerIndex]++;
-			if (ParentCellGroup != null)
+			for (int i = 0; i < ParentCellGroups.Length; ++i)
 			{
-				ParentCellGroup.AddPlayerParticle(playerIndex);
+				ParentCellGroups[i].PlayerParticleCount[playerIndex]++;
 			}
 		}
 
 		public void RemovePlayerParticle(int playerIndex)
 		{
 			PlayerParticleCount[playerIndex]--;
-			if (ParentCellGroup != null)
+			for (int i = 0; i < ParentCellGroups.Length; ++i)
 			{
-				ParentCellGroup.RemovePlayerParticle(playerIndex);
+				ParentCellGroups[i].PlayerParticleCount[playerIndex]--;
 			}
 		}
 

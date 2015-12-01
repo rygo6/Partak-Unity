@@ -58,7 +58,8 @@ namespace Partak
 				}
 			}
 		}
-		private CellParticle _cellParticle;
+		//made public to manually inline
+		public CellParticle _cellParticle;
 
 		/// <summary>
 		/// 0 1 2 3 player ID, -1 empty
