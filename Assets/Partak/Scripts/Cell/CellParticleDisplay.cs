@@ -24,7 +24,7 @@ namespace Partak
 		private void Awake()
 		{
 			_playerSettings = Persistent.Get<PlayerSettings>();
-			int systemCount = _cellHiearchy.CellGroupGridArray.Length;
+			int systemCount = _cellHiearchy.CellGroupGrids.Length;
 			LevelConfig levelConfig = FindObjectOfType<LevelConfig>();
 
 			//you add additional positions onto the particle count as a buffer in case when it is reading in
@@ -44,6 +44,12 @@ namespace Partak
 				particleCount /= 2;
 			}
 
+			_levelCount = new int[_cellHiearchy.ParentCellGridLevel];
+			for (int i = 0; i < _levelCount.Length; ++i)
+			{
+				_levelCount[i] = (int)Mathf.Pow(4, i) - ((i / 2) + 1);
+			}
+
 			FindObjectOfType<CellParticleStore>().WinEvent += () =>
 			{
 				_floatParticles = true;
@@ -60,8 +66,10 @@ namespace Partak
 		private void DrawCellGroup(CellGroup cellGroup)
 		{
 			int parentLevel = cellGroup.CellGroupGrid.ParentLevel;
-			int levelCount = (int)Mathf.Pow(4, parentLevel) - ((parentLevel / 2) + 1);
-			for (int playerIndex = 0; playerIndex < PlayerSettings.MaxPlayers; ++playerIndex)
+			int levelCount = _levelCount[parentLevel];
+			int playerIndex;
+			int playerLimit = PlayerSettings.MaxPlayers;
+			for (playerIndex = 0; playerIndex < playerLimit; ++playerIndex)
 			{
 				if (_playerSettings.PlayerActive(playerIndex) &&
 				    cellGroup.PlayerParticleCount[playerIndex] > levelCount)
@@ -75,9 +83,11 @@ namespace Partak
 
 			if (cellGroup.ChildCellGroupArray != null)
 			{
-				for (int i = 0; i < cellGroup.ChildCellGroupArray.Length; ++i)
+				int cellIndex;
+				int cellLimit = cellGroup.ChildCellGroupArray.Length;
+				for (cellIndex = 0; cellIndex < cellLimit; ++cellIndex)
 				{
-					DrawCellGroup(cellGroup.ChildCellGroupArray[i]);
+					DrawCellGroup(cellGroup.ChildCellGroupArray[cellIndex]);
 				}
 			}
 		}
@@ -105,9 +115,9 @@ namespace Partak
 			Vector3 newPos;
 			int cellIndex;
 			int cellLimit;
-			for (int levelIndex = 0; levelIndex < _cellHiearchy.CellGroupGridArray.Length; ++levelIndex)
+			for (int levelIndex = 0; levelIndex < _cellHiearchy.CellGroupGrids.Length; ++levelIndex)
 			{
-				cellGroupGrid = _cellHiearchy.CellGroupGridArray[levelIndex];
+				cellGroupGrid = _cellHiearchy.CellGroupGrids[levelIndex];
 				cellLimit = cellGroupGrid.Grid.Length;
 				for (cellIndex = 0; cellIndex < cellLimit; ++cellIndex)
 				{
@@ -129,9 +139,9 @@ namespace Partak
 			CellGroupGrid cellGroupGrid;
 			int cellIndex;
 			int cellLimit;
-			for (int levelIndex = 0; levelIndex < _cellHiearchy.CellGroupGridArray.Length; ++levelIndex)
+			for (int levelIndex = 0; levelIndex < _cellHiearchy.CellGroupGrids.Length; ++levelIndex)
 			{
-				cellGroupGrid = _cellHiearchy.CellGroupGridArray[levelIndex];
+				cellGroupGrid = _cellHiearchy.CellGroupGrids[levelIndex];
 				cellLimit = cellGroupGrid.FlatGrid.Length;
 				for (cellIndex = 0; cellIndex < cellLimit; ++cellIndex)
 				{

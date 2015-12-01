@@ -42,7 +42,7 @@ namespace Partak
 			_runThread = true;
 			_thread = new Thread(RunThread);
 			_thread.IsBackground = true;
-			_thread.Priority = System.Threading.ThreadPriority.AboveNormal;
+			_thread.Priority = System.Threading.ThreadPriority.Highest;
 			_thread.Name = "CellParticleMove";
 			_thread.Start();
 //			StartCoroutine(RunCoroutine());
@@ -75,17 +75,14 @@ namespace Partak
 		{
 			Stopwatch stopWatch = new Stopwatch();
 			stopWatch.Start();
-			int startTime;
-			int deltaTime;
+			int startTime, deltaTime;
 			while (_runThread)
 			{
 				startTime = (int)stopWatch.ElapsedMilliseconds;
 				MoveParticles();
 				deltaTime = (int)stopWatch.ElapsedMilliseconds - startTime;
 				if (deltaTime < _cycleTime)
-				{
 					Thread.Sleep(_cycleTime - deltaTime);
-				}
 				stopWatch.Reset();
 			}
 		}
@@ -94,15 +91,11 @@ namespace Partak
 		{
 			CellParticle[] cellParticleArray = _cellParticleStore.CellParticleArray;
 			CellParticle currentCellParticle;
-			ParticleCell currentParticleCell;
-			ParticleCell nextParticleCell;
+			ParticleCell currentParticleCell, nextParticleCell;
 			int limit = cellParticleArray.Length;
 			int directionLimit = RotateDirectionMove.Length;
-			int checkDirection;
-			int d;
-			int p;
-			int life;
 			int winningPlayer = _cellParticleStore.WinningPlayer();
+			int checkDirection, d, p, life;
 
 			for (p = 0; p < limit; ++p)
 			{
@@ -111,9 +104,16 @@ namespace Partak
 					currentCellParticle = cellParticleArray[p];
 					currentParticleCell = currentCellParticle.ParticleCell;
 
-					checkDirection = CellUtility.RotateDirection(
-						currentCellParticle.ParticleCell.PrimaryDirectionArray[currentCellParticle.PlayerIndex], 
-						RotateDirectionMove[d]);
+					//inlined for performance
+//					checkDirection = CellUtility.RotateDirection(
+//						currentCellParticle.ParticleCell.PrimaryDirectionArray[currentCellParticle.PlayerIndex], 
+//						RotateDirectionMove[d]);
+
+					checkDirection = currentCellParticle.ParticleCell.PrimaryDirectionArray[currentCellParticle.PlayerIndex] + RotateDirectionMove[d];
+					if (checkDirection > 11)
+						checkDirection = checkDirection - 12;
+					else if (checkDirection < 0)
+						checkDirection = 12 + checkDirection;	
 
 					nextParticleCell = currentParticleCell.DirectionalParticleCellArray[checkDirection];
 						
@@ -123,7 +123,7 @@ namespace Partak
 						if (nextParticleCell.InhabitedBy == -1)
 						{
 							currentCellParticle.ParticleCell = nextParticleCell;
-							d = directionLimit;
+							break;
 						}
 						//if other player, take life
 						else if (currentParticleCell.InhabitedBy != nextParticleCell.InhabitedBy)
@@ -143,7 +143,7 @@ namespace Partak
 								nextParticleCell.CellParticle.Life = life;
 
 							if (d > 2)
-								d = directionLimit;
+								break;
 						}
 						//if other cell is same player, give it additional life boost
 						else if (currentParticleCell.InhabitedBy == nextParticleCell.InhabitedBy)
@@ -151,7 +151,7 @@ namespace Partak
 							nextParticleCell.CellParticle.Life++;
 
 							if (d > 2)
-								d = directionLimit;
+								break;
 						}
 					}
 				}

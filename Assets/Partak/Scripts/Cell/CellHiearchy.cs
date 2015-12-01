@@ -10,26 +10,43 @@ namespace Partak
 	/// </summary>
 	public class CellHiearchy : MonoBehaviour
 	{
+		public int ParentCellGridLevel { get { return _parentCellGridLevel; } }
+
 		[SerializeField]
 		private int _parentCellGridLevel = 3;
 	
 		public ParticleCellGrid ParticleCellGrid { get; private set; }
 
-		public CellGroupGrid[] CellGroupGridArray { get; private set; }
+		public CellGroupGrid[] CellGroupGrids { get; private set; }
+
+		public CellGroup[] CombinedFlatCellGroups { get; private set; }
 	    
 		private void Awake()
 		{
 			Vector2Int rootDimensin = FindObjectOfType<LevelConfig>().RootDimension;
 			ParticleCellGrid = new ParticleCellGrid(rootDimensin);
-			CellGroupGridArray = new CellGroupGrid[_parentCellGridLevel];
-			CellGroupGridArray[0] = new CellGroupGrid(ParticleCellGrid);
-			for (int i = 1; i < CellGroupGridArray.Length; ++i)
+			CellGroupGrids = new CellGroupGrid[_parentCellGridLevel];
+			CellGroupGrids[0] = new CellGroupGrid(ParticleCellGrid);
+			for (int i = 1; i < CellGroupGrids.Length; ++i)
 			{
-				CellGroupGridArray[i] = new CellGroupGrid(CellGroupGridArray[i - 1]);
+				CellGroupGrids[i] = new CellGroupGrid(CellGroupGrids[i - 1]);
 			}
-			for (int i = 0; i < CellGroupGridArray.Length; ++i)
+			int combinedFlatCellGroupCount = 0;
+			for (int i = 0; i < CellGroupGrids.Length; ++i)
 			{
-				CellGroupGridArray[i].FlattenGrid();
+				CellGroupGrids[i].FlattenGrid();
+				combinedFlatCellGroupCount += CellGroupGrids[i].FlatGrid.Length;
+			}
+
+			CombinedFlatCellGroups = new CellGroup[combinedFlatCellGroupCount];
+			int combinedFlatCellGroupIndex = 0;
+			for (int i = 0; i < CellGroupGrids.Length; ++i)
+			{
+				for (int o = 0; o < CellGroupGrids[i].FlatGrid.Length; ++o)
+				{
+					CombinedFlatCellGroups[combinedFlatCellGroupIndex] = CellGroupGrids[i].FlatGrid[o];
+					combinedFlatCellGroupIndex++;
+				}
 			}
 		}
 	}

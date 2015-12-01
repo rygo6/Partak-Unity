@@ -26,7 +26,10 @@ namespace Partak
 			get { return _currentStepDirectionIndex; }
 			set
 			{
-				_currentStepDirectionIndex = (int)Mathf.Repeat(value, _stepDirectionArray.Length);
+				if (value >= _stepDirectionArray.Length)
+					_currentStepDirectionIndex = _stepDirectionArray.Length - value;
+				else
+					_currentStepDirectionIndex = value;
 			}
 		}
 		private int _currentStepDirectionIndex;
@@ -55,28 +58,35 @@ namespace Partak
 			_playerSettings = Persistent.Get<PlayerSettings>();
 			_cellGroupStepArray = new CellGroup[_cellHiearchy.ParticleCellGrid.Grid.Length * 2];
 
-//			_stepDirectionArray = new int[4][] {
-//				new int[6]{ 0, 1, 2, 3, 4, 5 },
-//				new int[6]{ 11, 10, 9, 8, 7, 6 },	
-//				new int[6]{ 0, 2, 4, 6, 8, 10 },	
-//				new int[6]{ 1, 3, 5, 7, 9, 11 },	
-//			};
+			int patternStepDirectionIndex = 0;
+			int[][] patternStepDirections = new int[][] {
+				new int[]{ 0, 2, 4, 6, 8, 10 },
+				new int[]{ 1, 3, 5, 7, 9, 11 },
+				new int[]{ 10, 8, 6, 4, 2, 0 },
+				new int[]{ 11, 9, 7, 5, 3, 1 },
+			};
 
 			//pre-generate random numbers
 			int[] randomArray;
-			_stepDirectionArray = new int[1000][];
+			_stepDirectionArray = new int[128][];
 			for (int x = 0; x < _stepDirectionArray.Length; ++x)
 			{
-//				_stepDirectionArray[x] = new int[Random.Range(10, 10)];
-				_stepDirectionArray[x] = new int[11];
-				//generate non repeating array of 6 random numbers between 0 and 12
-				randomArray = Enumerable.Range(0, Direction12.Count)
-					.OrderBy(t => Random.Range(0, Direction12.Count))
-					.Take(_stepDirectionArray[x].Length)
-					.ToArray();
-				for (int y = 0; y < _stepDirectionArray[x].Length; ++y)
+				if (x % 3 == 0)
 				{
-					_stepDirectionArray[x][y] = randomArray[y];
+					_stepDirectionArray[x] = new int[6];
+					randomArray = Enumerable.Range(0, Direction12.Count)
+											.OrderBy(t => Random.Range(0, Direction12.Count))
+											.Take(_stepDirectionArray[x].Length)
+											.ToArray();
+					for (int y = 0; y < _stepDirectionArray[x].Length; ++y)
+					{
+						_stepDirectionArray[x][y] = randomArray[y];
+					}
+				}
+				else
+				{
+					_stepDirectionArray[x] = patternStepDirections[patternStepDirectionIndex];
+					patternStepDirectionIndex = (int)Mathf.Repeat(++patternStepDirectionIndex, patternStepDirections.Length);
 				}
 			}
 
@@ -89,7 +99,7 @@ namespace Partak
 			_thread = new Thread(RunThread);
 			_thread.Name = "CellGradient";
 			_thread.IsBackground = true;
-			_thread.Priority = System.Threading.ThreadPriority.BelowNormal;
+			_thread.Priority = System.Threading.ThreadPriority.Lowest;
 			_thread.Start();
 //			StartCoroutine(RunCoroutine());
 		}
@@ -156,9 +166,9 @@ namespace Partak
 					CurrentStepDirectionIndex++;
 
 					int particleIndex = CellUtility.WorldPositionToGridIndex(
-						                   _cursorStore.CursorPositions[playerIndex].x, 
-						                   _cursorStore.CursorPositions[playerIndex].z, 
-						                   _cellHiearchy.ParticleCellGrid.Dimension);
+						                    _cursorStore.CursorPositions[playerIndex].x, 
+						                    _cursorStore.CursorPositions[playerIndex].z, 
+						                    _cellHiearchy.ParticleCellGrid.Dimension);
 					ParticleCell startParticleCell = _cellHiearchy.ParticleCellGrid.Grid[particleIndex];
 
 					if (startParticleCell != null)
@@ -178,22 +188,22 @@ namespace Partak
 		private void CalculatePlayerGradient(CellGroup startCellGroup, int playerIndex)
 		{
 			int currentIndex = 0;
-			int direction;
-			int primaryDirection;
-			int d;
+			int direction, primaryDirection, d;
+			CellGroup currentCellGroup;
+			CellGroup nextCellGroup;
 
 			AddFirstCellGroupToStepArray(startCellGroup);
 
 			bool runCalculation = true;
 			while (runCalculation)
 			{
-				CellGroup currentCellGroup = _cellGroupStepArray[currentIndex];
+				currentCellGroup = _cellGroupStepArray[currentIndex];
 				if (currentCellGroup != null)
 				{
 					for (d = 0; d < _stepDirectionArray[_currentStepDirectionIndex].Length; ++d)
 					{
 						direction = _stepDirectionArray[_currentStepDirectionIndex][d];
-						CellGroup nextCellGroup = currentCellGroup.DirectionalCellGroupArray[direction];
+						nextCellGroup = currentCellGroup.DirectionalCellGroupArray[direction];
 						if (nextCellGroup != null && !nextCellGroup.InStepArray)
 						{			
 							primaryDirection = CellUtility.InvertDirection(direction);
@@ -248,18 +258,11 @@ namespace Partak
 		/// <param name="cellhiearchy">Cellhiearchy.</param>
 		private void ResetCellHiearchyInStepArray(CellHiearchy cellhiearchy)
 		{
-			int hiearchyLimit = _cellHiearchy.CellGroupGridArray.Length;
-			int gridLimit;
-			int g;
-			int c;
-
-			for (c = 0; c < hiearchyLimit; ++c)
+			int limit = _cellHiearchy.CombinedFlatCellGroups.Length;
+			int i;
+			for (i = 0; i < limit; ++i)
 			{
-				gridLimit = _cellHiearchy.CellGroupGridArray[c].FlatGrid.Length;
-				for (g = 0; g < gridLimit; ++g)
-				{
-					_cellHiearchy.CellGroupGridArray[c].FlatGrid[g].InStepArray = false;
-				}
+				_cellHiearchy.CombinedFlatCellGroups[i].InStepArray = false;
 			}
 		}
 	}

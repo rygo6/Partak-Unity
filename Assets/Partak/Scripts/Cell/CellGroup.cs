@@ -52,6 +52,7 @@ namespace Partak
 			SetChildParticleArrayTopCellGroup(childParticleCellArray, this);
 		}
 
+		//TODO could be made faster by storing parents in an array
 		public void AddPlayerParticle(int playerIndex)
 		{
 			PlayerParticleCount[playerIndex]++;
@@ -72,7 +73,9 @@ namespace Partak
 
 		public void SetPrimaryDirectionChldParticleCell(int direction, int playerIndex)
 		{
-			for (int i = 0; i < ChildParticleCellArray.Length; ++i)
+			int i = 0;
+			int limit = ChildParticleCellArray.Length;
+			for (i = 0; i < limit; ++i)
 			{
 				ChildParticleCellArray[i].PrimaryDirectionArray[playerIndex] = direction;
 			}

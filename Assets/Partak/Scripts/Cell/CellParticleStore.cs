@@ -9,8 +9,6 @@ namespace Partak
 	{
 		public CellParticle[] CellParticleArray { get; private set; }
 
-		public readonly List<CellParticle>[] PlayerCellParticleArray = new List<CellParticle>[PlayerSettings.MaxPlayers];
-
 		public readonly int[] PlayerParticleCount = new int[PlayerSettings.MaxPlayers];
 
 		/// <summary> Keeps track of which players have lost. </summary>
@@ -39,11 +37,6 @@ namespace Partak
 			_playerSettings = Persistent.Get<PlayerSettings>();
 			CellParticleArray = new CellParticle[_levelConfig.ParticleCount];
 			_startParticleCount = _levelConfig.ParticleCount / _playerSettings.ActivePlayerCount();
-			for (int playerIndex = 0; playerIndex < PlayerSettings.MaxPlayers; ++playerIndex)
-			{
-				PlayerCellParticleArray[playerIndex] = new List<CellParticle>();
-				PlayerCellParticleArray[playerIndex].Capacity = _levelConfig.ParticleCount;
-			}
 
 			FindObjectOfType<CellParticleSpawn>().SpawnComplete += () =>
 			{
@@ -60,18 +53,15 @@ namespace Partak
 			}
 		}
 
-		public void IncrementPlayerParticleCount(CellParticle cellParticle)
+		public void IncrementPlayerParticleCount(int playerIndex)
 		{
-			PlayerCellParticleArray[cellParticle.PlayerIndex].Add(cellParticle);
-			PlayerParticleCount[cellParticle.PlayerIndex]++;
+			PlayerParticleCount[playerIndex]++;
 			_recalculatePercentages = true;
 		}
 
-		public void DecrementPlayerParticleCount(CellParticle cellParticle)
+		public void DecrementPlayerParticleCount(int playerIndex)
 		{
-			PlayerCellParticleArray[cellParticle.PlayerIndex].Remove(cellParticle);
-			PlayerParticleCount[cellParticle.PlayerIndex]--;
-			_recalculatePercentages = true;
+			PlayerParticleCount[playerIndex]--;
 		}
 
 		private void CalculatePercentages()

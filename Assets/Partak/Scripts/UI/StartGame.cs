@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.EventSystems;
 using UnityEngine.Analytics;
 using System.Collections.Generic;
+using UnityEngine.Advertisements;
 
 namespace Partak.UI
 {
@@ -32,6 +33,11 @@ namespace Partak.UI
 
 		private IEnumerator LoadCoroutine()
 		{
+//			if (Advertisement.IsReady())
+//			{
+//				Advertisement.Show();
+//			}
+
 			string levelName = "Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1);
 			Analytics.CustomEvent("MenuLeveLoad", new Dictionary<string, object>
 			{

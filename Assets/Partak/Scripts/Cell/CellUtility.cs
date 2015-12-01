@@ -81,16 +81,10 @@ namespace Partak
 		static public int RotateDirection(int direction, int rotation, int drectionCount)
 		{
 			direction += rotation;
-			
 			if (direction > drectionCount - 1)
-			{
 				direction = direction - drectionCount;
-			}
 			else if (direction < 0)
-			{
 				direction = drectionCount + direction;	
-			}
-
 			return direction;
 		}
 

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Threading;
+using System.Diagnostics;
 
 namespace Partak
 {
@@ -26,7 +28,11 @@ namespace Partak
 		[SerializeField]
 		private int _randomCycleRate = 20;
 
-		private bool _run;
+		private bool _runThread;
+
+		private Thread _thread;
+
+		private readonly System.Random _random = new System.Random();
 
 		private void Awake()
 		{
@@ -44,27 +50,52 @@ namespace Partak
 
 			FindObjectOfType<CellParticleSpawn>().SpawnComplete += () =>
 			{
-				_run = true;
-				StartCoroutine(UpdateAICursor());
+				_runThread = true;
+				_thread = new Thread(RunThread);
+				_thread.IsBackground = true;
+				_thread.Priority = System.Threading.ThreadPriority.Lowest;
+				_thread.Name = "CellAI";
+				_thread.Start();
+//				StartCoroutine(RunCoroutine());
 			};
 
 			FindObjectOfType<CellParticleStore>().WinEvent += () =>
 			{
-				_run = false;
+				StopThread();
 			};
 		}
 
 		private void Update()
 		{
-			if (_run)
+			if (_runThread)
 				MoveAICursor();
+		}
+
+		private void OnDestroy()
+		{
+			StopThread();
+		}
+
+		private void StopThread()
+		{
+			if (_thread != null)
+			{
+#if UNITY_EDITOR
+				_thread.Abort();	
+#endif				
+				_runThread = false;
+				while (_thread.IsAlive)
+				{
+				}
+			}
 		}
 
 		private void MoveAICursor()
 		{
 			for (int playerIndex = 0; playerIndex < PlayerSettings.MaxPlayers; ++playerIndex)
 			{
-				if (_playerSettings.GetPlayerMode(playerIndex) == PlayerMode.Comp)
+				if (_playerSettings.GetPlayerMode(playerIndex) == PlayerMode.Comp &&
+					!_cellParticleStore.PlayerLose[playerIndex])
 				{
 					_cursorStore.SetCursorPositionClamp(playerIndex, 
 						Vector3.SmoothDamp(
@@ -76,53 +107,74 @@ namespace Partak
 			}
 		}
 
-		private IEnumerator UpdateAICursor()
+		private void RunThread()
 		{
-			while (_run)
+			while (_runThread)
 			{
-				int winningPlayerIndex = _cellParticleStore.WinningPlayer();
-				int losingPlayerIndex = _cellParticleStore.LosingPlayer();
-				for (int playerIndex = 0; playerIndex < PlayerSettings.MaxPlayers; ++playerIndex)
-				{
-					if (_playerSettings.GetPlayerMode(playerIndex) == PlayerMode.Comp)
-					{
-						int targetPlayerIndex = 0;
-						if (_gameTimer.GameTime < 8f)
-							targetPlayerIndex = Random.Range(0, PlayerSettings.MaxPlayers);
-						else if (playerIndex != winningPlayerIndex)
-							targetPlayerIndex = winningPlayerIndex;
-						else
-							targetPlayerIndex = losingPlayerIndex;
+				UpdateAICursor();
+			}
+		}
 
-						RandomPullCycle[playerIndex]++;
-						if (RandomPullCycle[playerIndex] == _randomCycleRate)
-						{
-							RandomPullCycle[playerIndex] = 0;
-							AICursorTarget[playerIndex].x = Random.Range(-10, _levelConfig.LevelBounds.max.x + 10);
-							AICursorTarget[playerIndex].z = Random.Range(-10, _levelConfig.LevelBounds.max.z + 10);
-						}
-						else if (_cellParticleStore.PlayerCellParticleArray[targetPlayerIndex].Count > 20)
-						{
-							//_cellParticleStore.PlayerParticleCount[targetPlayerIndex] - 4 is done in case
-							//between setting the index, and trying to retrieve it, the count is changed by another thread
-							AICellParticleIndex[playerIndex] = 
-								(int)Mathf.Repeat(AICellParticleIndex[playerIndex] + 100,
-								_cellParticleStore.PlayerParticleCount[targetPlayerIndex] - 10);
-
-							AICursorTarget[playerIndex] = 
-								_cellParticleStore.PlayerCellParticleArray[targetPlayerIndex][AICellParticleIndex[playerIndex]].ParticleCell.WorldPosition;
-						}
-						//unless it's really small, then pull away
-						else
-						{
-							AICursorTarget[playerIndex] = 
-								_cellParticleStore.PlayerCellParticleArray[playerIndex][0].ParticleCell.WorldPosition;
-						}
-
-						yield return new WaitForSeconds(.5f);
-					}
-				}
+		private IEnumerator RunCoroutine()
+		{
+			while (_runThread)
+			{
+//				StartCoroutine(UpdateAICursor());
 				yield return null;
+			}
+		}
+
+		private void UpdateAICursor()
+		{
+			int winningPlayerIndex = _cellParticleStore.WinningPlayer();
+			int losingPlayerIndex = _cellParticleStore.LosingPlayer();
+			int targetPlayerIndex, playerIndex, newIndex;
+			int particleLimit = _cellParticleStore.CellParticleArray.Length;
+			int playerLimit = PlayerSettings.MaxPlayers;
+
+			for (playerIndex = 0; playerIndex < playerLimit; ++playerIndex)
+			{
+				if (_playerSettings.GetPlayerMode(playerIndex) == PlayerMode.Comp && 
+					!_cellParticleStore.PlayerLose[playerIndex])
+				{
+					targetPlayerIndex = 0;
+					if (_gameTimer.GameTime < 8f)
+						targetPlayerIndex = _random.Next(0, playerLimit);
+					else if (playerIndex != winningPlayerIndex)
+						targetPlayerIndex = winningPlayerIndex;
+					else
+						targetPlayerIndex = losingPlayerIndex;
+
+					RandomPullCycle[playerIndex]++;
+					if (RandomPullCycle[playerIndex] == _randomCycleRate)
+					{
+						RandomPullCycle[playerIndex] = 0;
+						AICursorTarget[playerIndex].x = _random.Next(-10, (int)_levelConfig.LevelBounds.max.x + 10);
+						AICursorTarget[playerIndex].z = _random.Next(-10, (int)_levelConfig.LevelBounds.max.z + 10);
+					}
+					else if (_cellParticleStore.PlayerParticleCount[targetPlayerIndex] > 20)
+					{
+						newIndex = AICellParticleIndex[playerIndex] + 1;
+						if (newIndex >= particleLimit)
+							newIndex = 0;
+						while (_cellParticleStore.CellParticleArray[newIndex].PlayerIndex != targetPlayerIndex &&
+						       !_cellParticleStore.PlayerLose[targetPlayerIndex])
+						{
+							++newIndex;
+							if (newIndex >= particleLimit)
+								newIndex = 0;
+						}
+						AICellParticleIndex[playerIndex] = newIndex;
+						AICursorTarget[playerIndex] = _cellParticleStore.CellParticleArray[newIndex].ParticleCell.WorldPosition;
+					}
+					else
+					{
+						AICursorTarget[playerIndex] = _cellParticleStore.CellParticleArray[AICellParticleIndex[playerIndex]].ParticleCell.WorldPosition;
+					}
+
+					Thread.Sleep(500);
+//					yield return new WaitForSeconds(.5f);
+				}
 			}
 		}
 	}
