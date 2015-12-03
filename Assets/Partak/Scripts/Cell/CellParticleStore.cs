@@ -20,9 +20,9 @@ namespace Partak
 
 		private int _startParticleCount;
 
-		private bool _recalculatePercentages;
+//		private bool _recalculatePercentages;
 
-		private bool _update;
+//		private bool _update;
 
 		public event Action WinEvent;
 
@@ -57,7 +57,7 @@ namespace Partak
 		public void IncrementPlayerParticleCount(int playerIndex)
 		{
 			PlayerParticleCount[playerIndex]++;
-			_recalculatePercentages = true;
+//			_recalculatePercentages = true;
 		}
 
 		public void DecrementPlayerParticleCount(int playerIndex)
@@ -77,7 +77,7 @@ namespace Partak
 				if (percentage == 100f)
 				{
 					CancelInvoke();
-					_update = false;
+//					_update = false;
 					_cursorStore.PlayerWin(playerIndex);
 					WinEvent();
 				}

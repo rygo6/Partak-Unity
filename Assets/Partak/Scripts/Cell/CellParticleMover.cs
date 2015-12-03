@@ -59,7 +59,6 @@ namespace Partak
 			if (_thread != null)
 			{	
 				_runThread = false;
-				_thread.Join();
 				while (_thread.IsAlive)
 				{
 				}
@@ -77,7 +76,6 @@ namespace Partak
 
 		private void RunThread()
 		{
-			Thread.BeginThreadAffinity();
 			Stopwatch stopWatch = new Stopwatch();
 			stopWatch.Start();
 			int startTime, deltaTime;
@@ -90,7 +88,6 @@ namespace Partak
 					Thread.Sleep(_cycleTime - deltaTime);
 				stopWatch.Reset();
 			}
-			Thread.EndThreadAffinity();
 		}
 			
 		private void MoveParticles()
@@ -98,11 +95,10 @@ namespace Partak
 			CellParticle[] cellParticleArray = _cellParticleStore.CellParticleArray;
 			CellParticle currentCellParticle;
 			ParticleCell currentParticleCell, nextParticleCell;
-			ParticleCell particleCell;
 			int particleLimit = cellParticleArray.Length;
 			int directionLimit = RotateDirectionMove.Length;
 			int winningPlayer = _cellParticleStore.WinningPlayer();
-			int checkDirection, d, p, i, life, limit, rotateDirection;
+			int checkDirection, d, p, i, life, limit;
 			CellGroup bottomCellGroup;
 
 			for (p = 0; p < particleLimit; ++p)

@@ -114,7 +114,6 @@ namespace Partak
 			if (_thread != null)
 			{
 				_runThread = false;
-				_thread.Join();
 				while (_thread.IsAlive)
 				{
 				}
