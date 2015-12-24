@@ -10,8 +10,9 @@ namespace Partak
 		[SerializeField]
 		private Material _surroundMaterial;
 
-		[SerializeField]
-		private float _timeLimit = 60f;
+		private float _fastKillTimeLimit = 60f;
+
+		private float _timeLimit = 75f;
 
 		public float GameTime { get; private set; }
 
@@ -29,18 +30,15 @@ namespace Partak
 			_cellParticleMover = FindObjectOfType<CellParticleMover>();
 			_cellParticleStore = FindObjectOfType<CellParticleStore>();
 
-			FindObjectOfType<CellParticleStore>().WinEvent += LogGameTime;
+			FindObjectOfType<CellParticleStore>().WinEvent += Win;
+
+			Invoke("FastKillTimeOut", _fastKillTimeLimit);
+			Invoke("TimeOut", _timeLimit);
 		}
 
 		private void Update()
 		{
 			GameTime += Time.deltaTime;
-			if (GameTime > _timeLimit && !_limitReached)
-			{
-				_limitReached = true;
-				_cellParticleMover.Timeout = true;
-				StartCoroutine(TimeoutCoroutine());
-			}
 		}
 
 		private void OnDestroy()
@@ -49,18 +47,24 @@ namespace Partak
 			_surroundMaterial.SetTexture("_Texture2", null);
 		}
 
-		private void LogGameTime()
+		private void Win()
 		{
-			string levelName = "Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1);
-			Debug.Log("Time spent on " + levelName + " " + GameTime);
-			Analytics.CustomEvent("LevelTime", new Dictionary<string, object>
-			{
-				{"LevelName", levelName},
-				{"Time", GameTime},
-			});
+			Persistent.Get<AnalyticsRelay>().GameTime(GameTime);
 		}
 
-		private IEnumerator TimeoutCoroutine()
+		private void TimeOut()
+		{
+			_cellParticleStore.Win();
+		}
+
+		private void FastKillTimeOut()
+		{
+			_cellParticleMover.FastKill = true;
+			StartCoroutine(FastKillTimeoutCoroutine());
+		}
+
+		//this should be in it's own object
+		private IEnumerator FastKillTimeoutCoroutine()
 		{
 			float blend = 0f;
 			int winningPlayer = 0;

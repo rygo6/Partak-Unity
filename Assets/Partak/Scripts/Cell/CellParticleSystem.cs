@@ -30,7 +30,7 @@ namespace Partak
 
 			for (int i = 0; i < _particleArray.Length; ++i)
 			{
-				_particleArray[i].size = particleSize;
+				_particleArray[i].startSize = particleSize;
 			}
 
 			_particleSystem.maxParticles = particleCount;
@@ -44,7 +44,7 @@ namespace Partak
 		public void SetNextParticle(Vector3 position, Color color)
 		{
 			_particleArray[_currentIndex].position = position;
-			_particleArray[_currentIndex].color = color;
+			_particleArray[_currentIndex].startColor = color;
 			_currentIndex++;
 		}
 

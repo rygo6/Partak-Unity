@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.Analytics;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 namespace Partak
 {
@@ -9,43 +9,38 @@ namespace Partak
 	{
 		public bool FullVersion { get; set; }
 
-		private const string WelcomeFullMessage = "Partak is a complete rewrite and rebrand of the game priorly known as enrgy. This is the first step of a new effort to revamp and improve this game, expect more updates. As someone who purchased the Full Version of enrgy, know that you will always recieve a fully featured, unlocked and ad-free version of Partak. Thank you for your early support.";
-
-		private const string WelcomeMessage = "Partak is a complete rewrite and rebrand of the game priorly known as enrgy. This is the first step of a new effort to revamp and improve this game, expect more updates.";
+		public int SessionCount { get; private set; }
 
 		private void Awake()
 		{
-			if (PlayerPrefs.HasKey("isFullVersion") && !PlayerPrefs.HasKey("WelcomeMessage"))
+			if (PlayerPrefs.HasKey("isFullVersion"))
 			{
+				Debug.Log("isFullVersion");
 				FullVersion = true;	
-				Prime31.EtceteraBinding.showAlertWithTitleMessageAndButtons("Welcome to Partak", WelcomeFullMessage, new string[1]{ "Ok" });
-				PlayerPrefs.SetInt("WelcomeMessage", 1);
 			}
-			else if (!PlayerPrefs.HasKey("WelcomeMessage"))
-			{
-				Prime31.EtceteraBinding.showAlertWithTitleMessageAndButtons("Welcome to Partak", WelcomeMessage, new string[1]{ "Ok" });
-				PlayerPrefs.SetInt("WelcomeMessage", 1);
-			}
+
+			SessionCount = PlayerPrefs.GetInt("SessionCount");
+			Debug.Log("SessionCount: " + SessionCount);
+			PlayerPrefs.SetInt("SessionCount", ++SessionCount);
 		}
 
-		private void OnApplicationQuit()
-		{			
-			Debug.Log("Quitting on " + Application.loadedLevelName);
-			LogLevelQuit();
+		private void Start()
+		{
+			if (SessionCount == 10)
+				Persistent.Get<AnalyticsRelay>().SessionCount10();
 		}
+			
+//		private void OnApplicationQuit()
+//		{			
+//			Debug.Log("Quitting on " + SceneManager.GetActiveScene().name);
+//			Persistent.Get<AnalyticsRelay>().LevelQuit();
+//			IncrementSessionCount();
+//		}
 
 		private void OnApplicationPause(bool pauseStatus)
 		{
-			Debug.Log("Pausing on " + Application.loadedLevelName + " " + pauseStatus);
-			LogLevelQuit();
-		}
-
-		private void LogLevelQuit()
-		{
-			Analytics.CustomEvent("LevelQuit", new Dictionary<string, object>
-			{
-				{"LevelName", Application.loadedLevelName},
-			});
+			Debug.Log("Pausing on " + SceneManager.GetActiveScene().name + " " + pauseStatus);
+			Persistent.Get<AnalyticsRelay>().LevelQuit();
 		}
 	}
 }

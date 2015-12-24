@@ -2,8 +2,8 @@
 using System.Collections;
 using UnityEngine.EventSystems;
 using UnityEngine.Analytics;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-using UnityEngine.Advertisements;
 
 namespace Partak.UI
 {
@@ -33,21 +33,12 @@ namespace Partak.UI
 
 		private IEnumerator LoadCoroutine()
 		{
-//			if (Advertisement.IsReady())
-//			{
-//				Advertisement.Show();
-//			}
-
-			string levelName = "Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1);
-			Analytics.CustomEvent("MenuLeveLoad", new Dictionary<string, object>
-			{
-				{"LevelName", levelName},
-			});
-
+			Persistent.Get<AnalyticsRelay>().MenuLevelLoad();
 			Prime31.EtceteraBinding.showActivityView();
 			//done so sound can play
 			yield return new WaitForSeconds(.5f);
-					Application.LoadLevel(levelName);
+			string levelName = "Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1);
+			SceneManager.LoadScene(levelName);
 		}
 	}
 }

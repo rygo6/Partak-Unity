@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Advertisements;
 
 namespace Partak.UI
 {
@@ -82,10 +84,7 @@ namespace Partak.UI
 		{
 			string levelName = "Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1);
 			Debug.Log("Replaying " + levelName);
-			Analytics.CustomEvent("ReplayLevel", new Dictionary<string, object>
-			{
-				{"LevelName", levelName},
-			});
+			Persistent.Get<AnalyticsRelay>().ReplayLevel();
 			StartCoroutine(LoadCoroutine("Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1)));
 		}
 
@@ -94,15 +93,13 @@ namespace Partak.UI
 			Persistent.Get<PlayerSettings>().LevelIndex++;
 			string levelName = "Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1);
 			Debug.Log("Skipping " + levelName);
-			Analytics.CustomEvent("SkipLevel", new Dictionary<string, object>
-			{
-				{"LevelName", levelName},
-			});
+			Persistent.Get<AnalyticsRelay>().SkipLevel();
 			StartCoroutine(LoadCoroutine(levelName));
 		}
 
 		private void Next()
 		{
+			Persistent.Get<AdvertisementDispatch>().ShowAdvertisement();
 			Persistent.Get<PlayerSettings>().LevelIndex++;
 			StartCoroutine(LoadCoroutine("Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1)));
 		}
@@ -113,7 +110,7 @@ namespace Partak.UI
 			Prime31.EtceteraBinding.showActivityView();
 			//done so sound can play
 			yield return new WaitForSeconds(.5f);
-			Application.LoadLevel(levelName);
+			SceneManager.LoadScene(levelName);
 		}
 	}
 }

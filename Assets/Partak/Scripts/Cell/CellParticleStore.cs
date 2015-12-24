@@ -40,24 +40,13 @@ namespace Partak
 
 			FindObjectOfType<CellParticleSpawn>().SpawnComplete += () =>
 			{
-//				_update = true;
 				InvokeRepeating("CalculatePercentages", 1f, .1f);
 			};
 		}
 
-//		private void LateUpdate()
-//		{
-//			if (_recalculatePercentages && _update)
-//			{
-//				_recalculatePercentages = false;
-//				CalculatePercentages();
-//			}
-//		}
-
 		public void IncrementPlayerParticleCount(int playerIndex)
 		{
 			PlayerParticleCount[playerIndex]++;
-//			_recalculatePercentages = true;
 		}
 
 		public void DecrementPlayerParticleCount(int playerIndex)
@@ -76,10 +65,7 @@ namespace Partak
 
 				if (percentage == 100f)
 				{
-					CancelInvoke();
-//					_update = false;
-					_cursorStore.PlayerWin(playerIndex);
-					WinEvent();
+					Win();
 				}
 				else if (PlayerParticleCount[playerIndex] == 0f && !PlayerLose[playerIndex])
 				{
@@ -88,6 +74,14 @@ namespace Partak
 					LoseEvent(playerIndex);
 				}
 			}
+		}
+
+		//should be its own object WinSequence
+		public void Win()
+		{
+			CancelInvoke();
+			_cursorStore.PlayerWin(WinningPlayer());
+			WinEvent();
 		}
 
 		public int WinningPlayer()

@@ -70,6 +70,9 @@ namespace Prime31
 	
 		// Fired when the SMS composer is dismissed
 		public static event Action<string> smsComposerFinishedEvent;
+		
+		// Fired when the web view finishes loading a page. Note that the SafariViewController offers no access to its state.
+		public static event Action<string> webViewDidLoadURLEvent;
 	
 	
 		public static string deviceToken { get; private set; }
@@ -83,7 +86,7 @@ namespace Prime31
 	    }
 	
 	
-		public void dismissingViewController()
+		void dismissingViewController()
 		{
 			if( dismissingViewControllerEvent != null )
 				dismissingViewControllerEvent();
@@ -92,27 +95,27 @@ namespace Prime31
 	
 		#region Image picker
 	
-		public void imagePickerDidCancel( string empty )
+		void imagePickerDidCancel( string empty )
 		{
 			if( imagePickerCancelledEvent != null )
 				imagePickerCancelledEvent();
 		}
 	
 	
-		public void imageSavedToDocuments( string filePath )
+		void imageSavedToDocuments( string filePath )
 		{
 			if( imagePickerChoseImageEvent != null )
 				imagePickerChoseImageEvent( filePath );
 		}
 	
 	
-		public void saveImageToPhotoAlbumFailed( string error )
+		void saveImageToPhotoAlbumFailed( string error )
 		{
 			saveImageToPhotoAlbumFailedEvent.fire( error );
 		}
 	
 	
-		public void saveImageToPhotoAlbumSucceeded( string empty )
+		void saveImageToPhotoAlbumSucceeded( string empty )
 		{
 			saveImageToPhotoAlbumSucceededEvent.fire();
 		}
@@ -146,21 +149,21 @@ namespace Prime31
 	
 		#region Alert and Prompt
 	
-		public void alertViewClickedButton( string buttonTitle )
+		void alertViewClickedButton( string buttonTitle )
 		{
 			if( alertButtonClickedEvent != null )
 				alertButtonClickedEvent( buttonTitle );
 		}
 	
 	
-		public void alertPromptCancelled( string empty )
+		void alertPromptCancelled( string empty )
 		{
 			if( promptCancelledEvent != null )
 				promptCancelledEvent();
 		}
 	
 	
-		public void alertPromptEnteredText( string text )
+		void alertPromptEnteredText( string text )
 		{
 			// Was this one prompt or 2?
 			string[] promptText = text.Split( new string[] {"|||"}, StringSplitOptions.None );
@@ -182,7 +185,7 @@ namespace Prime31
 	
 		#region Remote Notifications
 	
-		public void remoteRegistrationDidSucceed( string deviceToken )
+		void remoteRegistrationDidSucceed( string deviceToken )
 		{
 			EtceteraManager.deviceToken = deviceToken;
 			if( remoteRegistrationSucceededEvent != null )
@@ -212,48 +215,48 @@ namespace Prime31
 		}
 	
 	
-		public void remoteRegistrationDidFail( string error )
+		void remoteRegistrationDidFail( string error )
 		{
 			if( remoteRegistrationFailedEvent != null )
 				remoteRegistrationFailedEvent( error );
 		}
 	
 	
-		public void urbanAirshipRegistrationDidSucceed( string empty )
+		void urbanAirshipRegistrationDidSucceed( string empty )
 		{
 			if( urbanAirshipRegistrationSucceededEvent != null )
 				urbanAirshipRegistrationSucceededEvent();
 		}
 	
 	
-		public void urbanAirshipRegistrationDidFail( string error )
+		void urbanAirshipRegistrationDidFail( string error )
 		{
 			if( urbanAirshipRegistrationFailedEvent != null )
 				urbanAirshipRegistrationFailedEvent( error );
 		}
 	
 	
-		public void remoteNotificationWasReceived( string json )
+		void remoteNotificationWasReceived( string json )
 		{
 			if( remoteNotificationReceivedEvent != null )
 				remoteNotificationReceivedEvent( json.dictionaryFromJson() );
 		}
 	
 	
-		public void remoteNotificationWasReceivedAtLaunch( string json )
+		void remoteNotificationWasReceivedAtLaunch( string json )
 		{
 			if( remoteNotificationReceivedAtLaunchEvent != null )
 				remoteNotificationReceivedAtLaunchEvent( json.dictionaryFromJson() );
 		}
 	
 	
-		public void localNotificationWasReceived( string json )
+		void localNotificationWasReceived( string json )
 		{
 			localNotificationWasReceivedEvent.fire( json.dictionaryFromJson() );
 		}
 	
 	
-		public void localNotificationWasReceivedAtLaunch( string json )
+		void localNotificationWasReceivedAtLaunch( string json )
 		{
 			localNotificationWasReceivedAtLaunchEvent.fire( json.dictionaryFromJson() );
 		}
@@ -261,17 +264,23 @@ namespace Prime31
 		#endregion;
 	
 	
-		public void mailComposerFinishedWithResult( string result )
+		void mailComposerFinishedWithResult( string result )
 		{
 			if( mailComposerFinishedEvent != null )
 				mailComposerFinishedEvent( result );
 		}
 	
 	
-		public void smsComposerFinishedWithResult( string result )
+		void smsComposerFinishedWithResult( string result )
 		{
 			if( smsComposerFinishedEvent != null )
 				smsComposerFinishedEvent( result );
+		}
+		
+		
+		void webViewDidLoadURL( string url )
+		{
+			webViewDidLoadURLEvent.fire( url );
 		}
 	
 #endif

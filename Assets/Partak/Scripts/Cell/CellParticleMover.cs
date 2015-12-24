@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Threading;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Partak
 {
@@ -10,7 +11,7 @@ namespace Partak
 		[SerializeField]
 		private CellParticleStore _cellParticleStore;
 
-		public bool Timeout { get; set; }
+		public bool FastKill { get; set; }
 
 		private readonly int[] RotateDirectionMove = new int[]{ 0, -1, 1, -2, 2, -3, 3};
 
@@ -51,8 +52,14 @@ namespace Partak
 			_thread.Priority = System.Threading.ThreadPriority.Highest;
 			_thread.Name = "CellParticleMove";
 			_thread.Start();
+#if UNITY_IPHONE && !UNITY_EDITOR
+			SetMoveThreadPriority();
+#endif
 //			StartCoroutine(RunCoroutine());
 		}
+
+		[DllImport("__Internal")]
+		private static extern bool SetMoveThreadPriority();
 			
 		private void StopThread()
 		{
@@ -81,6 +88,10 @@ namespace Partak
 			int startTime, deltaTime;
 			while (_runThread)
 			{
+				while (Pause && _runThread)
+				{
+					Thread.Sleep(1);
+				}
 				startTime = (int)stopWatch.ElapsedMilliseconds;
 				MoveParticles();
 				deltaTime = (int)stopWatch.ElapsedMilliseconds - startTime;
@@ -144,7 +155,7 @@ namespace Partak
 						//if other player, take life
 						else if (currentParticleCell.InhabitedBy != nextParticleCell.InhabitedBy)
 						{	
-							if (Timeout && currentParticleCell.InhabitedBy == winningPlayer)
+							if (FastKill && currentParticleCell.InhabitedBy == winningPlayer)
 								life = nextParticleCell._cellParticle.Life - (_attackMultiplier * 2);	
 							else
 								life = nextParticleCell._cellParticle.Life - _attackMultiplier;	

@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Partak
 {
@@ -90,7 +91,10 @@ namespace Partak
 				}
 			}
 
-			FindObjectOfType<CellParticleStore>().WinEvent += () => { _runThread = false; };
+			FindObjectOfType<CellParticleStore>().WinEvent += () =>
+			{
+				_runThread = false;
+			};
 		}
 
 		private void Start()
@@ -101,8 +105,14 @@ namespace Partak
 			_thread.IsBackground = true;
 			_thread.Priority = System.Threading.ThreadPriority.Lowest;
 			_thread.Start();
+#if UNITY_IPHONE && !UNITY_EDITOR
+			SetGradientThreadPriority();
+#endif
 //			StartCoroutine(RunCoroutine());
 		}
+
+		[DllImport("__Internal")]
+		private static extern bool SetGradientThreadPriority();
 			
 		private void OnDestroy()
 		{

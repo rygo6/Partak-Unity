@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using System.Collections;
 
 public class BatchBake
@@ -9,9 +10,9 @@ public class BatchBake
 	{
 		for (int i = 1; i < 19; ++i)
 		{
-			EditorApplication.OpenScene("Assets/Partak/Scenes/Level" + i + ".unity");
+			EditorSceneManager.OpenScene("Assets/Partak/Scenes/Level" + i + ".unity");
 			Lightmapping.Bake();
-			EditorApplication.SaveScene();
+			EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
 		}
 	}
 }
