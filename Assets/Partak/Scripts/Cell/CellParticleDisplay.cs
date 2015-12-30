@@ -71,8 +71,7 @@ namespace Partak
 			int playerLimit = PlayerSettings.MaxPlayers;
 			for (playerIndex = 0; playerIndex < playerLimit; ++playerIndex)
 			{
-				if (_playerSettings.PlayerActive(playerIndex) &&
-				    cellGroup.PlayerParticleCount[playerIndex] > levelCount)
+				if (cellGroup.PlayerParticleCount[playerIndex] > levelCount)
 				{
 					_cellParticleSystems[parentLevel].SetNextParticle(
 						cellGroup.WorldPosition,

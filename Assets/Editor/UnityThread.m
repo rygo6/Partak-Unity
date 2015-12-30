@@ -9,6 +9,17 @@
 #import <mach/mach.h>
 #include <pthread.h>
 
+void SetMainThreadPriority()
+{
+    int policy;
+    struct sched_param param;
+    pthread_getschedparam(pthread_self(), &policy, &param);
+    NSLog(@"%d %d", policy, param.sched_priority);
+    param.sched_priority = sched_get_priority_max(policy);
+    NSLog(@"%d %d", SCHED_RR, param.sched_priority);
+    pthread_setschedparam(pthread_self(), policy, &param);
+}
+
 void SetMoveThreadPriority()
 {
     char name[256];
@@ -33,8 +44,8 @@ void SetMoveThreadPriority()
                 pthread_getschedparam(pt, &policy, &param);
                 NSLog(@"%d %d", policy, param.sched_priority);
                 param.sched_priority = sched_get_priority_max(policy);
-                NSLog(@"%d %d", SCHED_FIFO, param.sched_priority);
-                int error = pthread_setschedparam(pt, SCHED_FIFO, &param);
+                NSLog(@"%d %d", SCHED_RR, param.sched_priority);
+                int error = pthread_setschedparam(pt, SCHED_RR, &param);
                 NSLog(@"CellParticleMove Set %d", error);
             }
         }
@@ -69,8 +80,8 @@ void SetGradientThreadPriority()
                 pthread_getschedparam(pt, &policy, &param);
                 NSLog(@"%d %d", policy, param.sched_priority);
                 param.sched_priority = sched_get_priority_min(policy);
-                NSLog(@"%d %d", SCHED_FIFO, param.sched_priority);
-                int error = pthread_setschedparam(pt, SCHED_FIFO, &param);
+                NSLog(@"%d %d", SCHED_OTHER, param.sched_priority);
+                int error = pthread_setschedparam(pt, SCHED_OTHER, &param);
                 NSLog(@"CellGradient Set %d", error);
             }
         }

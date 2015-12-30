@@ -120,15 +120,9 @@ namespace Partak
 					currentParticleCell = currentCellParticle.ParticleCell;
 
 					//inlined for performance
-//					checkDirection = CellUtility.RotateDirection(
-//						currentCellParticle.ParticleCell.PrimaryDirectionArray[currentCellParticle.PlayerIndex], 
-//						RotateDirectionMove[d]);
-
-					checkDirection = currentParticleCell.PrimaryDirectionArray[currentCellParticle.PlayerIndex] + RotateDirectionMove[d];
-					if (checkDirection > 11)
-						checkDirection = checkDirection - 12;
-					else if (checkDirection < 0)
-						checkDirection = 12 + checkDirection;	
+					checkDirection = CellUtility.RotateDirection(
+						currentCellParticle.ParticleCell.PrimaryDirectionArray[currentCellParticle.PlayerIndex], 
+						RotateDirectionMove[d]);
 
 					nextParticleCell = currentParticleCell.DirectionalParticleCellArray[checkDirection];
 						
@@ -137,19 +131,7 @@ namespace Partak
 						//move
 						if (nextParticleCell.InhabitedBy == -1)
 						{
-							//commented and manually inlined. This is such intricate nasty inlining, generally you should undo it
-							//before trying to make future changes
-//							currentCellParticle.ParticleCell = nextParticleCell;
-
-							currentCellParticle._particleCell.BottomCellGroup.RemovePlayerParticle(currentCellParticle.PlayerIndex);
-							currentCellParticle._particleCell.InhabitedBy = -1;
-							currentCellParticle._particleCell._cellParticle = null;
-
-							currentCellParticle._particleCell = nextParticleCell;
-							currentCellParticle._particleCell._cellParticle = currentCellParticle;
-							currentCellParticle._particleCell.InhabitedBy = currentCellParticle.PlayerIndex;
-							currentCellParticle._particleCell.BottomCellGroup.AddPlayerParticle(currentCellParticle.PlayerIndex);
-
+							currentCellParticle.ParticleCell = nextParticleCell;
 							break;
 						}
 						//if other player, take life
@@ -161,35 +143,7 @@ namespace Partak
 								life = nextParticleCell._cellParticle.Life - _attackMultiplier;	
 
 							if (life <= 0)
-							{
-								//commented and manually inlined. This is such intricate nasty inlining, generally you should undo it
-								//before trying to make future changes
-//								nextParticleCell._cellParticle.ChangePlayer(currentCellParticle.PlayerIndex);
-
-								_cellParticleStore.PlayerParticleCount[nextParticleCell._cellParticle.PlayerIndex]--;
-
-								//inlined below
-//								nextParticleCell.BottomCellGroup.RemovePlayerParticle(nextParticleCell._cellParticle.PlayerIndex);
-								bottomCellGroup = nextParticleCell.BottomCellGroup;
-								bottomCellGroup.PlayerParticleCount[nextParticleCell._cellParticle.PlayerIndex]--;
-								bottomCellGroup.PlayerParticleCount[currentCellParticle.PlayerIndex]++;
-								limit = bottomCellGroup.ParentCellGroups.Length;
-								for (i = 0; i < limit; ++i)
-								{
-									bottomCellGroup.ParentCellGroups[i].PlayerParticleCount[nextParticleCell._cellParticle.PlayerIndex]--;
-									bottomCellGroup.ParentCellGroups[i].PlayerParticleCount[currentCellParticle.PlayerIndex]++;
-								}
-
-								nextParticleCell._cellParticle.PlayerIndex = currentCellParticle.PlayerIndex;
-								nextParticleCell._cellParticle.Life = 255;
-								nextParticleCell._cellParticle.PlayerColor = _playerColors[currentCellParticle.PlayerIndex];
-								nextParticleCell.InhabitedBy = currentCellParticle.PlayerIndex;
-
-								//inlined above
-//								nextParticleCell.BottomCellGroup.AddPlayerParticle(currentCellParticle.PlayerIndex);
-
-								_cellParticleStore.PlayerParticleCount[currentCellParticle.PlayerIndex]++;
-							}
+								nextParticleCell._cellParticle.ChangePlayer(currentCellParticle.PlayerIndex);
 							else
 								nextParticleCell._cellParticle.Life = life;
 
