@@ -1,11 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 using System.Threading;
-using System.Diagnostics;
+using UnityEngine;
 
 namespace Partak
 {
-	public class CellAI : MonoBehaviour
+    public class CellAI : MonoBehaviour
 	{
 		private CursorStore _cursorStore;
 

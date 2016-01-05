@@ -12,24 +12,26 @@ AnimationClip:
   m_UseHighQualityCurve: 1
   m_RotationCurves: []
   m_CompressedRotationCurves: []
+  m_EulerCurves: []
   m_PositionCurves: []
   m_ScaleCurves: []
   m_FloatCurves:
   - curve:
       serializedVersion: 2
       m_Curve:
-      - time: .0166666675
+      - time: 0.016666668
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .666666687
+      - time: 0.6666667
         value: 768
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_AnchoredPosition.y
     path: MainCanvas/Root
     classID: 224
@@ -37,18 +39,19 @@ AnimationClip:
   - curve:
       serializedVersion: 2
       m_Curve:
-      - time: .0166666675
+      - time: 0.016666668
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .666666687
+      - time: 0.6666667
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_AnchoredPosition.x
     path: MainCanvas/Root
     classID: 224
@@ -61,13 +64,14 @@ AnimationClip:
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .0166666675
+      - time: 0.016666668
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_BlocksRaycasts
     path: MainCanvas
     classID: 225
@@ -80,13 +84,14 @@ AnimationClip:
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .683333337
+      - time: 0.68333334
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_IsActive
     path: MainCamera
     classID: 1
@@ -99,13 +104,14 @@ AnimationClip:
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .683333337
+      - time: 0.68333334
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_Enabled
     path: MainCanvas
     classID: 223
@@ -113,23 +119,24 @@ AnimationClip:
   - curve:
       serializedVersion: 2
       m_Curve:
-      - time: .0166666675
+      - time: 0.016666668
         value: 12
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .166666672
+      - time: 0.16666667
         value: 296.5
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .666666687
+      - time: 0.6666667
         value: 296.5
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_AnchoredPosition.y
     path: MainCanvas/Root/Title
     classID: 224
@@ -137,18 +144,19 @@ AnimationClip:
   - curve:
       serializedVersion: 2
       m_Curve:
-      - time: .0166666675
+      - time: 0.016666668
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .666666687
+      - time: 0.6666667
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_AnchoredPosition.x
     path: MainCanvas/Root/Title
     classID: 224
@@ -156,23 +164,24 @@ AnimationClip:
   - curve:
       serializedVersion: 2
       m_Curve:
-      - time: .0166666675
+      - time: 0.016666668
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .25
+      - time: 0.25
         value: -105.5
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .666666687
+      - time: 0.6666667
         value: 105.5
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_AnchoredPosition.y
     path: MainCanvas/Root/ButtonPanel/ButtonRow
     classID: 224
@@ -180,18 +189,19 @@ AnimationClip:
   - curve:
       serializedVersion: 2
       m_Curve:
-      - time: .0166666675
+      - time: 0.016666668
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .666666687
+      - time: 0.6666667
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_AnchoredPosition.x
     path: MainCanvas/Root/ButtonPanel/ButtonRow
     classID: 224
@@ -199,18 +209,19 @@ AnimationClip:
   - curve:
       serializedVersion: 2
       m_Curve:
-      - time: .0166666675
+      - time: 0.016666668
         value: -189
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .666666687
+      - time: 0.6666667
         value: 188.5
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_AnchoredPosition.y
     path: MainCanvas/Root/ButtonPanel
     classID: 224
@@ -218,18 +229,19 @@ AnimationClip:
   - curve:
       serializedVersion: 2
       m_Curve:
-      - time: .0166666675
+      - time: 0.016666668
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .666666687
+      - time: 0.6666667
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_AnchoredPosition.x
     path: MainCanvas/Root/ButtonPanel
     classID: 224
@@ -311,11 +323,14 @@ AnimationClip:
     pptrCurveMapping: []
   m_AnimationClipSettings:
     serializedVersion: 2
+    m_AdditiveReferencePoseClip: {fileID: 0}
+    m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: .683333337
+    m_StopTime: 0.68333334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
+    m_HasAdditiveReferencePose: 0
     m_LoopTime: 0
     m_LoopBlend: 0
     m_LoopBlendOrientation: 0
@@ -330,18 +345,19 @@ AnimationClip:
   - curve:
       serializedVersion: 2
       m_Curve:
-      - time: .0166666675
+      - time: 0.016666668
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .666666687
+      - time: 0.6666667
         value: 768
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_AnchoredPosition.y
     path: MainCanvas/Root
     classID: 224
@@ -349,18 +365,19 @@ AnimationClip:
   - curve:
       serializedVersion: 2
       m_Curve:
-      - time: .0166666675
+      - time: 0.016666668
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .666666687
+      - time: 0.6666667
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_AnchoredPosition.x
     path: MainCanvas/Root
     classID: 224
@@ -373,13 +390,14 @@ AnimationClip:
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .0166666675
+      - time: 0.016666668
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_BlocksRaycasts
     path: MainCanvas
     classID: 225
@@ -392,13 +410,14 @@ AnimationClip:
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .683333337
+      - time: 0.68333334
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_IsActive
     path: MainCamera
     classID: 1
@@ -411,13 +430,14 @@ AnimationClip:
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .683333337
+      - time: 0.68333334
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_Enabled
     path: MainCanvas
     classID: 223
@@ -425,23 +445,24 @@ AnimationClip:
   - curve:
       serializedVersion: 2
       m_Curve:
-      - time: .0166666675
+      - time: 0.016666668
         value: 12
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .166666672
+      - time: 0.16666667
         value: 296.5
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .666666687
+      - time: 0.6666667
         value: 296.5
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_AnchoredPosition.y
     path: MainCanvas/Root/Title
     classID: 224
@@ -449,18 +470,19 @@ AnimationClip:
   - curve:
       serializedVersion: 2
       m_Curve:
-      - time: .0166666675
+      - time: 0.016666668
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .666666687
+      - time: 0.6666667
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_AnchoredPosition.x
     path: MainCanvas/Root/Title
     classID: 224
@@ -468,23 +490,24 @@ AnimationClip:
   - curve:
       serializedVersion: 2
       m_Curve:
-      - time: .0166666675
+      - time: 0.016666668
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .25
+      - time: 0.25
         value: -105.5
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .666666687
+      - time: 0.6666667
         value: 105.5
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_AnchoredPosition.y
     path: MainCanvas/Root/ButtonPanel/ButtonRow
     classID: 224
@@ -492,18 +515,19 @@ AnimationClip:
   - curve:
       serializedVersion: 2
       m_Curve:
-      - time: .0166666675
+      - time: 0.016666668
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .666666687
+      - time: 0.6666667
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_AnchoredPosition.x
     path: MainCanvas/Root/ButtonPanel/ButtonRow
     classID: 224
@@ -511,18 +535,19 @@ AnimationClip:
   - curve:
       serializedVersion: 2
       m_Curve:
-      - time: .0166666675
+      - time: 0.016666668
         value: -189
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .666666687
+      - time: 0.6666667
         value: 188.5
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_AnchoredPosition.y
     path: MainCanvas/Root/ButtonPanel
     classID: 224
@@ -530,18 +555,19 @@ AnimationClip:
   - curve:
       serializedVersion: 2
       m_Curve:
-      - time: .0166666675
+      - time: 0.016666668
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
-      - time: .666666687
+      - time: 0.6666667
         value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_AnchoredPosition.x
     path: MainCanvas/Root/ButtonPanel
     classID: 224
@@ -550,4 +576,11 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_GenerateMotionCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.016666668
+    functionName: FocusButton
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

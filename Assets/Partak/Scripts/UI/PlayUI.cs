@@ -5,15 +5,10 @@ using System.Collections;
 
 namespace Partak
 {
-	public class OptionsUI : MonoBehaviour
+	public class PlayUI : MonoBehaviour
 	{
 		[SerializeField]
 		private Button _focusButton;
-
-		public void RestorePurchases()
-		{
-			Persistent.Get<Store>().RestorePurchases();
-		}
 
 		public void FocusButton()
 		{

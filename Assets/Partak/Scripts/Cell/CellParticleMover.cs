@@ -26,11 +26,8 @@ namespace Partak
 
 		private int _cycleTime;
 
-		private Color[] _playerColors;
-
 		private void Awake()
 		{
-			_playerColors = Persistent.Get<PlayerSettings>().PlayerColors;
 			_cycleTime = FindObjectOfType<LevelConfig>().MoveCycleTime;
 			FindObjectOfType<CellParticleSpawn>().SpawnComplete += StartThread;
 			_cellParticleStore.WinEvent += () =>
@@ -109,8 +106,7 @@ namespace Partak
 			int particleLimit = cellParticleArray.Length;
 			int directionLimit = RotateDirectionMove.Length;
 			int winningPlayer = _cellParticleStore.WinningPlayer();
-			int checkDirection, d, p, i, life, limit;
-			CellGroup bottomCellGroup;
+			int checkDirection, d, p, life;
 
 			for (p = 0; p < particleLimit; ++p)
 			{

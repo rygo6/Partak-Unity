@@ -24,8 +24,7 @@ namespace Partak
 				_particleCell.CellParticle = this;
 			}
 		}
-		//made public to manually inline
-		public ParticleCell _particleCell;
+		private ParticleCell _particleCell;
 
 		public int Life
 		{

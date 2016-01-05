@@ -1,21 +1,20 @@
 ﻿//#define DEBUG_GRADIENT
 
-using UnityEngine;
-using System.Linq;
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
+using UnityEngine;
 
 namespace Partak
 {
-	/// <summary>
-	/// Cell gradient.
-	/// Calculates the gradient for all players.
-	/// All players are done in one class for ease of multithreading.
-	/// </summary>
-	public class CellGradient : MonoBehaviour
+    /// <summary>
+    /// Cell gradient.
+    /// Calculates the gradient for all players.
+    /// All players are done in one class for ease of multithreading.
+    /// </summary>
+    public class CellGradient : MonoBehaviour
 	{
 		private CursorStore _cursorStore;
 
