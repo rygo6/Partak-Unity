@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace Partak
 {
-	public class ParticleCellGrid
+    public class ParticleCellGrid
 	{
 		public readonly ParticleCell[] Grid;
 

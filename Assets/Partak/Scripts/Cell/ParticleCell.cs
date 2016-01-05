@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace Partak
 {
-	/// <summary>
-	/// Particle cell.
-	/// Cell which contains particle.
-	/// </summary>
-	public class ParticleCell
+    /// <summary>
+    /// Particle cell.
+    /// Cell which contains particle.
+    /// </summary>
+    public class ParticleCell
 	{
 		/*
 		Directions:

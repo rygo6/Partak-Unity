@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace Partak
 {
-	static public class CellUtility
+    static public class CellUtility
 	{
 		static public Vector2Int GridIndexToCoordinate(int index, Vector2Int max)
 		{       

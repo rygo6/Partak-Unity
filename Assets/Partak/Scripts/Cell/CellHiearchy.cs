@@ -1,14 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace Partak
 {
-	/// <summary>
-	/// Cell hiearchy.
-	/// Root store for the quadtree-esque data structure.
-	/// </summary>
-	public class CellHiearchy : MonoBehaviour
+    /// <summary>
+    /// Cell hiearchy.
+    /// Root store for the quadtree-esque data structure.
+    /// </summary>
+    public class CellHiearchy : MonoBehaviour
 	{
 		public int ParentCellGridLevel { get { return _parentCellGridLevel; } }
 

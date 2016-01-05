@@ -1,11 +1,9 @@
 ﻿using UnityEngine;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace Partak
 {
-	public class CellParticleStore : MonoBehaviour
+    public class CellParticleStore : MonoBehaviour
 	{
 		public CellParticle[] CellParticleArray { get; private set; }
 

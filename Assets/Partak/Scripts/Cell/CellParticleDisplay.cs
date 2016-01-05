@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace Partak
 {
-	public class CellParticleDisplay : MonoBehaviour
+    public class CellParticleDisplay : MonoBehaviour
 	{
 		[SerializeField]
 		private CellParticleSystem _cellParticleSystemPrefab;

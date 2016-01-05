@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace Partak
 {
-	[RequireComponent(typeof(ParticleSystem))]
+    [RequireComponent(typeof(ParticleSystem))]
 	public class CellParticleSystem : MonoBehaviour
 	{
 		[SerializeField]

@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace Partak
 {
-	public class CellGroupGrid
+    public class CellGroupGrid
 	{
 		public CellGroup[] Grid { get; private set; }
 		

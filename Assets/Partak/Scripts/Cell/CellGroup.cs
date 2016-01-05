@@ -1,14 +1,13 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Partak
 {
-	/// <summary>
-	/// Cell group.
-	/// Group which contains multiple cells.
-	/// </summary>
-	public class CellGroup
+    /// <summary>
+    /// Cell group.
+    /// Group which contains multiple cells.
+    /// </summary>
+    public class CellGroup
 	{
 		public Vector3 WorldPosition { get; set; }
 
