@@ -29,13 +29,13 @@ namespace Partak
 		/// <returns>The ParticleCell grid.</returns>
 		private ParticleCell[] BuildParticleCellGrid(Vector2Int dimension, ParticleCellGrid parentParticleCellGrid)
 		{
-			ParticleCell[] particleCellArray = new ParticleCell[dimension.x * dimension.y]; 
+			ParticleCell[] particleCellArray = new ParticleCell[dimension.X * dimension.Y]; 
 
 			//fill all slots in list
 			int index = 0;
-			for (int y = 0; y < dimension.y; ++y)
+			for (int y = 0; y < dimension.Y; ++y)
 			{
-				for (int x = 0; x < dimension.x; ++x)
+				for (int x = 0; x < dimension.X; ++x)
 				{
 					Vector3 position = new Vector2((float)x / 10f, (float)y / 10f);
 					Ray ray = new Ray(new Vector3(position.x, 10f, position.y), Vector3.down);
