@@ -119,12 +119,12 @@ namespace Partak
 			Vector2Int baseCellGroupDimension = baseCellGroupGrid.Dimension;
 			int baseParentLevel = baseCellGroupGrid.ParentLevel;
 			Vector2Int parentCellGroupDimension = baseCellGroupDimension / 2;
-			CellGroup[] parentCellGroupGridArray = new CellGroup[parentCellGroupDimension.x * parentCellGroupDimension.y];
+			CellGroup[] parentCellGroupGridArray = new CellGroup[parentCellGroupDimension.X * parentCellGroupDimension.Y];
 
 			int parentIndex = 0;
-			for (int y = 0; y < baseCellGroupDimension.y; y += 2)
+			for (int y = 0; y < baseCellGroupDimension.Y; y += 2)
 			{
-				for (int x = 0; x < baseCellGroupDimension.x; x += 2)
+				for (int x = 0; x < baseCellGroupDimension.X; x += 2)
 				{
 					//Gather 4 cellGroups that would compose parent cellGroup
 					CellGroup[] childCellGroupArray = {
