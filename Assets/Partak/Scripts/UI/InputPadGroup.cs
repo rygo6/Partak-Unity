@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace Partak.UI
 {
-	public class InputPadGroup : MonoBehaviour
+    public class InputPadGroup : MonoBehaviour
 	{
 		[SerializeField]
 		private InputPad[] _inputPads;

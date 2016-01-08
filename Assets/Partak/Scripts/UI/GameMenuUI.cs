@@ -107,7 +107,9 @@ namespace Partak.UI
 		private IEnumerator LoadCoroutine(string levelName)
 		{
 			GetComponent<Animator>().Play("SlideOut");
+#if UNITY_IOS
 			Prime31.EtceteraBinding.showActivityView();
+#endif
 			//done so sound can play
 			yield return new WaitForSeconds(.5f);
 			SceneManager.LoadScene(levelName);

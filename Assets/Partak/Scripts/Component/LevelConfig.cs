@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
-using System.Collections;
 
 namespace Partak
 {
-	public class LevelConfig : MonoBehaviour
+    public class LevelConfig : MonoBehaviour
 	{
 		public Bounds LevelBounds { get { return _levelBounds; } }
 
@@ -32,7 +30,9 @@ namespace Partak
 		private void Awake()
 		{
 			Application.targetFrameRate = _fps;
+#if UNITY_IOS
 			Prime31.EtceteraBinding.hideActivityView();
+#endif
 		}
 
 		private void OnDrawGizmos()

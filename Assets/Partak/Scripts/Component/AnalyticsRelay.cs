@@ -24,8 +24,11 @@ namespace Partak
 
 		public void GamePlayerCount()
 		{
-			Analytics.CustomEvent("GamePlayerCount", new Dictionary<string, object> {
+            Analytics.CustomEvent("GamePlayerCount", new Dictionary<string, object> {
 				{ "PlayerCount", Persistent.Get<PlayerSettings>().ActivePlayerCount() },
+			});
+			Analytics.CustomEvent("HumanPlayerCount", new Dictionary<string, object> {
+				{ "PlayerCount", Persistent.Get<PlayerSettings>().ActiveHumanPlayerCount() },
 			});
 		}
 

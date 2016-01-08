@@ -1,10 +1,9 @@
 ﻿//#define DISABLE_PLAYERPREF
 using UnityEngine;
-using System.Collections;
 
 namespace Partak
 {
-	public class PlayerSettings : MonoBehaviour
+    public class PlayerSettings : MonoBehaviour
 	{
 		public const int MaxPlayers = 4;
 
@@ -78,6 +77,19 @@ namespace Partak
 			for (int i = 0; i < _playerModes.Length; ++i)
 			{
 				if (_playerModes[i] != PlayerMode.None)
+				{
+					count++;
+				}
+			}
+			return count;
+		}
+        
+        public int ActiveHumanPlayerCount()
+		{
+			int count = 0;
+			for (int i = 0; i < _playerModes.Length; ++i)
+			{
+				if (_playerModes[i] == PlayerMode.Human)
 				{
 					count++;
 				}

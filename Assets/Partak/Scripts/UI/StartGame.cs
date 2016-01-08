@@ -24,17 +24,21 @@ namespace Partak.UI
 			}
 			else
 			{
+#if UNITY_IOS
 				Prime31.EtceteraBinding.showAlertWithTitleMessageAndButtons(
 					"Enable More Players", 
 					"Game needs atleast two players set to Human or Comp to start game.", 
 					new string[1]{"Ok"});
+#endif
 			}
 		}
 
 		private IEnumerator LoadCoroutine()
 		{
 			Persistent.Get<AnalyticsRelay>().MenuLevelLoad();
+#if UNITY_IOS
 			Prime31.EtceteraBinding.showActivityView();
+#endif
 			//done so sound can play
 			yield return new WaitForSeconds(.5f);
 			string levelName = "Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1);
