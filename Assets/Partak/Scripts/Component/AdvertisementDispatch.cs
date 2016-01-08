@@ -22,8 +22,10 @@ namespace Partak
 				{
 					_gameCount = 0;
 					_gameCountLimit++;
+#if UNITY_IOS
 					if (Advertisement.IsReady())
 						Advertisement.Show();
+#endif
 				}
 			}
 		}
