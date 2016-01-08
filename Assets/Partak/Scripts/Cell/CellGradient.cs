@@ -104,15 +104,17 @@ namespace Partak
 			_thread.IsBackground = true;
 			_thread.Priority = System.Threading.ThreadPriority.Lowest;
 			_thread.Start();
-#if UNITY_IPHONE && !UNITY_EDITOR
+#if UNITY_IOS && !UNITY_EDITOR
 			SetGradientThreadPriority();
 #endif
 //			StartCoroutine(RunCoroutine());
 		}
 
+#if UNITY_IOS && !UNITY_EDITOR
 		[DllImport("__Internal")]
 		private static extern bool SetGradientThreadPriority();
-			
+#endif
+
 		private void OnDestroy()
 		{
 			StopThread();

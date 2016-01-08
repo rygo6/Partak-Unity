@@ -49,15 +49,17 @@ namespace Partak
 			_thread.Priority = System.Threading.ThreadPriority.Highest;
 			_thread.Name = "CellParticleMove";
 			_thread.Start();
-#if UNITY_IPHONE && !UNITY_EDITOR
+#if UNITY_IOS && !UNITY_EDITOR
 			SetMoveThreadPriority();
 #endif
 //			StartCoroutine(RunCoroutine());
 		}
 
+#if UNITY_IOS && !UNITY_EDITOR
 		[DllImport("__Internal")]
 		private static extern bool SetMoveThreadPriority();
-			
+#endif
+
 		private void StopThread()
 		{
 			if (_thread != null)
