@@ -345,8 +345,8 @@ PlayerSettings:
   scriptingDefineSymbols: {}
   metroPackageName: energy
   metroPackageVersion: 1.0.0.0
-  metroCertificatePath: Assets/WSATestCertificate.pfx
-  metroCertificatePassword: "4xi\x7Fx"
+  metroCertificatePath: UWP/WSATestCertificate.pfx
+  metroCertificatePassword: INVALID_UTF8_STRING
   metroCertificateSubject: 8circuit
   metroCertificateIssuer: 8circuit
   metroCertificateNotAfter: 004ff51cdf68d201
@@ -372,7 +372,7 @@ PlayerSettings:
       CodeGeneration: False
       EnterpriseAuthentication: False
       HumanInterfaceDevice: False
-      InternetClient: False
+      InternetClient: True
       InternetClientServer: False
       Location: False
       Microphone: False
