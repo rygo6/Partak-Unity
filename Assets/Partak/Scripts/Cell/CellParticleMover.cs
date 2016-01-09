@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//#define COROUTINE
+
+using UnityEngine;
 using System.Collections;
 using System.Threading;
 using System.Diagnostics;
@@ -42,23 +44,29 @@ namespace Partak
 		}
 
 		public void StartThread()
-		{
+		{				
 			_runThread = true;
+			#if COROUTINE
+			StartCoroutine(RunCoroutine());
+			#elif UNITY_WSA_10_0
+
+			#else
 			_thread = new Thread(RunThread);
 			_thread.IsBackground = true;
 			_thread.Priority = System.Threading.ThreadPriority.Highest;
 			_thread.Name = "CellParticleMove";
 			_thread.Start();
-#if UNITY_IOS && !UNITY_EDITOR
+			#endif
+
+			#if UNITY_IOS && !UNITY_EDITOR
 			SetMoveThreadPriority();
-#endif
-//			StartCoroutine(RunCoroutine());
+			#endif
 		}
 
-#if UNITY_IOS && !UNITY_EDITOR
+		#if UNITY_IOS && !UNITY_EDITOR
 		[DllImport("__Internal")]
 		private static extern bool SetMoveThreadPriority();
-#endif
+		#endif
 
 		private void StopThread()
 		{

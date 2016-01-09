@@ -1,4 +1,5 @@
 ﻿//#define DEBUG_GRADIENT
+//#define COROUTINE
 
 using System.Collections;
 using System.Diagnostics;
@@ -99,21 +100,27 @@ namespace Partak
 		private void Start()
 		{
 			_runThread = true;
+			#if COROUTINE
+			StartCoroutine(RunCoroutine());
+			#elif UNITY_WSA_10_0
+
+			#else
 			_thread = new Thread(RunThread);
 			_thread.Name = "CellGradient";
 			_thread.IsBackground = true;
 			_thread.Priority = System.Threading.ThreadPriority.Lowest;
 			_thread.Start();
-#if UNITY_IOS && !UNITY_EDITOR
+			#endif
+
+			#if UNITY_IOS && !UNITY_EDITOR
 			SetGradientThreadPriority();
-#endif
-//			StartCoroutine(RunCoroutine());
+			#endif		
 		}
 
-#if UNITY_IOS && !UNITY_EDITOR
+		#if UNITY_IOS && !UNITY_EDITOR
 		[DllImport("__Internal")]
 		private static extern bool SetGradientThreadPriority();
-#endif
+		#endif
 
 		private void OnDestroy()
 		{
@@ -220,7 +227,7 @@ namespace Partak
 						}
 					}
 				
-#if DEBUG_GRADIENT
+					#if DEBUG_GRADIENT
 					CellGroup nextGroup = currentCellGroup.DirectionalCellGroupArray[currentCellGroup.ChildParticleCellArray[0].PrimaryDirectionArray[playerIndex]];
 					if (nextGroup != null)
 					{
@@ -228,7 +235,7 @@ namespace Partak
 					}
 					Debug.DrawRay(currentCellGroup.WorldPosition, Vector3.up * _debugRayHeight);
 					_debugRayHeight += .001f;
-#endif
+					#endif
 
 					CurrentStepDirectionIndex++;
 					_cellGroupStepArray[currentIndex] = null;
@@ -243,9 +250,9 @@ namespace Partak
 
 		private void AddFirstCellGroupToStepArray(CellGroup cellGroup)
 		{
-#if DEBUG_GRADIENT		
+			#if DEBUG_GRADIENT		
 			_debugRayHeight = .01f;
-#endif
+			#endif
 			_lastAddedGroupStepArrayIndex = 0;
 			AddCellGroupToStepArray(cellGroup);
 		}

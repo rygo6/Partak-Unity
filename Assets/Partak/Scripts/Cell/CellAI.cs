@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿//#define COROUTINE
+
+using System.Collections;
 using System.Threading;
 using UnityEngine;
 
 namespace Partak
 {
-    public class CellAI : MonoBehaviour
+	public class CellAI : MonoBehaviour
 	{
 		private CursorStore _cursorStore;
 
@@ -50,12 +52,17 @@ namespace Partak
 			FindObjectOfType<CellParticleSpawn>().SpawnComplete += () =>
 			{
 				_runThread = true;
+				#if COROUTINE
+				StartCoroutine(RunCoroutine());
+				#elif UNITY_WSA_10_0
+
+				#else
 				_thread = new Thread(RunThread);
 				_thread.IsBackground = true;
 				_thread.Priority = System.Threading.ThreadPriority.Lowest;
 				_thread.Name = "CellAI";
 				_thread.Start();
-//				StartCoroutine(RunCoroutine());
+				#endif
 			};
 
 			FindObjectOfType<CellParticleStore>().WinEvent += () =>
@@ -91,7 +98,7 @@ namespace Partak
 			for (int playerIndex = 0; playerIndex < PlayerSettings.MaxPlayers; ++playerIndex)
 			{
 				if (_playerSettings.GetPlayerMode(playerIndex) == PlayerMode.Comp &&
-					!_cellParticleStore.PlayerLose[playerIndex])
+				    !_cellParticleStore.PlayerLose[playerIndex])
 				{
 					_cursorStore.SetCursorPositionClamp(playerIndex, 
 						Vector3.SmoothDamp(
@@ -115,7 +122,7 @@ namespace Partak
 		{
 			while (_runThread)
 			{
-//				StartCoroutine(UpdateAICursor());
+				UpdateAICursor();
 				yield return null;
 			}
 		}
@@ -130,8 +137,8 @@ namespace Partak
 
 			for (playerIndex = 0; playerIndex < playerLimit; ++playerIndex)
 			{
-				if (_playerSettings.GetPlayerMode(playerIndex) == PlayerMode.Comp && 
-					!_cellParticleStore.PlayerLose[playerIndex])
+				if (_playerSettings.GetPlayerMode(playerIndex) == PlayerMode.Comp &&
+				    !_cellParticleStore.PlayerLose[playerIndex])
 				{
 					targetPlayerIndex = 0;
 					if (_gameTimer.GameTime < 8f)
@@ -168,8 +175,13 @@ namespace Partak
 						AICursorTarget[playerIndex] = _cellParticleStore.CellParticleArray[AICellParticleIndex[playerIndex]].ParticleCell.WorldPosition;
 					}
 
+					#if COROUTINE
+					yield return new WaitForSeconds(.5f);
+					#elif UNITY_WSA_10_0
+
+					#else
 					Thread.Sleep(500);
-//					yield return new WaitForSeconds(.5f);
+					#endif
 				}
 			}
 		}
