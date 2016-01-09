@@ -1,11 +1,11 @@
 *.cs diff=csharp text
 
-*.mat merge=unityyamlmerge:w
-*.anim merge=unityyamlmerge
-*.unity merge=unityyamlmerge
-*.prefab merge=unityyamlmerge
-*.physicsMaterial2D merge=unityyamlmerge
-*.physicsMaterial merge=unityyamlmerge
+*.mat merge=unityyamlmerge eol=lf
+*.anim merge=unityyamlmerge eol=lf
+*.unity merge=unityyamlmerge eol=lf
+*.prefab merge=unityyamlmerge eol=lf
+*.physicsMaterial2D merge=unityyamlmerge eol=lf
+*.physicsMaterial merge=unityyamlmerge eol=lf
 
 *.psd filter=lfs diff=lfs merge=lfs -text
 *.mp3 filter=lfs diff=lfs merge=lfs -text
