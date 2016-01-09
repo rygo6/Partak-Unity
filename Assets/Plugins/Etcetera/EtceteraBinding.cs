@@ -1,3 +1,4 @@
+#if UNITY_IOS
 using UnityEngine;
 using System;
 using System.Collections;
@@ -6,8 +7,6 @@ using System.Runtime.InteropServices;
 using System.IO;
 using Prime31;
 
-
-#if UNITY_IOS
 namespace Prime31
 {
 	public enum P31RemoteNotificationType
@@ -83,7 +82,7 @@ namespace Prime31
 	    }
 
 
-		#region Pasteboard
+#region Pasteboard
 
 		[DllImport("__Internal")]
 		private static extern string _etceteraGetPasteboardString();
@@ -118,10 +117,10 @@ namespace Prime31
 				_etceteraSetPasteboardImage( imageBytes, imageBytes.Length );
 		}
 
-		#endregion
+#endregion
 
 
-		#region Language
+#region Language
 
 	    [DllImport("__Internal")]
 	    private static extern string _etceteraGetCurrentLanguage();
@@ -159,10 +158,10 @@ namespace Prime31
 			return string.Empty;
 	    }
 
-		#endregion;
+#endregion;
 
 
-		#region UIAlertView and P31AlertView
+#region UIAlertView and P31AlertView
 
 		// Shows a standard Apple alert with the given title, message and buttonTitle
 		[System.Obsolete( "Use the showAlertWithTitleMessageAndButtons. This method will be removed." )]
@@ -205,10 +204,10 @@ namespace Prime31
 				_etceteraShowPromptWithTwoFields( title, message, placeHolder1, placeHolder2, autocomplete );
 	    }
 
-		#endregion;
+#endregion;
 
 
-		#region Web, SMS and Mail
+#region Web, SMS and Mail
 
 		[DllImport("__Internal")]
 		private static extern void _etceteraShowWebPage( string url, bool showControls );
@@ -332,10 +331,10 @@ namespace Prime31
 				_etceteraShowSMSComposer( Prime31.Json.encode( recipients ), body );
 	    }
 
-		#endregion;
+#endregion;
 
 
-		#region Activity View
+#region Activity View
 
 	    [DllImport("__Internal")]
 	    private static extern void _etceteraShowActivityView();
@@ -380,10 +379,10 @@ namespace Prime31
 				_etceteraShowBezelActivityViewWithImage( label, imagePath );
 	    }
 
-		#endregion;
+#endregion;
 
 
-		#region Ask For Review, Photo and Push Notifications
+#region Ask For Review, Photo and Push Notifications
 
 	    [DllImport("__Internal")]
 	    private static extern void _etceteraAskForReview( int launchCount, float hoursBetweenPrompts, string title, string message, string iTunesAppId );
@@ -631,10 +630,10 @@ namespace Prime31
 			return UIInterfaceOrientation.Portrait;
 	    }
 
-		#endregion;
+#endregion;
 
 
-		#region Inline web view
+#region Inline web view
 
 		[DllImport("__Internal")]
 		private static extern void _etceteraInlineWebViewShow( int x, int y, int width, int height );
@@ -679,7 +678,7 @@ namespace Prime31
 				_etceteraInlineWebViewSetFrame( x, y, width, height );
 		}
 
-		#endregion
+#endregion
 
 
 	    [DllImport("__Internal")]
@@ -696,8 +695,6 @@ namespace Prime31
 	    }
 
 	}
-
-
 
 	public class Contact
 	{

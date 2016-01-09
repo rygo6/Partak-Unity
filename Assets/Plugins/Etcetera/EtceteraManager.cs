@@ -1,16 +1,15 @@
+#if UNITY_IOS
+
 using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Collections;
 using Prime31;
 
-
-
 namespace Prime31
 {
 	public class EtceteraManager : AbstractManager
 	{
-#if UNITY_IOS
 		// Fired whenever any full screen view controller is dismissed
 		public static event Action dismissingViewControllerEvent;
 	
@@ -93,7 +92,7 @@ namespace Prime31
 		}
 	
 	
-		#region Image picker
+#region Image picker
 	
 		void imagePickerDidCancel( string empty )
 		{
@@ -144,10 +143,10 @@ namespace Prime31
 			}
 		}
 	
-		#endregion;
+#endregion;
 	
 	
-		#region Alert and Prompt
+#region Alert and Prompt
 	
 		void alertViewClickedButton( string buttonTitle )
 		{
@@ -180,10 +179,10 @@ namespace Prime31
 			}
 		}
 	
-		#endregion;
+#endregion;
 	
 	
-		#region Remote Notifications
+#region Remote Notifications
 	
 		void remoteRegistrationDidSucceed( string deviceToken )
 		{
@@ -261,7 +260,7 @@ namespace Prime31
 			localNotificationWasReceivedAtLaunchEvent.fire( json.dictionaryFromJson() );
 		}
 	
-		#endregion;
+#endregion;
 	
 	
 		void mailComposerFinishedWithResult( string result )
@@ -282,8 +281,6 @@ namespace Prime31
 		{
 			webViewDidLoadURLEvent.fire( url );
 		}
-	
-#endif
 	}
-
 }
+#endif
