@@ -46,9 +46,13 @@ namespace Partak
 
 		private bool _runThread;
 
-		private Thread _thread;
+#if UNITY_WSA_10_0
 
-		private PlayerSettings _playerSettings;
+#else
+        private Thread _thread;
+#endif
+
+        private PlayerSettings _playerSettings;
 
 		[SerializeField]
 		private int _cycleTime = 33;
@@ -127,18 +131,25 @@ namespace Partak
 			StopThread();
 		}
 
-		private void StopThread()
-		{
-			if (_thread != null)
-			{
-				_runThread = false;
-				while (_thread.IsAlive)
-				{
-				}
-			}
-		}
+        private void StopThread()
+        {
+#if UNITY_WSA_10_0
 
-		private void RunThread()
+#else
+            if (_thread != null)
+            {
+                _runThread = false;
+                while (_thread.IsAlive)
+                {
+                }
+            }
+#endif
+        }
+
+#if UNITY_WSA_10_0
+
+#else
+        private void RunThread()
 		{
 			while (_runThread)
 			{
@@ -159,8 +170,9 @@ namespace Partak
 				}
 			}
 		}
+#endif
 
-		private IEnumerator RunCoroutine()
+        private IEnumerator RunCoroutine()
 		{
 			_runThread = true;
 			while (_runThread)
@@ -227,7 +239,7 @@ namespace Partak
 						}
 					}
 				
-					#if DEBUG_GRADIENT
+#if DEBUG_GRADIENT
 					CellGroup nextGroup = currentCellGroup.DirectionalCellGroupArray[currentCellGroup.ChildParticleCellArray[0].PrimaryDirectionArray[playerIndex]];
 					if (nextGroup != null)
 					{
@@ -235,7 +247,7 @@ namespace Partak
 					}
 					Debug.DrawRay(currentCellGroup.WorldPosition, Vector3.up * _debugRayHeight);
 					_debugRayHeight += .001f;
-					#endif
+#endif
 
 					CurrentStepDirectionIndex++;
 					_cellGroupStepArray[currentIndex] = null;
@@ -250,9 +262,9 @@ namespace Partak
 
 		private void AddFirstCellGroupToStepArray(CellGroup cellGroup)
 		{
-			#if DEBUG_GRADIENT		
+#if DEBUG_GRADIENT
 			_debugRayHeight = .01f;
-			#endif
+#endif
 			_lastAddedGroupStepArrayIndex = 0;
 			AddCellGroupToStepArray(cellGroup);
 		}

@@ -31,7 +31,11 @@ namespace Partak
 
 		private bool _runThread;
 
-		private Thread _thread;
+#if UNITY_WSA_10_0
+
+#else
+        private Thread _thread;
+#endif
 
 		private readonly System.Random _random = new System.Random();
 
@@ -52,17 +56,17 @@ namespace Partak
 			FindObjectOfType<CellParticleSpawn>().SpawnComplete += () =>
 			{
 				_runThread = true;
-				#if COROUTINE
+#if COROUTINE
 				StartCoroutine(RunCoroutine());
-				#elif UNITY_WSA_10_0
-
-				#else
+#elif UNITY_WSA_10_0
+           
+#else
 				_thread = new Thread(RunThread);
 				_thread.IsBackground = true;
 				_thread.Priority = System.Threading.ThreadPriority.Lowest;
 				_thread.Name = "CellAI";
 				_thread.Start();
-				#endif
+#endif
 			};
 
 			FindObjectOfType<CellParticleStore>().WinEvent += () =>
@@ -82,18 +86,22 @@ namespace Partak
 			StopThread();
 		}
 
-		private void StopThread()
-		{
-			if (_thread != null)
-			{		
-				_runThread = false;
-				while (_thread.IsAlive)
-				{
-				}
-			}
-		}
+        private void StopThread()
+        {
+#if UNITY_WSA_10_0
 
-		private void MoveAICursor()
+#else
+            if (_thread != null)
+            {
+                _runThread = false;
+                while (_thread.IsAlive)
+                {
+                }
+            }
+#endif
+        }
+
+        private void MoveAICursor()
 		{
 			for (int playerIndex = 0; playerIndex < PlayerSettings.MaxPlayers; ++playerIndex)
 			{
@@ -175,13 +183,13 @@ namespace Partak
 						AICursorTarget[playerIndex] = _cellParticleStore.CellParticleArray[AICellParticleIndex[playerIndex]].ParticleCell.WorldPosition;
 					}
 
-					#if COROUTINE
+#if COROUTINE
 					yield return new WaitForSeconds(.5f);
-					#elif UNITY_WSA_10_0
+#elif UNITY_WSA_10_0
 
-					#else
+#else
 					Thread.Sleep(500);
-					#endif
+#endif
 				}
 			}
 		}
