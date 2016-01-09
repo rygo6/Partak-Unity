@@ -6,33 +6,34 @@ using UnityEngine;
 
 namespace Partak
 {
-	public class CellAI : MonoBehaviour
-	{
-		private CursorStore _cursorStore;
+    public class CellAI : MonoBehaviour
+    {
+        private CursorStore _cursorStore;
 
-		private CellParticleStore _cellParticleStore;
+        private CellParticleStore _cellParticleStore;
 
-		private PlayerSettings _playerSettings;
+        private PlayerSettings _playerSettings;
 
-		private GameTimer _gameTimer;
+        private GameTimer _gameTimer;
 
-		private LevelConfig _levelConfig;
+        private LevelConfig _levelConfig;
 
-		private readonly Vector3[] AICursorTarget = new Vector3[PlayerSettings.MaxPlayers];
+        private readonly Vector3[] AICursorTarget = new Vector3[PlayerSettings.MaxPlayers];
 
-		private readonly Vector3[] AICursorVelocity = new Vector3[PlayerSettings.MaxPlayers];
+        private readonly Vector3[] AICursorVelocity = new Vector3[PlayerSettings.MaxPlayers];
 
-		private readonly int[] AICellParticleIndex = new int[PlayerSettings.MaxPlayers];
+        private readonly int[] AICellParticleIndex = new int[PlayerSettings.MaxPlayers];
 
-		private readonly int[] RandomPullCycle = new int[PlayerSettings.MaxPlayers];
+        private readonly int[] RandomPullCycle = new int[PlayerSettings.MaxPlayers];
 
-		[SerializeField]
-		private int _randomCycleRate = 20;
+        [SerializeField]
+        private int _randomCycleRate = 20;
 
-		private bool _runThread;
+        private bool _runThread;
 
-#if UNITY_WSA_10_0
-
+#if UNITY_WSA_10_0 && !UNITY_EDITOR
+        private Windows.Foundation.IAsyncAction _async;
+        private System.Threading.ManualResetEvent _wait = new System.Threading.ManualResetEvent(false);
 #else
         private Thread _thread;
 #endif
@@ -58,16 +59,19 @@ namespace Partak
 				_runThread = true;
 #if COROUTINE
 				StartCoroutine(RunCoroutine());
-#elif UNITY_WSA_10_0
-           
+#elif UNITY_WSA_10_0 && !UNITY_EDITOR
+                _async = Windows.System.Threading.ThreadPool.RunAsync( (workItem) => 
+                { 
+                    RunThread();
+                }, Windows.System.Threading.WorkItemPriority.Low);
 #else
-				_thread = new Thread(RunThread);
+                _thread = new Thread(RunThread);
 				_thread.IsBackground = true;
 				_thread.Priority = System.Threading.ThreadPriority.Lowest;
 				_thread.Name = "CellAI";
 				_thread.Start();
 #endif
-			};
+            };
 
 			FindObjectOfType<CellParticleStore>().WinEvent += () =>
 			{
@@ -88,8 +92,9 @@ namespace Partak
 
         private void StopThread()
         {
-#if UNITY_WSA_10_0
-
+#if UNITY_WSA_10_0 && !UNITY_EDITOR
+            _async.Cancel();
+            _async.Close();
 #else
             if (_thread != null)
             {
@@ -185,12 +190,12 @@ namespace Partak
 
 #if COROUTINE
 					yield return new WaitForSeconds(.5f);
-#elif UNITY_WSA_10_0
-
+#elif UNITY_WSA_10_0 && !UNITY_EDITOR
+                    _wait.WaitOne(500);
 #else
 					Thread.Sleep(500);
 #endif
-				}
+                }
 			}
 		}
 	}
