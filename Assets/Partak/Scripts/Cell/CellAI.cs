@@ -60,7 +60,7 @@ namespace Partak
 #if COROUTINE
 				StartCoroutine(RunCoroutine());
 #elif UNITY_WSA_10_0 && !UNITY_EDITOR
-                _async = Windows.System.Threading.ThreadPool.RunAsync( (workItem) => 
+                _async = Windows.System.Threading.ThreadPool.RunAsync((workItem) => 
                 { 
                     RunThread();
                 }, Windows.System.Threading.WorkItemPriority.Low);

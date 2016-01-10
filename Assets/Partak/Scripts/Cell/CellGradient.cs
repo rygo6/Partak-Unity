@@ -46,8 +46,9 @@ namespace Partak
 
 		private bool _runThread;
 
-#if UNITY_WSA_10_0
-
+#if UNITY_WSA_10_0 && !UNITY_EDITOR
+        private Windows.Foundation.IAsyncAction _async;
+        private System.Threading.ManualResetEvent _wait = new System.Threading.ManualResetEvent(false);
 #else
         private Thread _thread;
 #endif
@@ -104,22 +105,25 @@ namespace Partak
 		private void Start()
 		{
 			_runThread = true;
-			#if COROUTINE
+#if COROUTINE
 			StartCoroutine(RunCoroutine());
-			#elif UNITY_WSA_10_0
-
-			#else
-			_thread = new Thread(RunThread);
+#elif UNITY_WSA_10_0 && !UNITY_EDITOR
+            _async = Windows.System.Threading.ThreadPool.RunAsync((workItem) =>
+            {
+                RunThread();
+            }, Windows.System.Threading.WorkItemPriority.Low);
+#else
+            _thread = new Thread(RunThread);
 			_thread.Name = "CellGradient";
 			_thread.IsBackground = true;
 			_thread.Priority = System.Threading.ThreadPriority.Lowest;
 			_thread.Start();
-			#endif
+#endif
 
-			#if UNITY_IOS && !UNITY_EDITOR
+#if UNITY_IOS && !UNITY_EDITOR
 			SetGradientThreadPriority();
-			#endif		
-		}
+#endif
+        }
 
 		#if UNITY_IOS && !UNITY_EDITOR
 		[DllImport("__Internal")]
@@ -133,8 +137,9 @@ namespace Partak
 
         private void StopThread()
         {
-#if UNITY_WSA_10_0
-
+#if UNITY_WSA_10_0 && !UNITY_EDITOR
+            _async.Cancel();
+            _async.Close();
 #else
             if (_thread != null)
             {
@@ -146,9 +151,6 @@ namespace Partak
 #endif
         }
 
-#if UNITY_WSA_10_0
-
-#else
         private void RunThread()
 		{
 			while (_runThread)
@@ -164,13 +166,16 @@ namespace Partak
 					deltaTime = (int)stopWatch.ElapsedMilliseconds - startTime;
 					if (deltaTime < _cycleTime)
 					{
-						Thread.Sleep(_cycleTime - deltaTime);
-					}
+#if UNITY_WSA_10_0 && !UNITY_EDITOR
+                        _wait.WaitOne(_cycleTime - deltaTime);
+#else
+                        Thread.Sleep(_cycleTime - deltaTime);
+#endif
+                    }
 					stopWatch.Reset();
 				}
 			}
 		}
-#endif
 
         private IEnumerator RunCoroutine()
 		{

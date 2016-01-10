@@ -343,7 +343,7 @@ PlayerSettings:
   psmSplashimage: {fileID: 0}
   spritePackerPolicy: 
   scriptingDefineSymbols: {}
-  metroPackageName: energy
+  metroPackageName: partak
   metroPackageVersion: 1.0.0.0
   metroCertificatePath: UWP/WSATestCertificate.pfx
   metroCertificatePassword: INVALID_UTF8_STRING
@@ -351,13 +351,14 @@ PlayerSettings:
   metroCertificateIssuer: 8circuit
   metroCertificateNotAfter: 004ff51cdf68d201
   metroApplicationDescription: partak
-  wsaImages: {}
+  wsaImages:
+    983220: 
   metroTileShortName: partak
   metroCommandLineArgsFile: 
   metroTileShowName: 0
-  metroMediumTileShowName: 0
-  metroLargeTileShowName: 0
-  metroWideTileShowName: 0
+  metroMediumTileShowName: 1
+  metroLargeTileShowName: 1
+  metroWideTileShowName: 1
   metroDefaultTileSize: 1
   metroTileForegroundText: 1
   metroTileBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
