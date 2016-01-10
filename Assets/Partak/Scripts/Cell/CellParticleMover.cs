@@ -21,8 +21,9 @@ namespace Partak
 
         private bool _runThread;
 
-#if UNITY_WSA_10_0
-
+#if UNITY_WSA_10_0 && !UNITY_EDITOR
+        private Windows.Foundation.IAsyncAction _async;
+        private System.Threading.ManualResetEvent _wait = new System.Threading.ManualResetEvent(false);
 #else
         private Thread _thread;
 #endif
@@ -52,10 +53,13 @@ namespace Partak
             _runThread = true;
 #if COROUTINE
 			StartCoroutine(RunCoroutine());
-#elif UNITY_WSA_10_0
-
+#elif UNITY_WSA_10_0 && !UNITY_EDITOR
+            _async = Windows.System.Threading.ThreadPool.RunAsync((workItem) =>
+            {
+                RunThread();
+            }, Windows.System.Threading.WorkItemPriority.High);
 #else
-			_thread = new Thread(RunThread);
+            _thread = new Thread(RunThread);
 			_thread.IsBackground = true;
 			_thread.Priority = System.Threading.ThreadPriority.Highest;
 			_thread.Name = "CellParticleMove";
@@ -74,8 +78,9 @@ namespace Partak
 
         private void StopThread()
         {
-#if UNITY_WSA_10_0
-
+#if UNITY_WSA_10_0 && !UNITY_EDITOR
+            _async.Cancel();
+            _async.Close();
 #else
             if (_thread != null)
             {
@@ -96,9 +101,6 @@ namespace Partak
             }
         }
 
-#if UNITY_WSA_10_0
-
-#else
         private void RunThread()
         {
             Stopwatch stopWatch = new Stopwatch();
@@ -108,17 +110,26 @@ namespace Partak
             {
                 while (Pause && _runThread)
                 {
+#if UNITY_WSA_10_0 && !UNITY_EDITOR
+                    _wait.WaitOne(1);
+#else
                     Thread.Sleep(1);
+#endif
                 }
                 startTime = (int)stopWatch.ElapsedMilliseconds;
                 MoveParticles();
                 deltaTime = (int)stopWatch.ElapsedMilliseconds - startTime;
                 if (deltaTime < _cycleTime)
+                {
+#if UNITY_WSA_10_0 && !UNITY_EDITOR
+                    _wait.WaitOne(_cycleTime - deltaTime);
+#else
                     Thread.Sleep(_cycleTime - deltaTime);
+#endif
+                }
                 stopWatch.Reset();
             }
         }
-#endif
 
         private void MoveParticles()
         {
