@@ -8,11 +8,12 @@ namespace Partak
 {
 	public class AnalyticsRelay : MonoBehaviour
 	{
-		public void SessionCount10()
+		int _levelPlayCount;
+
+		void OnApplicationPause(bool pauseStatus)
 		{
-			Analytics.CustomEvent("SessionCount10", new Dictionary<string, object> {
-				{ "FullVersion", Persistent.Get<SystemSettings>().FullVersion },
-			});
+			LevelQuit();
+			LevelPlayCount();
 		}
 
 		public void GameTime(float gameTime)
@@ -38,6 +39,13 @@ namespace Partak
 			Analytics.CustomEvent("MenuLeveLoad", new Dictionary<string, object> {
 				{ "LevelName", levelName },
 			});
+			++_levelPlayCount;
+			GamePlayerCount();
+		}
+
+		public void NextLevel()
+		{
+			++_levelPlayCount;
 			GamePlayerCount();
 		}
 
@@ -54,10 +62,18 @@ namespace Partak
 			Analytics.CustomEvent("ReplayLevel", new Dictionary<string, object> {
 				{ "LevelName", SceneManager.GetActiveScene().name },
 			});
+			++_levelPlayCount;
 			GamePlayerCount();
 		}
 
-		public void LevelQuit()
+		void LevelPlayCount()
+		{
+			Analytics.CustomEvent("LevelPlayCount", new Dictionary<string, object> {
+				{ "count", _levelPlayCount },
+			});
+		}
+
+		void LevelQuit()
 		{
 			Analytics.CustomEvent("LevelQuit", new Dictionary<string, object> {
 				{ "LevelName", SceneManager.GetActiveScene().name },

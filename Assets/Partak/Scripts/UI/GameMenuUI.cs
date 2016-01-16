@@ -101,15 +101,13 @@ namespace Partak.UI
 		{
 			Persistent.Get<AdvertisementDispatch>().ShowAdvertisement();
 			Persistent.Get<PlayerSettings>().LevelIndex++;
+			Persistent.Get<AnalyticsRelay>().NextLevel();
 			StartCoroutine(LoadCoroutine("Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1)));
 		}
 
 		private IEnumerator LoadCoroutine(string levelName)
 		{
 			GetComponent<Animator>().Play("SlideOut");
-#if UNITY_IOS
-			Prime31.EtceteraBinding.showActivityView();
-#endif
 			//done so sound can play
 			yield return new WaitForSeconds(.5f);
 			SceneManager.LoadScene(levelName);
