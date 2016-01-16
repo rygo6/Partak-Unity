@@ -63,6 +63,7 @@ namespace Partak
 
 				if (percentage == 100f)
 				{
+					CancelInvoke();
 					Win();
 				}
 				else if (PlayerParticleCount[playerIndex] == 0f && !PlayerLose[playerIndex])
@@ -77,7 +78,6 @@ namespace Partak
 		//should be its own object WinSequence
 		public void Win()
 		{
-			CancelInvoke();
 			_cursorStore.PlayerWin(WinningPlayer());
 			WinEvent();
 		}

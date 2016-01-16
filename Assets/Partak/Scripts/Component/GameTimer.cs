@@ -10,9 +10,9 @@ namespace Partak
 		[SerializeField]
 		private Material _surroundMaterial;
 
-		private float _fastKillTimeLimit = 60f;
+		private float _fastKillTimeLimit = 70f;
 
-		private float _timeLimit = 75f;
+		private float _timeLimit = 80f;
 
 		public float GameTime { get; private set; }
 

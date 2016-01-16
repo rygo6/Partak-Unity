@@ -6,22 +6,23 @@ namespace Partak
 {
 	public class AdvertisementDispatch : MonoBehaviour
 	{
-		private const string AdvertisementCountKey = "AdveristementCount";
+		int _gameCount;
 
-		private int _gameCount;
+		int _gameCountLimit = 4;
 
-		private int _gameCountLimit = 3;
+		int _gameCountLimitAdd = 1;
+
+		int _sessionCount = 5;
 
 		public void ShowAdvertisement()
 		{
-			Debug.Log("ShowAdvertisement " + Persistent.Get<SystemSettings>().FullVersion + " " + _gameCount + " " + _gameCountLimit + " " + Persistent.Get<SystemSettings>().SessionCount);
-			if (!Persistent.Get<SystemSettings>().FullVersion && Persistent.Get<SystemSettings>().SessionCount > 3)
+			if (!Persistent.Get<SystemSettings>().FullVersion && Persistent.Get<SystemSettings>().SessionCount > _sessionCount)
 			{
 				_gameCount++;
 				if (_gameCount == _gameCountLimit)
 				{
 					_gameCount = 0;
-					_gameCountLimit++;
+					_gameCountLimit += _gameCountLimitAdd;
 #if UNITY_IOS
 					if (Advertisement.IsReady())
 						Advertisement.Show();

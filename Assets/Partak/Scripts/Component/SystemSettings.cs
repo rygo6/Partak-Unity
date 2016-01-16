@@ -22,25 +22,16 @@ namespace Partak
 			SessionCount = PlayerPrefs.GetInt("SessionCount");
 			Debug.Log("SessionCount: " + SessionCount);
 			PlayerPrefs.SetInt("SessionCount", ++SessionCount);
-		}
 
-		private void Start()
-		{
-			if (SessionCount == 10)
-				Persistent.Get<AnalyticsRelay>().SessionCount10();
-		}
-			
-//		private void OnApplicationQuit()
-//		{			
-//			Debug.Log("Quitting on " + SceneManager.GetActiveScene().name);
-//			Persistent.Get<AnalyticsRelay>().LevelQuit();
-//			IncrementSessionCount();
-//		}
-
-		private void OnApplicationPause(bool pauseStatus)
-		{
-			Debug.Log("Pausing on " + SceneManager.GetActiveScene().name + " " + pauseStatus);
-			Persistent.Get<AnalyticsRelay>().LevelQuit();
+			switch (PlayerPrefs.GetInt("muted"))
+			{
+			case 1:
+				AudioListener.volume = 1f;
+				break;
+			case 2:
+				AudioListener.volume = 0f;
+				break;
+			}
 		}
 	}
 }

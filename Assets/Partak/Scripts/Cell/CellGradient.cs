@@ -79,7 +79,7 @@ namespace Partak
 			{
 				if (x % 3 == 0)
 				{
-					_stepDirectionArray[x] = new int[4];
+					_stepDirectionArray[x] = new int[5];
 					randomArray = Enumerable.Range(0, Direction12.Count)
 											.OrderBy(t => Random.Range(0, Direction12.Count))
 											.Take(_stepDirectionArray[x].Length)
