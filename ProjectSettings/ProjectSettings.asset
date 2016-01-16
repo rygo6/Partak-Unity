@@ -352,7 +352,26 @@ PlayerSettings:
   metroCertificateNotAfter: 004ff51cdf68d201
   metroApplicationDescription: partak
   wsaImages:
+    65636: SourceAssets/UW10/StoreLogo50x50.png
+    65716: 
+    65736: SourceAssets/UW10/StoreLogo100x100.png
+    65936: SourceAssets/UW10/StoreLogo200x200.png
     983220: 
+    2031716: SourceAssets/UW10/Square44x44Logo.png
+    2031816: SourceAssets/UW10/Square44x44Logo88x88.png
+    2032016: SourceAssets/UW10/Square44x44Logo176x176.png
+    2097252: SourceAssets/UW10/Square71x71Logo.png
+    2097352: SourceAssets/UW10/Square71x71Logo142x142.png
+    2097552: SourceAssets/UW10/Square71x71Logo284x284.png
+    2162788: SourceAssets/UW10/Square150x150Logo.png
+    2162888: SourceAssets/UW10/Square150x150Logo300x300.png
+    2163088: SourceAssets/UW10/Square150x150Logo600x600.png
+    2228324: SourceAssets/UW10/Square310x310Logo.png
+    2228424: SourceAssets/UW10/Square310x310Logo620x620.png
+    2228624: SourceAssets/UW10/Square310x310Logo1240x1240.jpg
+    2293860: SourceAssets/UW10/Wide310x150Logo.png
+    2293960: SourceAssets/UW10/Wide310x150Logo620x300.png
+    2294160: SourceAssets/UW10/Wide310x150Logo1240x600.jpg
   metroTileShortName: partak
   metroCommandLineArgsFile: 
   metroTileShowName: 0
