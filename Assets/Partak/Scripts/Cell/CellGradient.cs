@@ -77,9 +77,9 @@ namespace Partak
 			_stepDirectionArray = new int[128][];
 			for (int x = 0; x < _stepDirectionArray.Length; ++x)
 			{
-				if (x % 3 == 0)
+				if (x % 2 == 0)
 				{
-					_stepDirectionArray[x] = new int[5];
+					_stepDirectionArray[x] = new int[4];
 					randomArray = Enumerable.Range(0, Direction12.Count)
 											.OrderBy(t => Random.Range(0, Direction12.Count))
 											.Take(_stepDirectionArray[x].Length)
