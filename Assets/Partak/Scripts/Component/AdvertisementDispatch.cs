@@ -8,11 +8,11 @@ namespace Partak
 	{
 		int _gameCount;
 
-		int _gameCountLimit = 4;
+		int _gameCountLimit = 5;
 
-		int _gameCountLimitAdd = 1;
+		int _gameCountLimitAdd = 2;
 
-		int _sessionCount = 5;
+		int _sessionCount = 10;
 
 		public void ShowAdvertisement()
 		{
