@@ -10,12 +10,12 @@ using UnityEngine;
 
 namespace Partak
 {
-    /// <summary>
-    /// Cell gradient.
-    /// Calculates the gradient for all players.
-    /// All players are done in one class for ease of multithreading.
-    /// </summary>
-    public class CellGradient : MonoBehaviour
+	/// <summary>
+	/// Cell gradient.
+	/// Calculates the gradient for all players.
+	/// All players are done in one class for ease of multithreading.
+	/// </summary>
+	public class CellGradient : MonoBehaviour
 	{
 		private CursorStore _cursorStore;
 
@@ -36,9 +36,18 @@ namespace Partak
 		private int _currentStepDirectionIndex;
 
 		/// <summary>
-		/// Pseudo Random directions which the gradient will rotate around
+		/// directions which the gradient will rotate around
 		/// </summary>
-		private int[][] _stepDirectionArray;
+		private readonly int[][] _stepDirectionArray = new int[][] {
+				new int[]{ 0, 2, 4, 6, 8, 10 },
+				new int[]{ 10, 8, 7, 4, 2, 1 },
+				new int[]{ 1, 3, 5, 7, 9, 11 },
+				new int[]{ 0, 1, 4, 6, 7, 10 },
+				new int[]{ 10, 8, 6, 4, 2, 0 },
+				new int[]{ 10, 7, 6, 4, 1, 0 },
+				new int[]{ 11, 9, 7, 5, 3, 1 },
+				new int[]{ 1, 2, 4, 7, 8, 10 },
+			};
 			
 		private CellGroup[] _cellGroupStepArray;
 
@@ -46,14 +55,15 @@ namespace Partak
 
 		private bool _runThread;
 
-#if UNITY_WSA_10_0 && !UNITY_EDITOR
+		#if UNITY_WSA_10_0 && !UNITY_EDITOR
         private Windows.Foundation.IAsyncAction _async;
         private System.Threading.ManualResetEvent _wait = new System.Threading.ManualResetEvent(false);
-#else
-        private Thread _thread;
-#endif
 
-        private PlayerSettings _playerSettings;
+#else
+		private Thread _thread;
+		#endif
+
+		private PlayerSettings _playerSettings;
 
 		[SerializeField]
 		private int _cycleTime = 33;
@@ -63,38 +73,6 @@ namespace Partak
 			_cursorStore = FindObjectOfType<CursorStore>();
 			_playerSettings = Persistent.Get<PlayerSettings>();
 			_cellGroupStepArray = new CellGroup[_cellHiearchy.ParticleCellGrid.Grid.Length * 2];
-
-			int patternStepDirectionIndex = 0;
-			int[][] patternStepDirections = new int[][] {
-				new int[]{ 0, 2, 4, 6, 8, 10 },
-				new int[]{ 1, 3, 5, 7, 9, 11 },
-				new int[]{ 10, 8, 6, 4, 2, 0 },
-				new int[]{ 11, 9, 7, 5, 3, 1 },
-			};
-
-			//pre-generate random numbers
-			int[] randomArray;
-			_stepDirectionArray = new int[128][];
-			for (int x = 0; x < _stepDirectionArray.Length; ++x)
-			{
-				if (x % 2 == 0)
-				{
-					_stepDirectionArray[x] = new int[4];
-					randomArray = Enumerable.Range(0, Direction12.Count)
-											.OrderBy(t => Random.Range(0, Direction12.Count))
-											.Take(_stepDirectionArray[x].Length)
-											.ToArray();
-					for (int y = 0; y < _stepDirectionArray[x].Length; ++y)
-					{
-						_stepDirectionArray[x][y] = randomArray[y];
-					}
-				}
-				else
-				{
-					_stepDirectionArray[x] = patternStepDirections[patternStepDirectionIndex];
-					patternStepDirectionIndex = (int)Mathf.Repeat(++patternStepDirectionIndex, patternStepDirections.Length);
-				}
-			}
 
 			FindObjectOfType<CellParticleStore>().WinEvent += () =>
 			{
@@ -113,7 +91,7 @@ namespace Partak
                 RunThread();
             }, Windows.System.Threading.WorkItemPriority.Low);
 #else
-            _thread = new Thread(RunThread);
+			_thread = new Thread(RunThread);
 			_thread.Name = "CellGradient";
 			_thread.IsBackground = true;
 			_thread.Priority = System.Threading.ThreadPriority.Lowest;
@@ -123,7 +101,7 @@ namespace Partak
 #if UNITY_IOS && !UNITY_EDITOR
 			SetGradientThreadPriority();
 #endif
-        }
+		}
 
 		#if UNITY_IOS && !UNITY_EDITOR
 		[DllImport("__Internal")]
@@ -135,23 +113,23 @@ namespace Partak
 			StopThread();
 		}
 
-        private void StopThread()
-        {
+		private void StopThread()
+		{
 #if UNITY_WSA_10_0 && !UNITY_EDITOR
             _async.Cancel();
             _async.Close();
 #else
-            if (_thread != null)
-            {
-                _runThread = false;
-                while (_thread.IsAlive)
-                {
-                }
-            }
+			if (_thread != null)
+			{
+				_runThread = false;
+				while (_thread.IsAlive)
+				{
+				}
+			}
 #endif
-        }
+		}
 
-        private void RunThread()
+		private void RunThread()
 		{
 			while (_runThread)
 			{
@@ -169,15 +147,15 @@ namespace Partak
 #if UNITY_WSA_10_0 && !UNITY_EDITOR
                         _wait.WaitOne(_cycleTime - deltaTime);
 #else
-                        Thread.Sleep(_cycleTime - deltaTime);
+						Thread.Sleep(_cycleTime - deltaTime);
 #endif
-                    }
+					}
 					stopWatch.Reset();
 				}
 			}
 		}
 
-        private IEnumerator RunCoroutine()
+		private IEnumerator RunCoroutine()
 		{
 			_runThread = true;
 			while (_runThread)
