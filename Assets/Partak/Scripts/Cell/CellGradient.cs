@@ -51,7 +51,7 @@ namespace Partak
 			
 		private CellGroup[] _cellGroupStepArray;
 
-		private readonly CellGroup[] PriorStartCell = new CellGroup[PlayerSettings.MaxPlayers];
+		private readonly CellGroup[] PriorStartCell = new CellGroup[MenuConfig.MaxPlayers];
 
 		private bool _runThread;
 
@@ -63,7 +63,7 @@ namespace Partak
 		private Thread _thread;
 		#endif
 
-		private PlayerSettings _playerSettings;
+		private MenuConfig _playerSettings;
 
 		[SerializeField]
 		private int _cycleTime = 33;
@@ -71,7 +71,7 @@ namespace Partak
 		private void Awake()
 		{
 			_cursorStore = FindObjectOfType<CursorStore>();
-			_playerSettings = Persistent.Get<PlayerSettings>();
+			_playerSettings = Persistent.Get<MenuConfig>();
 			_cellGroupStepArray = new CellGroup[_cellHiearchy.ParticleCellGrid.Grid.Length * 2];
 
 			FindObjectOfType<CellParticleStore>().WinEvent += () =>
@@ -167,7 +167,7 @@ namespace Partak
 
 		private void CalculateGradient()
 		{
-			for (int playerIndex = 0; playerIndex < PlayerSettings.MaxPlayers; playerIndex++)
+			for (int playerIndex = 0; playerIndex < MenuConfig.MaxPlayers; playerIndex++)
 			{
 				if (_playerSettings.PlayerActive(playerIndex))
 				{
