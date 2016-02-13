@@ -11,12 +11,12 @@ public class ImagePlayerColor : MonoBehaviour {
 	[SerializeField]
 	bool _constantUpdate;
 
-	PlayerSettings _playerSettings;
+	MenuConfig _playerSettings;
 
 	Image _image;
 
 	void Start() {
-		_playerSettings = Persistent.Get<PlayerSettings>();
+		_playerSettings = Persistent.Get<MenuConfig>();
 		_image = GetComponent<Image>();
 		_image.color = _image.color.SetRGB(_playerSettings.PlayerColors[_playerIndex]);
 		if (_constantUpdate)

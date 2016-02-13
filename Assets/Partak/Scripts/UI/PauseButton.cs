@@ -8,7 +8,7 @@ namespace Partak.UI
 	{
 		public void OnPointerClick(PointerEventData eventData)
 		{
-			FindObjectOfType<CellParticleMover>().Pause = true;
+			FindObjectOfType<CellParticleEngine>().Pause = true;
 		}
 	}
 }

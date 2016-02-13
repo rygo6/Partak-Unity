@@ -26,16 +26,16 @@ namespace Partak
 		public void GamePlayerCount()
 		{
             Analytics.CustomEvent("GamePlayerCount", new Dictionary<string, object> {
-				{ "PlayerCount", Persistent.Get<PlayerSettings>().ActivePlayerCount() },
+				{ "PlayerCount", Persistent.Get<MenuConfig>().ActivePlayerCount() },
 			});
 			Analytics.CustomEvent("HumanPlayerCount", new Dictionary<string, object> {
-				{ "PlayerCount", Persistent.Get<PlayerSettings>().ActiveHumanPlayerCount() },
+				{ "PlayerCount", Persistent.Get<MenuConfig>().ActiveHumanPlayerCount() },
 			});
 		}
 
 		public void MenuLevelLoad()
 		{
-			string levelName = "Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1);
+			string levelName = "Level" + (Persistent.Get<MenuConfig>().LevelIndex + 1);
 			Analytics.CustomEvent("MenuLeveLoad", new Dictionary<string, object> {
 				{ "LevelName", levelName },
 			});

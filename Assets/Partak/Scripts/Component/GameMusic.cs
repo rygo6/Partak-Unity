@@ -25,12 +25,12 @@ namespace Partak
 		{		
 			
 
-			_music = new AudioClip[PlayerSettings.MaxPlayers, 3];
-			_audioSource = new AudioSource[PlayerSettings.MaxPlayers, 3];
-			_playingClip = new int[PlayerSettings.MaxPlayers];
+			_music = new AudioClip[MenuConfig.MaxPlayers, 3];
+			_audioSource = new AudioSource[MenuConfig.MaxPlayers, 3];
+			_playingClip = new int[MenuConfig.MaxPlayers];
 			int rand;
 		
-			for (int i = 0; i < PlayerSettings.MaxPlayers; i++)
+			for (int i = 0; i < MenuConfig.MaxPlayers; i++)
 			{
 				rand = Random.Range(0, 4);
 				for (int o = 0; o < 3; o++)
@@ -69,7 +69,7 @@ namespace Partak
 		{
 			if (_playMusic)
 			{			
-				for (int i = 0; i < PlayerSettings.MaxPlayers; i++)
+				for (int i = 0; i < MenuConfig.MaxPlayers; i++)
 				{
 					if (_cellParticleStore.PlayerParticleCount[i] == -100)
 					{
@@ -116,7 +116,7 @@ namespace Partak
 			_playMusic = false;
 			while (true)
 			{
-				for (int i = 0; i < PlayerSettings.MaxPlayers; i++)
+				for (int i = 0; i < MenuConfig.MaxPlayers; i++)
 				{
 					for (int o = 0; o < 3; o++)
 					{
