@@ -1,44 +1,23 @@
-﻿//#define COROUTINE
-
-using System.Collections;
+﻿using System.Collections;
 using System.Threading;
 using UnityEngine;
+using EC.UniThread;
 
 namespace Partak {
 public class CellAI : MonoBehaviour {
 
-	private CursorStore _cursorStore;
-
-	private CellParticleStore _cellParticleStore;
-
-	private MenuConfig _playerSettings;
-
-	private GameClock _gameTimer;
-
-	private LevelConfig _levelConfig;
-
-	private readonly Vector3[] AICursorTarget = new Vector3[MenuConfig.MaxPlayers];
-
-	private readonly Vector3[] AICursorVelocity = new Vector3[MenuConfig.MaxPlayers];
-
-	private readonly int[] AICellParticleIndex = new int[MenuConfig.MaxPlayers];
-
-	private readonly int[] RandomPullCycle = new int[MenuConfig.MaxPlayers];
-
-	[SerializeField]
-	private int _randomCycleRate = 20;
-
-	private bool _runThread;
-
-	#if UNITY_WSA_10_0 && !UNITY_EDITOR
-    private Windows.Foundation.IAsyncAction _async;
-    private System.Threading.ManualResetEvent _wait = new System.Threading.ManualResetEvent(false);
-
-#else
-	private Thread _thread;
-	#endif
-
-	private readonly System.Random _random = new System.Random();
+	[SerializeField] int _randomCycleRate = 20;
+	readonly Vector3[] AICursorTarget = new Vector3[MenuConfig.MaxPlayers];
+	readonly Vector3[] AICursorVelocity = new Vector3[MenuConfig.MaxPlayers];
+	readonly int[] AICellParticleIndex = new int[MenuConfig.MaxPlayers];
+	readonly int[] RandomPullCycle = new int[MenuConfig.MaxPlayers];
+	readonly System.Random _random = new System.Random();
+	CursorStore _cursorStore;
+	CellParticleStore _cellParticleStore;
+	MenuConfig _playerSettings;
+	GameClock _gameTimer;
+	LevelConfig _levelConfig;
+	LoopThread _loopThread;
 
 	private void Awake() {
 		_cursorStore = FindObjectOfType<CursorStore>();
@@ -46,55 +25,22 @@ public class CellAI : MonoBehaviour {
 		_playerSettings = Persistent.Get<MenuConfig>();
 		_gameTimer = FindObjectOfType<GameClock>();
 		_levelConfig = FindObjectOfType<LevelConfig>();
-
 		for (int i = 0; i < MenuConfig.MaxPlayers; ++i) {
 			AICellParticleIndex[i] = i * 10;
 			RandomPullCycle[i] = i * (_randomCycleRate / MenuConfig.MaxPlayers);
 		}
-
 		FindObjectOfType<CellParticleSpawn>().SpawnComplete += () => {
-			_runThread = true;
-#if COROUTINE
-			StartCoroutine(RunCoroutine());
-#elif UNITY_WSA_10_0 && !UNITY_EDITOR
-            _async = Windows.System.Threading.ThreadPool.RunAsync((workItem) => 
-            { 
-                RunThread();
-            }, Windows.System.Threading.WorkItemPriority.Low);
-#else
-			_thread = new Thread(RunThread);
-			_thread.IsBackground = true;
-			_thread.Priority = System.Threading.ThreadPriority.Lowest;
-			_thread.Name = "CellAI";
-			_thread.Start();
-#endif
-		};
-
-		FindObjectOfType<CellParticleStore>().WinEvent += () => {
-			_runThread = false;
+			_loopThread = LoopThread.Create(UpdateAICursor, "CellAI", UniThreadPriority.Low);
+			_loopThread.Start();
 		};
 	}
 
 	private void Update() {
-		if (_runThread)
-			MoveAICursor();
+		MoveAICursor();
 	}
 
 	private void OnDestroy() {
-		StopThread();
-	}
-
-	private void StopThread() {
-#if UNITY_WSA_10_0 && !UNITY_EDITOR
-            _async.Cancel();
-            _async.Close();
-#else
-		if (_thread != null) {
-			_runThread = false;
-			while (_thread.IsAlive) {
-			}
-		}
-#endif
+		_loopThread.Stop();
 	}
 
 	private void MoveAICursor() {
@@ -111,26 +57,12 @@ public class CellAI : MonoBehaviour {
 		}
 	}
 
-	private void RunThread() {
-		while (_runThread) {
-			UpdateAICursor();
-		}
-	}
-
-	private IEnumerator RunCoroutine() {
-		while (_runThread) {
-			UpdateAICursor();
-			yield return null;
-		}
-	}
-
 	private void UpdateAICursor() {
 		int winningPlayerIndex = _cellParticleStore.WinningPlayer();
 		int losingPlayerIndex = _cellParticleStore.LosingPlayer();
 		int targetPlayerIndex, playerIndex, newIndex;
 		int particleLimit = _cellParticleStore.CellParticleArray.Length;
 		int playerLimit = MenuConfig.MaxPlayers;
-
 		for (playerIndex = 0; playerIndex < playerLimit; ++playerIndex) {
 			if (_playerSettings.PlayerModes[playerIndex] == PlayerMode.Comp &&
 			    !_cellParticleStore.PlayerLose[playerIndex]) {
@@ -162,13 +94,7 @@ public class CellAI : MonoBehaviour {
 				} else {
 					AICursorTarget[playerIndex] = _cellParticleStore.CellParticleArray[AICellParticleIndex[playerIndex]].ParticleCell.WorldPosition;
 				}
-#if COROUTINE
-				yield return new WaitForSeconds(.5f);
-#elif UNITY_WSA_10_0 && !UNITY_EDITOR
-                _wait.WaitOne(500);
-#else
-				Thread.Sleep(500);
-#endif
+				_loopThread.Wait(500);
 			}
 		}
 	}
