@@ -1,41 +1,22 @@
-﻿//#define COROUTINE
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
-using System.Threading;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using EC.UniThread;
 
 namespace Partak {
 public class CellParticleEngine : MonoBehaviour {
-	[SerializeField]
-	private CellParticleStore _cellParticleStore;
 
-	public bool FastKill { get; set; }
-
-	private readonly int[] RotateDirectionMove = new int[] { 0, -1, 1, -2, 2, -3, 3, -4, 4 };
-
-	private int[] _randomRotate;
-
-	private int _randomRotateIndex;
-
+	[SerializeField] CellParticleStore _cellParticleStore;
+	[SerializeField] int _attackMultiplier = 3;
 	public bool Pause { get; set; }
+	public bool FastKill { get; set; }
+	readonly int[] RotateDirectionMove = new int[] { 0, -1, 1, -2, 2, -3, 3, -4, 4 };
+	int[] _randomRotate;
+	int _randomRotateIndex;
+	LoopThread _loopThread;
 
-	private bool _runThread;
-
-	#if UNITY_WSA_10_0 && !UNITY_EDITOR
-    private Windows.Foundation.IAsyncAction _async;
-    private System.Threading.ManualResetEvent _wait = new System.Threading.ManualResetEvent(false);
-#else
-	private Thread _thread;
-	#endif
-
-	[SerializeField]
-	public int _attackMultiplier = 3;
-
-	private int _cycleTime;
-
-	private void Awake() {
+	void Awake() {
 		_randomRotate = new int[128];
 		for (int i = 0; i < _randomRotate.Length; ++i) {
 			if (i % 4 == 0)
@@ -43,92 +24,17 @@ public class CellParticleEngine : MonoBehaviour {
 			else
 				_randomRotate[i] = Random.Range(-1, 1);
 		}
-
-		_cycleTime = FindObjectOfType<LevelConfig>().MoveCycleTime;
-		FindObjectOfType<CellParticleSpawn>().SpawnComplete += StartThread;
-		_cellParticleStore.WinEvent += () => {
-			_runThread = false;
+		FindObjectOfType<CellParticleSpawn>().SpawnComplete += () => {
+			_loopThread = LoopThread.Create(MoveParticles, "CellParticleEngine", UniThreadPriority.High, FindObjectOfType<LevelConfig>().MoveCycleTime);
+			_loopThread.Start();
 		};
 	}
 
-	private void OnDestroy() {
-		StopThread();
+	void OnDestroy() {
+		_loopThread.Stop();
 	}
 
-	public void StartThread() {
-		_runThread = true;
-#if COROUTINE
-		StartCoroutine(RunCoroutine());
-#elif UNITY_WSA_10_0 && !UNITY_EDITOR
-        _async = Windows.System.Threading.ThreadPool.RunAsync((workItem) =>
-        {
-            RunThread();
-        }, Windows.System.Threading.WorkItemPriority.High);
-#else
-		_thread = new Thread(RunThread);
-		_thread.IsBackground = true;
-		_thread.Priority = System.Threading.ThreadPriority.Highest;
-		_thread.Name = "CellParticleMove";
-		_thread.Start();
-#endif
-
-#if UNITY_IOS && !UNITY_EDITOR
-			SetMoveThreadPriority();
-#endif
-	}
-
-	#if UNITY_IOS && !UNITY_EDITOR
-		[DllImport("__Internal")]
-		private static extern bool SetMoveThreadPriority();
-#endif
-
-	private void StopThread() {
-#if UNITY_WSA_10_0 && !UNITY_EDITOR
-            _async.Cancel();
-            _async.Close();
-#else
-		if (_thread != null) {
-			_runThread = false;
-			while (_thread.IsAlive) {
-			}
-		}
-#endif
-	}
-
-	private IEnumerator RunCoroutine() {
-		while (_runThread) {
-			MoveParticles();
-			yield return null;
-		}
-	}
-
-	private void RunThread() {
-		Stopwatch stopWatch = new Stopwatch();
-		stopWatch.Start();
-		int startTime, deltaTime;
-		while (_runThread) {
-			while (Pause && _runThread) {
-#if UNITY_WSA_10_0 && !UNITY_EDITOR
-                _wait.WaitOne(1);
-#else
-				Thread.Sleep(1);
-#endif
-			}
-			startTime = (int)stopWatch.ElapsedMilliseconds;
-			MoveParticles();
-			deltaTime = (int)stopWatch.ElapsedMilliseconds - startTime;
-			if (deltaTime < _cycleTime) {
-#if UNITY_WSA_10_0 && !UNITY_EDITOR
-                    _wait.WaitOne(_cycleTime - deltaTime);
-#else
-				Thread.Sleep(_cycleTime - deltaTime);
-#endif
-			}
-			stopWatch.Reset();
-		}
-	}
-
-	private void MoveParticles() {
+	void MoveParticles() {
 		CellParticle[] cellParticleArray = _cellParticleStore.CellParticleArray;
 		CellParticle currentCellParticle;
 		ParticleCell currentParticleCell, nextParticleCell;
