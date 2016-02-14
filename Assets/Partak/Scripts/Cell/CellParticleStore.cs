@@ -7,14 +7,14 @@ namespace Partak
 	{
 		public CellParticle[] CellParticleArray { get; private set; }
 
-		public readonly int[] PlayerParticleCount = new int[PlayerSettings.MaxPlayers];
+		public readonly int[] PlayerParticleCount = new int[MenuConfig.MaxPlayers];
 
 		/// <summary> Keeps track of which players have lost. </summary>
-		public readonly bool[] PlayerLose = new bool[PlayerSettings.MaxPlayers];
+		public readonly bool[] PlayerLose = new bool[MenuConfig.MaxPlayers];
 
 		private CursorStore _cursorStore;
 
-		private PlayerSettings _playerSettings;
+		private MenuConfig _playerSettings;
 
 		private int _startParticleCount;
 
@@ -32,7 +32,7 @@ namespace Partak
 		{
 			_levelConfig = FindObjectOfType<LevelConfig>();
 			_cursorStore = FindObjectOfType<CursorStore>();
-			_playerSettings = Persistent.Get<PlayerSettings>();
+			_playerSettings = Persistent.Get<MenuConfig>();
 			CellParticleArray = new CellParticle[_levelConfig.ParticleCount];
 			_startParticleCount = _levelConfig.ParticleCount / _playerSettings.ActivePlayerCount();
 
@@ -63,6 +63,7 @@ namespace Partak
 
 				if (percentage == 100f)
 				{
+					CancelInvoke();
 					Win();
 				}
 				else if (PlayerParticleCount[playerIndex] == 0f && !PlayerLose[playerIndex])
@@ -77,7 +78,6 @@ namespace Partak
 		//should be its own object WinSequence
 		public void Win()
 		{
-			CancelInvoke();
 			_cursorStore.PlayerWin(WinningPlayer());
 			WinEvent();
 		}

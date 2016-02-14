@@ -30,9 +30,6 @@ namespace Partak
 		private void Awake()
 		{
 			Application.targetFrameRate = _fps;
-#if UNITY_IOS
-			Prime31.EtceteraBinding.hideActivityView();
-#endif
 		}
 
 		private void OnDrawGizmos()

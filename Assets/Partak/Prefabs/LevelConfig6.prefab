@@ -40,14 +40,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelBounds:
-    m_Center: {x: 12.8000002, y: 0, z: 12.8000002}
-    m_Extent: {x: 12.8000002, y: 0, z: 12.8000002}
+    m_Center: {x: 12.8, y: 0, z: 12.8}
+    m_Extent: {x: 12.8, y: 0, z: 12.8}
   _rootDimension:
     _x: 256
     _y: 256
   _fps: 30
   _particleCount: 6000
-  _moveCycleTime: 19
+  _moveCycleTime: 16
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -2,33 +2,48 @@
 using UnityEngine.UI;
 using System.Collections;
 
-namespace Partak.UI
-{
-	public class SetPlayerMode : MonoBehaviour
-	{
-		[SerializeField]
-		private int _playerIndex;
+namespace Partak.UI {
+public class SetPlayerMode : MonoBehaviour {
 
-		[SerializeField]
-		private PlayerMode _playerMode;
+	[SerializeField] int _playerIndex;
+	[SerializeField] PlayerMode _playerMode;
 
-		private void Start()
-		{
-			Toggle toggle = GetComponent<Toggle>();
-			if (Persistent.Get<PlayerSettings>().GetPlayerMode(_playerIndex) == _playerMode)
-				toggle.isOn = true;
-			else
-				toggle.isOn = false;
-
-			toggle.onValueChanged.AddListener(SetPersistent);
+	void Start() {
+		_playerMode = (PlayerMode)PlayerPrefs.GetInt("PlayerMode" + _playerIndex);
+		switch (_playerMode) {
+		case PlayerMode.Human:
+			_playerMode = PlayerMode.Human;
+			GetComponent<Button>().GetComponentInChildren<Text>().text = "human";
+			break;
+		case PlayerMode.Comp:
+			_playerMode = PlayerMode.Comp;
+			GetComponent<Button>().GetComponentInChildren<Text>().text = "comp";
+			break;
+		case PlayerMode.None:
+			_playerMode = PlayerMode.None;
+			GetComponent<Button>().GetComponentInChildren<Text>().text = "none";
+			break;
 		}
-
-		public void SetPersistent(bool state)
-		{
-			if (state)
-			{
-				Persistent.Get<PlayerSettings>().SetPlayerMode(_playerIndex, _playerMode);
-			}
-		}
+		GetComponent<Button>().onClick.AddListener(OnClick);
 	}
+
+	void OnClick() {
+		switch (_playerMode) {
+		case PlayerMode.Human:
+			_playerMode = PlayerMode.Comp;
+			GetComponent<Button>().GetComponentInChildren<Text>().text = "comp";
+			break;
+		case PlayerMode.Comp:
+			_playerMode = PlayerMode.None;
+			GetComponent<Button>().GetComponentInChildren<Text>().text = "none";
+			break;
+		case PlayerMode.None:
+			_playerMode = PlayerMode.Human;
+			GetComponent<Button>().GetComponentInChildren<Text>().text = "human";
+			break;
+		}
+		PlayerPrefs.SetInt("PlayerMode" + _playerIndex, (int)_playerMode);
+		Persistent.Get<MenuConfig>().PlayerModes[_playerIndex] = _playerMode;
+	}
+}
 }

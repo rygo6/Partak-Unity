@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 1, g: 1, b: 1, a: 1}
   m_AmbientEquatorColor: {r: 0.6492537, g: 0.6492537, b: 0.6492537, a: 1}
   m_AmbientGroundColor: {r: 0.6492537, g: 0.6492537, b: 0.6492537, a: 1}
-  m_AmbientIntensity: 1
+  m_AmbientIntensity: 0.3
   m_AmbientMode: 3
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
@@ -50,7 +50,7 @@ LightmapSettings:
     m_AlbedoBoost: 1
     m_TemporalCoherenceThreshold: 1
     m_EnvironmentLightingMode: 0
-    m_EnableBakedLightmaps: 1
+    m_EnableBakedLightmaps: 0
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
     serializedVersion: 3
@@ -67,8 +67,7 @@ LightmapSettings:
     m_FinalGather: 0
     m_FinalGatherRayCount: 1024
     m_ReflectionCompression: 2
-  m_LightingDataAsset: {fileID: 112000001, guid: 439234ed26a2e42119d91de86fcc76e3,
-    type: 2}
+  m_LightingDataAsset: {fileID: 0}
   m_RuntimeCPUUsage: 25
 --- !u!196 &5
 NavMeshSettings:
@@ -203,7 +202,7 @@ Prefab:
     - target: {fileID: 2300006, guid: 56c8d7d956d71194c800795ea68a10b8, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 13f196efb31ef654f8c4d0d5e2d79b65, type: 2}
+      objectReference: {fileID: 2100000, guid: 6e0db5e496cdf46c1b6d16838f51c439, type: 2}
     - target: {fileID: 2300000, guid: 56c8d7d956d71194c800795ea68a10b8, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
