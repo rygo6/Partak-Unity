@@ -10,7 +10,7 @@ namespace Partak
 
 		private SkinnedMeshRenderer[] _skinnedMeshRenderers;
 
-		public readonly Vector3[] CursorPositions = new Vector3[PlayerSettings.MaxPlayers];
+		public readonly Vector3[] CursorPositions = new Vector3[MenuConfig.MaxPlayers];
 
 		private Bounds _levelBounds;
 

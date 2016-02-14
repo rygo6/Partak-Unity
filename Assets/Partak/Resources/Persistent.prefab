@@ -115,7 +115,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 193450}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cefca03b7c7e64e5c81ba9a53578ce54, type: 3}
+  m_Script: {fileID: 11500000, guid: 4dc1d536a04ac40958759c627dd7b4fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &11425850
@@ -148,16 +148,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 193450}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69a9f9cbd2b3f431399d1d2daed567b5, type: 3}
+  m_Script: {fileID: 11500000, guid: 5ee8c72aeff42480392bbe72622ed435, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _levelCount: 18
-  _playerModes: 00000000020000000200000002000000
-  _playerColors:
-  - {r: 0.86666673, g: 0.14509805, b: 0.098039225, a: 1}
-  - {r: 0.909804, g: 0.7372549, b: 0.16862746, a: 1}
-  - {r: 0.101499535, g: 0.0615148, b: 0.78431374, a: 1}
-  - {r: 0.10196079, g: 0.6627451, b: 0.2509804, a: 1}
 --- !u!114 &11487638
 MonoBehaviour:
   m_ObjectHideFlags: 1

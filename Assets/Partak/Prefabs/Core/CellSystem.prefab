@@ -73,7 +73,7 @@ GameObject:
   - 4: {fileID: 491032}
   - 114: {fileID: 11424404}
   m_Layer: 0
-  m_Name: CellParticleMove
+  m_Name: CellParticleEngine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -263,7 +263,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 161688}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8379e21b7aec14d43beeadac5f618e69, type: 3}
+  m_Script: {fileID: 11500000, guid: 63580d5e5f0814ea99d70051fe75c38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _cellParticleStore: {fileID: 11421062}

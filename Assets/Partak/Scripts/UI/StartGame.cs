@@ -5,44 +5,29 @@ using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
-namespace Partak.UI
-{
-	public class StartGame : MonoBehaviour, IPointerClickHandler
-	{
-		public void OnPointerClick(PointerEventData eventData)
-		{
-			PlayerSettings playerSettings = Persistent.Get<PlayerSettings>();
-			int activeCount = 0;
-			for (int i = 0; i < PlayerSettings.MaxPlayers; ++i)
-			{
-				if (playerSettings.GetPlayerMode(i) != PlayerMode.None)
-					activeCount++;
-			}
-			if (activeCount >= 2)
-			{
-				StartCoroutine(LoadCoroutine());
-			}
-			else
-			{
-#if UNITY_IOS
-				Prime31.EtceteraBinding.showAlertWithTitleMessageAndButtons(
-					"Enable More Players", 
-					"Game needs atleast two players set to Human or Comp to start game.", 
-					new string[1]{"Ok"});
-#endif
-			}
+namespace Partak.UI {
+public class StartGame : MonoBehaviour, IPointerClickHandler {
+	public void OnPointerClick(PointerEventData eventData) {
+		MenuConfig playerSettings = Persistent.Get<MenuConfig>();
+		int activeCount = 0;
+		for (int i = 0; i < MenuConfig.MaxPlayers; ++i) {
+			if (playerSettings.PlayerModes[i] != PlayerMode.None)
+				activeCount++;
 		}
-
-		private IEnumerator LoadCoroutine()
-		{
-			Persistent.Get<AnalyticsRelay>().MenuLevelLoad();
-#if UNITY_IOS
-			Prime31.EtceteraBinding.showActivityView();
-#endif
-			//done so sound can play
-			yield return new WaitForSeconds(.5f);
-			string levelName = "Level" + (Persistent.Get<PlayerSettings>().LevelIndex + 1);
-			SceneManager.LoadScene(levelName);
+		if (activeCount >= 2) {
+			StartCoroutine(LoadCoroutine());
+		} else {
+			GameObject.Find("PopupUI").GetComponent<PopupUI>().Show("enable atleast two players");
 		}
 	}
+
+	private IEnumerator LoadCoroutine() {
+		Persistent.Get<AnalyticsRelay>().MenuLevelLoad();
+		//done so sound can play
+		yield return new WaitForSeconds(.5f);
+		Persistent.Get<AdvertisementDispatch>().ShowAdvertisement();
+		string levelName = "Level" + (Persistent.Get<MenuConfig>().LevelIndex + 1);
+		SceneManager.LoadScene(levelName);
+	}
+}
 }

@@ -15,7 +15,7 @@ namespace Partak
 		private CellParticleStore _cellParticleStore;
 
 		[SerializeField]
-		private CellParticleMover _cellParticleMover;
+		private CellParticleEngine _cellParticleMover;
 
 		public event Action SpawnComplete;
 
@@ -23,13 +23,13 @@ namespace Partak
 		{
 			LevelConfig levelConfig = FindObjectOfType<LevelConfig>();
 			_cursorStore = FindObjectOfType<CursorStore>();
-			PlayerSettings playerSettings = Persistent.Get<PlayerSettings>();
-			YieldInstruction[] spawnYield = new YieldInstruction[PlayerSettings.MaxPlayers];
+			MenuConfig playerSettings = Persistent.Get<MenuConfig>();
+			YieldInstruction[] spawnYield = new YieldInstruction[MenuConfig.MaxPlayers];
 			int spawnCount = levelConfig.ParticleCount / playerSettings.ActivePlayerCount();
 			int startIndex = 0;
 			int trailingSpawn = 0;
 			bool trailingAdded = false;
-			for (int playerIndex = 0; playerIndex < PlayerSettings.MaxPlayers; ++playerIndex)
+			for (int playerIndex = 0; playerIndex < MenuConfig.MaxPlayers; ++playerIndex)
 			{
 				if (playerSettings.PlayerActive(playerIndex))
 				{

@@ -2,32 +2,26 @@
 using UnityEngine.Advertisements;
 using System.Collections;
 
-namespace Partak
-{
-	public class AdvertisementDispatch : MonoBehaviour
-	{
-		private const string AdvertisementCountKey = "AdveristementCount";
+namespace Partak {
+public class AdvertisementDispatch : MonoBehaviour {
 
-		private int _gameCount;
+	int _gameCount;
+	int _gameCountLimit = 4;
+	int _gameCountLimitAdd = 2;
+	int _sessionCount = 10;
 
-		private int _gameCountLimit = 3;
-
-		public void ShowAdvertisement()
-		{
-			Debug.Log("ShowAdvertisement " + Persistent.Get<SystemSettings>().FullVersion + " " + _gameCount + " " + _gameCountLimit + " " + Persistent.Get<SystemSettings>().SessionCount);
-			if (!Persistent.Get<SystemSettings>().FullVersion && Persistent.Get<SystemSettings>().SessionCount > 3)
-			{
-				_gameCount++;
-				if (_gameCount == _gameCountLimit)
-				{
-					_gameCount = 0;
-					_gameCountLimit++;
+	public void ShowAdvertisement() {
+		if (!Persistent.Get<SystemSettings>().FullVersion && Persistent.Get<SystemSettings>().SessionCount > _sessionCount) {
+			_gameCount++;
+			if (_gameCount == _gameCountLimit) {
+				_gameCount = 0;
+				_gameCountLimit += _gameCountLimitAdd;
 #if UNITY_IOS
-					if (Advertisement.IsReady())
-						Advertisement.Show();
+				if (Advertisement.IsReady())
+					Advertisement.Show();
 #endif
-				}
 			}
 		}
 	}
+}
 }

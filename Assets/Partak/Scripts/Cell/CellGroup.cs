@@ -16,7 +16,7 @@ namespace Partak
 		/// <summary>
 		/// How many particles of each player this group contains.
 		/// </summary>
-		public readonly int[] PlayerParticleCount =  new int[PlayerSettings.MaxPlayers];
+		public readonly int[] PlayerParticleCount =  new int[MenuConfig.MaxPlayers];
 		
 		public CellGroup ParentCellGroup { get; set; }
 
