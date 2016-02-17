@@ -46,7 +46,7 @@ public class CellAI : MonoBehaviour {
 	private void MoveAICursor() {
 		for (int playerIndex = 0; playerIndex < MenuConfig.MaxPlayers; ++playerIndex) {
 			if (_playerSettings.PlayerModes[playerIndex] == PlayerMode.Comp &&
-			    !_cellParticleStore.PlayerLose[playerIndex]) {
+			    !_cellParticleStore.PlayerLost[playerIndex]) {
 				_cursorStore.SetCursorPositionClamp(playerIndex, 
 					Vector3.SmoothDamp(
 						_cursorStore.CursorPositions[playerIndex], 
@@ -65,7 +65,7 @@ public class CellAI : MonoBehaviour {
 		int playerLimit = MenuConfig.MaxPlayers;
 		for (playerIndex = 0; playerIndex < playerLimit; ++playerIndex) {
 			if (_playerSettings.PlayerModes[playerIndex] == PlayerMode.Comp &&
-			    !_cellParticleStore.PlayerLose[playerIndex]) {
+			    !_cellParticleStore.PlayerLost[playerIndex]) {
 				targetPlayerIndex = 0;
 				if (_gameTimer.GameTime < 8f)
 					targetPlayerIndex = _random.Next(0, playerLimit);
@@ -84,7 +84,7 @@ public class CellAI : MonoBehaviour {
 					if (newIndex >= particleLimit)
 						newIndex = 0;
 					while (_cellParticleStore.CellParticleArray[newIndex].PlayerIndex != targetPlayerIndex &&
-					       !_cellParticleStore.PlayerLose[targetPlayerIndex]) {
+					       !_cellParticleStore.PlayerLost[targetPlayerIndex]) {
 						++newIndex;
 						if (newIndex >= particleLimit)
 							newIndex = 0;

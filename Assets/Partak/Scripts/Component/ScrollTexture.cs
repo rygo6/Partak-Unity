@@ -1,25 +1,21 @@
 using UnityEngine;
 using System.Collections;
 
-public class ScrollTexture : MonoBehaviour 
-{
-	[SerializeField]
-	private float scrollRateX;
+public class ScrollTexture : MonoBehaviour {
 
-	[SerializeField]
-	private float scrollRateY;	
+	[SerializeField] float scrollRateX;
 
-	private Vector2 _offset;
+	[SerializeField] float scrollRateY;
 
-	private void Update () 
-	{
+	Vector2 _offset;
+
+	void Update() {
 		_offset.x += Time.deltaTime * scrollRateX;
 		_offset.y += Time.deltaTime * scrollRateY;		
 		GetComponent<Renderer>().material.SetTextureOffset("_MainTex", _offset);
 	}
 
-	private void OnDestroy()
-	{
+	void OnDestroy() {
 		GetComponent<Renderer>().material.SetTextureOffset("_MainTex", Vector2.zero);
 	}
 }
