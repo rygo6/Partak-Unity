@@ -4,15 +4,10 @@ using UnityEngine;
 namespace Partak {
 public class MenuConfig : MonoBehaviour {
 	public const int MaxPlayers = 4;
-
 	public readonly Color[] PlayerColors = new Color[MaxPlayers];
-
 	public readonly PlayerMode[] PlayerModes = new PlayerMode[MaxPlayers];
-
 	public readonly IPlayerInput[] PlayerInputs = new IPlayerInput[MaxPlayers];
-
 	public int TimeLimitMinutes { get; set; }
-
 	public int LevelIndex { get; set; }
 
 	public bool PlayerActive(int playerIndex) {

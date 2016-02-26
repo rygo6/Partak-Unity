@@ -125,6 +125,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 11472212, guid: 9d772151954a64fa7971cea897c89509, type: 2}
+      propertyPath: _parentCellGridLevel
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9d772151954a64fa7971cea897c89509, type: 2}
   m_IsPrefabParent: 0

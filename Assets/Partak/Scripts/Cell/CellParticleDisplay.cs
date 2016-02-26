@@ -16,7 +16,7 @@ public class CellParticleDisplay : MonoBehaviour {
 
 	private int[] _levelCount;
 
-	private void Awake() {
+	private void Start() {
 		_menuConfig = Persistent.Get<MenuConfig>();
 		int systemCount = _cellHiearchy.CellGroupGrids.Length;
 		LevelConfig levelConfig = FindObjectOfType<LevelConfig>();
