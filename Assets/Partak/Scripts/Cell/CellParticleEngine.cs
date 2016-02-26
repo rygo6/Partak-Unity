@@ -53,31 +53,33 @@ public class CellParticleEngine : MonoBehaviour {
 				if (_randomRotateIndex == _randomRotate.Length)
 					_randomRotateIndex = 0;
 				nextParticleCell = currentParticleCell.DirectionalParticleCellArray[checkDirection];
-				if (nextParticleCell != null) {
-					//move
-					if (nextParticleCell.InhabitedBy == -1) {
-						//wall
-						currentCellParticle.ParticleCell = nextParticleCell;
+
+				if (nextParticleCell == null || nextParticleCell.InhabitedBy == 255) {
+					//edge or wall
+					break;
+				} else if (nextParticleCell.InhabitedBy == -1) {
+					//is empty move
+					currentCellParticle.ParticleCell = nextParticleCell;
+					break;
+				} else if (currentParticleCell.InhabitedBy != nextParticleCell.InhabitedBy) {
+					//if other player, take life
+					if (FastKill && currentParticleCell.InhabitedBy == winningPlayer)
+						life = nextParticleCell._cellParticle.Life - (_attackMultiplier * 2);
+					else
+						life = nextParticleCell._cellParticle.Life - _attackMultiplier;
+					if (life <= 0)
+						nextParticleCell._cellParticle.ChangePlayer(currentCellParticle.PlayerIndex);
+					else
+						nextParticleCell._cellParticle.Life = life;
+					if (d > 2)
 						break;
-					} else if (currentParticleCell.InhabitedBy != nextParticleCell.InhabitedBy) {
-						//if other player, take life
-						if (FastKill && currentParticleCell.InhabitedBy == winningPlayer)
-							life = nextParticleCell._cellParticle.Life - (_attackMultiplier * 2);
-						else
-							life = nextParticleCell._cellParticle.Life - _attackMultiplier;
-						if (life <= 0)
-							nextParticleCell._cellParticle.ChangePlayer(currentCellParticle.PlayerIndex);
-						else
-							nextParticleCell._cellParticle.Life = life;
-						if (d > 2)
-							break;
-					} else if (currentParticleCell.InhabitedBy == nextParticleCell.InhabitedBy) {
-						//if other cell is same player, give it additional life boost
-						nextParticleCell._cellParticle.Life++;
-						if (d > 2)
-							break;
-					}
+				} else if (currentParticleCell.InhabitedBy == nextParticleCell.InhabitedBy) {
+					//if other cell is same player, give it additional life boost
+					nextParticleCell._cellParticle.Life++;
+					if (d > 2)
+						break;
 				}
+
 			}
 		}
 	}

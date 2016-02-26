@@ -64,15 +64,16 @@ public class GameMenuUI : MonoBehaviour {
 	}
 
 	void Replay() {
-		string levelName = "Level" + (Persistent.Get<MenuConfig>().LevelIndex + 1);
+		string levelName = "Level" + (PlayerPrefs.GetInt("LevelIndex") + 1);
 		Debug.Log("Replaying " + levelName);
 		Persistent.Get<AnalyticsRelay>().ReplayLevel();
-		StartCoroutine(LoadCoroutine("Level" + (Persistent.Get<MenuConfig>().LevelIndex + 1)));
+		StartCoroutine(LoadCoroutine("Level" + (PlayerPrefs.GetInt("LevelIndex") + 1)));
 	}
 
 	void Skip() {
 		Persistent.Get<MenuConfig>().LevelIndex++;
-		string levelName = "Level" + (Persistent.Get<MenuConfig>().LevelIndex + 1);
+		PlayerPrefs.SetInt("LevelIndex", (int)Mathf.Repeat(PlayerPrefs.GetInt("LevelIndex") + 1, 18)); //this is bad 
+		string levelName = "Level" + (PlayerPrefs.GetInt("LevelIndex") + 1);
 		Debug.Log("Skipping " + levelName);
 		Persistent.Get<AnalyticsRelay>().SkipLevel();
 		StartCoroutine(LoadCoroutine(levelName));
@@ -80,9 +81,10 @@ public class GameMenuUI : MonoBehaviour {
 
 	void Next() {
 		Persistent.Get<AdvertisementDispatch>().ShowAdvertisement();
-		Persistent.Get<MenuConfig>().LevelIndex++;
+		int levelIndex = PlayerPrefs.GetInt("LevelIndex");
+		PlayerPrefs.SetInt("LevelIndex", (int)Mathf.Repeat(PlayerPrefs.GetInt("LevelIndex") + 1, 18)); //this is bad 
 		Persistent.Get<AnalyticsRelay>().NextLevel();
-		StartCoroutine(LoadCoroutine("Level" + (Persistent.Get<MenuConfig>().LevelIndex + 1)));
+		StartCoroutine(LoadCoroutine("Level" + (PlayerPrefs.GetInt("LevelIndex") + 1)));
 	}
 
 	IEnumerator LoadCoroutine(string levelName) {

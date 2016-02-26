@@ -54,7 +54,7 @@ public class ParticleCell {
 	public CellParticle _cellParticle;
 
 	/// <summary>
-	/// 0 1 2 3 player ID, -1 empty
+	/// 0 1 2 3 player ID, -1 empty, 255 wall
 	/// </summary>
 	public int InhabitedBy { get; set; }
 
@@ -68,11 +68,6 @@ public class ParticleCell {
 	/// Highest level CellGroup this belongs to.
 	/// </summary>
 	public CellGroup TopCellGroup { get; set; }
-
-	/// <summary>
-	/// Store the index of the particle currently in this cell. -1 if no particle.
-	/// </summary>
-	public int ParticleIndex { get; set; }
 
 	public ParticleCell(ParticleCellGrid particleCellGrid, Vector3 worldPosition) {
 		worldPosition.y += .2f;

@@ -279,8 +279,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d36027acb6b5f4b7c9b9a284da89afb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cellHiearchy: {fileID: 11472212}
   _cycleTime: 33
+  _cellHiearchy: {fileID: 11472212}
 --- !u!114 &11462022
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -304,7 +304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d36438550d341408587a8356dd0e1841, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _parentCellGridLevel: 4
+  _parentCellGridLevel: 6
 --- !u!114 &11476888
 MonoBehaviour:
   m_ObjectHideFlags: 1

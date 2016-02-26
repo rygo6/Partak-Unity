@@ -2,6 +2,9 @@
 
 namespace Partak {
 public class CellHiearchy : MonoBehaviour {
+
+	int _parentCellGridLevel;
+
 	public int ParentCellGridLevel { get { return _parentCellGridLevel; } }
 
 	public ParticleCellGrid ParticleCellGrid { get; private set; }
@@ -9,10 +12,18 @@ public class CellHiearchy : MonoBehaviour {
 	public CellGroupGrid[] CellGroupGrids { get; private set; }
 
 	public CellGroup[] CombinedFlatCellGroups { get; private set; }
-
-	[SerializeField] int _parentCellGridLevel = 3;
-	    	    	    
+		    	    	    
 	void Awake() {
+		LevelConfig levelConfig = GameObject.FindObjectOfType<LevelConfig>();
+		int x = levelConfig.RootDimension.X;
+		int y = levelConfig.RootDimension.Y;
+		while (x % 2 == 0 && y % 2 == 0) {
+			x /= 2;
+			y /= 2;
+			_parentCellGridLevel++;
+		}
+		_parentCellGridLevel++;
+
 		Vector2Int rootDimensin = FindObjectOfType<LevelConfig>().RootDimension;
 		ParticleCellGrid = new ParticleCellGrid(rootDimensin);
 		CellGroupGrids = new CellGroupGrid[_parentCellGridLevel];
