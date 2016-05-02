@@ -32,7 +32,7 @@ namespace Partak
 			Application.targetFrameRate = _fps;
 		}
 
-		private void OnDrawGizmos()
+		private void OnDrawSelectedGizmos()
 		{
 			Vector3 center = new Vector3(
 				                (_rootDimension.X / 2f) / 10f,
