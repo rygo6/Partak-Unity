@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using EC.UniThread;
+using EC.Threading;
 
 namespace Partak {
 public class CellParticleEngine : MonoBehaviour {
@@ -25,13 +25,14 @@ public class CellParticleEngine : MonoBehaviour {
 				_randomRotate[i] = Random.Range(-1, 1);
 		}
 		FindObjectOfType<CellParticleSpawn>().SpawnComplete += () => {
-			_loopThread = LoopThread.Create(MoveParticles, "CellParticleEngine", UniThreadPriority.High, FindObjectOfType<LevelConfig>().MoveCycleTime);
+			_loopThread = LoopThread.Create(MoveParticles, "CellParticleEngine", Priority.High, FindObjectOfType<LevelConfig>().MoveCycleTime);
 			_loopThread.Start();
 		};
 	}
 
 	void OnDestroy() {
-		_loopThread.Stop();
+		if (_loopThread != null)
+			_loopThread.Stop();
 	}
 
 	void MoveParticles() {

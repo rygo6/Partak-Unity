@@ -8,7 +8,7 @@ public class AdvertisementDispatch : MonoBehaviour {
 	int _gameCount;
 	int _gameCountLimit = 2;
 	int _gameCountLimitAdd = 2;
-	int _sessionCount = 10;
+	int _sessionCount = 6;
 
 	public void ShowAdvertisement() {
 		if (!Persistent.Get<SystemSettings>().FullVersion && Persistent.Get<SystemSettings>().SessionCount > _sessionCount) {

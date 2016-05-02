@@ -48,6 +48,7 @@ public class GameClock : MonoBehaviour {
 	}
 
 	void Win() {
+		CancelInvoke();
 		Persistent.Get<AnalyticsRelay>().GameTime(GameTime);
 	}
 

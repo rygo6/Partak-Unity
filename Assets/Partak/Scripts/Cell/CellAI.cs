@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Threading;
 using UnityEngine;
-using EC.UniThread;
+using EC.Threading;
 
 namespace Partak {
 public class CellAI : MonoBehaviour {
@@ -30,7 +30,7 @@ public class CellAI : MonoBehaviour {
 			RandomPullCycle[i] = i * (_randomCycleRate / MenuConfig.MaxPlayers);
 		}
 		FindObjectOfType<CellParticleSpawn>().SpawnComplete += () => {
-			_loopThread = LoopThread.Create(UpdateAICursor, "CellAI", UniThreadPriority.Low);
+			_loopThread = LoopThread.Create(UpdateAICursor, "CellAI", Priority.Low);
 			_loopThread.Start();
 		};
 	}
@@ -40,7 +40,8 @@ public class CellAI : MonoBehaviour {
 	}
 
 	private void OnDestroy() {
-		_loopThread.Stop();
+		if (_loopThread != null)
+			_loopThread.Stop();
 	}
 
 	private void MoveAICursor() {

@@ -81,7 +81,6 @@ public class GameMenuUI : MonoBehaviour {
 
 	void Next() {
 		Persistent.Get<AdvertisementDispatch>().ShowAdvertisement();
-		int levelIndex = PlayerPrefs.GetInt("LevelIndex");
 		PlayerPrefs.SetInt("LevelIndex", (int)Mathf.Repeat(PlayerPrefs.GetInt("LevelIndex") + 1, 18)); //this is bad 
 		Persistent.Get<AnalyticsRelay>().NextLevel();
 		StartCoroutine(LoadCoroutine("Level" + (PlayerPrefs.GetInt("LevelIndex") + 1)));

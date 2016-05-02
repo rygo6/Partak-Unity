@@ -8,6 +8,8 @@ public class CellParticleSystem : MonoBehaviour {
 	ParticleSystem.Particle[] _particleArray;
 	int _currentIndex;
 
+	public ParticleSystem ParticleSystem { get { return _particleSystem; } }
+
 	void Reset() {
 		Init();
 	}
@@ -19,12 +21,9 @@ public class CellParticleSystem : MonoBehaviour {
 
 	public void Initialize(int particleCount, float particleSize) {
 		_particleArray = new ParticleSystem.Particle[particleCount];
-
 		for (int i = 0; i < _particleArray.Length; ++i) {
 			_particleArray[i].startSize = particleSize;
-
 		}
-
 		_particleSystem.maxParticles = particleCount;
 	}
 

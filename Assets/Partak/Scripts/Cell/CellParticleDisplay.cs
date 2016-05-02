@@ -28,13 +28,14 @@ public class CellParticleDisplay : MonoBehaviour {
 		_cellParticleSystems = new CellParticleSystem[systemCount];
 		for (int i = 0; i < systemCount; ++i) {
 			_cellParticleSystems[i] = Instantiate(_cellParticleSystemPrefab).GetComponent<CellParticleSystem>();
-			_cellParticleSystems[i].transform.position = levelConfig.LevelBounds.center;
-			_cellParticleSystems[i].transform.parent = Camera.main.transform;
-			_cellParticleSystems[i].transform.localRotation = Quaternion.identity;
+//			_cellParticleSystems[i].transform.position = levelConfig.LevelBounds.center;
+//			_cellParticleSystems[i].transform.parent = Camera.main.transform;
+//			_cellParticleSystems[i].transform.localPosition = new Vector3(0f, 0f, 4f);
+//			_cellParticleSystems[i].transform.localRotation = Quaternion.identity;
+//			_cellParticleSystems[i].transform.localScale = Vector3.one;
 			float particleSize = Mathf.Pow(2, i);
 			particleSize /= 10f;
 			_cellParticleSystems[i].Initialize(particleCount, particleSize);
-
 			particleCount /= 2;
 		}
 
