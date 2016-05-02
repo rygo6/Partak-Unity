@@ -3,7 +3,7 @@
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using EC.UniThread;
+using EC.Threading;
 
 namespace Partak {
 /// <summary>
@@ -23,6 +23,7 @@ public class CellGradient : MonoBehaviour {
 	int _lastAddedGroupStepArrayIndex;
 	float _debugRayHeight;
 	LoopThread _loopThread;
+	bool _reverseMovement;
 
 	/// <summary>
 	/// directions which the gradient will rotate around
@@ -52,15 +53,19 @@ public class CellGradient : MonoBehaviour {
 		_cursorStore = FindObjectOfType<CursorStore>();
 		_playerSettings = Persistent.Get<MenuConfig>();
 		_cellGroupStepArray = new CellGroup[_cellHiearchy.ParticleCellGrid.Grid.Length * 2];
+		FindObjectOfType<CellParticleStore>().WinEvent += () => {
+			_reverseMovement = true;
+		};
 	}
 
 	void Start() {
-		_loopThread = LoopThread.Create(CalculateGradient, "CellGradient", UniThreadPriority.Low, _cycleTime);
+		_loopThread = LoopThread.Create(CalculateGradient, "CellGradient", Priority.Low, _cycleTime);
 		_loopThread.Start();
 	}
 
 	void OnDestroy() {
-		_loopThread.Stop();
+		if (_loopThread != null)
+			_loopThread.Stop();
 	}
 
 	void CalculateGradient() {
@@ -86,7 +91,7 @@ public class CellGradient : MonoBehaviour {
 
 	void CalculatePlayerGradient(CellGroup startCellGroup, int playerIndex) {
 		int currentIndex = 0;
-		int direction, primaryDirection, d;
+		int direction, d;
 		CellGroup currentCellGroup;
 		CellGroup nextCellGroup;
 		AddFirstCellGroupToStepArray(startCellGroup);			
@@ -95,9 +100,11 @@ public class CellGradient : MonoBehaviour {
 			for (d = 0; d < _stepDirectionArray[_currentStepDirectionIndex].Length; ++d) {
 				direction = _stepDirectionArray[_currentStepDirectionIndex][d];
 				nextCellGroup = currentCellGroup.DirectionalCellGroupArray[direction];
-				if (nextCellGroup != null && !nextCellGroup.InStepArray) {			
-					primaryDirection = CellUtility.InvertDirection(direction);
-					nextCellGroup.SetPrimaryDirectionChldParticleCell(primaryDirection, playerIndex);
+				if (nextCellGroup != null && !nextCellGroup.InStepArray) {	
+					if (_reverseMovement)	
+						nextCellGroup.SetPrimaryDirectionChldParticleCell(direction, playerIndex);	
+					else
+						nextCellGroup.SetPrimaryDirectionChldParticleCell(CellUtility.InvertDirection(direction), playerIndex);
 					AddCellGroupToStepArray(nextCellGroup);
 				}
 			}

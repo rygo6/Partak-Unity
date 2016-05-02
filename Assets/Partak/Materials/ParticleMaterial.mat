@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: ParticleMaterial
-  m_Shader: {fileID: 4800000, guid: 34015f19d05f9423fba57270ebdfea5c, type: 3}
+  m_Shader: {fileID: 4800000, guid: 5fba79c8133c647cead06e9822e35ad5, type: 3}
   m_ShaderKeywords: _VERTEXCOLOR
   m_LightmapFlags: 5
   m_CustomRenderQueue: 2000

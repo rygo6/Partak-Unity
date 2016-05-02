@@ -14,6 +14,7 @@ public class CellParticleStore : MonoBehaviour {
 	public event Action WinEvent;
 	public event Action<int> LoseEvent;
 	LevelConfig _levelConfig;
+	bool _winEventFired;
 
 	void Awake() {
 		_levelConfig = FindObjectOfType<LevelConfig>();
@@ -38,9 +39,13 @@ public class CellParticleStore : MonoBehaviour {
 	IEnumerator CalculatePercentages() {
 		yield return new WaitForSeconds(2.0f);
 		while (true) {
+			if (Input.GetKey(KeyCode.W)) {
+				Win();
+				yield break;
+			}
 			for (int playerIndex = 0; playerIndex < PlayerParticleCount.Length; ++playerIndex) {
 				float percentage = (float)(PlayerParticleCount[playerIndex] - _startParticleCount) /
-				                  (float)(_levelConfig.ParticleCount - _startParticleCount);
+				                   (float)(_levelConfig.ParticleCount - _startParticleCount);
 				percentage = Mathf.Clamp(percentage, 0f, 1f) * 100f;	
 				_cursorStore.SetPlayerCursorMorph(playerIndex, percentage);
 				if (percentage == 100f) {
@@ -58,8 +63,11 @@ public class CellParticleStore : MonoBehaviour {
 
 	//should be its own object WinSequence
 	public void Win() {
-		_cursorStore.PlayerWin(WinningPlayer());
-		WinEvent();
+		if (!_winEventFired) {
+			_winEventFired = true;
+			_cursorStore.PlayerWin(WinningPlayer());
+			WinEvent();
+		}
 	}
 
 	public int WinningPlayer() {

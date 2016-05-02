@@ -15,4 +15,5 @@ Category {
 		}
 	}
 }
+Fallback "Mobile/VertexLit"
 }

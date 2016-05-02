@@ -5,10 +5,9 @@
 Shader "Mobile/Diffuse VertexColor" {
 SubShader {
 	Tags { "RenderType"="Opaque" }
-	LOD 150
 
 CGPROGRAM
-#pragma surface surf Lambert noforwardadd
+#pragma surface surf Lambert noforwardadd approxview
 
 struct Input {
     float3 color : COLOR;

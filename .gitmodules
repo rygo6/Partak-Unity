@@ -1,3 +1,6 @@
 [submodule "Assets/Plugins/UniThread"]
 	path = Assets/Plugins/UniThread
 	url = git@github.com:rygo6/UniThread.git
+[submodule "Assets/Plugins/ECThreading"]
+	path = Assets/Plugins/ECThreading
+	url = git@github.com:rygo6/ECThreading.git
