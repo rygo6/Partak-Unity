@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Threading;
 using UnityEngine;
-using EC.Threading;
+using GT.Threading;
 
 namespace Partak {
 public class CellAI : MonoBehaviour {

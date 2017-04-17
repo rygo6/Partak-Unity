@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using EC.Threading;
+using GT.Threading;
 
 namespace Partak {
 public class CellParticleEngine : MonoBehaviour {
