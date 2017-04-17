@@ -3,7 +3,7 @@
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using EC.Threading;
+using GT.Threading;
 
 namespace Partak {
 /// <summary>

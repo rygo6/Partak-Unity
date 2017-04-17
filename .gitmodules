@@ -4,3 +4,6 @@
 [submodule "Assets/Plugins/ECThreading"]
 	path = Assets/Plugins/ECThreading
 	url = git@github.com:rygo6/ECThreading.git
+[submodule "Assets/Plugins/GTThreading"]
+	path = Assets/Plugins/GTThreading
+	url = git@github.com:rygo6/GTThreading.git
