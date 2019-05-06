@@ -8,7 +8,7 @@ public class OptionsUI : MonoBehaviour {
 	[SerializeField] private Button _focusButton;
 
 	public void RestorePurchases() {
-		Persistent.Get<Store>().RestorePurchases();
+//		Persistent.Get<Store>().RestorePurchases();
 	}
 
 	public void Mute() {
