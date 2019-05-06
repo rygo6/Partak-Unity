@@ -29,9 +29,9 @@ public class OptionsUI : MonoBehaviour {
 
 	public void Facebook() {
 		GameObject.Find("PopupUI").GetComponent<PopupUI>().Show(
-			"You are now being sent to the 8circuit Facebook page. 8circuit is the studio behind partak. Follow 8circuit on Facebook to see upcoming featues, games and provide feedback.",
+			"You are now being sent to the geotetra Facebook page. 8circuit is the studio behind geotetra. Follow 8circuit on Facebook to see upcoming featues, games and provide feedback.",
 			() => {
-				Application.OpenURL("https://www.facebook.com/eightcircuit/");
+				Application.OpenURL("https://www.facebook.com/geotetra/");
 			} 
 		);
 	}
