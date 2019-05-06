@@ -14,6 +14,8 @@ public class SystemSettings : MonoBehaviour {
 	const string Version = "2.0.5";
 
 	void Awake() {
+		
+		
 		if (PlayerPrefs.HasKey("isFullVersion")) {
 			Debug.Log("isFullVersion");
 			FullVersion = true;	
@@ -32,7 +34,7 @@ public class SystemSettings : MonoBehaviour {
 			break;
 		}
 
-		CrashReporting.Init("ff1d2528-adf9-4ba4-bf2d-d34f2ccfe587", Version);
+//		CrashReporting.Init("ff1d2528-adf9-4ba4-bf2d-d34f2ccfe587", Version);
 	}
 }
 }
