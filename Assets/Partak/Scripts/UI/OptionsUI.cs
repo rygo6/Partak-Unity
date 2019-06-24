@@ -29,9 +29,19 @@ public class OptionsUI : MonoBehaviour {
 
 	public void Facebook() {
 		GameObject.Find("PopupUI").GetComponent<PopupUI>().Show(
-			"You are now being sent to the geotetra Facebook page. 8circuit is the studio behind geotetra. Follow 8circuit on Facebook to see upcoming featues, games and provide feedback.",
+			"You are now being sent to the GeoTetra Facebook page. GeoTetra is the studio behind partak. Follow GeoTetra on Facebook to see upcoming featues, games and provide feedback.",
 			() => {
 				Application.OpenURL("https://www.facebook.com/geotetra/");
+			} 
+		);
+	}
+
+	public void PrivacyPolicy()
+	{
+		GameObject.Find("PopupUI").GetComponent<PopupUI>().Show(
+			"You are now being sent to the web page which displays partak's privacy policy.",
+			() => {
+				Application.OpenURL("https://rygo6.github.io/GeoTetraSite/partakprivacypolicy.html");
 			} 
 		);
 	}

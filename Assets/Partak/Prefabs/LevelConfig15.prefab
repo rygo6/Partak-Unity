@@ -49,6 +49,6 @@ MonoBehaviour:
   _rootDimension:
     _x: 192
     _y: 192
-  _fps: 60
+  _fps: 30
   _particleCount: 5000
   _moveCycleTime: 19
