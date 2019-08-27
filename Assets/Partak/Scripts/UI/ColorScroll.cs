@@ -1,78 +1,87 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-namespace Partak {
-public class ColorScroll : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler {
+namespace Partak
+{
+    public class ColorScroll : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+    {
+        [SerializeField] private Material[] setMaterialColors;
+        
+        private MenuConfig _playerSettings;
 
-	[SerializeField]
-	Material[] setMaterialColors;
+        private RawImage _rawImage;
 
-	RawImage _rawImage;
+        private Texture2D _texture;
+        
+        public void OnBeginDrag(PointerEventData eventData)
+        {
+        }
 
-	Texture2D _texture;
+        public void OnDrag(PointerEventData eventData)
+        {
+            Scroll(eventData.delta.x / -1000f);
+        }
 
-	MenuConfig _playerSettings;
+        public void OnEndDrag(PointerEventData eventData)
+        {
+            PlayerPrefs.SetFloat("ColorScrollX", _rawImage.uvRect.x);
+        }
 
-	void Start() {
-		_rawImage = GetComponent<RawImage>();
-		_texture = (Texture2D)_rawImage.texture;
-		_playerSettings = Persistent.Get<MenuConfig>();
-		Rect newRect = _rawImage.uvRect;
-		newRect.x = PlayerPrefs.GetFloat("ColorScrollX", -.125f);
-		_rawImage.uvRect = newRect;
-		SetColors();
-	}
+        private void Start()
+        {
+            _rawImage = GetComponent<RawImage>();
+            _texture = (Texture2D) _rawImage.texture;
+            _playerSettings = Persistent.Get<MenuConfig>();
+            var newRect = _rawImage.uvRect;
+            newRect.x = PlayerPrefs.GetFloat("ColorScrollX", -.125f);
+            _rawImage.uvRect = newRect;
+            SetColors();
+        }
 
-	public void StartScrollRight() {
-		InvokeRepeating("ScrollRight", 0f, 0.02f);
-	}
+        public void StartScrollRight()
+        {
+            InvokeRepeating(nameof(ScrollRight), 0f, 0.02f);
+        }
 
-	public void StartScrollLeft() {
-		InvokeRepeating("ScrollLeft", 0f, 0.02f);
-	}
+        public void StartScrollLeft()
+        {
+            InvokeRepeating(nameof(ScrollLeft), 0f, 0.02f);
+        }
 
-	public void StopScroll() {
-		CancelInvoke("ScrollRight");
-		CancelInvoke("ScrollLeft");
-	}
+        public void StopScroll()
+        {
+            CancelInvoke(nameof(ScrollRight));
+            CancelInvoke(nameof(ScrollLeft));
+        }
 
-	public void ScrollRight() {
-		Scroll(-0.002f);
-	}
+        public void ScrollRight()
+        {
+            Scroll(-0.002f);
+        }
 
-	public void ScrollLeft() { 
-		Scroll(0.002f);
-	}
+        public void ScrollLeft()
+        {
+            Scroll(0.002f);
+        }
 
-	void Scroll(float amount) {
-		Rect newRect = _rawImage.uvRect;
-		newRect.x += amount;
-		_rawImage.uvRect = newRect;
-		SetColors();
-	}
+        private void Scroll(float amount)
+        {
+            var newRect = _rawImage.uvRect;
+            newRect.x += amount;
+            _rawImage.uvRect = newRect;
+            SetColors();
+        }
 
-	void SetColors() {
-		float u = 0.125f + _rawImage.uvRect.x;
-		for (int i = 0; i < _playerSettings.PlayerColors.Length; ++i) {
-			_playerSettings.PlayerColors[i] = _texture.GetPixelBilinear(u, .5f);
-			setMaterialColors[i].color = _playerSettings.PlayerColors[i];
-			u += .25f;
-		}
-	}
-
-	public void OnBeginDrag(PointerEventData eventData) {
-		
-	}
-
-	public void OnEndDrag(PointerEventData eventData) {
-		PlayerPrefs.SetFloat("ColorScrollX", _rawImage.uvRect.x);
-	}
-
-	public void OnDrag(PointerEventData eventData) {
-		Scroll(eventData.delta.x / -1000f);
-	}
-}
+        private void SetColors()
+        {
+            var u = 0.125f + _rawImage.uvRect.x;
+            for (var i = 0; i < _playerSettings.PlayerColors.Length; ++i)
+            {
+                _playerSettings.PlayerColors[i] = _texture.GetPixelBilinear(u, .5f);
+                setMaterialColors[i].color = _playerSettings.PlayerColors[i];
+                u += .25f;
+            }
+        }
+    }
 }

@@ -1,3 +1,9 @@
 [submodule "Assets/Plugins/GTThreading"]
 	path = Assets/Plugins/GTThreading
 	url = git@github.com:rygo6/GTThreading.git
+[submodule "Assets/GeoTetra/GTCommon"]
+	path = Assets/GeoTetra/GTCommon
+	url = https://github.com/rygo6/GTCommon.git
+[submodule "Assets/GeoTetra/GTTween"]
+	path = Assets/GeoTetra/GTTween
+	url = https://github.com/rygo6/GTTween.git

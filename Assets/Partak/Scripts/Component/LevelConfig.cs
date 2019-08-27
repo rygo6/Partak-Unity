@@ -4,13 +4,13 @@ namespace Partak
 {
     public class LevelConfig : MonoBehaviour
 	{
-		public Bounds LevelBounds { get { return _levelBounds; } }
+		public Bounds LevelBounds => _levelBounds;
 
-		public Vector2Int RootDimension { get { return _rootDimension; } }
+		public Vector2Int RootDimension => _rootDimension;
 
-		public int ParticleCount { get { return _particleCount; } }
+		public int ParticleCount => _particleCount;
 
-		public int MoveCycleTime { get { return _moveCycleTime; } }
+		public int MoveCycleTime => _moveCycleTime;
 
 		[SerializeField]
 		private Bounds _levelBounds;
