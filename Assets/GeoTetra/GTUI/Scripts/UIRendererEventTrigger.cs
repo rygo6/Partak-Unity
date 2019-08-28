@@ -3,20 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UIRendererEventTrigger : MonoBehaviour, IPointerClickHandler
+namespace GeoTetra.GTUI
 {
-    [SerializeField] private bool _goBackOnClick;
-    [SerializeField] private UI _displayOnClick;
-
-    public void OnPointerClick(PointerEventData eventData)
+    public class UIRendererEventTrigger : MonoBehaviour, IPointerClickHandler
     {
-        if (_displayOnClick != null)
+        [SerializeField] private bool _goBackOnClick;
+        [SerializeField] private BaseUI _displayOnClick;
+
+        public void OnPointerClick(PointerEventData eventData)
         {
-            transform.root.GetComponent<UI>().CurrentlyRenderedBy.InstantiateAndDisplayUI(_displayOnClick);
-        }
-        else if (_goBackOnClick)
-        {
-            transform.root.GetComponent<UI>().CurrentlyRenderedBy.GoBack();
+            if (_displayOnClick != null)
+            {
+                transform.root.GetComponent<BaseUI>().CurrentlyRenderedBy.InstantiateAndDisplayUI(_displayOnClick);
+            }
+            else if (_goBackOnClick)
+            {
+                transform.root.GetComponent<BaseUI>().CurrentlyRenderedBy.GoBack();
+            }
         }
     }
 }

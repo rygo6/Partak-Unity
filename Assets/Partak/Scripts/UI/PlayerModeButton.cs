@@ -1,13 +1,16 @@
 ﻿using System;
+using GeoTetra.GTUI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Partak.ui
+namespace Partak.UI
 {
     public class PlayerModeButton : MonoBehaviour, IPointerClickHandler, ISubmitHandler
     {
+        [SerializeField] private ModalSelectionUI _modalSelectionUI;
         [SerializeField] private int _playerIndex;
+        [SerializeField] private Text _text;
 
         public void OnPointerClick(PointerEventData eventData)
         {
@@ -22,7 +25,7 @@ namespace Partak.ui
         private void Awake()
         {
             PlayerMode mode = (PlayerMode) PlayerPrefs.GetInt("PlayerMode" + _playerIndex);
-            GetComponent<Button>().GetComponentInChildren<Text>().text = mode.ToString();
+            _text.text = mode.ToString();
             Persistent.Get<MenuConfig>().PlayerModes[_playerIndex] = mode;
         }
 
@@ -40,8 +43,9 @@ namespace Partak.ui
                 () => { SetPlayerMode(PlayerMode.Comp); },
                 () => { SetPlayerMode(PlayerMode.None); }
             };
-            PopupSelectionUI popupSelectionUI = GameObject.Find("PopupSelectionUI").GetComponent<PopupSelectionUI>();
-            popupSelectionUI.Show(messages, actions, (int) Persistent.Get<MenuConfig>().PlayerModes[_playerIndex]);
+            ModalSelectionUI modalSelectionUi = Instantiate(_modalSelectionUI);
+            modalSelectionUi.Init(messages, actions, (int) Persistent.Get<MenuConfig>().PlayerModes[_playerIndex]);
+            transform.root.GetComponent<BaseUI>().CurrentlyRenderedBy.DisplayModalUI(modalSelectionUi);
         }
 
         private void SetPlayerMode(PlayerMode mode)
