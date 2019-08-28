@@ -561,7 +561,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68528e7dc12924b32b176a3aa4622126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _modalSelectionUI: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
+    type: 3}
   _playerIndex: 3
+  _text: {fileID: 4974690306552053875}
 --- !u!1 &4974690306518817357
 GameObject:
   m_ObjectHideFlags: 0
@@ -2180,7 +2183,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68528e7dc12924b32b176a3aa4622126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _modalSelectionUI: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
+    type: 3}
   _playerIndex: 2
+  _text: {fileID: 4974690307154608276}
 --- !u!1 &4974690307131711212
 GameObject:
   m_ObjectHideFlags: 0
@@ -4978,7 +4984,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68528e7dc12924b32b176a3aa4622126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _modalSelectionUI: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
+    type: 3}
   _playerIndex: 1
+  _text: {fileID: 4974690307131711217}
 --- !u!1 &4974690308009882613
 GameObject:
   m_ObjectHideFlags: 0
@@ -6288,7 +6297,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68528e7dc12924b32b176a3aa4622126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _modalSelectionUI: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
+    type: 3}
   _playerIndex: 0
+  _text: {fileID: 4974690306470564391}
 --- !u!1 &4974690308469458143
 GameObject:
   m_ObjectHideFlags: 0
