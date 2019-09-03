@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace GeoTetra.GTUI
 {
-    public class ModalSelectionUI : BaseUI
+    public class SelectionModalUI : ModalUI
     {
         [SerializeField] private GameObject _rootItem;
 
@@ -15,14 +15,14 @@ namespace GeoTetra.GTUI
         protected override void Awake()
         {
             base.Awake();
-            _rootItem.GetComponent<Button>().onClick.AddListener(() => { Close(0); });
+            _rootItem.GetComponent<Button>().onClick.AddListener(() => { OnSelectionClick(0); });
             ItemList.Add(_rootItem);
         }
 
-        public void Close(int index)
+        private void OnSelectionClick(int index)
         {
             _actions[index]();
-            CurrentlyRenderedBy.CloseModal();
+            base.Close();
         }
 
         public void Init(string[] messages, Action[] actions, int focusIndex)
@@ -35,7 +35,7 @@ namespace GeoTetra.GTUI
                     ItemList[i].GetComponent<RectTransform>().SetParent(_rootItem.transform.parent);
                     ItemList[i].GetComponent<RectTransform>().localScale = Vector3.one;
                     int index = i;
-                    ItemList[i].GetComponent<Button>().onClick.AddListener(() => { Close(index); });
+                    ItemList[i].GetComponent<Button>().onClick.AddListener(() => { OnSelectionClick(index); });
 
                     Navigation navDown = ItemList[i - 1].GetComponent<Button>().navigation;
                     navDown.selectOnDown = ItemList[i].GetComponent<Button>();
@@ -45,6 +45,8 @@ namespace GeoTetra.GTUI
                     navUp.selectOnDown = null;
                     navUp.selectOnUp = ItemList[i - 1].GetComponent<Button>();
                     ItemList[i].GetComponent<Button>().navigation = navUp;
+
+                    if (i == focusIndex) _focusSelectable = ItemList[i].GetComponent<Button>();
                 }
 
                 ItemList[i].GetComponentInChildren<Text>().text = messages[i];

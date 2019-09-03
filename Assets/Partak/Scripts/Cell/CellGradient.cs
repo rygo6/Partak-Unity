@@ -1,116 +1,132 @@
 ﻿//#define DEBUG_GRADIENT
 
-using System.Collections;
-using System.Linq;
-using UnityEngine;
+using GeoTetra.GTCommon.Variables;
 using GT.Threading;
+using UnityEngine;
 
-namespace Partak {
-/// <summary>
-/// Cell gradient.
-/// Calculates the gradient for all players.
-/// All players are done in one class for ease of multithreading.
-/// </summary>
-public class CellGradient : MonoBehaviour {
+namespace Partak
+{
+    /// <summary>
+    ///     Cell gradient.
+    ///     Calculates the gradient for all players.
+    ///     All players are done in one class for ease of multithreading.
+    /// </summary>
+    public class CellGradient : MonoBehaviour
+    {
+        [SerializeField] private GameState _gameState;
+        [SerializeField] private CellHiearchy _cellHiearchy;
+        [SerializeField] private int _cycleTime = 33;
 
-	[SerializeField] private int _cycleTime = 33;
-	[SerializeField] CellHiearchy _cellHiearchy;
-	readonly CellGroup[] PriorStartCell = new CellGroup[MenuConfig.MaxPlayers];
-	CursorStore _cursorStore;
-	CellGroup[] _cellGroupStepArray;
-	MenuConfig _playerSettings;
-	int _currentStepDirectionIndex;
-	int _lastAddedGroupStepArrayIndex;
-	float _debugRayHeight;
-	LoopThread _loopThread;
-	bool _reverseMovement;
+        /// <summary>
+        ///     directions which the gradient will rotate around
+        /// </summary>
+        private readonly int[][] _stepDirectionArray =
+        {
+            new[] {0, 2, 4, 6, 8, 10},
+            new[] {10, 8, 7, 4, 2, 1},
+            new[] {1, 3, 5, 7, 9, 11},
+            new[] {0, 1, 4, 6, 7, 10},
+            new[] {10, 8, 6, 4, 2, 0},
+            new[] {10, 7, 6, 4, 1, 0},
+            new[] {11, 9, 7, 5, 3, 1},
+            new[] {1, 2, 4, 7, 8, 10}
+        };
 
-	/// <summary>
-	/// directions which the gradient will rotate around
-	/// </summary>
-	readonly int[][] _stepDirectionArray = new int[][] {
-		new int[]{ 0, 2, 4, 6, 8, 10 },
-		new int[]{ 10, 8, 7, 4, 2, 1 },
-		new int[]{ 1, 3, 5, 7, 9, 11 },
-		new int[]{ 0, 1, 4, 6, 7, 10 },
-		new int[]{ 10, 8, 6, 4, 2, 0 },
-		new int[]{ 10, 7, 6, 4, 1, 0 },
-		new int[]{ 11, 9, 7, 5, 3, 1 },
-		new int[]{ 1, 2, 4, 7, 8, 10 },
-	};
+        private CellGroup[] PriorStartCell;
+        private CellGroup[] _cellGroupStepArray;
+        private int _currentStepDirectionIndex;
+        private CursorStore _cursorStore;
+        private float _debugRayHeight;
+        private int _lastAddedGroupStepArrayIndex;
+        private LoopThread _loopThread;
+        private bool _reverseMovement;
 
-	int CurrentStepDirectionIndex { 
-		get { return _currentStepDirectionIndex; }
-		set {
-			if (value >= _stepDirectionArray.Length)
-				_currentStepDirectionIndex = _stepDirectionArray.Length - value;
-			else
-				_currentStepDirectionIndex = value;
-		}
-	}
+        private int CurrentStepDirectionIndex
+        {
+            get => _currentStepDirectionIndex;
+            set
+            {
+                if (value >= _stepDirectionArray.Length)
+                    _currentStepDirectionIndex = _stepDirectionArray.Length - value;
+                else
+                    _currentStepDirectionIndex = value;
+            }
+        }
 
-	void Awake() {
-		_cursorStore = FindObjectOfType<CursorStore>();
-		_playerSettings = Persistent.Get<MenuConfig>();
-		_cellGroupStepArray = new CellGroup[_cellHiearchy.ParticleCellGrid.Grid.Length * 2];
-		FindObjectOfType<CellParticleStore>().WinEvent += () => {
-			_reverseMovement = true;
-		};
-	}
+        private void Awake()
+        {
+            _cursorStore = FindObjectOfType<CursorStore>();
+            PriorStartCell = new CellGroup[_gameState.PlayerCount()];
+            _cellGroupStepArray = new CellGroup[_cellHiearchy.ParticleCellGrid.Grid.Length * 2];
+            FindObjectOfType<CellParticleStore>().WinEvent += () => { _reverseMovement = true; };
+        }
 
-	void Start() {
-		_loopThread = LoopThread.Create(CalculateGradient, "CellGradient", Priority.Low, _cycleTime);
-		_loopThread.Start();
-	}
+        private void Start()
+        {
+            _loopThread = LoopThread.Create(CalculateGradient, "CellGradient", Priority.Low, _cycleTime);
+            _loopThread.Start();
+        }
 
-	void OnDestroy() {
-		if (_loopThread != null)
-			_loopThread.Stop();
-	}
+        private void OnDestroy()
+        {
+            if (_loopThread != null)
+                _loopThread.Stop();
+        }
 
-	void CalculateGradient() {
-		for (int playerIndex = 0; playerIndex < MenuConfig.MaxPlayers; playerIndex++) {
-			if (_playerSettings.PlayerActive(playerIndex)) {
-				CurrentStepDirectionIndex++;
-				int particleIndex = CellUtility.WorldPositionToGridIndex(
-					                    _cursorStore.CursorPositions[playerIndex].x, 
-					                    _cursorStore.CursorPositions[playerIndex].z, 
-					                    _cellHiearchy.ParticleCellGrid.Dimension);
-				ParticleCell startParticleCell = _cellHiearchy.ParticleCellGrid.Grid[particleIndex];
-				if (startParticleCell.InhabitedBy != 255) {
-					CellGroup startCellGroup = startParticleCell.BottomCellGroup;
-					CalculatePlayerGradient(startCellGroup, playerIndex);
-					PriorStartCell[playerIndex] = startCellGroup;
-				} else {
-					CalculatePlayerGradient(PriorStartCell[playerIndex], playerIndex);
-				}
-				ResetCellHiearchyInStepArray();
-			}
-		}
-	}
+        private void CalculateGradient()
+        {
+            for (int playerIndex = 0; playerIndex < _gameState.PlayerCount(); playerIndex++)
+                if (_gameState.PlayerActive(playerIndex))
+                {
+                    CurrentStepDirectionIndex++;
+                    int particleIndex = CellUtility.WorldPositionToGridIndex(
+                        _cursorStore.CursorPositions[playerIndex].x,
+                        _cursorStore.CursorPositions[playerIndex].z,
+                        _cellHiearchy.ParticleCellGrid.Dimension);
+                    ParticleCell startParticleCell = _cellHiearchy.ParticleCellGrid.Grid[particleIndex];
+                    if (startParticleCell.InhabitedBy != 255)
+                    {
+                        CellGroup startCellGroup = startParticleCell.BottomCellGroup;
+                        CalculatePlayerGradient(startCellGroup, playerIndex);
+                        PriorStartCell[playerIndex] = startCellGroup;
+                    }
+                    else
+                    {
+                        CalculatePlayerGradient(PriorStartCell[playerIndex], playerIndex);
+                    }
 
-	void CalculatePlayerGradient(CellGroup startCellGroup, int playerIndex) {
-		int currentIndex = 0;
-		int direction, d;
-		CellGroup currentCellGroup;
-		CellGroup nextCellGroup;
-		AddFirstCellGroupToStepArray(startCellGroup);			
-		while (currentIndex < _lastAddedGroupStepArrayIndex) {
-			currentCellGroup = _cellGroupStepArray[currentIndex];
-			for (d = 0; d < _stepDirectionArray[_currentStepDirectionIndex].Length; ++d) {
-				direction = _stepDirectionArray[_currentStepDirectionIndex][d];
-				nextCellGroup = currentCellGroup.DirectionalCellGroupArray[direction];
-				if (nextCellGroup != null && !nextCellGroup.InStepArray) {	
-					if (_reverseMovement)	
-						nextCellGroup.SetPrimaryDirectionChldParticleCell(direction, playerIndex);	
-					else
-						nextCellGroup.SetPrimaryDirectionChldParticleCell(CellUtility.InvertDirection(direction), playerIndex);
-					AddCellGroupToStepArray(nextCellGroup);
-				}
-			}
+                    ResetCellHiearchyInStepArray();
+                }
+        }
+
+        private void CalculatePlayerGradient(CellGroup startCellGroup, int playerIndex)
+        {
+            int currentIndex = 0;
+            int direction, d;
+            CellGroup currentCellGroup;
+            CellGroup nextCellGroup;
+            AddFirstCellGroupToStepArray(startCellGroup);
+            while (currentIndex < _lastAddedGroupStepArrayIndex)
+            {
+                currentCellGroup = _cellGroupStepArray[currentIndex];
+                for (d = 0; d < _stepDirectionArray[_currentStepDirectionIndex].Length; ++d)
+                {
+                    direction = _stepDirectionArray[_currentStepDirectionIndex][d];
+                    nextCellGroup = currentCellGroup.DirectionalCellGroupArray[direction];
+                    if (nextCellGroup != null && !nextCellGroup.InStepArray)
+                    {
+                        if (_reverseMovement)
+                            nextCellGroup.SetPrimaryDirectionChldParticleCell(direction, playerIndex);
+                        else
+                            nextCellGroup.SetPrimaryDirectionChldParticleCell(CellUtility.InvertDirection(direction),
+                                playerIndex);
+                        AddCellGroupToStepArray(nextCellGroup);
+                    }
+                }
 #if DEBUG_GRADIENT
 			if (playerIndex == 0) {
-				CellGroup nextGroup = currentCellGroup.DirectionalCellGroupArray[currentCellGroup.ChildParticleCellArray[0].PrimaryDirectionArray[playerIndex]];
+				CellGroup nextGroup =
+ currentCellGroup.DirectionalCellGroupArray[currentCellGroup.ChildParticleCellArray[0].PrimaryDirectionArray[playerIndex]];
 				if (nextGroup != null) {
 					Vector3 pos = currentCellGroup.WorldPosition;
 					pos.y += (float)currentCellGroup.ParentCellGroups.Length / 4f;
@@ -120,34 +136,37 @@ public class CellGradient : MonoBehaviour {
 				_debugRayHeight += .001f;
 			}
 #endif
-			CurrentStepDirectionIndex++;
-			currentIndex++;
-		}
-	}
+                CurrentStepDirectionIndex++;
+                currentIndex++;
+            }
+        }
 
-	void AddFirstCellGroupToStepArray(CellGroup cellGroup) {
+        private void AddFirstCellGroupToStepArray(CellGroup cellGroup)
+        {
 #if DEBUG_GRADIENT
 		_debugRayHeight = .01f;
 #endif
-		_lastAddedGroupStepArrayIndex = 0;
-		AddCellGroupToStepArray(cellGroup);
-	}
+            _lastAddedGroupStepArrayIndex = 0;
+            AddCellGroupToStepArray(cellGroup);
+        }
 
-	void AddCellGroupToStepArray(CellGroup cellGroup) {
-		cellGroup.InStepArray = true;
-		for (int i = 0; i < cellGroup.ParentCellGroups.Length; ++i) {
-			cellGroup.ParentCellGroups[i].InStepArray = true;
-		}
-		_cellGroupStepArray[_lastAddedGroupStepArrayIndex] = cellGroup;
-		_lastAddedGroupStepArrayIndex++;
-	}
+        private void AddCellGroupToStepArray(CellGroup cellGroup)
+        {
+            cellGroup.InStepArray = true;
+            for (int i = 0; i < cellGroup.ParentCellGroups.Length; ++i)
+                cellGroup.ParentCellGroups[i].InStepArray = true;
 
-	/// <summary>
-	/// Iterates through entire CellHiearchy setting the bool InStepArray
-	/// to false to prepare for next cycle of calculation
-	/// </summary>
-	/// <param name="cellhiearchy">Cellhiearchy.</param>
-	void ResetCellHiearchyInStepArray() {
+            _cellGroupStepArray[_lastAddedGroupStepArrayIndex] = cellGroup;
+            _lastAddedGroupStepArrayIndex++;
+        }
+
+        /// <summary>
+        ///     Iterates through entire CellHiearchy setting the bool InStepArray
+        ///     to false to prepare for next cycle of calculation
+        /// </summary>
+        /// <param name="cellhiearchy">Cellhiearchy.</param>
+        private void ResetCellHiearchyInStepArray()
+        {
 //		flatten only flat grids
 //		int limit = _cellHiearchy.CombinedFlatCellGroups.Length;
 //		int i;
@@ -162,12 +181,12 @@ public class CellGradient : MonoBehaviour {
 //			}
 //		}
 //		flatten step array
-		for (int i = 0; i < _lastAddedGroupStepArrayIndex; ++i) {
-			_cellGroupStepArray[i].InStepArray = false;
-			for (int o = 0; o < _cellGroupStepArray[i].ParentCellGroups.Length; ++o) {
-				_cellGroupStepArray[i].ParentCellGroups[o].InStepArray = false;
-			}
-		}
-	}
-}
+            for (int i = 0; i < _lastAddedGroupStepArrayIndex; ++i)
+            {
+                _cellGroupStepArray[i].InStepArray = false;
+                for (int o = 0; o < _cellGroupStepArray[i].ParentCellGroups.Length; ++o)
+                    _cellGroupStepArray[i].ParentCellGroups[o].InStepArray = false;
+            }
+        }
+    }
 }

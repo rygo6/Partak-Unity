@@ -1,76 +1,92 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.Analytics;
-using System.Collections.Generic;
+﻿using System.Collections;
+using GeoTetra.GTCommon.Variables;
+using UnityEngine;
 
-namespace Partak {
-public class GameClock : MonoBehaviour {
+namespace Partak
+{
+    public class GameClock : MonoBehaviour
+    {
+        [SerializeField] private GameState _gameState;
+        [SerializeField] private Texture[] _playerColorTextures;
+        [SerializeField] private Material _surroundMaterial;
+        
+        private CellParticleEngine _cellParticleMover;
+        private CellParticleStore _cellParticleStore;
 
-	public float GameTime { get; private set; }
-	[SerializeField] Texture[] _playerColorTextures;
-	[SerializeField] Material _surroundMaterial;
-	float _fastKillTimeLimit = 70f;
-	float _timeLimit = 80f;
-	bool _limitReached;
-	CellParticleEngine _cellParticleMover;
-	CellParticleStore _cellParticleStore;
-	Color[] _initialColors = new Color[4];
-	MenuConfig _menuConfig;
+        private float _fastKillTimeLimit = 70f;
+        private Color[] _initialColors;
+        private bool _limitReached;
+        private float _timeLimit = 80f;
+        public float GameTime { get; private set; }
 
-	void Start() {
-		_cellParticleMover = FindObjectOfType<CellParticleEngine>();
-		_cellParticleStore = FindObjectOfType<CellParticleStore>();
-		_menuConfig = Persistent.Get<MenuConfig>();
-		_menuConfig.PlayerColors.CopyTo(_initialColors, 0);
-		SetTimeLimit(Persistent.Get<MenuConfig>().TimeLimitMinutes);
-		FindObjectOfType<CellParticleStore>().WinEvent += Win;
-		Invoke("FastKillTimeOut", _fastKillTimeLimit);
-		Invoke("TimeOut", _timeLimit);
-	}
+        private void Start()
+        {
+            _cellParticleMover = FindObjectOfType<CellParticleEngine>();
+            _cellParticleStore = FindObjectOfType<CellParticleStore>();
 
-	void Update() {
-		GameTime += Time.deltaTime;
-	}
+            _initialColors = new Color[_gameState.PlayerCount()];
+            for (int i = 0; i < _initialColors.Length; ++i)
+            {
+                _initialColors[i] = _gameState.PlayerStates[i].PlayerColor;
+            }
+            
+            SetTimeLimit(_gameState.TimeLimitMinutes);
+            FindObjectOfType<CellParticleStore>().WinEvent += Win;
+            Invoke("FastKillTimeOut", _fastKillTimeLimit);
+            Invoke("TimeOut", _timeLimit);
+        }
 
-	void OnDestroy() {
-		_surroundMaterial.SetFloat("_Blend", 0f);
-		_surroundMaterial.SetTexture("_Texture2", null);
-		for (int i = 0; i < _menuConfig.PlayerColors.Length; ++i)
-			_menuConfig.PlayerColors[i] = _initialColors[i];
-	}
+        private void Update()
+        {
+            GameTime += Time.deltaTime;
+        }
 
-	public void SetTimeLimit(int minutes) {
-		if (minutes == 0)
-			minutes = 1;
-		_fastKillTimeLimit = minutes * 60;
-		;
-		_timeLimit = (minutes * 20) + _fastKillTimeLimit;
-	}
+        private void OnDestroy()
+        {
+            _surroundMaterial.SetFloat("_Blend", 0f);
+            _surroundMaterial.SetTexture("_Texture2", null);
+            for (int i = 0; i < _gameState.PlayerCount(); ++i)
+                _gameState.PlayerStates[i].PlayerColor = _initialColors[i];
+        }
 
-	void Win() {
-		CancelInvoke();
-		Persistent.Get<AnalyticsRelay>().GameTime(GameTime);
-	}
+        public void SetTimeLimit(int minutes)
+        {
+            if (minutes == 0)
+                minutes = 1;
+            _fastKillTimeLimit = minutes * 60;
+            ;
+            _timeLimit = minutes * 20 + _fastKillTimeLimit;
+        }
 
-	void TimeOut() {
-		_cellParticleStore.Win();
-	}
+        private void Win()
+        {
+            CancelInvoke();
+//            _componentContainer.Get<AnalyticsRelay>().GameTime(GameTime); //TODO hook up
+        }
 
-	void FastKillTimeOut() {
-		_cellParticleMover.FastKill = true;
-		StartCoroutine(FastKillTimeoutCoroutine());
-	}
+        private void TimeOut()
+        {
+            _cellParticleStore.Win();
+        }
 
-	IEnumerator FastKillTimeoutCoroutine() {
-		int winningPlayer = 0;
-		while (true) {
-			winningPlayer = _cellParticleStore.WinningPlayer();
-			_menuConfig.PlayerColors[winningPlayer] += new Color(.3f, .3f, .3f, .3f);
-			yield return null;
-			yield return null;
-			_menuConfig.PlayerColors[winningPlayer] = _initialColors[winningPlayer];
-			yield return new WaitForSeconds(0.4f);
-		}
-	}
-}
+        private void FastKillTimeOut()
+        {
+            _cellParticleMover.FastKill = true;
+            StartCoroutine(FastKillTimeoutCoroutine());
+        }
+
+        private IEnumerator FastKillTimeoutCoroutine()
+        {
+            int winningPlayer = 0;
+            while (true)
+            {
+                winningPlayer = _cellParticleStore.WinningPlayer();
+                _gameState.PlayerStates[winningPlayer].PlayerColor += new Color(.3f, .3f, .3f, .3f);
+                yield return null;
+                yield return null;
+                _gameState.PlayerStates[winningPlayer].PlayerColor = _initialColors[winningPlayer];
+                yield return new WaitForSeconds(0.4f);
+            }
+        }
+    }
 }

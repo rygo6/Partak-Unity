@@ -7,31 +7,17 @@ namespace GeoTetra.GTUI
 {
 	public class ModalUI : BaseUI
 	{
-		[SerializeField]
-		private Text _messageText;
+		[SerializeField] private Button _closeModalButton;
 
-		private Action _action;
-
-		void Awake()
+		protected override void Awake()
 		{
-			Close();
+			base.Awake();
+			_closeModalButton?.onClick.AddListener(Close);
 		}
-
-		public void Close()
+		
+		protected virtual void Close()
 		{
-			gameObject.SetActive(false);
-			if (_action != null)
-			{
-				_action();
-				_action = null;
-			}
-		}
-
-		public void Show(string message, Action action = null)
-		{
-			_messageText.text = message;
-			gameObject.SetActive(true);
-			_action = action;
+			CurrentlyRenderedBy.CloseModal();
 		}
 	}
 }

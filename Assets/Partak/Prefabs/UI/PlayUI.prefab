@@ -561,7 +561,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68528e7dc12924b32b176a3aa4622126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _modalSelectionUI: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
+  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
+  _selectionModalUi: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
     type: 3}
   _playerIndex: 3
   _text: {fileID: 4974690306552053875}
@@ -1375,7 +1376,6 @@ GameObject:
   - component: {fileID: 4974690306945656479}
   - component: {fileID: 4974690306945656472}
   - component: {fileID: 4974690306945656473}
-  - component: {fileID: 4974690306945656474}
   m_Layer: 5
   m_Name: StartButton
   m_TagString: Untagged
@@ -1486,18 +1486,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &4974690306945656474
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4974690306945656468}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a86165a6c9e54f39b2b60ebd80f6fc2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4974690306955639304
 GameObject:
   m_ObjectHideFlags: 0
@@ -1883,7 +1871,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000049591064, y: -1}
+  m_AnchoredPosition: {x: -0.00005340576, y: -1}
   m_SizeDelta: {x: 0, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4974690307018450261
@@ -2183,7 +2171,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68528e7dc12924b32b176a3aa4622126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _modalSelectionUI: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
+  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
+  _selectionModalUi: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
     type: 3}
   _playerIndex: 2
   _text: {fileID: 4974690307154608276}
@@ -2683,6 +2672,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 481fb6ecd238f4c539bbe151d7d605f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
   _minutesText: {fileID: 4974690308299312726}
 --- !u!1 &4974690307273514242
 GameObject:
@@ -2815,6 +2805,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
   _playerIndex: 3
   _constantUpdate: 1
 --- !u!1 &4974690307286034244
@@ -2904,7 +2895,6 @@ GameObject:
   - component: {fileID: 4974690307297324496}
   - component: {fileID: 4974690307297324497}
   - component: {fileID: 4974690307297324498}
-  - component: {fileID: 5814418625192332836}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -3015,20 +3005,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &5814418625192332836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4974690307297324499}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0264a51786289b242bff8f45de69066d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _goBackOnClick: 1
-  _displayOnClick: {fileID: 0}
 --- !u!1 &4974690307356863499
 GameObject:
   m_ObjectHideFlags: 0
@@ -4149,6 +4125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
   _playerIndex: 2
   _constantUpdate: 1
 --- !u!1 &4974690307783550784
@@ -4756,6 +4733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c14611e5f2e442e3b005d4abb53ce61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
   setMaterialColors:
   - {fileID: 2100000, guid: 8f7046df2233e41e784e81a0b8827aa6, type: 2}
   - {fileID: 2100000, guid: 83805d7830e954ac0a640b6a89f8116b, type: 2}
@@ -4846,8 +4824,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa68b8e3c09687e49b3283c31ea70fc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rightButton: {fileID: 4974690306919138462}
+  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
   _leftButton: {fileID: 4974690307569558318}
+  _rightButton: {fileID: 4974690306919138462}
+  _transitionSpeed: 4
 --- !u!1 &4974690307968984260
 GameObject:
   m_ObjectHideFlags: 0
@@ -4984,7 +4964,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68528e7dc12924b32b176a3aa4622126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _modalSelectionUI: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
+  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
+  _selectionModalUi: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
     type: 3}
   _playerIndex: 1
   _text: {fileID: 4974690307131711217}
@@ -5189,11 +5170,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4974690308090156227}
+  - component: {fileID: 4974690308090156280}
   - component: {fileID: 4974690308090156284}
   - component: {fileID: 4974690308090156285}
   - component: {fileID: 4974690308090156286}
   - component: {fileID: 4974690308090156287}
-  - component: {fileID: 4974690308090156280}
   m_Layer: 5
   m_Name: PlayUI
   m_TagString: Untagged
@@ -5221,6 +5202,29 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &4974690308090156280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4974690308090156281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a53ea2a18bea4766b152ea900e1aae4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _focusSelectable: {fileID: 4974690306945656473}
+  _root: {fileID: 4974690308469458142}
+  _canvas: {fileID: 4974690308090156284}
+  _group: {fileID: 4974690308090156287}
+  _messageModalUiPrefab: {fileID: 8194083882394607933, guid: a449b5a172335124cab656b556e9f03d,
+    type: 3}
+  _selectionModalUi: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
+    type: 3}
+  _backButton: {fileID: 4974690307297324498}
+  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
+  _startButton: {fileID: 4974690306945656473}
 --- !u!223 &4974690308090156284
 Canvas:
   m_ObjectHideFlags: 0
@@ -5293,21 +5297,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &4974690308090156280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4974690308090156281}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ffa63952d1a5264ebf55be551bf830a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _root: {fileID: 4974690308469458142}
-  _canvas: {fileID: 4974690308090156284}
-  _group: {fileID: 4974690308090156287}
 --- !u!1 &4974690308160267110
 GameObject:
   m_ObjectHideFlags: 0
@@ -5664,6 +5653,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
   _playerIndex: 1
   _constantUpdate: 1
 --- !u!1 &4974690308250222609
@@ -5987,6 +5977,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
   _playerIndex: 0
   _constantUpdate: 1
 --- !u!1 &4974690308405859299
@@ -6297,7 +6288,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68528e7dc12924b32b176a3aa4622126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _modalSelectionUI: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
+  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
+  _selectionModalUi: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
     type: 3}
   _playerIndex: 0
   _text: {fileID: 4974690306470564391}

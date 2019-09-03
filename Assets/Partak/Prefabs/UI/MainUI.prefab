@@ -50,12 +50,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 7211395502732636245}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ffa63952d1a5264ebf55be551bf830a, type: 3}
+  m_Script: {fileID: 11500000, guid: 1f6e311ae91ef47d7ad6e99f43cd1689, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _focusSelectable: {fileID: 7211395504049849691}
   _root: {fileID: 7211395504157175162}
   _canvas: {fileID: 7211395502732636241}
   _group: {fileID: 7211395502732636244}
+  _messageModalUiPrefab: {fileID: 8194083882394607933, guid: a449b5a172335124cab656b556e9f03d,
+    type: 3}
+  _selectionModalUi: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
+    type: 3}
+  _backButton: {fileID: 0}
+  _playButton: {fileID: 7211395504049849691}
+  _playUI: {fileID: 4974690308090156280, guid: decd7486ac5492442882f300edeac3a8, type: 3}
+  _levelButton: {fileID: 7211395504204496868}
+  _levelUI: {fileID: 0}
+  _optionButton: {fileID: 7211395504280433874}
+  _optionsUI: {fileID: 7574212482900016776, guid: 26d04cd4720b31345bb87388faa14cb3,
+    type: 3}
 --- !u!223 &7211395502732636241
 Canvas:
   m_ObjectHideFlags: 0
@@ -172,7 +185,7 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7211395502778838365}
-  m_CullTransparentMesh: 0
+  m_CullTransparentMesh: 1
 --- !u!1 &7211395503010166952
 GameObject:
   m_ObjectHideFlags: 0
@@ -313,7 +326,7 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7211395503300422857}
-  m_CullTransparentMesh: 0
+  m_CullTransparentMesh: 1
 --- !u!114 &7211395503300422858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -448,7 +461,6 @@ GameObject:
   - component: {fileID: 7211395504049849701}
   - component: {fileID: 7211395504049849690}
   - component: {fileID: 7211395504049849691}
-  - component: {fileID: 1255816771}
   m_Layer: 5
   m_Name: SingleButton
   m_TagString: Untagged
@@ -483,7 +495,7 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7211395504049849688}
-  m_CullTransparentMesh: 0
+  m_CullTransparentMesh: 1
 --- !u!114 &7211395504049849690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -559,20 +571,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &1255816771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7211395504049849688}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0264a51786289b242bff8f45de69066d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _displayOnClick: {fileID: 4974690308090156280, guid: decd7486ac5492442882f300edeac3a8,
-    type: 3}
 --- !u!1 &7211395504157175163
 GameObject:
   m_ObjectHideFlags: 0
@@ -618,7 +616,7 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7211395504157175163}
-  m_CullTransparentMesh: 0
+  m_CullTransparentMesh: 1
 --- !u!1 &7211395504204496858
 GameObject:
   m_ObjectHideFlags: 0
@@ -665,7 +663,7 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7211395504204496858}
-  m_CullTransparentMesh: 0
+  m_CullTransparentMesh: 1
 --- !u!114 &7211395504204496871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -787,7 +785,7 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7211395504280433872}
-  m_CullTransparentMesh: 0
+  m_CullTransparentMesh: 1
 --- !u!114 &7211395504280433885
 MonoBehaviour:
   m_ObjectHideFlags: 0

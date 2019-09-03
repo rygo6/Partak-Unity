@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GeoTetra.GTCommon.Variables;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -6,14 +7,12 @@ namespace Partak
 {
     public class ColorScroll : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
+        [SerializeField] private GameState _gameState;
         [SerializeField] private Material[] setMaterialColors;
-        
-        private MenuConfig _playerSettings;
 
         private RawImage _rawImage;
-
         private Texture2D _texture;
-        
+
         public void OnBeginDrag(PointerEventData eventData)
         {
         }
@@ -32,7 +31,6 @@ namespace Partak
         {
             _rawImage = GetComponent<RawImage>();
             _texture = (Texture2D) _rawImage.texture;
-            _playerSettings = Persistent.Get<MenuConfig>();
             var newRect = _rawImage.uvRect;
             newRect.x = PlayerPrefs.GetFloat("ColorScrollX", -.125f);
             _rawImage.uvRect = newRect;
@@ -76,10 +74,10 @@ namespace Partak
         private void SetColors()
         {
             var u = 0.125f + _rawImage.uvRect.x;
-            for (var i = 0; i < _playerSettings.PlayerColors.Length; ++i)
+            for (var i = 0; i < _gameState.PlayerCount(); ++i)
             {
-                _playerSettings.PlayerColors[i] = _texture.GetPixelBilinear(u, .5f);
-                setMaterialColors[i].color = _playerSettings.PlayerColors[i];
+                _gameState.PlayerStates[i].PlayerColor = _texture.GetPixelBilinear(u, .5f);
+                setMaterialColors[i].color = _gameState.PlayerStates[i].PlayerColor;
                 u += .25f;
             }
         }

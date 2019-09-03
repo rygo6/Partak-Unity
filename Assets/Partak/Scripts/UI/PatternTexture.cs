@@ -1,44 +1,35 @@
-﻿using UnityEngine;
+﻿using System;
+using GeoTetra.GTCommon.Variables;
+using UnityEngine;
 
 namespace Partak
 {
     public class PatternTexture : MonoBehaviour
     {
-        private const int TextureSize = 256;
-
-        private const int Divisions = 8;
-
-        private const int SquareSize = TextureSize / Divisions;
-
-        private readonly Color[] PixelColors = new Color[SquareSize * SquareSize];
+        [SerializeField] private GameState _gameState;
         [SerializeField] private Material _applyMaterial;
-
-        private MenuConfig _playerSettings;
-
+        private const int TextureSize = 256;
+        private const int Divisions = 8;
+        private const int SquareSize = TextureSize / Divisions;
+        private readonly Color[] PixelColors = new Color[SquareSize * SquareSize];
         private Color _testColor = Color.black;
-
         private Texture2D _texture2D;
 
         private void Start()
         {
             _texture2D = new Texture2D(TextureSize, TextureSize, TextureFormat.RGBA32, false, false);
             _applyMaterial.mainTexture = _texture2D;
-            _playerSettings = Persistent.Get<MenuConfig>();
-            SetTexture();
+            _gameState.PlayerStates[0].ColorChanged += SetTexture;
+            SetTexture(Color.white);
         }
 
-        private void Update()
+        private void OnDestroy()
         {
-            if (!_testColor.RGBEquals(_playerSettings.PlayerColors[0]))
-            {
-                _testColor = _playerSettings.PlayerColors[0];
-                SetTexture();
-            }
+            _gameState.PlayerStates[0].ColorChanged -= SetTexture;
         }
 
-        private void SetTexture()
+        private void SetTexture(Color color)
         {
-//            Debug.Log("SetTexture " + _playerSettings.PlayerColors[0]) ;
             bool xblack = false;
             bool yBlack = false;
             int playerIndex = 0;
@@ -57,9 +48,9 @@ namespace Partak
                     }
                     else
                     {
-                        SetPixelColors(_playerSettings.PlayerColors[playerIndex]);
+                        SetPixelColors(_gameState.PlayerStates[playerIndex].PlayerColor);
                         playerIndex++;
-                        if (playerIndex == _playerSettings.PlayerColors.Length)
+                        if (playerIndex == _gameState.PlayerCount())
                             playerIndex = 0;
                         xblack = true;
                     }
