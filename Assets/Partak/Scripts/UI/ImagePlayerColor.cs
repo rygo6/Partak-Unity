@@ -1,34 +1,35 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
-namespace Partak {
-public class ImagePlayerColor : MonoBehaviour {
+namespace Partak
+{
+    public class ImagePlayerColor : MonoBehaviour
+    {
+        [SerializeField] private GameState _gameState;
+        [SerializeField] private int _playerIndex;
+        [SerializeField] private bool _constantUpdate;
 
-	[SerializeField]
-	int _playerIndex;
+        private Image _image;
 
-	[SerializeField]
-	bool _constantUpdate;
+        private void Start()
+        {
+            _image = GetComponent<Image>();
+            _image.color = _image.color.SetRGB(_gameState.PlayerStates[_playerIndex].PlayerColor);
+            if (_constantUpdate)
+            {
+                _gameState.PlayerStates[_playerIndex].ColorChanged += UpdateColor;
+            }
+        }
 
-	MenuConfig _playerSettings;
+        private void OnDestroy()
+        {
+            _gameState.PlayerStates[_playerIndex].ColorChanged -= UpdateColor;
+        }
 
-	Image _image;
-
-	void Start() {
-		_playerSettings = Persistent.Get<MenuConfig>();
-		_image = GetComponent<Image>();
-		_image.color = _image.color.SetRGB(_playerSettings.PlayerColors[_playerIndex]);
-		if (_constantUpdate)
-			StartCoroutine(UpdateColor());
-	}
-
-	IEnumerator UpdateColor() {
-		while (true) {
-			if (!_image.color.RGBEquals(_playerSettings.PlayerColors[_playerIndex]))
-				_image.color = _image.color.SetRGB(_playerSettings.PlayerColors[_playerIndex]);
-			yield return null;
-		}
-	}
-}
+        private void UpdateColor(Color color)
+        {
+            if (!_image.color.RGBEquals(color))
+                _image.color = color;
+        }
+    }
 }

@@ -1,4 +1,5 @@
-﻿using GeoTetra.GTUI;
+﻿using GeoTetra.GTCommon.Variables;
+using GeoTetra.GTUI;
 using UnityEngine;
 using UnityEngine.Purchasing;
 
@@ -6,6 +7,8 @@ namespace Partak
 {
     public class Store : MonoBehaviour, IStoreListener
     {
+        [SerializeField] private ComponentContainer _componentContainer;
+        
         private IStoreController _controller;
 
         private IExtensionProvider _extensions;
@@ -48,8 +51,8 @@ namespace Partak
             {
                 Debug.Log("FullVersion Enabled");
                 PlayerPrefs.SetInt("isFullVersion", 1);
-                Persistent.Get<SystemSettings>().FullVersion = true;
-                GameObject.Find("PopupUI").GetComponent<ModalUI>().Show("Full Version Purchase Restore");
+                _componentContainer.Get<SystemSettings>().FullVersion = true;
+                GameObject.Find("PopupUI").GetComponent<MessageModalUI>().Init("Full Version Purchase Restore");
             }
 
             return PurchaseProcessingResult.Complete;

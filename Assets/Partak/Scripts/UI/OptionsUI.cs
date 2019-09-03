@@ -5,16 +5,28 @@ using GeoTetra.GTUI;
 
 namespace Partak
 {
-    public class OptionsUI : MonoBehaviour
+    public class OptionsUI : StackUI
     {
-        [SerializeField] private Button _focusButton;
+        [SerializeField] private Button _toggleSoundButton;
+        [SerializeField] private Button _facebookButton;
+        [SerializeField] private Button _privacyPolicyButton;
+        [SerializeField] private Button _restorePurchasesButton;
 
-        public void RestorePurchases()
+        protected override void Awake()
+        {
+            base.Awake();
+            _toggleSoundButton.onClick.AddListener(Mute);
+            _facebookButton.onClick.AddListener(Facebook);
+            _privacyPolicyButton.onClick.AddListener(PrivacyPolicy);
+            _restorePurchasesButton.onClick.AddListener(RestorePurchases);
+        }
+
+        private void RestorePurchases()
         {
 //		Persistent.Get<Store>().RestorePurchases();
         }
 
-        public void Mute()
+        private void Mute()
         {
             switch (PlayerPrefs.GetInt("muted"))
             {
@@ -22,35 +34,30 @@ namespace Partak
                 case 1:
                     AudioListener.volume = 0f;
                     PlayerPrefs.SetInt("muted", 2);
-                    GameObject.Find("PopupUI").GetComponent<ModalUI>().Show("sound muted");
+                    DisplayModal("Sound Muted");
                     break;
                 case 2:
                     AudioListener.volume = 1f;
                     PlayerPrefs.SetInt("muted", 1);
-                    GameObject.Find("PopupUI").GetComponent<ModalUI>().Show("sound enabled");
+                    DisplayModal("Sound Enabled");
                     break;
             }
         }
 
-        public void Facebook()
+        private void Facebook()
         {
-            GameObject.Find("PopupUI").GetComponent<ModalUI>().Show(
-                "You are now being sent to the GeoTetra Facebook page. GeoTetra is the studio behind partak. Follow GeoTetra on Facebook to see upcoming featues, games and provide feedback.",
+            DisplayModal(
+                "You are now being sent to the GeoTetra Facebook page. GeoTetra is the studio behind partak. Follow GeoTetra on Facebook to see upcoming features, games and provide feedback.",
                 () => { Application.OpenURL("https://www.facebook.com/geotetra/"); }
             );
         }
 
-        public void PrivacyPolicy()
+        private void PrivacyPolicy()
         {
-            GameObject.Find("PopupUI").GetComponent<ModalUI>().Show(
+            DisplayModal(
                 "You are now being sent to the web page which displays partak's privacy policy.",
                 () => { Application.OpenURL("https://rygo6.github.io/GeoTetraSite/partakprivacypolicy.html"); }
             );
-        }
-
-        public void FocusButton()
-        {
-            _focusButton.Select();
         }
     }
 }
