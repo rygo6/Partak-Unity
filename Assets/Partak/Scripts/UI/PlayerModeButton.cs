@@ -1,5 +1,5 @@
 ﻿using System;
-using GeoTetra.GTCommon.Variables;
+using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTUI;
 using UnityEngine;
 using UnityEngine.EventSystems;

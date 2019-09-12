@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using GeoTetra.GTCommon.Variables;
+using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTUI;
+using UnityEditor.UIElements;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
@@ -30,7 +31,8 @@ namespace Partak
 
             if (activeCount >= 2)
             {
-                StartCoroutine(LoadCoroutine());
+                CurrentlyRenderedBy.StartCoroutine(LoadCoroutine());
+                CurrentlyRenderedBy.Flush();
             }
             else
             {
@@ -44,8 +46,10 @@ namespace Partak
             //done so sound can play 
             yield return new WaitForSeconds(.5f);
 //            _componentContainer.Get<AdvertisementDispatch>().ShowAdvertisement(); //TODO hook up
+            AsyncOperation unload = SceneManager.UnloadSceneAsync("OpenMenu");
+            yield return unload;
             string levelName = "Level" + (_gameState.LevelIndex + 1);
-            SceneManager.LoadScene(levelName);
+            SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Additive);
         }
     }
 }

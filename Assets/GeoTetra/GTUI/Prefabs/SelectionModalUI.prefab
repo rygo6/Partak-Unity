@@ -228,6 +228,7 @@ GameObject:
   - component: {fileID: 1900360005763108930}
   - component: {fileID: 1900360005763108929}
   - component: {fileID: 1900360005763108928}
+  - component: {fileID: 7266042869392433747}
   m_Layer: 5
   m_Name: RootItem
   m_TagString: Untagged
@@ -338,6 +339,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &7266042869392433747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900360005763108934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioClip: {fileID: 8300000, guid: 80340672862cb4ef894930824b52fd14, type: 3}
+  _volume: 1
 --- !u!1 &1900360006009967080
 GameObject:
   m_ObjectHideFlags: 0

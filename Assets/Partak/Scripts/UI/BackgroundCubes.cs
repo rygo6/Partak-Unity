@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTUI;
 using UnityEngine;
 
@@ -8,14 +9,16 @@ namespace Partak
 {
     public class BackgroundCubes : MonoBehaviour
     {
+        [SerializeField] private ComponentContainer _componentContainer;
         [SerializeField] private string _straightToPerspectiveState = "StraightToPerspective";
         [SerializeField] private string _perspectiveToStraightState = "PerspectiveToStraight";
         [SerializeField] private Animator _animator;
-        [SerializeField] private UIRenderer _uiRenderer;
+        private UIRenderer _uiRenderer;
         private bool _perspective = true;
 
         private IEnumerator Start()
         {
+            _componentContainer.Populate(out _uiRenderer);
             yield return new WaitForSeconds(.2f);
             _uiRenderer.StackTransitionOccured.AddListener(ToggleCubePerspective);
         }

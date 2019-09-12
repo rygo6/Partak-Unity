@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Boo.Lang;
-using GeoTetra.GTCommon.Assets;
+using GeoTetra.GTCommon.ScriptableObjects;
 using UnityEngine;
 using GeoTetra.GTTween;
 using UnityEngine.Events;
@@ -11,14 +10,17 @@ using UnityEngine.UI;
 
 namespace GeoTetra.GTUI
 {
+    [RequireComponent(typeof(AudioSource))]
     public class UIRenderer : MonoBehaviour
     {
-        [FormerlySerializedAs("_displayUIOnStartDelay")] [SerializeField] private float _displayStackUIOnStartDelay = .1f;
-        [FormerlySerializedAs("_displayUIOnStart")] [SerializeField] private StackUI _displayStackUIOnStart;
+        [SerializeField] private float _displayStackUIOnStartDelay = .1f;
+        [SerializeField] private StackUI _displayStackUIOnStart;
         [SerializeField] private Camera _uiCamera;
-        [SerializeField] private CurveAsset _transitionCurve;
+        [SerializeField] private AnimationCurveReference _transitionCurve;
         [SerializeField] private float _transitionMultiplier = 2;
         [SerializeField] private UnityEvent _stackTransitionOccured;
+        [SerializeField] private ComponentContainer _componentContainer;
+        [SerializeField] private AudioSource _audioSource;
         
         private readonly Stack<StackUI> _priorStackUIs = new Stack<StackUI>();
         private StackUI _currentStackUI;
@@ -27,6 +29,26 @@ namespace GeoTetra.GTUI
         public Camera UICamera => _uiCamera;
 
         public UnityEvent StackTransitionOccured => _stackTransitionOccured;
+
+        public AudioSource AudioSource
+        {
+            get => _audioSource;
+        }
+
+        private void Awake()
+        {
+            _componentContainer.RegisterComponent(this);
+        }
+
+        private void Reset()
+        {
+            _audioSource = GetComponent<AudioSource>();
+        }
+
+        private void OnDestroy()
+        {
+            _componentContainer.UnregisterComponent(this);
+        }
 
         private IEnumerator Start()
         {
@@ -52,7 +74,7 @@ namespace GeoTetra.GTUI
                 Tweens.ToFloat(0,
                     1,
                     _transitionMultiplier,
-                    _transitionCurve.Curve,
+                    _transitionCurve.Value,
                     f => ui.Group.alpha = f,
                     () =>
                     {
@@ -68,7 +90,7 @@ namespace GeoTetra.GTUI
                     1,
                     0,
                     _transitionMultiplier, 
-                    _transitionCurve.Curve,
+                    _transitionCurve.Value,
                     f => _currentModal.Group.alpha = f,
                     () =>
                     {
@@ -92,6 +114,18 @@ namespace GeoTetra.GTUI
             
             _stackTransitionOccured.Invoke();
         }
+        
+        public void Flush()
+        {
+            StackUI currentUI = _currentStackUI;
+            TweenOut(currentUI, Direction4.Down, () => { Destroy(currentUI.gameObject); });
+
+            while (_priorStackUIs.Count > 0)
+            {
+                StackUI stackUI = _priorStackUIs.Pop();
+                Destroy(stackUI);
+            }
+        }
 
         private void TweenIn(StackUI ui, Direction4 direction)
         {
@@ -106,7 +140,7 @@ namespace GeoTetra.GTUI
                 ui.Root, 
                 Vector2.zero, 
                 _transitionMultiplier, 
-                _transitionCurve.Curve,
+                _transitionCurve.Value,
                 ui.OnTransitionInFinish));
         }
 
@@ -118,14 +152,14 @@ namespace GeoTetra.GTUI
                 newPos.y = ui.Root.rect.height;
             else if (direction == Direction4.Down)
                 newPos.y = -ui.Root.rect.height;
-            StartCoroutine(RectTransformTweens.ToAnchoredPosition(_currentStackUI.Root, newPos, _transitionMultiplier, _transitionCurve.Curve,
+            StartCoroutine(RectTransformTweens.ToAnchoredPosition(_currentStackUI.Root, newPos, _transitionMultiplier, _transitionCurve.Value,
                 OnFinish));
         }
 
         public void GoBack()
         {
-            StackUI priorUI = _currentStackUI;
-            TweenOut(priorUI, Direction4.Down, () => { Destroy(priorUI.gameObject); });
+            StackUI currentUI = _currentStackUI;
+            TweenOut(currentUI, Direction4.Down, () => { Destroy(currentUI.gameObject); });
 
             _currentStackUI = _priorStackUIs.Pop();
             TweenIn(_currentStackUI, Direction4.Down);
