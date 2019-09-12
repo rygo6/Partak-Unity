@@ -1,14 +1,12 @@
 fileFormatVersion: 2
-guid: 646619b52291baa4ea2addf83fa8f85c
+guid: 16c9e83f2d8d4bc4eb6911aaa93d8d8b
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - _displayStackUIOnStart: {instanceID: 0}
-  - _uiCamera: {instanceID: 0}
-  - _transitionCurve: {fileID: 11400000, guid: a291f7415f8e940bab3e7418028d5228, type: 2}
   - _componentContainer: {fileID: 11400000, guid: ed956f91a7b883142bf9b588e32e0f1a,
       type: 2}
+  - _stackUi: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

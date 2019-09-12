@@ -107,6 +107,7 @@ GameObject:
   - component: {fileID: 2670327072187507147}
   - component: {fileID: 8458335396024503274}
   - component: {fileID: 3294787904824904289}
+  - component: {fileID: 3863731169787962337}
   m_Layer: 5
   m_Name: MuteButton
   m_TagString: Untagged
@@ -217,6 +218,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &3863731169787962337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1682074915859168557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioClip: {fileID: 8300000, guid: 80c6ffe86a180a74eb0dbb49539143e4, type: 3}
+  _volume: 1
 --- !u!1 &2110534204696767722
 GameObject:
   m_ObjectHideFlags: 0
@@ -276,6 +291,7 @@ GameObject:
   - component: {fileID: 1026157664391782466}
   - component: {fileID: 2066660044196083856}
   - component: {fileID: 3365851180234739124}
+  - component: {fileID: 2116704504709373786}
   m_Layer: 5
   m_Name: RestoreButton
   m_TagString: Untagged
@@ -386,6 +402,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &2116704504709373786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3565959162139555446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioClip: {fileID: 8300000, guid: 80c6ffe86a180a74eb0dbb49539143e4, type: 3}
+  _volume: 1
 --- !u!1 &3747284524030885723
 GameObject:
   m_ObjectHideFlags: 0
@@ -398,6 +428,7 @@ GameObject:
   - component: {fileID: 6085163861359796920}
   - component: {fileID: 2994391268478706703}
   - component: {fileID: 2757980105325926105}
+  - component: {fileID: 1802347881423625980}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -505,64 +536,23 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2994391268478706703}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: Play
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: SwipeInTop
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_MethodName: Play
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: StraightToPerspective
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_MethodName: Play
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: SwipeOutBottom
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_MethodName: Play
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: SwipeOutBottom
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &1802347881423625980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3747284524030885723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioClip: {fileID: 8300000, guid: df718919875942c498b8ec0b06d88cfe, type: 3}
+  _volume: 1
 --- !u!1 &4255276867092616958
 GameObject:
   m_ObjectHideFlags: 0
@@ -649,6 +639,7 @@ GameObject:
   - component: {fileID: 3500087750096177922}
   - component: {fileID: 6625767347295092752}
   - component: {fileID: 947509616228341124}
+  - component: {fileID: 2088368897781651907}
   m_Layer: 5
   m_Name: FacebookButton
   m_TagString: Untagged
@@ -759,6 +750,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &2088368897781651907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4889452335329920765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioClip: {fileID: 8300000, guid: 80c6ffe86a180a74eb0dbb49539143e4, type: 3}
+  _volume: 1
 --- !u!1 &4893770745273461502
 GameObject:
   m_ObjectHideFlags: 0
@@ -913,11 +918,11 @@ MonoBehaviour:
   _root: {fileID: 4611143180698242169}
   _canvas: {fileID: 2882853581313511178}
   _group: {fileID: 832105365074599426}
+  _messageModalUiPrefab: {fileID: 8194083882394607933, guid: a449b5a172335124cab656b556e9f03d,
+    type: 3}
+  _selectionModalUi: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
+    type: 3}
   _backButton: {fileID: 2757980105325926105}
-  _modalUIPrefab: {fileID: 8194083882394607933, guid: a449b5a172335124cab656b556e9f03d,
-    type: 3}
-  _modalSelectionUI: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
-    type: 3}
   _toggleSoundButton: {fileID: 3294787904824904289}
   _facebookButton: {fileID: 947509616228341124}
   _privacyPolicyButton: {fileID: 852101679563931343}
@@ -1196,6 +1201,7 @@ GameObject:
   - component: {fileID: 1040761568258378568}
   - component: {fileID: 7450850913836172139}
   - component: {fileID: 852101679563931343}
+  - component: {fileID: 7921812201290646406}
   m_Layer: 5
   m_Name: PrivacyPolicyButton
   m_TagString: Untagged
@@ -1306,6 +1312,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &7921812201290646406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7250654446929244861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioClip: {fileID: 8300000, guid: 80c6ffe86a180a74eb0dbb49539143e4, type: 3}
+  _volume: 1
 --- !u!1 &8109144726742242762
 GameObject:
   m_ObjectHideFlags: 0

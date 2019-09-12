@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeoTetra.GTCommon.Variables;
+using GeoTetra.GTCommon.ScriptableObjects;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;

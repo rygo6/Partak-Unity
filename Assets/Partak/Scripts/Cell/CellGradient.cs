@@ -1,6 +1,6 @@
 ﻿//#define DEBUG_GRADIENT
 
-using GeoTetra.GTCommon.Variables;
+using GeoTetra.GTCommon.ScriptableObjects;
 using GT.Threading;
 using UnityEngine;
 

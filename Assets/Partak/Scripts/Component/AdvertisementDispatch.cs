@@ -1,4 +1,4 @@
-﻿using GeoTetra.GTCommon.Variables;
+﻿using GeoTetra.GTCommon.ScriptableObjects;
 using UnityEngine;
 using UnityEngine.Advertisements;
 

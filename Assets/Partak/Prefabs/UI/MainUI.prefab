@@ -461,6 +461,7 @@ GameObject:
   - component: {fileID: 7211395504049849701}
   - component: {fileID: 7211395504049849690}
   - component: {fileID: 7211395504049849691}
+  - component: {fileID: 7226556303383464394}
   m_Layer: 5
   m_Name: SingleButton
   m_TagString: Untagged
@@ -571,6 +572,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &7226556303383464394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7211395504049849688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioClip: {fileID: 8300000, guid: df718919875942c498b8ec0b06d88cfe, type: 3}
+  _volume: 1
 --- !u!1 &7211395504157175163
 GameObject:
   m_ObjectHideFlags: 0
@@ -629,6 +644,7 @@ GameObject:
   - component: {fileID: 7211395504204496870}
   - component: {fileID: 7211395504204496871}
   - component: {fileID: 7211395504204496868}
+  - component: {fileID: 2415185294230960362}
   m_Layer: 5
   m_Name: LevelButton
   m_TagString: Untagged
@@ -739,6 +755,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &2415185294230960362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7211395504204496858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioClip: {fileID: 8300000, guid: df718919875942c498b8ec0b06d88cfe, type: 3}
+  _volume: 1
 --- !u!1 &7211395504280433872
 GameObject:
   m_ObjectHideFlags: 0
@@ -751,6 +781,7 @@ GameObject:
   - component: {fileID: 7211395504280433884}
   - component: {fileID: 7211395504280433885}
   - component: {fileID: 7211395504280433874}
+  - component: {fileID: 3609017001690219526}
   m_Layer: 5
   m_Name: OptionsButton
   m_TagString: Untagged
@@ -861,6 +892,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &3609017001690219526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7211395504280433872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioClip: {fileID: 8300000, guid: df718919875942c498b8ec0b06d88cfe, type: 3}
+  _volume: 1
 --- !u!1 &7211395504404866580
 GameObject:
   m_ObjectHideFlags: 0
