@@ -505,7 +505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _focusSelectable: {fileID: 8194083881067390221}
-  _root: {fileID: 8194083881527005947}
+  _transitionRoot: {fileID: 8194083881527005947}
   _canvas: {fileID: 8194083882394607931}
   _group: {fileID: 8194083882394607928}
   _closeModalButton: {fileID: 8194083881067390221}
@@ -529,7 +529,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!114 &8194083882394607930
 MonoBehaviour:

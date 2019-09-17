@@ -1,10 +1,12 @@
 using System.Collections;
+using GeoTetra.GTCommon.ScriptableObjects;
 using UnityEngine;
 
 namespace Partak
 {
     public class CameraOrbit : MonoBehaviour
     {
+        [SerializeField] private ComponentContainer _componentContainer;
         [SerializeField] private float _rotateMultiplier = 16f;
         [SerializeField] private float _tweenMainCameraDivider = 8f;
         private Transform childCameraTransform;
@@ -12,7 +14,7 @@ namespace Partak
         private void Start()
         {
             childCameraTransform = transform.GetComponentsInChildren<Transform>()[1];
-            FindObjectOfType<CellParticleStore>().WinEvent += PlayerWin;
+            _componentContainer.Get<CellParticleStore>().WinEvent += PlayerWin;
         }
 
         public void PlayerWin()

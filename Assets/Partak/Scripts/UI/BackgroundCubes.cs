@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTUI;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Partak
 {
     public class BackgroundCubes : MonoBehaviour
     {
-        [SerializeField] private ComponentContainer _componentContainer;
+        [FormerlySerializedAs("_objectContainer")] [SerializeField] private ComponentContainer _componentContainer;
         [SerializeField] private string _straightToPerspectiveState = "StraightToPerspective";
         [SerializeField] private string _perspectiveToStraightState = "PerspectiveToStraight";
         [SerializeField] private Animator _animator;

@@ -8,6 +8,7 @@ namespace Partak
     public class CellParticleStore : MonoBehaviour
     {
         [SerializeField] private GameState _gameState;
+        [SerializeField] private ComponentContainer _componentContainer;
         public bool[] PlayerLost;
         public int[] PlayerParticleCount;
         private CursorStore _cursorStore;
@@ -20,16 +21,26 @@ namespace Partak
 
         private void Awake()
         {
-            //TODO get rid FindObjectOfType
-            _levelConfig = FindObjectOfType<LevelConfig>();
-            _cursorStore = FindObjectOfType<CursorStore>();
+            _componentContainer.RegisterComponent(this);
+        }
+
+        private void Start()
+        {
+            _levelConfig = _componentContainer.Get<LevelConfig>();
+            _cursorStore = _componentContainer.Get<CursorStore>();
 
             PlayerLost = new bool[_gameState.PlayerCount()];
             PlayerParticleCount = new int[_gameState.PlayerCount()];
             CellParticleArray = new CellParticle[_levelConfig.ParticleCount];
             _startParticleCount = _levelConfig.ParticleCount / _gameState.ActivePlayerCount();
 
-            FindObjectOfType<CellParticleSpawn>().SpawnComplete += () => { StartCoroutine(CalculatePercentages()); };
+            _componentContainer.Get<CellParticleSpawn>().SpawnComplete +=
+                () => { StartCoroutine(CalculatePercentages()); };
+        }
+
+        private void OnDestroy()
+        {
+            _componentContainer.UnregisterComponent(this);
         }
 
         public void IncrementPlayerParticleCount(int playerIndex)

@@ -5301,7 +5301,6 @@ GameObject:
   - component: {fileID: 4974690308090156280}
   - component: {fileID: 4974690308090156284}
   - component: {fileID: 4974690308090156285}
-  - component: {fileID: 4974690308090156286}
   - component: {fileID: 4974690308090156287}
   m_Layer: 5
   m_Name: PlayUI
@@ -5353,6 +5352,8 @@ MonoBehaviour:
   _backButton: {fileID: 4974690307297324498}
   _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
   _startButton: {fileID: 4974690306945656473}
+  _unloadScene: Assets/Partak/Scenes/MainMenu.unity
+  _loadScene: Assets/Partak/Scenes/GameSession.unity
 --- !u!223 &4974690308090156284
 Canvas:
   m_ObjectHideFlags: 0
@@ -5396,23 +5397,6 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
---- !u!114 &4974690308090156286
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4974690308090156281}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!225 &4974690308090156287
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -6446,6 +6430,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4974690308469458142}
   - component: {fileID: 4974690308469458141}
+  - component: {fileID: 4126871087278214892}
+  - component: {fileID: 1362500656146810526}
   m_Layer: 5
   m_Name: Root
   m_TagString: Untagged
@@ -6483,3 +6469,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4974690308469458143}
   m_CullTransparentMesh: 0
+--- !u!223 &4126871087278214892
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4974690308469458143}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!114 &1362500656146810526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4974690308469458143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295

@@ -2,12 +2,13 @@
 using GeoTetra.GTUI;
 using UnityEngine;
 using UnityEngine.Purchasing;
+using UnityEngine.Serialization;
 
 namespace Partak
 {
     public class Store : MonoBehaviour, IStoreListener
     {
-        [SerializeField] private ComponentContainer _componentContainer;
+        [FormerlySerializedAs("_objectContainer")] [SerializeField] private ComponentContainer _componentContainer;
         
         private IStoreController _controller;
 

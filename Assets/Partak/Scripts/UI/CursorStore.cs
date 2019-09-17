@@ -1,11 +1,14 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
+using GeoTetra.GTCommon.ScriptableObjects;
 
 namespace Partak
 {
     public class CursorStore : MonoBehaviour
     {
         [SerializeField] private GameState _gameState;
+        [SerializeField] private ComponentContainer _componentContainer;
         [SerializeField] private Transform[] _cursorTranforms;
 
         public Vector3[] CursorPositions { get; private set; }
@@ -15,14 +18,25 @@ namespace Partak
 
         private void Awake()
         {
+            _componentContainer.RegisterComponent(this);
+            
             CursorPositions = new Vector3[_gameState.PlayerCount()];
-            _levelBounds = FindObjectOfType<LevelConfig>().LevelBounds;
             _skinnedMeshRenderers = new SkinnedMeshRenderer[_cursorTranforms.Length];
             for (int i = 0; i < CursorPositions.Length; ++i)
             {
                 _skinnedMeshRenderers[i] = _cursorTranforms[i].GetComponent<SkinnedMeshRenderer>();
                 CursorPositions[i] = _cursorTranforms[i].position;
             }
+        }
+
+        private void Start()
+        {
+            _levelBounds = _componentContainer.Get<LevelConfig>().LevelBounds;
+        }
+
+        private void OnDestroy()
+        {
+            _componentContainer.UnregisterComponent(this);
         }
 
         private void LateUpdate()

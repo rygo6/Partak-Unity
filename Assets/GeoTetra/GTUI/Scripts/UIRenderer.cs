@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using GeoTetra.GTCommon.Components;
 using GeoTetra.GTCommon.ScriptableObjects;
 using UnityEngine;
 using GeoTetra.GTTween;
@@ -11,15 +12,15 @@ using UnityEngine.UI;
 namespace GeoTetra.GTUI
 {
     [RequireComponent(typeof(AudioSource))]
-    public class UIRenderer : MonoBehaviour
+    public class UIRenderer : SubscribableBehaviour
     {
+        [SerializeField] private ComponentContainer _componentContainer;
         [SerializeField] private float _displayStackUIOnStartDelay = .1f;
         [SerializeField] private StackUI _displayStackUIOnStart;
         [SerializeField] private Camera _uiCamera;
         [SerializeField] private AnimationCurveReference _transitionCurve;
         [SerializeField] private float _transitionMultiplier = 2;
         [SerializeField] private UnityEvent _stackTransitionOccured;
-        [SerializeField] private ComponentContainer _componentContainer;
         [SerializeField] private AudioSource _audioSource;
         
         private readonly Stack<StackUI> _priorStackUIs = new Stack<StackUI>();
@@ -130,14 +131,14 @@ namespace GeoTetra.GTUI
         private void TweenIn(StackUI ui, Direction4 direction)
         {
             ui.OnTransitionInStart(this);
-            Vector2 newPos = ui.Root.anchoredPosition;
+            Vector2 newPos = ui.TransitionRoot.anchoredPosition;
             if (direction == Direction4.Up)
-                newPos.y = -ui.Root.rect.height;
+                newPos.y = -ui.TransitionRoot.rect.height;
             else if (direction == Direction4.Down)
-                newPos.y = ui.Root.rect.height;
-            ui.Root.anchoredPosition = newPos;
+                newPos.y = ui.TransitionRoot.rect.height;
+            ui.TransitionRoot.anchoredPosition = newPos;
             StartCoroutine(RectTransformTweens.ToAnchoredPosition(
-                ui.Root, 
+                ui.TransitionRoot, 
                 Vector2.zero, 
                 _transitionMultiplier, 
                 _transitionCurve.Value,
@@ -147,12 +148,12 @@ namespace GeoTetra.GTUI
         private void TweenOut(StackUI ui, Direction4 direction, Action OnFinish)
         {
             ui.OnTransitionOutStart();
-            Vector2 newPos = ui.Root.anchoredPosition;
+            Vector2 newPos = ui.TransitionRoot.anchoredPosition;
             if (direction == Direction4.Up)
-                newPos.y = ui.Root.rect.height;
+                newPos.y = ui.TransitionRoot.rect.height;
             else if (direction == Direction4.Down)
-                newPos.y = -ui.Root.rect.height;
-            StartCoroutine(RectTransformTweens.ToAnchoredPosition(_currentStackUI.Root, newPos, _transitionMultiplier, _transitionCurve.Value,
+                newPos.y = -ui.TransitionRoot.rect.height;
+            StartCoroutine(RectTransformTweens.ToAnchoredPosition(_currentStackUI.TransitionRoot, newPos, _transitionMultiplier, _transitionCurve.Value,
                 OnFinish));
         }
 
