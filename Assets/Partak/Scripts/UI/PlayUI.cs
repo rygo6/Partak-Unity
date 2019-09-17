@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTCommon.Attributes;
 using GeoTetra.GTUI;
-using UnityEditor.UIElements;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 namespace Partak
@@ -13,6 +11,12 @@ namespace Partak
     {
         [SerializeField] private GameState _gameState;
         [SerializeField] private Button _startButton;
+        
+        [ScenePath]
+        [SerializeField] private string _unloadScene;
+        
+        [ScenePath]
+        [SerializeField] private string _loadScene;
 
         protected override void Awake()
         {
@@ -46,10 +50,10 @@ namespace Partak
             //done so sound can play 
             yield return new WaitForSeconds(.5f);
 //            _componentContainer.Get<AdvertisementDispatch>().ShowAdvertisement(); //TODO hook up
-            AsyncOperation unload = SceneManager.UnloadSceneAsync("OpenMenu");
+            AsyncOperation unload = SceneManager.UnloadSceneAsync(_unloadScene);
             yield return unload;
             string levelName = "Level" + (_gameState.LevelIndex + 1);
-            SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Additive);
+            SceneManager.LoadSceneAsync(_loadScene, LoadSceneMode.Additive);
         }
     }
 }

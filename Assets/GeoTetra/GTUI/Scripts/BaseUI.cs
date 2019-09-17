@@ -10,11 +10,11 @@ namespace GeoTetra.GTUI
     public class BaseUI : MonoBehaviour
     {
         [SerializeField] protected Selectable _focusSelectable;
-        [SerializeField] private RectTransform _root;
+        [FormerlySerializedAs("_root")] [SerializeField] private RectTransform _transitionRoot;
         [SerializeField] private Canvas _canvas;
         [SerializeField] private CanvasGroup _group;
 
-        public RectTransform Root => _root;
+        public RectTransform TransitionRoot => _transitionRoot;
 
         public Canvas Canvas => _canvas;
 
@@ -24,7 +24,7 @@ namespace GeoTetra.GTUI
 
         protected virtual void Reset()
         {
-            _root = transform.Find("Root") as RectTransform;
+            _transitionRoot = transform.Find("Root") as RectTransform;
             _canvas = GetComponentInChildren<Canvas>();
             _group = GetComponentInChildren<CanvasGroup>();
         }

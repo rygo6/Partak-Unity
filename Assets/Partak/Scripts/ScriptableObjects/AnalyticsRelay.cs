@@ -7,7 +7,8 @@ using UnityEngine.SceneManagement;
 
 namespace Partak
 {
-    public class AnalyticsRelay : MonoBehaviour
+    [CreateAssetMenu(menuName = "Partak/AnalyticsRelay")]
+    public class AnalyticsRelay : ScriptableObject
     {
         [SerializeField] private GameState _gameState;
         

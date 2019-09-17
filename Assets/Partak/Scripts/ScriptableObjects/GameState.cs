@@ -8,9 +8,13 @@ namespace Partak
     [CreateAssetMenu]
     public class GameState : ScriptableObject
     {
+        [SerializeField] private string _version = "2.0.5";
         [SerializeField] private PlayerState[] _playerStates;
         [SerializeField] private int _timeLimitMinutes;
         [SerializeField] private int _levelIndex;
+
+        public bool FullVersion { get; set; }
+        public int SessionCount { get; private set; }
 
         public int TimeLimitMinutes
         {
@@ -25,6 +29,8 @@ namespace Partak
         }
 
         public PlayerState[] PlayerStates => _playerStates;
+
+        public string Version => _version;
 
         [System.Serializable]
         public struct PlayerState
@@ -54,6 +60,31 @@ namespace Partak
             }
         }
 
+        private void Awake()
+        {
+            if (PlayerPrefs.HasKey("isFullVersion"))
+            {
+                Debug.Log("isFullVersion");
+                FullVersion = true;
+            }
+
+            SessionCount = PlayerPrefs.GetInt("SessionCount");
+            Debug.Log("SessionCount: " + SessionCount);
+            PlayerPrefs.SetInt("SessionCount", ++SessionCount);
+
+            switch (PlayerPrefs.GetInt("muted"))
+            {
+                case 1:
+                    AudioListener.volume = 1f;
+                    break;
+                case 2:
+                    AudioListener.volume = 0f;
+                    break;
+            }
+
+//		CrashReporting.Init("ff1d2528-adf9-4ba4-bf2d-d34f2ccfe587", Version);
+        }
+        
         public int PlayerCount()
         {
             return PlayerStates.Length;

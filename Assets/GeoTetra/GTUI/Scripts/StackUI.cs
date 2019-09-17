@@ -9,8 +9,8 @@ namespace GeoTetra.GTUI
 {
     public class StackUI : BaseUI
     {
-        [FormerlySerializedAs("_modalUIPrefab")] [SerializeField] private MessageModalUI _messageModalUiPrefab;
-        [FormerlySerializedAs("_modalSelectionUI")] [SerializeField] private SelectionModalUI _selectionModalUi;
+        [FormerlySerializedAs("_messageModalUiPrefab")] [SerializeField] private MessageModalUI _messageModalUIPrefab;
+        [FormerlySerializedAs("_selectionModalUi")] [SerializeField] private SelectionModalUI _selectionModalUIPrefab;
         [SerializeField] private Button _backButton;
         
         protected override void Awake()
@@ -38,10 +38,17 @@ namespace GeoTetra.GTUI
         {
             CurrentlyRenderedBy.InstantiateAndDisplayStackUI(stackUI);
         }
+        
+        protected void DisplaySelectionModal(string[] messages, Action[] actions, int focusIndex)
+        {
+            SelectionModalUI messageModalUi = Instantiate(_selectionModalUIPrefab);
+            messageModalUi.Init(messages, actions, focusIndex);
+            CurrentlyRenderedBy.DisplayModalUI(messageModalUi);
+        }
 
         protected void DisplayModal(string message, Action action = null)
         {
-            MessageModalUI messageModalUi = Instantiate(_messageModalUiPrefab);
+            MessageModalUI messageModalUi = Instantiate(_messageModalUIPrefab);
             messageModalUi.Init(message, action);
             CurrentlyRenderedBy.DisplayModalUI(messageModalUi);
         }
