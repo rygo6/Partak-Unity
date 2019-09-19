@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using GeoTetra.GTCommon.Attributes;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTUI;
 using UnityEngine;
@@ -13,20 +14,28 @@ namespace Partak.UI
         [SerializeField] private ComponentContainer _componentContainer;
         [SerializeField] private AnalyticsRelay _analyticsRelay;
         [SerializeField] private GameState _gameState;
-        [SerializeField] public Button[] _pauseButtons;
+        [SerializeField] private Button[] _pauseButtons;
+        [SerializeField] [ScenePath] private string _gameSessionScene;
+        [SerializeField] [ScenePath] private string _mainMenuScene;
 
         private string[] PauseMessages;
         private Action[] PauseActions;
-        
+
+        private SceneLoadSystem _sceneLoadSystem;
+
         protected override void Awake()
         {
             _pauseButtons[0].onClick.AddListener(ShowPauseMenu);
             _pauseButtons[1].onClick.AddListener(ShowPauseMenu);
 
-            PauseMessages = new [] {"main menu", "resume", "skip level"};
+            PauseMessages = new[] {"main menu", "resume", "skip level"};
             PauseActions = new Action[] {MainMenu, Resume, Skip};
-            
-            FindObjectOfType<CellParticleStore>().WinEvent += ShowWinMenu;
+        }
+
+        protected void Start()
+        {
+            _componentContainer.Get<CellParticleStore>().WinEvent += ShowWinMenu;
+            _sceneLoadSystem = _componentContainer.Get<SceneLoadSystem>();
         }
 
         private void ShowPauseMenu()
@@ -35,9 +44,9 @@ namespace Partak.UI
             _componentContainer.Get<CellParticleEngine>().Pause = true;
         }
 
-        public void ShowWinMenu()
+        private void ShowWinMenu()
         {
-            GetComponent<Animator>().Play("SlideIn");
+            Debug.Log("Win");
         }
 
         private void Resume()
@@ -47,7 +56,10 @@ namespace Partak.UI
 
         private void MainMenu()
         {
-            StartCoroutine(LoadCoroutine("OpenMenu"));
+            CurrentlyRenderedBy.Flush(() =>
+            {
+                _sceneLoadSystem.Load(_gameSessionScene, _mainMenuScene);
+            });
         }
 
         private void Replay()
@@ -55,7 +67,11 @@ namespace Partak.UI
             string levelName = "Level" + (PlayerPrefs.GetInt("LevelIndex") + 1);
             Debug.Log("Replaying " + levelName);
             _analyticsRelay.ReplayLevel();
-            StartCoroutine(LoadCoroutine("Level" + (PlayerPrefs.GetInt("LevelIndex") + 1)));
+
+            CurrentlyRenderedBy.Flush(() =>
+            {
+                _sceneLoadSystem.Load(_gameSessionScene, _gameSessionScene);
+            });
         }
 
         private void Skip()
@@ -66,7 +82,11 @@ namespace Partak.UI
             string levelName = "Level" + (PlayerPrefs.GetInt("LevelIndex") + 1);
             Debug.Log("Skipping " + levelName);
             _analyticsRelay.SkipLevel();
-            StartCoroutine(LoadCoroutine(levelName));
+            
+            CurrentlyRenderedBy.Flush(() =>
+            {
+                _sceneLoadSystem.Load(_gameSessionScene, _gameSessionScene);
+            });
         }
 
         private void Next()
@@ -74,15 +94,12 @@ namespace Partak.UI
 //            _componentContainer.Get<AdvertisementDispatch>().ShowAdvertisement(); //TODO HOOKUP
             PlayerPrefs.SetInt("LevelIndex",
                 (int) Mathf.Repeat(PlayerPrefs.GetInt("LevelIndex") + 1, 18)); //this is bad 
-            _analyticsRelay.NextLevel(); 
-            StartCoroutine(LoadCoroutine("Level" + (PlayerPrefs.GetInt("LevelIndex") + 1)));
-        }
-
-        private IEnumerator LoadCoroutine(string levelName)
-        {
-            //done so sound can play
-            yield return new WaitForSeconds(.5f);
-            SceneManager.LoadScene(levelName);
+            _analyticsRelay.NextLevel();
+            
+            CurrentlyRenderedBy.Flush(() =>
+            {
+                _sceneLoadSystem.Load(_gameSessionScene, _gameSessionScene);
+            });
         }
     }
 }

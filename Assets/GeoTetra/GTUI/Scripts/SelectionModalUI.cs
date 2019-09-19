@@ -21,8 +21,8 @@ namespace GeoTetra.GTUI
 
         private void OnSelectionClick(int index)
         {
-            _actions[index]();
             base.Close();
+            _actions[index]();
         }
 
         public void Init(string[] messages, Action[] actions, int focusIndex)

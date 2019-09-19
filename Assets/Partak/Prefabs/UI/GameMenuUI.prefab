@@ -2110,6 +2110,8 @@ MonoBehaviour:
   _pauseButtons:
   - {fileID: 5525812421828997953}
   - {fileID: 5525812420352053631}
+  _gameSessionScene: Assets/Partak/Scenes/GameSession.unity
+  _mainMenuScene: Assets/Partak/Scenes/MainMenu.unity
 --- !u!1 &5525812421202105137
 GameObject:
   m_ObjectHideFlags: 0

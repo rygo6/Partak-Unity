@@ -380,6 +380,7 @@ MonoBehaviour:
     type: 2}
   _stackUI: {fileID: 5525812421154566355, guid: a91ae41ea06a5ea4581409751e00de50,
     type: 3}
+  _delay: 0
 --- !u!4 &1055236027
 Transform:
   m_ObjectHideFlags: 0

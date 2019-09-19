@@ -9,11 +9,13 @@ namespace GeoTetra.GTUI
 {
     public class DisplayUIOnStart : MonoBehaviour
     {
-        [FormerlySerializedAs("_objectContainer")] [SerializeField] private ComponentContainer _componentContainer;
+        [SerializeField] private ComponentContainer _componentContainer;
         [SerializeField] private StackUI _stackUI;
+        [SerializeField] private float _delay = .5f;
 
-        private void Start()
+        private IEnumerator Start()
         {
+            yield return new WaitForSeconds(_delay);
             Debug.Log($"Displaying {_stackUI}");
             UIRenderer uiRenderer = _componentContainer.Get<UIRenderer>();
             uiRenderer.InstantiateAndDisplayStackUI(_stackUI);
