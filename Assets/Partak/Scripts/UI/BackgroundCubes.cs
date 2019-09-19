@@ -10,7 +10,7 @@ namespace Partak
 {
     public class BackgroundCubes : MonoBehaviour
     {
-        [FormerlySerializedAs("_objectContainer")] [SerializeField] private ComponentContainer _componentContainer;
+        [SerializeField] private ComponentContainer _componentContainer;
         [SerializeField] private string _straightToPerspectiveState = "StraightToPerspective";
         [SerializeField] private string _perspectiveToStraightState = "PerspectiveToStraight";
         [SerializeField] private Animator _animator;
@@ -20,7 +20,7 @@ namespace Partak
         private IEnumerator Start()
         {
             _componentContainer.Populate(out _uiRenderer);
-            yield return new WaitForSeconds(.2f);
+            yield return new WaitForSeconds(.5f);
             _uiRenderer.StackTransitionOccured.AddListener(ToggleCubePerspective);
         }
 
