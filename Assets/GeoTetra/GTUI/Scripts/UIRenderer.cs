@@ -132,7 +132,7 @@ namespace GeoTetra.GTUI
             while (_priorStackUIs.Count > 0)
             {
                 StackUI stackUI = _priorStackUIs.Pop();
-                Destroy(stackUI);
+                Destroy(stackUI.gameObject);
             }
         }
 

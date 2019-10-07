@@ -6,7 +6,7 @@ namespace Partak
 	{
 		static public Vector2Int GridIndexToCoordinate(int index, Vector2Int max)
 		{       
-			return GridIndexToCoordinate(index, max.X, max.Y);
+			return GridIndexToCoordinate(index, max.x, max.y);
 		}
 
 		static public Vector2Int GridIndexToCoordinate(int index, int xMax, int yMax)
@@ -16,19 +16,19 @@ namespace Partak
 				return new Vector2Int(-1, -1);
 			}
 			Vector2Int coordinate = new Vector2Int();
-			coordinate.Y = (int)(index / xMax);
-			coordinate.X = index % xMax;
+			coordinate.y = (int)(index / xMax);
+			coordinate.x = index % xMax;
 			return coordinate;
 		}
 
 		static public int CoordinateToGridIndex(Vector2Int coordinate, Vector2Int max)
 		{       
-			return CoordinateToGridIndex(coordinate.X, coordinate.Y, max.X, max.Y);
+			return CoordinateToGridIndex(coordinate.x, coordinate.y, max.x, max.y);
 		}
 
 		static public int CoordinateToGridIndex(int x, int y, Vector2Int max)
 		{       
-			return CoordinateToGridIndex(x, y, max.X, max.Y);
+			return CoordinateToGridIndex(x, y, max.x, max.y);
 		}
 
 		static public int CoordinateToGridIndex(int x, int y, int xMax, int yMax)
@@ -52,13 +52,13 @@ namespace Partak
 				y = 0;
 			}
 
-			if (x > ((float)max.X - 1f) / 10f)
+			if (x > ((float)max.x - 1f) / 10f)
 			{
-				x = ((float)max.X - 1f) / 10f;
+				x = ((float)max.x - 1f) / 10f;
 			}
-			if (y > ((float)max.Y - 1f) / 10f)
+			if (y > ((float)max.y - 1f) / 10f)
 			{
-				y = ((float)max.Y - 1f) / 10f;
+				y = ((float)max.y - 1f) / 10f;
 			}
 
 			int gridX = Mathf.RoundToInt(x * 10f);
@@ -109,79 +109,79 @@ namespace Partak
 			{
 			case 0:
 				//NNE
-				vector2Int.X = 0;
-				vector2Int.Y = 1;
+				vector2Int.x = 0;
+				vector2Int.y = 1;
 				break;
 				
 			case 1:
 				//NE
-				vector2Int.X = 1;
-				vector2Int.Y = 1;					
+				vector2Int.x = 1;
+				vector2Int.y = 1;					
 				break;
 				
 			case 2:
 				//NEE
-				vector2Int.X = 1;
-				vector2Int.Y = 0;						
+				vector2Int.x = 1;
+				vector2Int.y = 0;						
 				break;
 				
 			case 3:
 				//SEE
-				vector2Int.X = 1;
-				vector2Int.Y = 0;							
+				vector2Int.x = 1;
+				vector2Int.y = 0;							
 				break;
 				
 			case 4:
 				//SE
-				vector2Int.X = 1;
-				vector2Int.Y = -1;						
+				vector2Int.x = 1;
+				vector2Int.y = -1;						
 				break;
 				
 			case 5:
 				//SSE
-				vector2Int.X = 0;
-				vector2Int.Y = -1;						
+				vector2Int.x = 0;
+				vector2Int.y = -1;						
 				break;
 				
 			case 6:
 				//SSW
-				vector2Int.X = 0;
-				vector2Int.Y = -1;						
+				vector2Int.x = 0;
+				vector2Int.y = -1;						
 				break;
 				
 			case 7:
 				//SW
-				vector2Int.X = -1;
-				vector2Int.Y = -1;						
+				vector2Int.x = -1;
+				vector2Int.y = -1;						
 				break;
 
 			case 8:
 				//SWW
-				vector2Int.X = -1;
-				vector2Int.Y = 0;						
+				vector2Int.x = -1;
+				vector2Int.y = 0;						
 				break;
 
 			case 9:
 				//NWW
-				vector2Int.X = -1;
-				vector2Int.Y = 0;						
+				vector2Int.x = -1;
+				vector2Int.y = 0;						
 				break;
 
 			case 10:
 				//NW
-				vector2Int.X = -1;
-				vector2Int.Y = 1;						
+				vector2Int.x = -1;
+				vector2Int.y = 1;						
 				break;
 
 			case 11:
 				//NW
-				vector2Int.X = 0;
-				vector2Int.Y = 1;						
+				vector2Int.x = 0;
+				vector2Int.y = 1;						
 				break;
 				
 			default:
-				vector2Int.X = 0;
-				vector2Int.Y = 0;
+				vector2Int.x = 0;
+				vector2Int.y = 0;
 				break;			
 			}	
 			return vector2Int;		

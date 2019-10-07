@@ -25,12 +25,12 @@ public class ParticleCellGrid {
 	/// </summary>
 	/// <returns>The ParticleCell grid.</returns>
 	private ParticleCell[] BuildParticleCellGrid(Vector2Int dimension, ParticleCellGrid parentParticleCellGrid) {
-		ParticleCell[] particleCellArray = new ParticleCell[dimension.X * dimension.Y]; 
+		ParticleCell[] particleCellArray = new ParticleCell[dimension.x * dimension.y]; 
 
 		//fill all slots in list
 		int index = 0;
-		for (int y = 0; y < dimension.Y; ++y) {
-			for (int x = 0; x < dimension.X; ++x) {
+		for (int y = 0; y < dimension.y; ++y) {
+			for (int x = 0; x < dimension.x; ++x) {
 				Vector3 position = new Vector2((float)x / 10f, (float)y / 10f);
 				particleCellArray[index] = new ParticleCell(
 						parentParticleCellGrid, 

@@ -15,7 +15,7 @@ namespace Partak
         public CellGroupGrid(CellGroupGrid cellGroupGrid, int playerCount)
         {
             ParentLevel = cellGroupGrid.ParentLevel + 1;
-            Dimension = cellGroupGrid.Dimension / 2;
+            Dimension = new Vector2Int(Dimension.x / 2, Dimension.y / 2);
             Grid = BuildParentCellGroupLayer(cellGroupGrid, this, playerCount);
         }
 
@@ -123,14 +123,14 @@ namespace Partak
             CellGroup[] baseCellGroupArray = baseCellGroupGrid.Grid;
             Vector2Int baseCellGroupDimension = baseCellGroupGrid.Dimension;
             int baseParentLevel = baseCellGroupGrid.ParentLevel;
-            Vector2Int parentCellGroupDimension = baseCellGroupDimension / 2;
+            Vector2Int parentCellGroupDimension = new Vector2Int(baseCellGroupDimension.x / 2, baseCellGroupDimension.x / 2);
             CellGroup[] parentCellGroupGridArray =
-                new CellGroup[parentCellGroupDimension.X * parentCellGroupDimension.Y];
+                new CellGroup[parentCellGroupDimension.x * parentCellGroupDimension.y];
 
             int parentIndex = 0;
-            for (int y = 0; y < baseCellGroupDimension.Y; y += 2)
+            for (int y = 0; y < baseCellGroupDimension.y; y += 2)
             {
-                for (int x = 0; x < baseCellGroupDimension.X; x += 2)
+                for (int x = 0; x < baseCellGroupDimension.x; x += 2)
                 {
                     //Gather 4 cellGroups that would compose parent cellGroup
                     CellGroup[] childCellGroupArray =

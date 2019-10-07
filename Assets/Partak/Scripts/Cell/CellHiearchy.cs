@@ -17,8 +17,8 @@ namespace Partak
         private void Awake()
         {
             LevelConfig levelConfig = FindObjectOfType<LevelConfig>();
-            int x = levelConfig.RootDimension.X;
-            int y = levelConfig.RootDimension.Y;
+            int x = levelConfig.RootDimension.x;
+            int y = levelConfig.RootDimension.y;
             while (x % 2 == 0 && y % 2 == 0)
             {
                 x /= 2;

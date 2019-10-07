@@ -31,13 +31,13 @@ namespace Partak
         private void OnDrawSelectedGizmos()
         {
             Vector3 center = new Vector3(
-                (_rootDimension.X / 2f) / 10f,
+                (_rootDimension.x / 2f) / 10f,
                 0f,
-                (_rootDimension.Y / 2f) / 10f);
+                (_rootDimension.y / 2f) / 10f);
             Vector3 size = new Vector3(
-                _rootDimension.X / 10f,
+                _rootDimension.x / 10f,
                 0f,
-                _rootDimension.Y / 10f);
+                _rootDimension.y / 10f);
 
             if (_levelBounds.center != center || _levelBounds.size != size)
             {

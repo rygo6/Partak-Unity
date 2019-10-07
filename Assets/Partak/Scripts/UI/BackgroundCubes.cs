@@ -24,6 +24,11 @@ namespace Partak
             _uiRenderer.StackTransitionOccured.AddListener(ToggleCubePerspective);
         }
 
+        private void OnDestroy()
+        {
+            _uiRenderer.StackTransitionOccured.RemoveListener(ToggleCubePerspective);
+        }
+
         public void ToggleCubePerspective()
         {
             if (_animator.IsInTransition(0)) return;
