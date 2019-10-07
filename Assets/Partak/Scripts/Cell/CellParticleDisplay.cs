@@ -24,7 +24,7 @@ namespace Partak
             _cellParticleSystems = new CellParticleSystem[systemCount];
             for (int i = 0; i < systemCount; ++i)
             {
-                _cellParticleSystems[i] = Instantiate(_cellParticleSystemPrefab).GetComponent<CellParticleSystem>();
+                _cellParticleSystems[i] = Instantiate(_cellParticleSystemPrefab, transform).GetComponent<CellParticleSystem>();
 //			_cellParticleSystems[i].transform.position = levelConfig.LevelBounds.center;
 //			_cellParticleSystems[i].transform.parent = Camera.main.transform;
 //			_cellParticleSystems[i].transform.localPosition = new Vector3(0f, 0f, 4f);

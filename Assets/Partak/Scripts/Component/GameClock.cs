@@ -7,11 +7,9 @@ namespace Partak
     public class GameClock : MonoBehaviour
     {
         [SerializeField] private GameState _gameState;
-        [SerializeField] private Texture[] _playerColorTextures;
         [SerializeField] private Material _surroundMaterial;
-        
-        private CellParticleEngine _cellParticleMover;
-        private CellParticleStore _cellParticleStore;
+        [SerializeField] private CellParticleEngine _cellParticleMover;
+        [SerializeField] private CellParticleStore _cellParticleStore;
 
         private float _fastKillTimeLimit = 70f;
         private Color[] _initialColors;
@@ -21,9 +19,6 @@ namespace Partak
 
         private void Start()
         {
-            _cellParticleMover = FindObjectOfType<CellParticleEngine>();
-            _cellParticleStore = FindObjectOfType<CellParticleStore>();
-
             _initialColors = new Color[_gameState.PlayerCount()];
             for (int i = 0; i < _initialColors.Length; ++i)
             {
@@ -31,7 +26,7 @@ namespace Partak
             }
             
             SetTimeLimit(_gameState.TimeLimitMinutes);
-            FindObjectOfType<CellParticleStore>().WinEvent += Win;
+            _cellParticleStore.WinEvent += Win;
             Invoke("FastKillTimeOut", _fastKillTimeLimit);
             Invoke("TimeOut", _timeLimit);
         }

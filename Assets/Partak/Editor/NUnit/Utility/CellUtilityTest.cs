@@ -21,7 +21,7 @@ namespace Partak
 		public void GridIndexToCoordinateTest(int index, int x, int y)
 		{       
 			Vector2Int vector2Int = CellUtility.GridIndexToCoordinate(index, 10, 10);
-			if (vector2Int.X == x && vector2Int.Y == y)
+			if (vector2Int.x == x && vector2Int.y == y)
 			{
 				Assert.Pass();
 			}
@@ -81,7 +81,7 @@ namespace Partak
 		public void DirectionToXYTest(int direction, int x, int y)
 		{       
 			Vector2Int vector2Int = CellUtility.DirectionToXY(direction);
-			if (vector2Int.X == x && vector2Int.Y == y)
+			if (vector2Int.x == x && vector2Int.y == y)
 			{
 				Assert.Pass();
 			}
