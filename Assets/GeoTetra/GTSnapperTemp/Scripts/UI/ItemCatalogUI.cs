@@ -42,10 +42,7 @@ namespace GeoTetra.GTSnapper
             {
                 ItemRoot.SetAllOutlineNormalAttach();
                 _scrollItemHighlight.enabled = false;
-//                _selectedItem = null;
-//                _selectedItem.GetComponent<Transform>().Find("ItemBarItemHighlight").GetComponent<Image>().enabled =
-//                    false;
-//                _selectedItem = null;
+                _selectedItem = null;
             }
         }
 
@@ -111,29 +108,22 @@ namespace GeoTetra.GTSnapper
         {
             ItemRoot.UnHighlightAll();
             _selectedItem = scrollItem;
-            InstantiateSelectedItem(data, scrollItem.ItemReference, OnDragInstantiateCompleted);
+            InstantiateSelectedItem(data, OnDragInstantiateCompleted);
             UnselectSelectedItem();
         }
 
-        public void InstantiateSelectedItem(PointerEventData data, ItemReference itemReference, System.Action<GameObject, ItemReference, PointerEventData> OnComplete)
+        public void InstantiateSelectedItem(PointerEventData data, System.Action<GameObject, ItemReference, PointerEventData> OnComplete)
         {
             Ray ray = Camera.main.ScreenPointToRay(data.position);
             Vector3 position = ray.GetPoint(3.5f);
+            InstantiationParameters paramsI = new InstantiationParameters();
+            ItemReference itemReference = _selectedItem.ItemReference;
             Addressables.InstantiateAsync(itemReference.AssetPrefabName,
                     new InstantiationParameters(position, Quaternion.identity, null))
                     .Completed += handle => OnComplete(handle.Result, itemReference, data);
         }
 
         private void OnDragInstantiateCompleted(GameObject gameObject, ItemReference itemReference, PointerEventData data)
-        {
-            Item item = gameObject.GetComponent<Item>();
-            item.Initialize(item.transform.position, ItemRoot, itemReference, _catcher);
-            item.Highlight();
-            UnselectSelectedItem();
-            SwitchStandaloneInputModule.SwitchGameObject(item.gameObject, data);
-        }
-        
-        private void OnClickInstantiateCompleted(GameObject gameObject, ItemReference itemReference, PointerEventData data)
         {
             Item item = gameObject.GetComponent<Item>();
             item.Initialize(item.transform.position, ItemRoot, itemReference, _catcher);

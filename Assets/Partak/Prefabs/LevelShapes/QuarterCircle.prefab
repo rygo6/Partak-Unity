@@ -94,11 +94,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _disableOutline: 0
+  _colliderExpand: {x: 1, y: 1, z: 1}
   _tagArray:
   - LevelShape
   _childTagArray: []
   _ItemPartnerArray: []
-  _colliderExpand: {x: 1, y: 1, z: 1}
+  _itemDrag: {fileID: 2940526551237888015}
+  _itemDrop: {fileID: 0}
 --- !u!114 &2940526551237888015
 MonoBehaviour:
   m_ObjectHideFlags: 0
