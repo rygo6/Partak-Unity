@@ -100,7 +100,7 @@ MonoBehaviour:
   - LevelShape
   _childTagArray: []
   _ItemPartnerArray: []
-  _itemDrag: {fileID: 0}
+  _itemDrag: {fileID: 677959255480263187}
   _itemDrop: {fileID: 0}
 --- !u!114 &677959255480263187
 MonoBehaviour:

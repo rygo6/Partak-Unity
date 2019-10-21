@@ -255,44 +255,49 @@ namespace GeoTetra.GTSnapper
 			Debug.Log( "OnPointerUpAttachedHighlighted " + this.name );
 #endif
 
-//            ItemCatalogUI plannerUI = FindObjectOfType<ItemCatalogUI>();
-//			Item instantiatedItem = plannerUI.InstantiateSelectedItem(data, ItemReference);
-//			ItemDrag instantiatedItemDrag = instantiatedItem.GetComponent<ItemDrag>();
-//			ItemDrop itemDrop = GetComponent<ItemDrop>();
-//			if (itemDrop != null)
-//			{
-//				instantiatedItemDrag.ThisEnteredDropItem = itemDrop;
-//				instantiatedItemDrag.ParentItemDrop = itemDrop;
-//		
-//				ItemSnap itemSnap = instantiatedItemDrag.NearestItemSnap(data);
-//				instantiatedItemDrag.ParentItemSnap = itemSnap;
-//				Ray ray = itemSnap.Snap(instantiatedItem, data);
-//				instantiatedItemDrag.SetTargetPositionRotation(ray.origin, ray.direction); 		
-//				//set to outline and normal to get rid of quirk where instantied shader isn't immediately properly lit
-//				instantiatedItem.SetShaderOutline(_itemSettings.InstantiateOutlineColor);
-//				instantiatedItem.SetShaderNormal();
-//				instantiatedItem.State = ItemState.NoInstantiate;
-//
-//				//TODO this should always be able to attach, why are we checking?
-//				if (itemDrop.CanAttach(instantiatedItem.TagArray))
-//				{
-//					SetShaderOutline(_itemSettings.InstantiateOutlineColor);
-//				}
-//				else
-//				{
-//					SetShaderNormal();
-//					State = ItemState.NoInstantiate;
-//				}
-//			}
-//			ItemColor itemColor = GetComponent<ItemColor>();
-//			if (itemColor != null)
-//			{
-//				Item item = GetComponent<Item>();
-//				item.SetBlendMaterial(instantiatedItem.MaterialArray[0].mainTexture);
-//				SetShaderNormal();
-//				State = ItemState.NoInstantiate;
-//				StartCoroutine(instantiatedItem.DestroyItemCoroutine());
-//			}
+            ItemCatalogUI plannerUI = FindObjectOfType<ItemCatalogUI>();
+			plannerUI.InstantiateSelectedItem(data, OnClickInstantiateCompleted);
+        }
+        
+        private void OnClickInstantiateCompleted(GameObject gameObject, ItemReference itemReference, PointerEventData data)
+        {
+            Item instantiatedItem = gameObject.GetComponent<Item>();
+            ItemDrag instantiatedItemDrag = gameObject.GetComponent<ItemDrag>();
+            instantiatedItem.Initialize(data.pointerCurrentRaycast.worldPosition, ItemRoot, itemReference, _catcher);
+            if (_itemDrop != null)
+            {
+                instantiatedItem._itemDrag.ThisEnteredDropItem = _itemDrop;
+                instantiatedItem._itemDrag.ParentItemDrop = _itemDrop;
+		
+                ItemSnap itemSnap = instantiatedItemDrag.NearestItemSnap(data);
+                instantiatedItemDrag.ParentItemSnap = itemSnap;
+                Ray ray = itemSnap.Snap(instantiatedItem, data);
+                instantiatedItemDrag.SetTargetPositionRotation(ray.origin, ray.direction); 		
+                //set to outline and normal to get rid of quirk where instantied shader isn't immediately properly lit
+                instantiatedItem.SetShaderOutline(ItemRoot.ItemSettings.InstantiateOutlineColor);
+                instantiatedItem.SetShaderNormal();
+                instantiatedItem.State = ItemState.NoInstantiate;
+
+                //TODO this should always be able to attach, why are we checking?
+                if (_itemDrop.CanAttach(instantiatedItem.TagArray))
+                {
+                    SetShaderOutline(ItemRoot.ItemSettings.InstantiateOutlineColor);
+                }
+                else
+                {
+                    SetShaderNormal();
+                    State = ItemState.NoInstantiate;
+                }
+            }
+//            ItemColor itemColor = GetComponent<ItemColor>();
+//            if (itemColor != null)
+//            {
+//                Item item = GetComponent<Item>();
+//                item.SetBlendMaterial(instantiatedItem.MaterialArray[0].mainTexture);
+//                SetShaderNormal();
+//                State = ItemState.NoInstantiate;
+//                StartCoroutine(instantiatedItem.DestroyItemCoroutine());
+//            }
         }
 
         public IEnumerator DestroyItemCoroutine()
