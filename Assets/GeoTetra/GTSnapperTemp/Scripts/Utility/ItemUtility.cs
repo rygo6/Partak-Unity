@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
-namespace EC.Visualization
+namespace GeoTetra.GTSnapper
 {
 	static public class ItemUtility
 	{

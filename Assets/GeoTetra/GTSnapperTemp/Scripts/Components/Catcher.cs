@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
-namespace EC
+namespace GeoTetra
 {
 	public class Catcher : MonoBehaviour,
 							IPointerEnterHandler, 
@@ -15,16 +15,11 @@ namespace EC
 							IPointerDownHandler,
 							IPointerUpHandler
 	{
+		[SerializeField] private Camera _parentCamera;
+		
 		public System.Action EmptyClickAction { get; set; }
 
 		public readonly List<PointerEventData> PointerEventDataList = new List<PointerEventData>();
-
-		private Camera _parentCamera;
-
-		private void Awake()
-		{
-			_parentCamera = GetComponentInParent<Camera>();
-		}
 
 		public void OnPointerExit(PointerEventData data)
 		{

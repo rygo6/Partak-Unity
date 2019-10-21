@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-namespace EC.Visualization
+namespace GeoTetra.GTSnapper
 {
 	public class ItemColor : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 	{	

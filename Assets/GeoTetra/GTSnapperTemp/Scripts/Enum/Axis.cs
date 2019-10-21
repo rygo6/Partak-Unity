@@ -1,4 +1,4 @@
-﻿namespace EC
+﻿namespace GeoTetra
 {
 	[System.Serializable]
 	public enum Axis

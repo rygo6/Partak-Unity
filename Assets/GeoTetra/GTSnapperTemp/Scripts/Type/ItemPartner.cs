@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace EC.Visualization
+namespace GeoTetra.GTSnapper
 {
 	[System.Serializable]
 	public class ItemPartner
