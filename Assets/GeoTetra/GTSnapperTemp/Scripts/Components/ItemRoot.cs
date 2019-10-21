@@ -4,10 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-namespace EC.Visualization
+namespace GeoTetra.GTSnapper
 {
 	public class ItemRoot : MonoBehaviour
 	{
+		[SerializeField]
+		private ItemSettings _itemSettings;
+		
 		public readonly Dictionary<string,MonoBehaviour> UniqueTickDictionary = new Dictionary<string,MonoBehaviour>();
 
 		public readonly List<Item> ItemHoldList = new List<Item>();
@@ -15,7 +18,9 @@ namespace EC.Visualization
 		public readonly List<Item> ItemHighlightList = new List<Item>();
 
 		private List<Item> _rootItemRaycastList;
-	
+
+		public ItemSettings ItemSettings => _itemSettings;
+
 		private void Awake()
 		{
 			_rootItemRaycastList = new List<Item>(Item.FindObjectsOfType<Item>());

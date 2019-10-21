@@ -1,12 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace EC.Visualization
+namespace GeoTetra.GTSnapper
 {
-	public class AttachPoint : MonoBehaviour
-	{
-		public string[] TagArray { get { return tagArray; } set { tagArray = value; } }
-		[SerializeField]
-		private string[] tagArray;
-	}
+    /// <summary>
+    /// Specify alternative point for ItemDrag to attach to.
+    /// Should be on a GameObject which is a child of an ItemDrag
+    /// </summary>
+    public class AttachPoint : MonoBehaviour
+    {
+        public string[] TagArray
+        {
+            get => tagArray;
+            set => tagArray = value;
+        }
+
+        [SerializeField] private string[] tagArray;
+    }
 }

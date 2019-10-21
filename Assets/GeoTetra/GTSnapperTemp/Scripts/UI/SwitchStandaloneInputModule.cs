@@ -6,14 +6,21 @@ using UnityEngine.Serialization;
 
 namespace UnityEngine.EventSystems
 {
+    /// <summary>
+    /// This is a special variation of the StandAloneInput module which allows you
+    /// to switch the PointEventData stream to a new GameObject mid-drag.
+    /// </summary>
     [AddComponentMenu("Event/Switch Standalone Input Module")]
     public class SwitchStandaloneInputModule : PointerInputModule
     {
         //Added new
         private static readonly GameObject[] GameObject = new GameObject[10];
-
         private static readonly int[] Phase = new int[10];
 
+        /// <summary>
+        /// Call mid-drag to switch event stream to passed in GameObject. Call from an
+        /// OnDrag callback and pass the PointerEventData from that OnDrag callback to this method.
+        /// </summary>
         public static void SwitchGameObject(GameObject gameObject, PointerEventData data)
         {
             GameObject[data.pointerId.NegativeToPositive()] = gameObject;
@@ -363,10 +370,9 @@ namespace UnityEngine.EventSystems
             }
             else if (Phase[input.fingerId] == 2)	
             {
-                Phase[input.fingerId] = 3;
                 released = false;
                 pressed = true;		
-            }				
+            }
             //End added
             
             if (created)
@@ -388,7 +394,7 @@ namespace UnityEngine.EventSystems
             else
             {
                 //Added
-                if (Phase[input.fingerId] == 3)	
+                if (Phase[input.fingerId] == 2)	
                 {
                     Phase[input.fingerId] = 0;
                     RaycastResult result = new RaycastResult();
@@ -681,7 +687,21 @@ namespace UnityEngine.EventSystems
             }
             leftData.scrollDelta = input.mouseScrollDelta;
             leftData.button = PointerEventData.InputButton.Left;
-            eventSystem.RaycastAll(leftData, m_RaycastResultCache);
+            
+            //Added
+            if (Phase[0] == 2)	
+            {
+                RaycastResult result = new RaycastResult();
+                result.gameObject = GameObject[0];
+                m_RaycastResultCache.Add(result);
+                GameObject[0] = null;
+            }
+            else
+            {	
+                eventSystem.RaycastAll(leftData, m_RaycastResultCache);
+            }
+            //End added
+            
             var raycast = FindFirstRaycast(m_RaycastResultCache);
             leftData.pointerCurrentRaycast = raycast;
             m_RaycastResultCache.Clear();
@@ -699,8 +719,8 @@ namespace UnityEngine.EventSystems
 
             //edited
             m_MouseState.SetButtonState(PointerEventData.InputButton.Left, SwitchStateForMouseButton(0), leftData);
-            m_MouseState.SetButtonState(PointerEventData.InputButton.Right, SwitchStateForMouseButton(1), rightData);
-            m_MouseState.SetButtonState(PointerEventData.InputButton.Middle, SwitchStateForMouseButton(2), middleData);
+            m_MouseState.SetButtonState(PointerEventData.InputButton.Right, StateForMouseButton(1), rightData);
+            m_MouseState.SetButtonState(PointerEventData.InputButton.Middle, StateForMouseButton(2), middleData);
             //end added
             
             return m_MouseState;
@@ -719,8 +739,8 @@ namespace UnityEngine.EventSystems
             else if (Phase[id] == 2)	
             {	
                 buttonState = PointerEventData.FramePressState.Pressed;
-                Phase[id] = 0;			
-            }	
+                Phase[id] = 0;
+            }
             return buttonState;
         }	
         //end added new
