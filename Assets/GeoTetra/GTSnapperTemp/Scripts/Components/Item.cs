@@ -262,17 +262,17 @@ namespace GeoTetra.GTSnapper
         private void OnClickInstantiateCompleted(GameObject gameObject, ItemReference itemReference, PointerEventData data)
         {
             Item instantiatedItem = gameObject.GetComponent<Item>();
-            ItemDrag instantiatedItemDrag = gameObject.GetComponent<ItemDrag>();
             instantiatedItem.Initialize(data.pointerCurrentRaycast.worldPosition, ItemRoot, itemReference, _catcher);
             if (_itemDrop != null)
             {
                 instantiatedItem._itemDrag.ThisEnteredDropItem = _itemDrop;
                 instantiatedItem._itemDrag.ParentItemDrop = _itemDrop;
 		
-                ItemSnap itemSnap = instantiatedItemDrag.NearestItemSnap(data);
-                instantiatedItemDrag.ParentItemSnap = itemSnap;
+                ItemSnap itemSnap = instantiatedItem._itemDrag.NearestItemSnap(data);
+                instantiatedItem._itemDrag.ParentItemSnap = itemSnap;
                 Ray ray = itemSnap.Snap(instantiatedItem, data);
-                instantiatedItemDrag.SetTargetPositionRotation(ray.origin, ray.direction); 		
+                instantiatedItem._itemDrag.SetTargetPositionRotation(ray.origin, ray.direction); 	
+                instantiatedItem._itemDrag.SetActualPositionRotationToTarget(); 		
                 //set to outline and normal to get rid of quirk where instantied shader isn't immediately properly lit
                 instantiatedItem.SetShaderOutline(ItemRoot.ItemSettings.InstantiateOutlineColor);
                 instantiatedItem.SetShaderNormal();

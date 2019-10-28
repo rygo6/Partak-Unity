@@ -563,11 +563,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _disableOutline: 0
+  _colliderExpand: {x: 1, y: 1, z: 1}
   _tagArray: []
   _childTagArray:
   - LevelShape
   _ItemPartnerArray: []
-  _colliderExpand: {x: 1, y: 1, z: 1}
+  _itemDrag: {fileID: 0}
+  _itemDrop: {fileID: 0}
 --- !u!23 &1329045296
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -653,7 +655,7 @@ GameObject:
   - component: {fileID: 2038729303}
   - component: {fileID: 2038729304}
   m_Layer: 0
-  m_Name: PointSnap
+  m_Name: SurfaceItemSnap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -682,7 +684,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 2038729302}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55df23b8c5e287c488bdb262383d88ee, type: 3}
+  m_Script: {fileID: 11500000, guid: 6048264bed41a9b408286823b052777c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _childTagArray: []
+  _collider: {fileID: 1329045293}

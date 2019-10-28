@@ -14,22 +14,7 @@ namespace GeoTetra.GTSnapper
 
 		public override Ray Snap(Item item, PointerEventData data)
 		{
-			ItemDrag dragItem = item.GetComponent<ItemDrag>();
-			if (dragItem.AttachPointArray != null && dragItem.AttachPointArray.Length > 0)
-			{
-				for (int i = 0; i < dragItem.AttachPointArray.Length; ++i)
-				{
-					if (ItemUtility.TestTagArrays(dragItem.AttachPointArray[i].TagArray, ChildTagArray))
-					{
-						return new Ray(transform.position - dragItem.AttachPointArray[i].transform.localPosition, -transform.forward);
-					}
-				}
-				return new Ray(transform.position, -transform.forward);
-			}
-			else
-			{
-				return new Ray(this.transform.position, -transform.forward);
-			}
+			return new Ray(GetAttachPointOffset(transform.position, item), -transform.up);
 		}
 
 		public override Vector3 NearestPoint(PointerEventData data)

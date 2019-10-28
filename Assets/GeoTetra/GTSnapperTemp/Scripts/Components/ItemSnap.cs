@@ -5,84 +5,122 @@ using UnityEngine.EventSystems;
 
 namespace GeoTetra.GTSnapper
 {
-	public abstract class ItemSnap : MonoBehaviour
-	{
-		public readonly List<Item> ChildItemList = new List<Item>();
+    public abstract class ItemSnap : MonoBehaviour
+    {
+        public readonly List<Item> ChildItemList = new List<Item>();
 
-		public string UniqueTick
-		{ 
-			get
-			{ 
-				if (string.IsNullOrEmpty(_uniqueTick))
-				{
-					_uniqueTick = ItemUtility.TickToString();
-					Root.UniqueTickDictionary.Add(_uniqueTick, this);	
-				}	
-				return _uniqueTick; 
-			} 
-			set
-			{
-				if (!string.IsNullOrEmpty(_uniqueTick))
-				{
-					Root.UniqueTickDictionary.Remove(_uniqueTick);
-				}
-				_uniqueTick = value;
-				Root.UniqueTickDictionary.Add(_uniqueTick, this);
-			}	
-		}
-		private string _uniqueTick;
+        public string UniqueTick
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_uniqueTick))
+                {
+                    _uniqueTick = ItemUtility.TickToString();
+                    Root.UniqueTickDictionary.Add(_uniqueTick, this);
+                }
 
-		public ItemRoot Root { get; private set; }
+                return _uniqueTick;
+            }
+            set
+            {
+                if (!string.IsNullOrEmpty(_uniqueTick))
+                {
+                    Root.UniqueTickDictionary.Remove(_uniqueTick);
+                }
 
-		public string[] ChildTagArray { get { return _childTagArray; } }
-		[Header("Enter a specific set of tags for this point. If no tags are entered it will inherit them from the parent item")]
-		[SerializeField]
-		private string[] _childTagArray;
+                _uniqueTick = value;
+                Root.UniqueTickDictionary.Add(_uniqueTick, this);
+            }
+        }
 
-		protected virtual void Awake()
-		{
-			//TODO make automaticaly set by generator
-			Root = FindObjectOfType<ItemRoot>();
+        private string _uniqueTick;
 
-			if (_childTagArray == null || _childTagArray.Length == 0)
-			{
-				_childTagArray = GetComponentInParent<Item>().ChildTagArray;
-			}
-		}
-	
-		public bool TagMatch(string[] tagArray)
-		{
-			return ItemUtility.TestTagArrays(tagArray, ChildTagArray);
-		}
-	
-		/// <summary>
-		/// Gets the point to snap to.
-		/// </summary>
-		public abstract Ray Snap(Item item, PointerEventData data);
-	
-		/// <summary>
-		/// Nearest Snappable point.
-		/// </summary>
-		/// <returns>The point.</returns>
-		/// <param name="data">Data.</param>
-		public abstract Vector3 NearestPoint(PointerEventData data);
-	
-		public abstract void AddItem(Item item);
-	
-		public abstract void RemoveItem(Item item);
-	
-		/// <summary>
-		/// Returns if this snap already contains a given item.
-		/// </summary>
-		/// <returns><c>true</c>, if item was containsed, <c>false</c> otherwise.</returns>
-		/// <param name="item">Item.</param>
-		public abstract bool ContainsItem(Item item);
-	
-		/// <summary>
-		/// Determines whether this instance can snap the specified item.
-		/// </summary>
-		/// <returns><c>true</c> if this instance can snap the specified item; otherwise, <c>false</c>.</returns>
-		/// <param name="item">Item.</param>
-		public abstract bool AvailableSnap();
-	}
+        public ItemRoot Root { get; private set; }
+
+        public string[] ChildTagArray => _childTagArray;
+
+        [Header(
+            "Enter a specific set of tags for this point. If no tags are entered it will inherit them from the parent item")]
+        [SerializeField]
+        private string[] _childTagArray;
+
+        protected virtual void Awake()
+        {
+            //TODO make automaticaly set by generator
+            Root = FindObjectOfType<ItemRoot>();
+
+            if (_childTagArray == null || _childTagArray.Length == 0)
+            {
+                _childTagArray = GetComponentInParent<Item>().ChildTagArray;
+            }
+        }
+
+        public bool TagMatch(string[] tagArray)
+        {
+            return ItemUtility.TestTagArrays(tagArray, ChildTagArray);
+        }
+
+        /// <summary>
+        /// Gets the point to snap to.
+        /// </summary>
+        public abstract Ray Snap(Item item, PointerEventData data);
+
+        /// <summary>
+        /// Nearest Snappable point.
+        /// </summary>
+        /// <returns>The point.</returns>
+        /// <param name="data">Data.</param>
+        public abstract Vector3 NearestPoint(PointerEventData data);
+
+        public virtual void AddItem(Item item)
+        {
+            ChildItemList.Add(item);
+        }
+
+        public virtual void RemoveItem(Item item)
+        {
+            ChildItemList.Remove(item);
+        }
+
+        /// <summary>
+        /// Returns if this snap already contains a given item.
+        /// </summary>
+        /// <returns><c>true</c>, if item was containsed, <c>false</c> otherwise.</returns>
+        /// <param name="item">Item.</param>
+        public virtual bool ContainsItem(Item item)
+        {
+            return ChildItemList.Contains(item);
+        }
+
+        /// <summary>
+        /// Determines whether this instance can snap the specified item.
+        /// </summary>
+        /// <returns><c>true</c> if this instance can snap the specified item; otherwise, <c>false</c>.</returns>
+        /// <param name="item">Item.</param>
+        public abstract bool AvailableSnap();
+        
+        /// <summary>
+        /// If any of the ItemDrag's attach points have appropriate tag, return the position offset by that attachpoint.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        protected Vector3 GetAttachPointOffset(Vector3 position, Item item)
+        {
+            if (item.Drag.AttachPointArray != null && item.Drag.AttachPointArray.Length > 0)
+            {
+                for (int i = 0; i < item.Drag.AttachPointArray.Length; ++i)
+                {
+                    if (ItemUtility.TestTagArrays(item.Drag.AttachPointArray[i].TagArray, ChildTagArray))
+                    {
+                        return position - item.Drag.AttachPointArray[i].transform.localPosition;
+                    }
+                }
+                return position;
+            }
+            else
+            {
+                return position;
+            }
+        }
+    }
 }
