@@ -121,7 +121,7 @@ namespace GeoTetra.GTSnapper
             GameObject gameObject = new GameObject(this.name + "Target");
             TargetTransform = gameObject.transform;
             TargetTransform.position = _item.transform.position;
-            TargetTransform.forward = _item.transform.forward;
+            TargetTransform.up = _item.transform.up;
             AttachPointArray = GetComponentsInChildren<AttachPoint>();
         }
 
@@ -177,7 +177,7 @@ namespace GeoTetra.GTSnapper
         public void FloatObjectInMainCamera(PointerEventData data)
         {
             Ray ray = Camera.main.ScreenPointToRay(data.position);
-            SetTargetPositionRotation(ray.GetPoint(3.5f), Vector3.forward);
+            SetTargetPositionRotation(ray.GetPoint(_item.ItemRoot.ItemSettings.FloatDistance), Vector3.up);
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace GeoTetra.GTSnapper
             if (TargetTransform.position != item.transform.position ||
                 TargetTransform.eulerAngles != item.transform.eulerAngles)
             {
-                SmoothToPointAndDirection(TargetTransform.position, _posDamp, TargetTransform.forward, _rotDamp);
+                SmoothToPointAndDirection(TargetTransform.position, _posDamp, TargetTransform.up, _rotDamp);
                 return false;
             }
             else
@@ -205,18 +205,16 @@ namespace GeoTetra.GTSnapper
         /// <summary>
         /// Sets the target position rotation.
         /// </summary>
-        /// <param name="position">Position.</param>
-        /// <param name="direction">Direction. Tansform.Forward.</param>
         public void SetTargetPositionRotation(Vector3 position, Vector3 direction)
         {
             TranslateTargetPositionRotationRecursive(position - TargetTransform.position,
-                direction - TargetTransform.forward);
+                direction - TargetTransform.up);
         }
 
         public void TranslateTargetPositionRotationRecursive(Vector3 deltaPosition, Vector3 deltaDirection)
         {
             TargetTransform.Translate(deltaPosition, Space.World);
-            TargetTransform.forward = TargetTransform.forward + deltaDirection;
+            TargetTransform.up = TargetTransform.up + deltaDirection;
             ItemDrop dropItemMod = GetComponent<ItemDrop>();
             if (dropItemMod != null)
             {
@@ -235,18 +233,18 @@ namespace GeoTetra.GTSnapper
         /// </summary>
         public void SetActualPositionRotationToTarget()
         {
-            GetComponent<Item>().transform.position = TargetTransform.position;
+             _item.transform.position = TargetTransform.position;
+             _item.transform.rotation = TargetTransform.rotation;
             _smoothVelocity = Vector3.zero;
             _smoothAngleVelocity = Vector3.zero;
         }
 
         /// <summary>
-        /// Sets the target to acual position direction.
+        /// Sets the target to actual position direction.
         /// </summary>
         public void SetTargetToAcualPositionDirection()
         {
-            Item item = GetComponent<Item>();
-            SetTargetPositionRotation(item.transform.position, item.transform.forward);
+            SetTargetPositionRotation(_item.transform.position, _item.transform.up);
         }
 
         /// <summary>
@@ -259,8 +257,8 @@ namespace GeoTetra.GTSnapper
         private void SmoothToPointAndDirection(Vector3 point, float moveSmooth, Vector3 direction, float rotSmooth)
         {
             _item.transform.position = Vector3.SmoothDamp(transform.position, point, ref _smoothVelocity, moveSmooth);
-            _item.transform.forward =
-                Vector3.SmoothDamp(transform.forward, direction, ref _smoothAngleVelocity, rotSmooth);
+            _item.transform.up =
+                Vector3.SmoothDamp(transform.up, direction, ref _smoothAngleVelocity, rotSmooth);
         }
 
         private Vector3 _smoothVelocity;
