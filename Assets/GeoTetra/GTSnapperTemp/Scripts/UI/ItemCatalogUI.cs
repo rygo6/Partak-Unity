@@ -96,6 +96,7 @@ namespace GeoTetra.GTSnapper
                     _scrollItemHighlight.enabled = true;
                     _scrollItemHighlight.transform.SetParent(_selectedItem.transform);
                     ((RectTransform)_scrollItemHighlight.transform).anchoredPosition3D = Vector3.zero;
+                    ((RectTransform)_scrollItemHighlight.transform).sizeDelta = Vector2.zero;
                 }
             }
             else

@@ -569,7 +569,7 @@ MonoBehaviour:
   - LevelShape
   _ItemPartnerArray: []
   _itemDrag: {fileID: 0}
-  _itemDrop: {fileID: 0}
+  _itemDrop: {fileID: 1329045292}
 --- !u!23 &1329045296
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -688,4 +688,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _childTagArray: []
+  _allowedChildren: -1
   _collider: {fileID: 1329045293}

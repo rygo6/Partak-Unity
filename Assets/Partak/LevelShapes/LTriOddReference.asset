@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f85819f8cc2bfda4d8ea8af8b0badd61, type: 3}
   m_Name: LTriOddReference
   m_EditorClassIdentifier: 
-  _previewImage: {fileID: 2800000, guid: 3e5690cb752b47e44a5681b539f868f3, type: 3}
+  _previewImage: {fileID: 2800000, guid: bc9fa1a1154aa0244b3bf55c23ef7db6, type: 3}
   _displayName: LTriOdd
   _assetPrefabName: LTriOdd
   _tagArray:
