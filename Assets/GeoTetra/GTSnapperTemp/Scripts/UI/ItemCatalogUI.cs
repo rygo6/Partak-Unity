@@ -118,10 +118,9 @@ namespace GeoTetra.GTSnapper
         {
             Ray ray = Camera.main.ScreenPointToRay(data.position);
             Vector3 position = ray.GetPoint(3.5f);
-            InstantiationParameters paramsI = new InstantiationParameters();
             ItemReference itemReference = _selectedItem.ItemReference;
             Addressables.InstantiateAsync(itemReference.AssetPrefabName,
-                    new InstantiationParameters(position, Quaternion.identity, null))
+                    new InstantiationParameters(position, Quaternion.identity, null)) //TODO does the transform ref break this going on stack?
                     .Completed += handle => OnComplete(handle.Result, itemReference, data);
         }
 

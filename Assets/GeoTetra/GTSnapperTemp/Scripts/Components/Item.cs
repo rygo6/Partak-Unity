@@ -28,7 +28,7 @@ namespace GeoTetra.GTSnapper
         public ItemDrag Drag => _itemDrag;
 
         public ItemDrop Drop => _itemDrop;
-        
+
         public ItemDatum ItemDatum { get; private set; }
 
         public ItemReference ItemReference { get; private set; }
@@ -52,13 +52,13 @@ namespace GeoTetra.GTSnapper
         public GameObject[] ColliderGameObjectArray { get; private set; }
 
         public ItemRoot ItemRoot { get; private set; }
-        
+
         public ItemCatalogUI LastItemCatalogUUI { get; set; }
 
         public ItemState State { get; set; }
-        
+
         public string[] TagArray => _tagArray;
-        
+
         public string[] ChildTagArray => _childTagArray;
 
         public string UniqueTick
@@ -84,7 +84,7 @@ namespace GeoTetra.GTSnapper
                 ItemRoot.UniqueTickDictionary.Add(_uniqueTick, this);
             }
         }
-        
+
         private string _uniqueTick;
 
         private void Awake()
@@ -106,13 +106,12 @@ namespace GeoTetra.GTSnapper
             MaterialArrayInitialize();
             ColliderArrayInitialize();
         }
-        
+
         public void Initialize(Vector3 position, ItemRoot itemRoot, ItemReference itemReference, Catcher catcher)
         {
             ItemRoot = itemRoot;
             ItemReference = itemReference;
             _catcher = catcher;
-            Debug.Log(ItemReference);
         }
 
         private void Start()
@@ -134,7 +133,7 @@ namespace GeoTetra.GTSnapper
             UniqueTick = itemDatum.uniqueTick;
             if (_itemDrop != null) _itemDrop.Deserialize(ItemDatum);
         }
-        
+
         public void Serialize(List<ItemDatum> itemDatums)
         {
             if (ItemDatum == null)
@@ -142,7 +141,8 @@ namespace GeoTetra.GTSnapper
                 ItemDatum = new ItemDatum();
                 ItemDatum.uniqueTick = UniqueTick;
                 //levels in the scene won't have a reference
-                if (ItemReference != null) ItemDatum.referenceName = ItemReference.name;
+                if (ItemReference == null) ItemDatum.rootName = gameObject.name;
+                else ItemDatum.referenceName = ItemReference.name;
                 if (_itemDrop != null) _itemDrop.Serialize(ItemDatum);
             }
 
@@ -157,7 +157,7 @@ namespace GeoTetra.GTSnapper
                 for (int i = 0; i < _itemDrop.ChildItemDragList.Count; ++i)
                 {
                     _itemDrop.ChildItemDragList[i].Item.Serialize(itemDatums);
-                } 
+                }
             }
         }
 
@@ -300,9 +300,8 @@ namespace GeoTetra.GTSnapper
 #if LOG
 			Debug.Log( "OnPointerUpAttachedHighlighted " + this.name );
 #endif
-            
         }
-        
+
 //        private void OnClickInstantiateCompleted(GameObject gameObject, ItemReference itemReference, PointerEventData data)
 //        {
 //            Item instantiatedItem = gameObject.GetComponent<Item>();

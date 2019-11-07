@@ -19,6 +19,7 @@ namespace GeoTetra.GTSnapper
         public string uniqueTick;
         public Vector3 position;
         public Quaternion rotation;
+        public string rootName;
         public string referenceName;
         public string parentItemSnap;
         public List<string> ItemSnapUniqueTicks;
