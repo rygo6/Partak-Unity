@@ -1,11 +1,7 @@
 //#define LOG
 
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using GeoTetra;
-using GeoTetra.GTSnapper;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 namespace GeoTetra.GTSnapper
@@ -16,7 +12,10 @@ namespace GeoTetra.GTSnapper
         [SerializeField] private Item _item;
         [SerializeField] private ItemSnap[] _itemSnapArray;
 
-        public readonly List<ItemDrag> ChildItemDragList = new List<ItemDrag>();
+        //Do we need this if the children are in the snaps? It should be more performant to iterate
+        //this than a list of lists. So for sake of improving dragging perf in complex composite objects
+        //keep it like this.
+        public List<ItemDrag> ChildItemDragList = new List<ItemDrag>();
         private ItemDrag _itemDragEnteredThis;
 
         /// <summary>
@@ -106,6 +105,30 @@ namespace GeoTetra.GTSnapper
 
         private List<ItemSnap> _sortedItemSnapList;
 
+        public void Serialize(ItemDatum itemDatum)
+        {
+            if (itemDatum.ItemSnapUniqueTicks == null)
+            {
+                itemDatum.ItemSnapUniqueTicks = new List<string>();
+            }
+            else
+            {
+                itemDatum.ItemSnapUniqueTicks.Clear();
+            }
+            for (int i = 0; i < _itemSnapArray.Length; ++i)
+            {
+                itemDatum.ItemSnapUniqueTicks.Add(_itemSnapArray[i].UniqueTick);
+            }
+        }
+
+        public void Deserialize(ItemDatum itemDatum)
+        {
+            for (int i = 0; i < itemDatum.ItemSnapUniqueTicks.Count; ++i)
+            {
+                _itemSnapArray[i].UniqueTick = itemDatum.ItemSnapUniqueTicks[i];
+            }
+        }
+        
         public bool CanAttach(string[] tagArray)
         {
             for (int i = 0; i < _itemSnapArray.Length; ++i)
@@ -152,7 +175,7 @@ namespace GeoTetra.GTSnapper
         {
             if (ItemDragEnteredThis != null)
             {
-                GetComponent<Item>().SetShaderNormal();
+                _item.SetShaderNormal();
                 ItemDragEnteredThis.ParentItemDrop = this;
             }
         }
@@ -181,7 +204,7 @@ namespace GeoTetra.GTSnapper
 
             if (data.pointerPress != null)
             {
-                GetComponent<Item>().SetShaderNormal();
+                _item.SetShaderNormal();
                 if (ItemDragEnteredThis != null)
                 {
                     ItemDragEnteredThis.AccessoryRendererState = false;
@@ -214,11 +237,11 @@ namespace GeoTetra.GTSnapper
 
             if (data.pointerPress != null)
             {
-                Item item = data.pointerPress.GetComponent<Item>();
+                Item item = data.pointerPress.GetComponent<Item>(); //TODO nonalloc
                 if (item != null && CanAttach(item.TagArray) ||
                     item != null && ContainsItem(item))
                 {
-                    GetComponent<Item>().SetShaderOutline(_item.ItemRoot.ItemSettings.DropOutlineColor);
+                    _item.SetShaderOutline(_item.ItemRoot.ItemSettings.DropOutlineColor);
                     ItemDragEnteredThis = item.GetComponent<ItemDrag>();
                     ItemDragEnteredThis.AccessoryRendererState = true;
                 }

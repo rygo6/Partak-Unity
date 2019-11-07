@@ -8,6 +8,6 @@ namespace GeoTetra.GTSnapper
 	{
 		public string PrefabName { get; set; }
 		public string[] TagArray { get; set; }
-		public Item PartnerItemRaycast { get; set; }
+		public Item PartnerItem { get; set; }
 	}
 }

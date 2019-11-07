@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
@@ -11,19 +12,20 @@ namespace GeoTetra.GTSnapper
 		[SerializeField]
 		private ItemSettings _itemSettings;
 		
+		[SerializeField]
+		private List<Item> _rootItems;
+		
+		//what was this used for? Undo?
 		public readonly Dictionary<string,MonoBehaviour> UniqueTickDictionary = new Dictionary<string,MonoBehaviour>();
-
 		public readonly List<Item> ItemHoldList = new List<Item>();
-
 		public readonly List<Item> ItemHighlightList = new List<Item>();
-
-		private List<Item> _rootItemRaycastList;
+		private ItemRootDatum _itemRootDatum;
 
 		public ItemSettings ItemSettings => _itemSettings;
 
 		private void Awake()
 		{
-			_rootItemRaycastList = new List<Item>(Item.FindObjectsOfType<Item>());
+//			_rootItems = new List<Item>(Item.FindObjectsOfType<Item>());
 		}
 
 		public void UnHighlightAll()
@@ -60,9 +62,9 @@ namespace GeoTetra.GTSnapper
 		public int CallDelegateTagFilter(System.Func<Item,bool> filterAction, System.Action<Item> trueAction, System.Action<Item> falseAction)
 		{
 			int trueCount = 0;
-			for (int i = 0; i < _rootItemRaycastList.Count; ++i)
+			for (int i = 0; i < _rootItems.Count; ++i)
 			{
-				trueCount += CallDelegateTagFilterItemRaycast(_rootItemRaycastList[i], filterAction, trueAction, falseAction);		
+				trueCount += CallDelegateTagFilterItemRaycast(_rootItems[i], filterAction, trueAction, falseAction);		
 			}
 			return trueCount;
 		}
@@ -92,9 +94,9 @@ namespace GeoTetra.GTSnapper
 
 		public void CallDelegateAll(System.Action<Item> action)
 		{
-			for (int i = 0; i < _rootItemRaycastList.Count; ++i)
+			for (int i = 0; i < _rootItems.Count; ++i)
 			{
-				CallDelegateItemRaycast(_rootItemRaycastList[i], action);		
+				CallDelegateItemRaycast(_rootItems[i], action);		
 			}	
 		}
 
@@ -110,5 +112,29 @@ namespace GeoTetra.GTSnapper
 				}	
 			}
 		}
+
+		[ContextMenu("Serialize")]
+		public void Serialize()
+		{
+			if (_itemRootDatum == null)
+			{
+				_itemRootDatum = new ItemRootDatum();
+			}
+
+			_itemRootDatum.dateCreated = DateTime.Now.ToFileTimeUtc();
+			_itemRootDatum.ItemDatums.Clear();
+				
+				for (int i = 0; i < _rootItems.Count; ++i)
+			{
+				_rootItems[i].Serialize(_itemRootDatum.ItemDatums);
+			}
+
+			string json = JsonUtility.ToJson(_itemRootDatum);
+			
+			System.IO.File.WriteAllText("save", json);
+			Debug.Log(json);
+		}
+
+
 	}
 }

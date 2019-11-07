@@ -9,6 +9,11 @@ namespace GeoTetra.GTSnapper
     {
         public readonly List<Item> ChildItemList = new List<Item>();
 
+        //Should each snap have its own GUID?
+        //Yes because if you append some kind of key onto the end
+        //of the GUID to specify ItemSnap, then you will have to 
+        //do a whole bunch more string parsing and GC allocs when 
+        //deserializing.
         public string UniqueTick
         {
             get

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 4OddReference
   m_EditorClassIdentifier: 
   _previewImage: {fileID: 2800000, guid: 3e5690cb752b47e44a5681b539f868f3, type: 3}
-  _displayName: QuarterCircle
-  _assetPrefabName: QuarterCircle
+  _displayName: 4Odd
+  _assetPrefabName: 4Odd
   _tagArray:
   - LevelShape
