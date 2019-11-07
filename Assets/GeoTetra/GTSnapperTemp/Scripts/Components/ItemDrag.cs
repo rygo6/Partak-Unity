@@ -116,6 +116,8 @@ namespace GeoTetra.GTSnapper
             }
         }
 
+        public Item Item => _item;
+
         private void Awake()
         {
             GameObject gameObject = new GameObject(this.name + "Target");

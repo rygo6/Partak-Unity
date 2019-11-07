@@ -19,15 +19,17 @@ namespace GeoTetra.GTSnapper
         [SerializeField] private Vector3 _colliderExpand = new Vector3(1.0f, 1.0f, 1.0f);
         [SerializeField] private string[] _tagArray;
         [SerializeField] private string[] _childTagArray;
-        [SerializeField] private ItemPartner[] _ItemPartnerArray;
+        [SerializeField] private ItemPartner[] _ItemPartnerArray; //This was to allow switching of Item to another.
         [SerializeField] private ItemDrag _itemDrag;
         [SerializeField] private ItemDrop _itemDrop;
 
         private Catcher _catcher;
-        
+
         public ItemDrag Drag => _itemDrag;
 
         public ItemDrop Drop => _itemDrop;
+        
+        public ItemDatum ItemDatum { get; private set; }
 
         public ItemReference ItemReference { get; private set; }
 
@@ -50,6 +52,8 @@ namespace GeoTetra.GTSnapper
         public GameObject[] ColliderGameObjectArray { get; private set; }
 
         public ItemRoot ItemRoot { get; private set; }
+        
+        public ItemCatalogUI LastItemCatalogUUI { get; set; }
 
         public ItemState State { get; set; }
         
@@ -102,12 +106,13 @@ namespace GeoTetra.GTSnapper
             MaterialArrayInitialize();
             ColliderArrayInitialize();
         }
-
+        
         public void Initialize(Vector3 position, ItemRoot itemRoot, ItemReference itemReference, Catcher catcher)
         {
             ItemRoot = itemRoot;
             ItemReference = itemReference;
             _catcher = catcher;
+            Debug.Log(ItemReference);
         }
 
         private void Start()
@@ -115,6 +120,45 @@ namespace GeoTetra.GTSnapper
             //for debug, should be set through initialize
             if (ItemRoot == null) ItemRoot = FindObjectOfType<ItemRoot>();
             if (_catcher == null) _catcher = FindObjectOfType<Catcher>();
+        }
+
+        private void Reset()
+        {
+            _itemDrag = GetComponent<ItemDrag>();
+            _itemDrop = GetComponent<ItemDrop>();
+        }
+
+        public void Deserialize(ItemDatum itemDatum)
+        {
+            ItemDatum = itemDatum;
+            UniqueTick = itemDatum.uniqueTick;
+            if (_itemDrop != null) _itemDrop.Deserialize(ItemDatum);
+        }
+        
+        public void Serialize(List<ItemDatum> itemDatums)
+        {
+            if (ItemDatum == null)
+            {
+                ItemDatum = new ItemDatum();
+                ItemDatum.uniqueTick = UniqueTick;
+                //levels in the scene won't have a reference
+                if (ItemReference != null) ItemDatum.referenceName = ItemReference.name;
+                if (_itemDrop != null) _itemDrop.Serialize(ItemDatum);
+            }
+
+            ItemDatum.position = transform.position;
+            ItemDatum.rotation = transform.rotation;
+            if (_itemDrag != null) ItemDatum.parentItemSnap = _itemDrag.ParentItemSnap.UniqueTick;
+
+            itemDatums.Add(ItemDatum);
+
+            if (_itemDrop != null)
+            {
+                for (int i = 0; i < _itemDrop.ChildItemDragList.Count; ++i)
+                {
+                    _itemDrop.ChildItemDragList[i].Item.Serialize(itemDatums);
+                } 
+            }
         }
 
         private void MaterialArrayInitialize()
@@ -197,6 +241,8 @@ namespace GeoTetra.GTSnapper
 #endif
 
             SetShaderOutline(ItemRoot.ItemSettings.DropOutlineColor);
+//            LastItemCatalogUUI.UnselectSelectedItem();
+            LastItemCatalogUUI.InstantiateSelectedItem(data, LastItemCatalogUUI.OnDragInstantiateCompleted);
         }
 
         public void OnPointerUp(PointerEventData data)
@@ -254,41 +300,31 @@ namespace GeoTetra.GTSnapper
 #if LOG
 			Debug.Log( "OnPointerUpAttachedHighlighted " + this.name );
 #endif
-
-            ItemCatalogUI plannerUI = FindObjectOfType<ItemCatalogUI>();
-			plannerUI.InstantiateSelectedItem(data, OnClickInstantiateCompleted);
+            
         }
         
-        private void OnClickInstantiateCompleted(GameObject gameObject, ItemReference itemReference, PointerEventData data)
-        {
-            Item instantiatedItem = gameObject.GetComponent<Item>();
-            instantiatedItem.Initialize(data.pointerCurrentRaycast.worldPosition, ItemRoot, itemReference, _catcher);
-            if (_itemDrop != null)
-            {
-                instantiatedItem._itemDrag.ThisEnteredDropItem = _itemDrop;
-                instantiatedItem._itemDrag.ParentItemDrop = _itemDrop;
-		
-                ItemSnap itemSnap = instantiatedItem._itemDrag.NearestItemSnap(data);
-                instantiatedItem._itemDrag.ParentItemSnap = itemSnap;
-                Ray ray = itemSnap.Snap(instantiatedItem, data);
-                instantiatedItem._itemDrag.SetTargetPositionRotation(ray.origin, ray.direction); 	
-                instantiatedItem._itemDrag.SetActualPositionRotationToTarget(); 		
-                //set to outline and normal to get rid of quirk where instantied shader isn't immediately properly lit
-                instantiatedItem.SetShaderOutline(ItemRoot.ItemSettings.InstantiateOutlineColor);
-                instantiatedItem.SetShaderNormal();
-                instantiatedItem.State = ItemState.NoInstantiate;
-
-                //TODO this should always be able to attach, why are we checking?
-                if (_itemDrop.CanAttach(instantiatedItem.TagArray))
-                {
-                    SetShaderOutline(ItemRoot.ItemSettings.InstantiateOutlineColor);
-                }
-                else
-                {
-                    SetShaderNormal();
-                    State = ItemState.NoInstantiate;
-                }
-            }
+//        private void OnClickInstantiateCompleted(GameObject gameObject, ItemReference itemReference, PointerEventData data)
+//        {
+//            Item instantiatedItem = gameObject.GetComponent<Item>();
+//            instantiatedItem.Initialize(data.pointerCurrentRaycast.worldPosition, ItemRoot, itemReference, _catcher);
+//            if (_itemDrop != null)
+//            {
+//                instantiatedItem._itemDrag.ThisEnteredDropItem = _itemDrop;
+//                instantiatedItem._itemDrag.ParentItemDrop = _itemDrop;
+//		
+//                ItemSnap itemSnap = instantiatedItem._itemDrag.NearestItemSnap(data);
+//                instantiatedItem._itemDrag.ParentItemSnap = itemSnap;
+//                Ray ray = itemSnap.Snap(instantiatedItem, data);
+//                instantiatedItem._itemDrag.SetTargetPositionRotation(ray.origin, ray.direction); 	
+//                instantiatedItem._itemDrag.SetActualPositionRotationToTarget(); 		
+//                //set to outline and normal to get rid of quirk where instantied shader isn't immediately properly lit
+//                instantiatedItem.SetShaderOutline(ItemRoot.ItemSettings.InstantiateOutlineColor);
+//                instantiatedItem.SetShaderNormal();
+//                instantiatedItem.State = ItemState.NoInstantiate;
+//                SetShaderOutline(ItemRoot.ItemSettings.InstantiateOutlineColor);
+//                
+//                SwitchStandaloneInputModule.SwitchGameObject(gameObject, data);
+//            }
 //            ItemColor itemColor = GetComponent<ItemColor>();
 //            if (itemColor != null)
 //            {
@@ -298,7 +334,7 @@ namespace GeoTetra.GTSnapper
 //                State = ItemState.NoInstantiate;
 //                StartCoroutine(instantiatedItem.DestroyItemCoroutine());
 //            }
-        }
+//        }
 
         public IEnumerator DestroyItemCoroutine()
         {
@@ -321,35 +357,34 @@ namespace GeoTetra.GTSnapper
             Destroy(gameObject);
 
             //TODO use Resources.UnloadAsset and find all assets to do this faster
-            Resources.UnloadUnusedAssets();
+            Resources.UnloadUnusedAssets(); //TODO use pooling
             System.GC.Collect();
         }
 
         private void RemoveUniqueTickRecursive(Item item)
         {
             ItemRoot.UniqueTickDictionary.Remove(item.UniqueTick);
-            ItemDrop item_Drop = item.GetComponent<ItemDrop>();
-            if (item_Drop != null)
+            if (item.Drop != null)
             {
-                for (int i = 0; i < item_Drop.ItemSnapArray.Length; ++i)
+                for (int i = 0; i < item.Drop.ItemSnapArray.Length; ++i)
                 {
-                    ItemRoot.UniqueTickDictionary.Remove(item_Drop.ItemSnapArray[i].UniqueTick);
+                    ItemRoot.UniqueTickDictionary.Remove(item.Drop.ItemSnapArray[i].UniqueTick);
                 }
             }
 
             ItemDrop itemDrop = item.GetComponent<ItemDrop>(); //TODO WHY IS THIS TWICE??
-            if (itemDrop != null)
+            if (item.Drop != null)
             {
                 for (int i = 0; i < itemDrop.ChildItemDragList.Count; ++i)
                 {
-                    RemoveUniqueTickRecursive(itemDrop.ChildItemDragList[i].GetComponent<Item>());
+                    RemoveUniqueTickRecursive(item.Drop.ChildItemDragList[i].Item);
                 }
             }
         }
 
         public void Highlight()
         {
-            System.Action action = delegate() { ItemRoot.UnHighlightAll(); };
+            Action action = delegate() { ItemRoot.UnHighlightAll(); };
             _catcher.EmptyClickAction = action;
 
             SetShaderOutline(ItemRoot.ItemSettings.HighlightItemColor);

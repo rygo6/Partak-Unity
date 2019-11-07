@@ -57,22 +57,23 @@ namespace GeoTetra.GTSnapper
                 {
                     item.SetShaderOutline(_itemSettings.InstantiateOutlineColor);
                     item.State = ItemState.Instantiate;
+                    item.LastItemCatalogUUI = this;
                 };
                 System.Action<Item> falseAction = delegate(Item item)
                 {
                     item.SetShaderNormal();
                     item.State = ItemState.NoInstantiate;
+                    item.LastItemCatalogUUI = null;
                 };
                 System.Func<Item, bool> filterAction = delegate(Item item)
                 {
-                    ItemDrop itemDrop = item.GetComponent<ItemDrop>();
-                    ItemColor itemColor = item.GetComponent<ItemColor>();
-                    const string colorTag = "Color";
-                    if (itemDrop != null)
+                    if (item.Drop != null)
                     {
-                        return itemDrop.CanAttach(_selectedItem.ItemReference.TagArray);
+                        return item.Drop.CanAttach(_selectedItem.ItemReference.TagArray);
                     }
 
+                    ItemColor itemColor = item.GetComponent<ItemColor>();
+                    const string colorTag = "Color";
                     if (itemColor != null && _selectedItem.ItemReference.HasTag(colorTag))
                     {
                         return true;
@@ -124,12 +125,12 @@ namespace GeoTetra.GTSnapper
                     .Completed += handle => OnComplete(handle.Result, itemReference, data);
         }
 
-        private void OnDragInstantiateCompleted(GameObject gameObject, ItemReference itemReference, PointerEventData data)
+        public void OnDragInstantiateCompleted(GameObject gameObject, ItemReference itemReference, PointerEventData data)
         {
+            UnselectSelectedItem();
             Item item = gameObject.GetComponent<Item>();
             item.Initialize(item.transform.position, ItemRoot, itemReference, _catcher);
             item.Highlight();
-            UnselectSelectedItem();
             SwitchStandaloneInputModule.SwitchGameObject(item.gameObject, data);
         }
 
