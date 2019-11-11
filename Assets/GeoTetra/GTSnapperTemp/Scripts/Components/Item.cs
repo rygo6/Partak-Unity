@@ -242,8 +242,23 @@ namespace GeoTetra.GTSnapper
 
             SetShaderOutline(ItemRoot.ItemSettings.DropOutlineColor);
 //            LastItemCatalogUUI.UnselectSelectedItem();
-            LastItemCatalogUUI.InstantiateSelectedItem(data, LastItemCatalogUUI.OnDragInstantiateCompleted);
+            LastItemCatalogUUI.InstantiateSelectedItemOnClick(data, OnClickInstantiateCompleted);
         }
+        
+        private void OnClickInstantiateCompleted(GameObject gameObject, ItemReference itemReference, PointerEventData data)
+        {
+            LastItemCatalogUUI.UnselectSelectedItem();
+            Item item = gameObject.GetComponent<Item>();
+            item.Initialize(item.transform.position, ItemRoot, itemReference, _catcher);
+            item.Highlight();
+            item.Drag.ThisEnteredDropItem = _itemDrop;
+            item.Drag.ParentItemDrop = _itemDrop;
+            item.Drag.ParentItemSnap = item.Drag.NearestItemSnap(data);
+            Ray ray = item.Drag.ParentItemSnap.Snap(item, data);
+            item.Drag.SetTargetPositionRotation(ray.origin, ray.direction);
+            SwitchStandaloneInputModule.SwitchToGameObject(item.gameObject, data);
+        }
+
 
         public void OnPointerUp(PointerEventData data)
         {

@@ -284,23 +284,35 @@ namespace GeoTetra.GTSnapper
 
         private void OnBeginDragAttached(PointerEventData data)
         {
+#if LOG
+            Debug.Log( "OnBeginDragAttached " + this.name );
+#endif
 //			Orbit.Instance.InputNoOrbit[data.pointerId.NoNegative()] = false;	
             _item.SetShaderNormal();
         }
 
         private void OnBeginDragAttachedHighlighted(PointerEventData data)
         {
+#if LOG
+            Debug.Log( "OnBeginDragAttachedHighlighted " + this.name );
+#endif
             _item.SetShaderOutline(_item.ItemRoot.ItemSettings.HighlightItemColor);
             SwitchAttachedToDragging(data);
         }
 
         private void OnBeginDragInstantiate(PointerEventData data)
         {
+#if LOG
+            Debug.Log( "OnBeginDragInstantiate " + this.name );
+#endif
             _item.SetShaderOutline(_item.ItemRoot.ItemSettings.InstantiateOutlineColor);
         }
 
         private void OnBeginDragNoInstantiate(PointerEventData data)
         {
+#if LOG
+            Debug.Log( "OnBeginDragNoInstantiate " + this.name );
+#endif
             _item.SetShaderNormal();
         }
 
@@ -341,6 +353,10 @@ namespace GeoTetra.GTSnapper
 
         private void OnDragDragging(PointerEventData data)
         {
+#if LOG
+            Debug.Log("OnDragDragging "+this.name);
+#endif
+            
             if (ThisEnteredDropItem == null)
             {
                 FloatObjectInMainCamera(data);
@@ -361,7 +377,7 @@ namespace GeoTetra.GTSnapper
                         ParentItemSnap = currentNearestItemSnap;
                     }
 
-                    Ray ray = ParentItemSnap.Snap(GetComponent<Item>(), data);
+                    Ray ray = ParentItemSnap.Snap(_item, data);
                     SetTargetPositionRotation(ray.origin, ray.direction);
                 }
             }
@@ -385,6 +401,10 @@ namespace GeoTetra.GTSnapper
 
         private void OnEndDragDragging(PointerEventData data)
         {
+#if LOG
+            Debug.Log( "OnEndDragDragging " + this.name );
+#endif
+            
             if (ThisEnteredDropItem == null)
             {
 //				StartCoroutine(_item.DestroyItemCoroutine());
