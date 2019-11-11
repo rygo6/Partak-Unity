@@ -107,25 +107,25 @@ namespace GeoTetra.GTSnapper
 
         public void Serialize(ItemDatum itemDatum)
         {
-            if (itemDatum.ItemSnapUniqueTicks == null)
+            if (itemDatum._itemSnapUniqueTicks == null)
             {
-                itemDatum.ItemSnapUniqueTicks = new List<string>();
+                itemDatum._itemSnapUniqueTicks = new List<string>();
             }
             else
             {
-                itemDatum.ItemSnapUniqueTicks.Clear();
+                itemDatum._itemSnapUniqueTicks.Clear();
             }
             for (int i = 0; i < _itemSnapArray.Length; ++i)
             {
-                itemDatum.ItemSnapUniqueTicks.Add(_itemSnapArray[i].UniqueTick);
+                itemDatum._itemSnapUniqueTicks.Add(_itemSnapArray[i].UniqueTick);
             }
         }
 
         public void Deserialize(ItemDatum itemDatum)
         {
-            for (int i = 0; i < itemDatum.ItemSnapUniqueTicks.Count; ++i)
+            for (int i = 0; i < itemDatum._itemSnapUniqueTicks.Count; ++i)
             {
-                _itemSnapArray[i].UniqueTick = itemDatum.ItemSnapUniqueTicks[i];
+                _itemSnapArray[i].UniqueTick = itemDatum._itemSnapUniqueTicks[i];
             }
         }
         

@@ -8,20 +8,20 @@ namespace GeoTetra.GTSnapper
     [Serializable]
     public class ItemRootDatum
     {
-        public string rootName;
-        public long dateCreated;
-        public List<ItemDatum> ItemDatums = new List<ItemDatum>();
+        public string _rootName;
+        public long _dateCreated;
+        public List<ItemDatum> _itemDatums = new List<ItemDatum>();
     }
     
     [Serializable]
     public class ItemDatum
     {
-        public string uniqueTick;
-        public Vector3 position;
-        public Quaternion rotation;
-        public string rootName;
-        public string referenceName;
-        public string parentItemSnap;
-        public List<string> ItemSnapUniqueTicks;
+        public string _uniqueTick;
+        public Vector3 _position;
+        public Quaternion _rotation;
+        public string _rootName;
+        public string _referenceName;
+        public string _parentItemSnap;
+        public List<string> _itemSnapUniqueTicks;
     }
 }

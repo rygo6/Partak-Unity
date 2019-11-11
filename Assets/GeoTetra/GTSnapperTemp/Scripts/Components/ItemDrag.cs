@@ -1,11 +1,7 @@
-#define LOG
+//#define LOG
 
-using System;
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using GeoTetra;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 namespace GeoTetra.GTSnapper
@@ -31,10 +27,9 @@ namespace GeoTetra.GTSnapper
 
         public ItemSnap ParentItemSnap
         {
-            get { return _parentItemSnap; }
+            get => _parentItemSnap;
             set
             {
-                Debug.Log("_parentItemSnap setting " + value + "  " + gameObject.name);
                 if (_parentItemSnap != null)
                 {
                     _parentItemSnap.RemoveItem(GetComponent<Item>());
@@ -51,10 +46,9 @@ namespace GeoTetra.GTSnapper
 
         public ItemDrop ParentItemDrop
         {
-            get { return _parentItemDrop; }
+            get => _parentItemDrop;
             set
             {
-                Debug.Log("_parentItemDrop setting " + value + "  " + gameObject.name);
                 if (_parentItemDrop != null)
                 {
                     _parentItemDrop.ChildItemDragList.Remove(this);
@@ -72,7 +66,7 @@ namespace GeoTetra.GTSnapper
 
         public bool AccessoryRendererState
         {
-            get { return _accessoryRendererState; }
+            get => _accessoryRendererState;
             set
             {
                 if (_accessoryRendererState != value)
@@ -89,7 +83,7 @@ namespace GeoTetra.GTSnapper
 
         public ItemDrop ThisEnteredDropItem
         {
-            get { return _thisEnteredDropItem; }
+            get => _thisEnteredDropItem;
             set
             {
                 //this be some clever stuff to make it so EnterIntoItemDrop
@@ -190,9 +184,8 @@ namespace GeoTetra.GTSnapper
         /// <returns><c>true</c>, if position and target are equal, <c>false</c> otherwise.</returns>
         private bool SmoothToTargetPositionRotation()
         {
-            Item item = GetComponent<Item>();
-            if (TargetTransform.position != item.transform.position ||
-                TargetTransform.eulerAngles != item.transform.eulerAngles)
+            if (TargetTransform.position != _item.transform.position ||
+                TargetTransform.eulerAngles != _item.transform.eulerAngles)
             {
                 SmoothToPointAndDirection(TargetTransform.position, _posDamp, TargetTransform.up, _rotDamp);
                 return false;
@@ -261,8 +254,7 @@ namespace GeoTetra.GTSnapper
         private void SmoothToPointAndDirection(Vector3 point, float moveSmooth, Vector3 direction, float rotSmooth)
         {
             _item.transform.position = Vector3.SmoothDamp(transform.position, point, ref _smoothVelocity, moveSmooth);
-            _item.transform.up =
-                Vector3.SmoothDamp(transform.up, direction, ref _smoothAngleVelocity, rotSmooth);
+            _item.transform.up = Vector3.SmoothDamp(transform.up, direction, ref _smoothAngleVelocity, rotSmooth);
         }
 
         private Vector3 _smoothVelocity;

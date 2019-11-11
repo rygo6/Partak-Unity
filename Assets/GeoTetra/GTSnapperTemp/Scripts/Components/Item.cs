@@ -130,7 +130,7 @@ namespace GeoTetra.GTSnapper
         public void Deserialize(ItemDatum itemDatum)
         {
             ItemDatum = itemDatum;
-            UniqueTick = itemDatum.uniqueTick;
+            UniqueTick = itemDatum._uniqueTick;
             if (_itemDrop != null) _itemDrop.Deserialize(ItemDatum);
         }
 
@@ -139,16 +139,16 @@ namespace GeoTetra.GTSnapper
             if (ItemDatum == null)
             {
                 ItemDatum = new ItemDatum();
-                ItemDatum.uniqueTick = UniqueTick;
+                ItemDatum._uniqueTick = UniqueTick;
                 //levels in the scene won't have a reference
-                if (ItemReference == null) ItemDatum.rootName = gameObject.name;
-                else ItemDatum.referenceName = ItemReference.name;
+                if (ItemReference == null) ItemDatum._rootName = gameObject.name;
+                else ItemDatum._referenceName = ItemReference.name;
                 if (_itemDrop != null) _itemDrop.Serialize(ItemDatum);
             }
 
-            ItemDatum.position = transform.position;
-            ItemDatum.rotation = transform.rotation;
-            if (_itemDrag != null) ItemDatum.parentItemSnap = _itemDrag.ParentItemSnap.UniqueTick;
+            ItemDatum._position = transform.position;
+            ItemDatum._rotation = transform.rotation;
+            if (_itemDrag != null) ItemDatum._parentItemSnap = _itemDrag.ParentItemSnap.UniqueTick;
 
             itemDatums.Add(ItemDatum);
 
