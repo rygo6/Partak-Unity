@@ -108,29 +108,40 @@ namespace GeoTetra.GTSnapper
 
         public void SpawnItemFromMenuDrag(PointerEventData data, ScrollItem scrollItem)
         {
+            Debug.Log(data.delta);
             ItemRoot.UnHighlightAll();
             _selectedItem = scrollItem;
-            InstantiateSelectedItem(data, OnDragInstantiateCompleted);
+            InstantiateSelectedItemOnDrag(data, OnDragInstantiateCompleted);
             UnselectSelectedItem();
         }
 
-        public void InstantiateSelectedItem(PointerEventData data, System.Action<GameObject, ItemReference, PointerEventData> OnComplete)
+        public void InstantiateSelectedItemOnDrag(PointerEventData data, System.Action<GameObject, ItemReference, PointerEventData> OnComplete)
         {
             Ray ray = Camera.main.ScreenPointToRay(data.position);
             Vector3 position = ray.GetPoint(3.5f);
             ItemReference itemReference = _selectedItem.ItemReference;
+            Debug.Log(data.delta);
             Addressables.InstantiateAsync(itemReference.AssetPrefabName,
                     new InstantiationParameters(position, Quaternion.identity, null)) //TODO does the transform ref break this going on stack?
+                .Completed += handle => OnComplete(handle.Result, itemReference, data);
+        }
+        
+        public void InstantiateSelectedItemOnClick(PointerEventData data, System.Action<GameObject, ItemReference, PointerEventData> OnComplete)
+        {
+            ItemReference itemReference = _selectedItem.ItemReference;
+            Addressables.InstantiateAsync(itemReference.AssetPrefabName,
+                    new InstantiationParameters(data.pointerCurrentRaycast.worldPosition, Quaternion.identity, null)) //TODO does the transform ref break this going on stack?
                     .Completed += handle => OnComplete(handle.Result, itemReference, data);
         }
 
         public void OnDragInstantiateCompleted(GameObject gameObject, ItemReference itemReference, PointerEventData data)
         {
+            Debug.Log(data.delta);
             UnselectSelectedItem();
             Item item = gameObject.GetComponent<Item>();
             item.Initialize(item.transform.position, ItemRoot, itemReference, _catcher);
             item.Highlight();
-            SwitchStandaloneInputModule.SwitchGameObject(item.gameObject, data);
+            SwitchStandaloneInputModule.SwitchToGameObject(item.gameObject, data);
         }
 
         public void LoadItemArray(IList<ItemReference> itemReferences)

@@ -14,17 +14,44 @@ namespace UnityEngine.EventSystems
     public class SwitchStandaloneInputModule : PointerInputModule
     {
         //Added new
-        private static readonly GameObject[] GameObject = new GameObject[10];
-        private static readonly int[] Phase = new int[10];
-
+        private static readonly GameObject[] SwitchGameObjects = new GameObject[10];
+        private static readonly int[] SwitchPhases = new int[10];
+        private static SwitchStandaloneInputModule instance;
+        
         /// <summary>
         /// Call mid-drag to switch event stream to passed in GameObject. Call from an
         /// OnDrag callback and pass the PointerEventData from that OnDrag callback to this method.
         /// </summary>
-        public static void SwitchGameObject(GameObject gameObject, PointerEventData data)
+        public static void SwitchToGameObject(GameObject gameObject, PointerEventData data)
         {
-            GameObject[data.pointerId.NegativeToPositive()] = gameObject;
-            Phase[data.pointerId.NegativeToPositive()] = 1;
+            if (instance == null) instance = FindObjectOfType<SwitchStandaloneInputModule>();
+            if (instance.input.touchCount == 0 && instance.input.mousePresent)
+                instance.DoMouseSwitch(gameObject, data);
+            else
+                instance.DoTouchSwitch(gameObject, data);
+        }
+
+        public void DoTouchSwitch(GameObject gameObject, PointerEventData data)
+        {
+
+        }
+
+        private void DoMouseSwitch(GameObject gameObject, PointerEventData data)
+        {
+            var mouseData = GetMousePointerEventData(0);
+
+            //send released, PointUp on prior object
+            mouseData.SetButtonState(PointerEventData.InputButton.Left, PointerEventData.FramePressState.Released, mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData.buttonData);
+            ProcessMouseEvent(mouseData);
+
+            if (input.GetMouseButton(0))
+            {
+                RaycastResult result = new RaycastResult();
+                result.gameObject = gameObject;
+                mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData.buttonData.pointerCurrentRaycast = result;
+                mouseData.SetButtonState(PointerEventData.InputButton.Left, PointerEventData.FramePressState.Pressed, mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData.buttonData);
+                ProcessMouseEvent(mouseData);
+            }
         }
         // end added new
         
@@ -362,16 +389,24 @@ namespace UnityEngine.EventSystems
             released = (input.phase == TouchPhase.Canceled) || (input.phase == TouchPhase.Ended);
 
             //Added
-            if (Phase[input.fingerId] == 1)
+            if (SwitchPhases[input.fingerId] == 1)
             {
                 released = true;
                 pressed = false;
-                Phase[input.fingerId] = 2;
+                SwitchPhases[input.fingerId] = 2;
             }
-            else if (Phase[input.fingerId] == 2)	
+            else if (SwitchPhases[input.fingerId] == 2)	
             {
-                released = false;
-                pressed = true;		
+                //If finger still not being held then do not send press events
+                if (input.phase == TouchPhase.Moved || input.phase == TouchPhase.Stationary)
+                {
+                    released = false;
+                    pressed = true;		
+                }
+                else
+                {
+                    SwitchPhases[input.fingerId] = 0;
+                }
             }
             //End added
             
@@ -394,13 +429,13 @@ namespace UnityEngine.EventSystems
             else
             {
                 //Added
-                if (Phase[input.fingerId] == 2)	
+                if (SwitchPhases[input.fingerId] == 2)	
                 {
-                    Phase[input.fingerId] = 0;
+                    SwitchPhases[input.fingerId] = 0;
                     RaycastResult result = new RaycastResult();
-                    result.gameObject = GameObject[input.fingerId];
+                    result.gameObject = SwitchGameObjects[input.fingerId];
                     m_RaycastResultCache.Add(result);
-                    GameObject[input.fingerId] = null;
+                    SwitchGameObjects[input.fingerId] = null;
                 }
                 else
                 {	
@@ -621,7 +656,46 @@ namespace UnityEngine.EventSystems
 
         protected void ProcessMouseEvent()
         {
-            ProcessMouseEvent(0);
+            if (SwitchGameObjects[0] != null)
+            {
+                var mouseData = GetMousePointerEventData(0);
+                
+                //send released, PointUp on prior object
+                mouseData.SetButtonState(PointerEventData.InputButton.Left, PointerEventData.FramePressState.Released, mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData.buttonData);
+                ProcessMouseEvent(mouseData);
+//                Vector2 releaseDelta = mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData.buttonData.delta;
+//                if (releaseDelta.sqrMagnitude == 0) releaseDelta.x = .0001f;
+
+                if (StateForMouseButton(0) == PointerEventData.FramePressState.PressedAndReleased)
+                {
+                    //send pressed through on new gameobject, PointerDown on new object
+                }
+                else
+                {
+                    RaycastResult result = new RaycastResult();
+                    result.gameObject = SwitchGameObjects[0];
+                    mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData.buttonData.pointerCurrentRaycast = result;
+                    mouseData.SetButtonState(PointerEventData.InputButton.Left,PointerEventData.FramePressState.Pressed,mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData.buttonData);
+                    ProcessMouseEvent(mouseData);
+                }
+                
+//                //get new mouse data since in prior OnDown in new object it may have done something like change layer so the raycast could hit new object
+//                mouseData = GetMousePointerEventData(0);
+//                
+//                //pass on delta because pressed event clears it, OnBeginDrag on new object
+//                mouseData.SetButtonState(PointerEventData.InputButton.Left, PointerEventData.FramePressState.NotChanged, mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData.buttonData);
+//                //forces drag to go through
+//                mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData.buttonData.delta = releaseDelta;
+//                mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData.buttonData.useDragThreshold = false;
+//                ProcessMouseEvent(mouseData);
+                
+                SwitchGameObjects[0] = null;
+            }
+            else
+            {
+                var mouseData = GetMousePointerEventData(0);
+                ProcessMouseEvent(mouseData);
+            }
         }
 
         [Obsolete("This method is no longer checked, overriding it with return true does nothing!")]
@@ -633,9 +707,8 @@ namespace UnityEngine.EventSystems
         /// <summary>
         /// Process all mouse events.
         /// </summary>
-        protected void ProcessMouseEvent(int id)
+        protected void ProcessMouseEvent(MouseState mouseData)
         {
-            var mouseData = GetMousePointerEventData(id);
             var leftButtonData = mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData;
 
             m_CurrentFocusedGameObject = leftButtonData.buttonData.pointerCurrentRaycast.gameObject;
@@ -688,20 +761,8 @@ namespace UnityEngine.EventSystems
             leftData.scrollDelta = input.mouseScrollDelta;
             leftData.button = PointerEventData.InputButton.Left;
             
-            //Added
-            if (Phase[0] == 2)	
-            {
-                RaycastResult result = new RaycastResult();
-                result.gameObject = GameObject[0];
-                m_RaycastResultCache.Add(result);
-                GameObject[0] = null;
-            }
-            else
-            {	
-                eventSystem.RaycastAll(leftData, m_RaycastResultCache);
-            }
-            //End added
-            
+            eventSystem.RaycastAll(leftData, m_RaycastResultCache);
+
             var raycast = FindFirstRaycast(m_RaycastResultCache);
             leftData.pointerCurrentRaycast = raycast;
             m_RaycastResultCache.Clear();
@@ -716,35 +777,15 @@ namespace UnityEngine.EventSystems
             GetPointerData(kMouseMiddleId, out middleData, true);
             CopyFromTo(leftData, middleData);
             middleData.button = PointerEventData.InputButton.Middle;
-
-            //edited
-            m_MouseState.SetButtonState(PointerEventData.InputButton.Left, SwitchStateForMouseButton(0), leftData);
+            
+            m_MouseState.SetButtonState(PointerEventData.InputButton.Left, StateForMouseButton(0), leftData);
             m_MouseState.SetButtonState(PointerEventData.InputButton.Right, StateForMouseButton(1), rightData);
             m_MouseState.SetButtonState(PointerEventData.InputButton.Middle, StateForMouseButton(2), middleData);
-            //end added
-            
+
             return m_MouseState;
         }
         //end added from base class
-        
-        //added new
-        private PointerEventData.FramePressState SwitchStateForMouseButton(int id)
-        {
-            PointerEventData.FramePressState buttonState = StateForMouseButton(id);
-            if (Phase[id] == 1)
-            {
-                buttonState = PointerEventData.FramePressState.Released;
-                Phase[id] = 2;
-            }
-            else if (Phase[id] == 2)	
-            {	
-                buttonState = PointerEventData.FramePressState.Pressed;
-                Phase[id] = 0;
-            }
-            return buttonState;
-        }	
-        //end added new
-        
+
         protected bool SendUpdateEventToSelectedObject()
         {
             if (eventSystem.currentSelectedGameObject == null)
@@ -830,4 +871,3 @@ namespace UnityEngine.EventSystems
         }
     }
 }
- 
