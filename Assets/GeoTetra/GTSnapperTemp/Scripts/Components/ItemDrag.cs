@@ -1,4 +1,4 @@
-//#define LOG
+#define LOG
 
 using System;
 using UnityEngine;
@@ -34,6 +34,7 @@ namespace GeoTetra.GTSnapper
             get { return _parentItemSnap; }
             set
             {
+                Debug.Log("_parentItemSnap setting " + value + "  " + gameObject.name);
                 if (_parentItemSnap != null)
                 {
                     _parentItemSnap.RemoveItem(GetComponent<Item>());
@@ -53,6 +54,7 @@ namespace GeoTetra.GTSnapper
             get { return _parentItemDrop; }
             set
             {
+                Debug.Log("_parentItemDrop setting " + value + "  " + gameObject.name);
                 if (_parentItemDrop != null)
                 {
                     _parentItemDrop.ChildItemDragList.Remove(this);

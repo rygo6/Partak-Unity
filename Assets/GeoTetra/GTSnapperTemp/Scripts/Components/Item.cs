@@ -256,6 +256,7 @@ namespace GeoTetra.GTSnapper
             item.Drag.ParentItemSnap = item.Drag.NearestItemSnap(data);
             Ray ray = item.Drag.ParentItemSnap.Snap(item, data);
             item.Drag.SetTargetPositionRotation(ray.origin, ray.direction);
+            item.Drag.ThisEnteredDropItem = null;
             SwitchStandaloneInputModule.SwitchToGameObject(item.gameObject, data);
         }
 

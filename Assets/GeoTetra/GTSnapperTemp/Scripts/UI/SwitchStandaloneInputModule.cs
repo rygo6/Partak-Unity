@@ -38,18 +38,24 @@ namespace UnityEngine.EventSystems
 
         private void DoMouseSwitch(GameObject gameObject, PointerEventData data)
         {
+            bool dragging = data.dragging;
+            Vector2 delta = data.delta;
             var mouseData = GetMousePointerEventData(0);
 
             //send released, PointUp on prior object
+            RaycastResult result = new RaycastResult();
+            result.gameObject = gameObject;
+            mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData.buttonData.pointerCurrentRaycast = result;
             mouseData.SetButtonState(PointerEventData.InputButton.Left, PointerEventData.FramePressState.Released, mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData.buttonData);
             ProcessMouseEvent(mouseData);
 
             if (input.GetMouseButton(0))
             {
-                RaycastResult result = new RaycastResult();
-                result.gameObject = gameObject;
                 mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData.buttonData.pointerCurrentRaycast = result;
                 mouseData.SetButtonState(PointerEventData.InputButton.Left, PointerEventData.FramePressState.Pressed, mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData.buttonData);
+//                data.dragging = dragging;
+//                data.delta = delta;
+//                data.useDragThreshold = false;
                 ProcessMouseEvent(mouseData);
             }
         }
