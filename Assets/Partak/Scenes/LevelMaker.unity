@@ -621,6 +621,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6048264bed41a9b408286823b052777c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parentItem: {fileID: 1329045295}
   _childTagArray: []
   _allowedChildren: -1
   _collider: {fileID: 1329045293}

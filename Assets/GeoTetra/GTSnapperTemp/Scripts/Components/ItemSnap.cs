@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +8,8 @@ namespace GeoTetra.GTSnapper
 {
     public abstract class ItemSnap : MonoBehaviour
     {
+        [SerializeField] private Item _parentItem;
+        
         public readonly List<Item> ChildItemList = new List<Item>();
 
         //Should each snap have its own GUID?
@@ -44,6 +47,8 @@ namespace GeoTetra.GTSnapper
 
         public string[] ChildTagArray => _childTagArray;
 
+        public Item ParentItem => _parentItem;
+
         [Header(
             "Enter a specific set of tags for this point. If no tags are entered it will inherit them from the parent item")]
         [SerializeField]
@@ -58,6 +63,11 @@ namespace GeoTetra.GTSnapper
             {
                 _childTagArray = GetComponentInParent<Item>().ChildTagArray;
             }
+        }
+
+        protected void Reset()
+        {
+            _parentItem = GetComponentInParent<Item>();
         }
 
         public bool TagMatch(string[] tagArray)
@@ -77,11 +87,17 @@ namespace GeoTetra.GTSnapper
         /// <param name="data">Data.</param>
         public abstract Vector3 NearestPoint(PointerEventData data);
 
+        /// <summary>
+        /// Is called from ItemDrag when setting ParentItemSnap value
+        /// </summary>
         public virtual void AddItem(Item item)
         {
             ChildItemList.Add(item);
         }
 
+        /// <summary>
+        /// Is called from ItemDrag when setting ParentItemSnap value
+        /// </summary>
         public virtual void RemoveItem(Item item)
         {
             ChildItemList.Remove(item);

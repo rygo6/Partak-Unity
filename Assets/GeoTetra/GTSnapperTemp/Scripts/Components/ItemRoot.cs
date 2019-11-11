@@ -1,11 +1,6 @@
 using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Reflection;
 using GeoTetra.GTSnapper.ScriptableObjects;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -15,8 +10,8 @@ namespace GeoTetra.GTSnapper
 {
     public class ItemRoot : MonoBehaviour
     {
+        [SerializeField] private Catcher _catcher;
         [SerializeField] private ItemSettings _itemSettings;
-
         [SerializeField] private List<Item> _rootItems;
 
         //what was this used for? Undo?
@@ -132,12 +127,12 @@ namespace GeoTetra.GTSnapper
                 _itemRootDatum = new ItemRootDatum();
             }
 
-            _itemRootDatum.dateCreated = DateTime.Now.ToFileTimeUtc();
-            _itemRootDatum.ItemDatums.Clear();
+            _itemRootDatum._dateCreated = DateTime.Now.ToFileTimeUtc();
+            _itemRootDatum._itemDatums.Clear();
 
             for (int i = 0; i < _rootItems.Count; ++i)
             {
-                _rootItems[i].Serialize(_itemRootDatum.ItemDatums);
+                _rootItems[i].Serialize(_itemRootDatum._itemDatums);
             }
 
             string json = JsonUtility.ToJson(_itemRootDatum);
@@ -152,52 +147,64 @@ namespace GeoTetra.GTSnapper
             string json = System.IO.File.ReadAllText("save");
             _itemRootDatum = JsonUtility.FromJson<ItemRootDatum>(json);
 
-            List<ResourceLocation> toLoad = new List<ResourceLocation>();
-            
-            for (int i = 0; i < _itemRootDatum.ItemDatums.Count; ++i)
+            _currentLoadingItemCount = 0;
+            _totalLoadingItemCount = 0;
+            for (int i = 0; i < _itemRootDatum._itemDatums.Count; ++i)
             {
-                if (!string.IsNullOrEmpty(_itemRootDatum.ItemDatums[i].rootName))
+                if (!string.IsNullOrEmpty(_itemRootDatum._itemDatums[i]._rootName))
                 {
-                    Item rootItem = _rootItems.Find(item => item.gameObject.name == _itemRootDatum.ItemDatums[i].rootName);
+                    Item rootItem = _rootItems.Find(item => item.gameObject.name == _itemRootDatum._itemDatums[i]._rootName);
                     if (rootItem != null)
                     {
-                        rootItem.Deserialize(_itemRootDatum.ItemDatums[i]);
+                        rootItem.Deserialize(_itemRootDatum._itemDatums[i]);
                     }
                     else
                     {
-                        Debug.LogWarning($"Did not find root item {_itemRootDatum.ItemDatums[i].rootName}");
+                        Debug.LogWarning($"Did not find root item {_itemRootDatum._itemDatums[i]._rootName}");
                     }
                 }
-                else if (!string.IsNullOrEmpty(_itemRootDatum.ItemDatums[i].referenceName))
+                else if (!string.IsNullOrEmpty(_itemRootDatum._itemDatums[i]._referenceName))
                 {
-                    ItemDatum datum = _itemRootDatum.ItemDatums[i];
-                    
-                    Addressables.LoadAssetAsync<ItemReference>(_itemRootDatum.ItemDatums[i].referenceName).Completed += handle => OnItemReferenceComplete(handle, datum);
+                    ItemDatum datum = _itemRootDatum._itemDatums[i];
+                    Addressables.LoadAssetAsync<ItemReference>(_itemRootDatum._itemDatums[i]._referenceName).Completed += handle => OnItemReferenceComplete(handle, datum);
+                    _totalLoadingItemCount++;
                 }
             }
         }
 
         private void OnItemReferenceComplete(AsyncOperationHandle<ItemReference> reference, ItemDatum itemDatum)
         {
-            Addressables.InstantiateAsync(reference.Result.AssetPrefabName, new InstantiationParameters(itemDatum.position, itemDatum.rotation, null))
+            Addressables.InstantiateAsync(reference.Result.AssetPrefabName, new InstantiationParameters(itemDatum._position, itemDatum._rotation, null))
                 .Completed += handle => OnInstantiateComplete(handle.Result, reference.Result, itemDatum);
         }
-        
-        public void OnInstantiateComplete(GameObject gameObject, ItemReference itemReference, ItemDatum itemDatum)
+
+        private void OnInstantiateComplete(GameObject gameObject, ItemReference itemReference, ItemDatum itemDatum)
         {
-            var _catcher = FindObjectOfType<Catcher>(); //TODO get rid of
             Item item = gameObject.GetComponent<Item>();
             item.Initialize(item.transform.position, this, itemReference, _catcher);
             item.Deserialize(itemDatum);
 
-//            if (!string.IsNullOrEmpty(itemDatum.parentItemSnap))
-//            {
-//                if (UniqueTickDictionary.TryGetValue(itemDatum.parentItemSnap, out var itemSnap))
-//                {
-//                    item.Drag.ParentItemSnap = itemSnap as ItemSnap;
-//                }
-//                
-//            }
+            _currentLoadingItemCount++;
+            if (_currentLoadingItemCount == _totalLoadingItemCount) HookupParentChildRelationship();
         }
+
+        private void HookupParentChildRelationship()
+        {
+            foreach (KeyValuePair<string,MonoBehaviour> tickItem in UniqueTickDictionary)
+            {
+                if (tickItem.Value is Item)
+                {
+                    Item item = tickItem.Value as Item;
+                    if (UniqueTickDictionary.TryGetValue(item.ItemDatum._parentItemSnap, out var parentItemSnap))
+                    {
+                        item.Drag.ParentItemSnap = parentItemSnap as ItemSnap;
+                        item.Drag.ParentItemDrop = item.Drag.ParentItemSnap.ParentItem.Drop;
+                    }
+                }
+            }
+        }
+
+        private int _currentLoadingItemCount = 0;
+        private int _totalLoadingItemCount = 0;
     }
 }
