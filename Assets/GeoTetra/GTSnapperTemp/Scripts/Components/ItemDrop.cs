@@ -177,6 +177,7 @@ namespace GeoTetra.GTSnapper
             {
                 _item.SetShaderNormal();
                 ItemDragEnteredThis.ParentItemDrop = this;
+                ItemDragEnteredThis = null;
             }
         }
 

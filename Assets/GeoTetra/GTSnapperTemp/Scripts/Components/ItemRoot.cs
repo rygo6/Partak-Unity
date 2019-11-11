@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Reflection;
 using GeoTetra.GTSnapper.ScriptableObjects;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -19,8 +20,7 @@ namespace GeoTetra.GTSnapper
         [SerializeField] private List<Item> _rootItems;
 
         //what was this used for? Undo?
-        public readonly Dictionary<string, MonoBehaviour>
-            UniqueTickDictionary = new Dictionary<string, MonoBehaviour>();
+        public readonly Dictionary<string, MonoBehaviour> UniqueTickDictionary = new Dictionary<string, MonoBehaviour>();
 
         public readonly List<Item> ItemHoldList = new List<Item>();
         public readonly List<Item> ItemHighlightList = new List<Item>();
@@ -152,12 +152,13 @@ namespace GeoTetra.GTSnapper
             string json = System.IO.File.ReadAllText("save");
             _itemRootDatum = JsonUtility.FromJson<ItemRootDatum>(json);
 
+            List<ResourceLocation> toLoad = new List<ResourceLocation>();
+            
             for (int i = 0; i < _itemRootDatum.ItemDatums.Count; ++i)
             {
                 if (!string.IsNullOrEmpty(_itemRootDatum.ItemDatums[i].rootName))
                 {
-                    Item rootItem =
-                        _rootItems.Find(item => item.gameObject.name == _itemRootDatum.ItemDatums[i].rootName);
+                    Item rootItem = _rootItems.Find(item => item.gameObject.name == _itemRootDatum.ItemDatums[i].rootName);
                     if (rootItem != null)
                     {
                         rootItem.Deserialize(_itemRootDatum.ItemDatums[i]);
@@ -170,16 +171,15 @@ namespace GeoTetra.GTSnapper
                 else if (!string.IsNullOrEmpty(_itemRootDatum.ItemDatums[i].referenceName))
                 {
                     ItemDatum datum = _itemRootDatum.ItemDatums[i];
-                    Addressables.LoadAssetAsync<ItemReference>(_itemRootDatum.ItemDatums[i].referenceName).Completed +=
-                        handle => OnItemReferenceComplete(handle, datum);
+                    
+                    Addressables.LoadAssetAsync<ItemReference>(_itemRootDatum.ItemDatums[i].referenceName).Completed += handle => OnItemReferenceComplete(handle, datum);
                 }
             }
         }
 
         private void OnItemReferenceComplete(AsyncOperationHandle<ItemReference> reference, ItemDatum itemDatum)
         {
-            Addressables.InstantiateAsync(reference.Result.AssetPrefabName,
-                    new InstantiationParameters(itemDatum.position, itemDatum.rotation, null))
+            Addressables.InstantiateAsync(reference.Result.AssetPrefabName, new InstantiationParameters(itemDatum.position, itemDatum.rotation, null))
                 .Completed += handle => OnInstantiateComplete(handle.Result, reference.Result, itemDatum);
         }
         
@@ -189,8 +189,15 @@ namespace GeoTetra.GTSnapper
             Item item = gameObject.GetComponent<Item>();
             item.Initialize(item.transform.position, this, itemReference, _catcher);
             item.Deserialize(itemDatum);
-            
-            //TODO HOOK PARENT CHILD REFERENCES 
+
+//            if (!string.IsNullOrEmpty(itemDatum.parentItemSnap))
+//            {
+//                if (UniqueTickDictionary.TryGetValue(itemDatum.parentItemSnap, out var itemSnap))
+//                {
+//                    item.Drag.ParentItemSnap = itemSnap as ItemSnap;
+//                }
+//                
+//            }
         }
     }
 }
