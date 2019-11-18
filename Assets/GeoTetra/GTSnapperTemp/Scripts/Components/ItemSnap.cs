@@ -10,7 +10,7 @@ namespace GeoTetra.GTSnapper
     {
         [SerializeField] private Item _parentItem;
         
-        public readonly List<Item> ChildItemList = new List<Item>();
+        public List<Item> ChildItemList = new List<Item>();
 
         //Should each snap have its own GUID?
         //Yes because if you append some kind of key onto the end
