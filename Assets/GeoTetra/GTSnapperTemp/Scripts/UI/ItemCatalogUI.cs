@@ -2,9 +2,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using System.IO;
-using GeoTetra;
-using GeoTetra.GTSnapper;
 using GeoTetra.GTSnapper.ScriptableObjects;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -112,20 +109,19 @@ namespace GeoTetra.GTSnapper
 
         public void SpawnItemFromMenuDrag(PointerEventData data, ScrollItem scrollItem)
         {
+            Debug.Log("SpawnItemFromMenuDrag");
             ItemRoot.UnHighlightAll();
-            _selectedItem = scrollItem;
-            InstantiateSelectedItemOnDrag(data, OnDragInstantiateCompleted);
             UnselectSelectedItem();
+            InstantiateSelectedItemOnDrag(data, scrollItem.ItemReference, OnDragInstantiateCompleted);
         }
 
-        public void InstantiateSelectedItemOnDrag(PointerEventData data, System.Action<GameObject, ItemReference, PointerEventData> OnComplete)
+        public void InstantiateSelectedItemOnDrag(PointerEventData data, ItemReference reference, System.Action<GameObject, ItemReference, PointerEventData> OnComplete)
         {
             Ray ray = Camera.main.ScreenPointToRay(data.position);
             Vector3 position = ray.GetPoint(5);
-            ItemReference itemReference = _selectedItem.ItemReference;
-            Addressables.InstantiateAsync(itemReference.AssetPrefabName,
+            Addressables.InstantiateAsync(reference.AssetPrefabName,
                     new InstantiationParameters(position, Quaternion.identity, null)) //TODO does the transform ref break this going on stack?
-                .Completed += handle => OnComplete(handle.Result, itemReference, data);
+                .Completed += handle => OnComplete(handle.Result, reference, data);
         }
         
         public void InstantiateSelectedItemOnClick(PointerEventData data, System.Action<GameObject, ItemReference, PointerEventData> OnComplete)

@@ -38,11 +38,13 @@ namespace UnityEngine.EventSystems
             
             RaycastResult result = new RaycastResult();
             result.gameObject = gameObject;
-
+            pointer.pointerCurrentRaycast = result;
             ProcessTouchEvent(pointer, false, true);
 
+            pointer = GetTouchPointerEventData(touch, out pressed, out released);
             if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
             {
+                pointer.pointerPressRaycast = result;
                 pointer.pointerCurrentRaycast = result;
                 ProcessTouchEvent(pointer, true, false);
             }
@@ -69,12 +71,12 @@ namespace UnityEngine.EventSystems
             //send released, PointUp on prior object
             RaycastResult result = new RaycastResult();
             result.gameObject = gameObject;
-
             mouseData.SetButtonState(PointerEventData.InputButton.Left, PointerEventData.FramePressState.Released, mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData.buttonData);
             ProcessMouseEvent(mouseData);
 
             if (input.GetMouseButton(0))
             {
+                mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData.buttonData.pointerPressRaycast = result;
                 mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData.buttonData.pointerCurrentRaycast = result;
                 mouseData.SetButtonState(PointerEventData.InputButton.Left, PointerEventData.FramePressState.Pressed, mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData.buttonData);
                 ProcessMouseEvent(mouseData);
