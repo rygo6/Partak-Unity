@@ -1,4 +1,4 @@
-#define LOG
+//#define LOG
 
 using System;
 using UnityEngine;
@@ -233,9 +233,6 @@ namespace GeoTetra.GTSnapper
         
         private void OnClickInstantiateCompleted(GameObject gameObject, ItemReference itemReference, PointerEventData data)
         {
-//            LastItemCatalogUUI.UnselectSelectedItem();
-//            State = ItemState.Instantiate;
-
             ItemRoot.UnHighlightAll(i => i.State = ItemState.NoInstantiate);
 
             Item item = gameObject.GetComponent<Item>();

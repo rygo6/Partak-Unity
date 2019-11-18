@@ -27,13 +27,14 @@ namespace GeoTetra.GTSnapper
 
 		public void OnPointerDown(PointerEventData data)
 		{
+			Debug.Log("ScrollItem OnPointerDown");
 			_inputMoved = Vector2.zero;
 			spawnItem = false;
 		}
 	
 		public void OnPointerUp(PointerEventData data)
 		{
-
+			Debug.Log("ScrollItem OnPointerUp");
 		}
 	
 		public void OnPointerClick(PointerEventData data)
@@ -60,7 +61,7 @@ namespace GeoTetra.GTSnapper
 
 		public void OnEndDrag(PointerEventData eventData)
 		{
-
+			Debug.Log("ScrollItem OnEndDrag");
 		}
 	}
 }
