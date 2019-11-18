@@ -1,15 +1,11 @@
-//#define LOG
+#define LOG
 
 using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using GeoTetra;
-using GeoTetra.GTSnapper;
 using GeoTetra.GTSnapper.ScriptableObjects;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEngine.Rendering;
 
 namespace GeoTetra.GTSnapper
 {
@@ -26,39 +22,22 @@ namespace GeoTetra.GTSnapper
         private Catcher _catcher;
 
         public ItemDrag Drag => _itemDrag;
-
         public ItemDrop Drop => _itemDrop;
-
         public ItemDatum ItemDatum { get; private set; }
-
         public ItemReference ItemReference { get; private set; }
-
         public Material[] BlendMaterialArray { get; private set; }
-
         public Material[] MaterialArray { get; private set; }
-
         public Mesh[] MeshArray { get; private set; }
-
         public MeshRenderer[] MeshRendererArray { get; private set; }
-
         public Transform[] MeshTransformArray { get; private set; }
-
         public Collider[] ColliderArray { get; private set; }
-
         public Vector3[] InitialColliderSizeArray { get; private set; }
-
         public Vector3[] InitialColliderCenterArray { get; private set; }
-
         public GameObject[] ColliderGameObjectArray { get; private set; }
-
         public ItemRoot ItemRoot { get; private set; }
-
         public ItemCatalogUI LastItemCatalogUUI { get; set; }
-
         public ItemState State { get; set; }
-
         public string[] TagArray => _tagArray;
-
         public string[] ChildTagArray => _childTagArray;
 
         public string UniqueTick
@@ -202,16 +181,16 @@ namespace GeoTetra.GTSnapper
         public void OnPointerDown(PointerEventData data)
         {
 #if LOG
-			Debug.Log( "OnPointerDown " + this.name );
+			Debug.Log( "OnPointerDown " + this.name + " " + State);
 #endif
 
             ItemUtility.StateSwitch(data, State,
                 OnPointerDownAttached,
                 OnPointerDownAttachedHighlighted,
                 null,
-                null,
+                OnPointerDownAttachedHighlighted,
                 OnPointerDownInstantiate,
-                null
+                OnPointerDownNoInstantiate
             );
         }
 
@@ -229,28 +208,43 @@ namespace GeoTetra.GTSnapper
 #if LOG
 			Debug.Log( "OnPointerDownAttachedHighlighted " + this.name );
 #endif
-
-            SetLayerRecursive(2);
+            
             SetShaderOutline(ItemRoot.ItemSettings.DownHighlightItemColor);
         }
 
         private void OnPointerDownInstantiate(PointerEventData data)
         {
 #if LOG
-			Debug.Log( "OnPointerDownAttachedHighlighted " + this.name );
+			Debug.Log( "OnPointerDownInstantiate " + this.name );
 #endif
 
             SetShaderOutline(ItemRoot.ItemSettings.DropOutlineColor);
-//            LastItemCatalogUUI.UnselectSelectedItem();
             LastItemCatalogUUI.InstantiateSelectedItemOnClick(data, OnClickInstantiateCompleted);
+        }
+        
+        private void OnPointerDownNoInstantiate(PointerEventData data)
+        {
+#if LOG
+            Debug.Log( "OnPointerDownNoInstantiate " + this.name );
+#endif
+
+            SetShaderOutline(ItemRoot.ItemSettings.DownHighlightItemColor);
         }
         
         private void OnClickInstantiateCompleted(GameObject gameObject, ItemReference itemReference, PointerEventData data)
         {
-            LastItemCatalogUUI.UnselectSelectedItem();
+//            LastItemCatalogUUI.UnselectSelectedItem();
+//            State = ItemState.Instantiate;
+
+            ItemRoot.UnHighlightAll(i => i.State = ItemState.NoInstantiate);
+
             Item item = gameObject.GetComponent<Item>();
             item.Initialize(item.transform.position, ItemRoot, itemReference, _catcher);
-            item.Highlight();
+            
+            item.SetShaderOutline(ItemRoot.ItemSettings.HighlightItemColor);
+            item.State = ItemState.AttachedHighlighted;
+            ItemRoot.ItemHighlightList.Add(item);
+            
             item.Drag.ThisEnteredDropItem = _itemDrop;
             item.Drag.ParentItemDrop = _itemDrop;
             item.Drag.ParentItemSnap = item.Drag.NearestItemSnap(data);
@@ -271,9 +265,9 @@ namespace GeoTetra.GTSnapper
                 OnPointerUpAttached,
                 OnPointerUpAttachedHighlighted,
                 OnPointerUpDragging,
-                null,
+                OnPointerUpAttachedHighlighted,
                 OnPointerUpInstantiate,
-                null
+                OnPointerUpNoInstantiate
             );
         }
 
@@ -282,7 +276,7 @@ namespace GeoTetra.GTSnapper
 #if LOG
 			Debug.Log( "OnPointerUpAttached " + this.name );
 #endif
-
+            
             if (data.pointerCurrentRaycast.gameObject == data.pointerPressRaycast.gameObject)
             {
                 ItemRoot.UnHighlightAll();
@@ -307,49 +301,33 @@ namespace GeoTetra.GTSnapper
         private void OnPointerUpDragging(PointerEventData data)
         {
 #if LOG
-			Debug.Log( "OnPointerUpAttachedHighlighted " + this.name );
+			Debug.Log( "OnPointerUpDragging " + this.name );
 #endif
         }
 
         private void OnPointerUpInstantiate(PointerEventData data)
         {
 #if LOG
-			Debug.Log( "OnPointerUpAttachedHighlighted " + this.name );
+			Debug.Log( "OnPointerUpInstantiate " + this.name );
 #endif
         }
-
-//        private void OnClickInstantiateCompleted(GameObject gameObject, ItemReference itemReference, PointerEventData data)
-//        {
-//            Item instantiatedItem = gameObject.GetComponent<Item>();
-//            instantiatedItem.Initialize(data.pointerCurrentRaycast.worldPosition, ItemRoot, itemReference, _catcher);
-//            if (_itemDrop != null)
-//            {
-//                instantiatedItem._itemDrag.ThisEnteredDropItem = _itemDrop;
-//                instantiatedItem._itemDrag.ParentItemDrop = _itemDrop;
-//		
-//                ItemSnap itemSnap = instantiatedItem._itemDrag.NearestItemSnap(data);
-//                instantiatedItem._itemDrag.ParentItemSnap = itemSnap;
-//                Ray ray = itemSnap.Snap(instantiatedItem, data);
-//                instantiatedItem._itemDrag.SetTargetPositionRotation(ray.origin, ray.direction); 	
-//                instantiatedItem._itemDrag.SetActualPositionRotationToTarget(); 		
-//                //set to outline and normal to get rid of quirk where instantied shader isn't immediately properly lit
-//                instantiatedItem.SetShaderOutline(ItemRoot.ItemSettings.InstantiateOutlineColor);
-//                instantiatedItem.SetShaderNormal();
-//                instantiatedItem.State = ItemState.NoInstantiate;
-//                SetShaderOutline(ItemRoot.ItemSettings.InstantiateOutlineColor);
-//                
-//                SwitchStandaloneInputModule.SwitchGameObject(gameObject, data);
-//            }
-//            ItemColor itemColor = GetComponent<ItemColor>();
-//            if (itemColor != null)
-//            {
-//                Item item = GetComponent<Item>();
-//                item.SetBlendMaterial(instantiatedItem.MaterialArray[0].mainTexture);
-//                SetShaderNormal();
-//                State = ItemState.NoInstantiate;
-//                StartCoroutine(instantiatedItem.DestroyItemCoroutine());
-//            }
-//        }
+        
+        private void OnPointerUpNoInstantiate(PointerEventData data)
+        {
+#if LOG
+            Debug.Log( "OnPointerUpInstantiate " + this.name );
+#endif
+            //if you click on a non-instantiable item, exit instantiate mode and highlight clicked item to start moving it.
+            if (data.pointerCurrentRaycast.gameObject == data.pointerPressRaycast.gameObject)
+            {
+                ItemRoot.Catcher.OnPointerClick(data);
+                Highlight();
+            }
+            else
+            {
+                SetShaderNormal();
+            }
+        }
 
         public IEnumerator DestroyItemCoroutine()
         {
@@ -399,8 +377,11 @@ namespace GeoTetra.GTSnapper
 
         public void Highlight()
         {
-            Action action = delegate() { ItemRoot.UnHighlightAll(); };
-            _catcher.EmptyClickAction = action;
+            if (_catcher.EmptyClickAction == null)
+            {
+                Action action = delegate() { ItemRoot.UnHighlightAll(); };
+                _catcher.EmptyClickAction = action;
+            }
 
             SetShaderOutline(ItemRoot.ItemSettings.HighlightItemColor);
             State = ItemState.AttachedHighlighted;
@@ -409,10 +390,9 @@ namespace GeoTetra.GTSnapper
 
         public void UnHighlight()
         {
-            ItemDrag dragItem = GetComponent<ItemDrag>();
-            if (dragItem != null)
+            if (_itemDrag != null)
             {
-                dragItem.SetActualPositionRotationToTarget();
+                _itemDrag.SetActualPositionRotationToTarget();
             }
 
             SetShaderNormal();

@@ -38,7 +38,7 @@ namespace GeoTetra.GTSnapper
 	
 		public void OnPointerClick(PointerEventData data)
 		{
-			_parentUI.ItemButtonClick(this);
+			if (!data.dragging) _parentUI.ItemButtonClick(this);
 		}
 		
 		public void OnBeginDrag(PointerEventData data)

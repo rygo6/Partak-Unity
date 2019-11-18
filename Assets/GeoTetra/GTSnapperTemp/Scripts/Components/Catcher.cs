@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
@@ -16,10 +17,21 @@ namespace GeoTetra
 							IPointerUpHandler
 	{
 		[SerializeField] private Camera _parentCamera;
-		
-		public System.Action EmptyClickAction { get; set; }
+
+		public System.Action EmptyClickAction
+		{
+			get
+			{
+				return _emptyClickAction;
+			}
+			set
+			{
+				_emptyClickAction = value;
+			}
+		}
 
 		public readonly List<PointerEventData> PointerEventDataList = new List<PointerEventData>();
+		private Action _emptyClickAction;
 
 		public void OnPointerExit(PointerEventData data)
 		{
@@ -63,7 +75,7 @@ namespace GeoTetra
 
 			if (PointerEventDataList.Count == 1)
 			{
-				_parentCamera.depth = 100;
+//				_parentCamera.depth = 100;
 			}
 		}
 
@@ -74,7 +86,7 @@ namespace GeoTetra
 
 			if (PointerEventDataList.Count == 0)
 			{
-				_parentCamera.depth = 1;
+//				_parentCamera.depth = 1;
 			}
 		}
 	}

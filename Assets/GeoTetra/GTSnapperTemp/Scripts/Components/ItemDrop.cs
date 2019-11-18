@@ -1,4 +1,4 @@
-//#define LOG
+#define LOG
 
 using UnityEngine;
 using System.Collections.Generic;
@@ -173,12 +173,7 @@ namespace GeoTetra.GTSnapper
 
         private void OnDropAttached(PointerEventData data)
         {
-            if (ItemDragEnteredThis != null)
-            {
-                _item.SetShaderNormal();
-                ItemDragEnteredThis.ParentItemDrop = this;
-                ItemDragEnteredThis = null;
-            }
+
         }
 
         public void OnPointerExit(PointerEventData data)
@@ -192,7 +187,7 @@ namespace GeoTetra.GTSnapper
                 null,
                 null,
                 null,
-                null,
+                OnPointerExitInstantiate,
                 null
             );
         }
@@ -202,18 +197,24 @@ namespace GeoTetra.GTSnapper
 #if LOG
 			Debug.Log( "OnPointerExitAttached " + this.name );
 #endif
-
-            if (data.pointerPress != null)
+            
+            _item.SetShaderNormal();
+            if (ItemDragEnteredThis != null)
             {
-                _item.SetShaderNormal();
-                if (ItemDragEnteredThis != null)
-                {
-                    ItemDragEnteredThis.AccessoryRendererState = false;
-                    ItemDragEnteredThis = null;
-                }
+                ItemDragEnteredThis.AccessoryRendererState = false;
+                ItemDragEnteredThis = null;
             }
         }
 
+        private void OnPointerExitInstantiate(PointerEventData data)
+        {
+#if LOG
+            Debug.Log( "OnPointerExitInstantiate " + this.name );
+#endif
+            
+            _item.SetShaderOutline(_item.ItemRoot.ItemSettings.InstantiateOutlineColor);
+        }
+        
         public void OnPointerEnter(PointerEventData data)
         {
 #if LOG
@@ -225,7 +226,7 @@ namespace GeoTetra.GTSnapper
                 null,
                 null,
                 null,
-                null,
+                OnPointerEnterAttached,
                 null
             );
         }

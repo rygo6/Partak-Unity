@@ -13,6 +13,7 @@ namespace GeoTetra.GTSnapper
         [SerializeField] private Catcher _catcher;
         [SerializeField] private ItemSettings _itemSettings;
         [SerializeField] private List<Item> _rootItems;
+        [SerializeField] private ItemCatalogUI _itemCatalogUI;
 
         //what was this used for? Undo?
         public readonly Dictionary<string, MonoBehaviour> UniqueTickDictionary = new Dictionary<string, MonoBehaviour>();
@@ -23,22 +24,29 @@ namespace GeoTetra.GTSnapper
 
         public ItemSettings ItemSettings => _itemSettings;
 
+        public ItemCatalogUI ItemCatalogUI => _itemCatalogUI;
+
+        public Catcher Catcher => _catcher;
+
         private void Awake()
         {
+            _itemCatalogUI = FindObjectOfType<ItemCatalogUI>();
 //			_rootItems = new List<Item>(Item.FindObjectsOfType<Item>());
         }
 
-        public void UnHighlightAll()
+        public void UnHighlightAll(Action<Item> postAction = null)
         {
             for (int i = 0; i < ItemHighlightList.Count; ++i)
             {
-                ItemHighlightList[i].UnHighlight();
+                Item item = ItemHighlightList[i];
+                item.UnHighlight();
+                postAction?.Invoke(item);
             }
         }
 
         public void SetAllOutlineNormalAttach()
         {
-            System.Action<Item> action = delegate(Item itemRaycast)
+            Action<Item> action = delegate(Item itemRaycast)
             {
                 itemRaycast.SetShaderNormal();
                 itemRaycast.State = ItemState.Attached;
@@ -48,7 +56,7 @@ namespace GeoTetra.GTSnapper
 
         public void SetAllActualPositionToTarget()
         {
-            System.Action<Item> action = delegate(Item item)
+            Action<Item> action = delegate(Item item)
             {
                 ItemDrag dragItemMod = item.GetComponent<ItemDrag>();
                 if (dragItemMod != null)
@@ -59,8 +67,7 @@ namespace GeoTetra.GTSnapper
             CallDelegateAll(action);
         }
 
-        public int CallDelegateTagFilter(System.Func<Item, bool> filterAction, System.Action<Item> trueAction,
-            System.Action<Item> falseAction)
+        public int CallDelegateTagFilter(Func<Item, bool> filterAction, Action<Item> trueAction, Action<Item> falseAction)
         {
             int trueCount = 0;
             for (int i = 0; i < _rootItems.Count; ++i)
@@ -71,8 +78,7 @@ namespace GeoTetra.GTSnapper
             return trueCount;
         }
 
-        private int CallDelegateTagFilterItemRaycast(Item item, System.Func<Item, bool> filterAction,
-            System.Action<Item> trueAction, System.Action<Item> falseAction)
+        private int CallDelegateTagFilterItemRaycast(Item item, Func<Item, bool> filterAction, Action<Item> trueAction, Action<Item> falseAction)
         {
             int trueCount = 0;
             if (filterAction(item))
@@ -84,21 +90,19 @@ namespace GeoTetra.GTSnapper
             {
                 falseAction(item);
             }
-
-            ItemDrop itemDrop = item.GetComponent<ItemDrop>();
-            if (itemDrop != null)
+            
+            if (item.Drop != null)
             {
-                for (int i = 0; i < itemDrop.ChildItemDragList.Count; ++i)
+                for (int i = 0; i < item.Drop.ChildItemDragList.Count; ++i)
                 {
-                    trueCount += CallDelegateTagFilterItemRaycast(itemDrop.ChildItemDragList[i].GetComponent<Item>(),
-                        filterAction, trueAction, falseAction);
+                    trueCount += CallDelegateTagFilterItemRaycast(item.Drop.ChildItemDragList[i].Item, filterAction, trueAction, falseAction);
                 }
             }
 
             return trueCount;
         }
 
-        public void CallDelegateAll(System.Action<Item> action)
+        public void CallDelegateAll(Action<Item> action)
         {
             for (int i = 0; i < _rootItems.Count; ++i)
             {

@@ -91,7 +91,11 @@ namespace GeoTetra.GTSnapper
                 }
                 else
                 {
-                    System.Action action = delegate() { UnselectSelectedItem(); };
+                    System.Action action = delegate()
+                    {
+                        ItemRoot.UnHighlightAll();
+                        UnselectSelectedItem();
+                    };
                     _catcher.EmptyClickAction = action;
 
                     _scrollItemHighlight.enabled = true;

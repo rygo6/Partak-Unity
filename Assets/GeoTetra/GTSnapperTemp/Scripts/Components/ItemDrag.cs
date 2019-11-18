@@ -1,4 +1,4 @@
-//#define LOG
+#define LOG
 
 using UnityEngine;
 using System.Collections.Generic;
@@ -263,14 +263,14 @@ namespace GeoTetra.GTSnapper
         public void OnBeginDrag(PointerEventData data)
         {
 #if LOG
-		Debug.Log( "OnBeginDrag " + this.name );
+		Debug.Log( "OnBeginDrag " + this.name + " " + _item.State );
 #endif
 
             ItemUtility.StateSwitch(data, _item.State,
                 OnBeginDragAttached,
                 OnBeginDragAttachedHighlighted,
                 null,
-                null,
+                OnBeginDragAttachedHighlighted,
                 OnBeginDragInstantiate,
                 OnBeginDragNoInstantiate
             );
@@ -317,6 +317,7 @@ namespace GeoTetra.GTSnapper
             _item.ResetColliderSize();
             _item.AddToHoldList();
             _item.State = ItemState.Dragging;
+            _item.SetLayerRecursive(2);
 
             //This ensure that the item is still hovering over the item_Drop it was attached to
             //otherwise it disattaches it, this is done because OnPointerExit will only get called on
@@ -332,10 +333,10 @@ namespace GeoTetra.GTSnapper
         public void OnDrag(PointerEventData data)
         {
 #if LOG
-		Debug.Log("OnDrag "+this.name);
+//		Debug.Log("OnDrag " + this.name);
 #endif
 
-            ItemUtility.StateSwitch(data, GetComponent<Item>().State,
+            ItemUtility.StateSwitch(data, _item.State,
                 null,
                 null,
                 OnDragDragging,
@@ -348,7 +349,7 @@ namespace GeoTetra.GTSnapper
         private void OnDragDragging(PointerEventData data)
         {
 #if LOG
-            Debug.Log("OnDragDragging "+this.name);
+//            Debug.Log("OnDragDragging "+this.name);
 #endif
             
             if (ThisEnteredDropItem == null)
@@ -380,10 +381,10 @@ namespace GeoTetra.GTSnapper
         public void OnEndDrag(PointerEventData data)
         {
 #if LOG
-		Debug.Log( "OnEndDrag " + this.name );
+		Debug.Log( "OnEndDrag " + this.name + " " + _item.State );
 #endif
 
-            ItemUtility.StateSwitch(data, GetComponent<Item>().State,
+            ItemUtility.StateSwitch(data, _item.State,
                 null,
                 null,
                 OnEndDragDragging,
@@ -402,10 +403,12 @@ namespace GeoTetra.GTSnapper
             if (ThisEnteredDropItem == null)
             {
 //				StartCoroutine(_item.DestroyItemCoroutine());
+                _item.State = ItemState.Floating;
                 _item.SetLayerRecursive(0);
             }
             else
             {
+                ParentItemDrop = ThisEnteredDropItem;
                 _item.RemoveFromHoldList();
                 AccessoryRendererState = true;
                 _item.SetLayerRecursive(0);
