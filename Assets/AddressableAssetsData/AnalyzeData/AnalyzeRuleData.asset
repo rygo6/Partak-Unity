@@ -14,12 +14,70 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_RuleToResults:
   - RuleName: Check Duplicate Bundle Dependencies
-    Results: []
+    Results:
+    - m_ResultName: No issues found
+      m_Severity: 0
   - RuleName: Check Resources to Addressable Duplicate Dependencies
-    Results: []
+    Results:
+    - m_ResultName: Check Resources to Addressable Duplicate Dependencies - No issues
+        found.
+      m_Severity: 0
   - RuleName: Check Scene to Addressable Duplicate Dependencies
-    Results: []
+    Results:
+    - m_ResultName: Check Scene to Addressable Duplicate Dependencies - No issues
+        found.
+      m_Severity: 0
   - RuleName: Check Sprite Atlas to Addressable Duplicate Dependencies
-    Results: []
+    Results:
+    - m_ResultName: No issues found
+      m_Severity: 0
   - RuleName: Build Bundle Layout
+    Results:
+    - m_ResultName: 82ff4a1aae3f97aaff3e9cfe8274a926_assets_all.bundle:Explicit:Assets/Partak/LevelShapes/4OddReference.asset
+      m_Severity: 0
+    - m_ResultName: 82ff4a1aae3f97aaff3e9cfe8274a926_assets_all.bundle:Explicit:Assets/Partak/LevelShapes/QuarterCircleReference.asset
+      m_Severity: 0
+    - m_ResultName: 82ff4a1aae3f97aaff3e9cfe8274a926_assets_all.bundle:Explicit:Assets/Partak/LevelShapes/LTriOddReference.asset
+      m_Severity: 0
+    - m_ResultName: 95a115b4795e79e5944c7d747b1c885e_assets_all.bundle:Explicit:Assets/Partak/LevelShapes/LTriOdd.prefab
+      m_Severity: 0
+    - m_ResultName: 95a115b4795e79e5944c7d747b1c885e_assets_all.bundle:Explicit:Assets/Partak/LevelShapes/QuarterCircle.prefab
+      m_Severity: 0
+    - m_ResultName: 95a115b4795e79e5944c7d747b1c885e_assets_all.bundle:Explicit:Assets/Partak/LevelShapes/4Odd.prefab
+      m_Severity: 0
+    - m_ResultName: c5cfe2381a355d0a3d07fdbc5720f46c_assets_all.bundle:Explicit:Assets/GeoTetra/GTUI/Prefabs/MessageModalUI.prefab
+      m_Severity: 0
+    - m_ResultName: c5cfe2381a355d0a3d07fdbc5720f46c_assets_all.bundle:Explicit:Assets/GeoTetra/GTUI/Prefabs/SelectionModalUI.prefab
+      m_Severity: 0
+    - m_ResultName: 82ff4a1aae3f97aaff3e9cfe8274a926_assets_all.bundle:Implicit:Assets/Partak/LevelShapes/4Odd.png
+      m_Severity: 0
+    - m_ResultName: 82ff4a1aae3f97aaff3e9cfe8274a926_assets_all.bundle:Implicit:Assets/Partak/LevelShapes/QuarterCircle.png
+      m_Severity: 0
+    - m_ResultName: 82ff4a1aae3f97aaff3e9cfe8274a926_assets_all.bundle:Implicit:Assets/Partak/LevelShapes/LTriOdd.png
+      m_Severity: 0
+    - m_ResultName: 95a115b4795e79e5944c7d747b1c885e_assets_all.bundle:Implicit:Assets/Partak/Levels/Textures/Environment.png
+      m_Severity: 0
+    - m_ResultName: 95a115b4795e79e5944c7d747b1c885e_assets_all.bundle:Implicit:Assets/Partak/Levels/LevelShapes.fbx
+      m_Severity: 0
+    - m_ResultName: 95a115b4795e79e5944c7d747b1c885e_assets_all.bundle:Implicit:Assets/Partak/Levels/LevelShapes.fbx
+      m_Severity: 0
+    - m_ResultName: 95a115b4795e79e5944c7d747b1c885e_assets_all.bundle:Implicit:Assets/Partak/Levels/Materials/Obstacle.mat
+      m_Severity: 0
+    - m_ResultName: 95a115b4795e79e5944c7d747b1c885e_assets_all.bundle:Implicit:Assets/Partak/Levels/LevelShapes.fbx
+      m_Severity: 0
+    - m_ResultName: 95a115b4795e79e5944c7d747b1c885e_assets_all.bundle:Implicit:Assets/Partak/Levels/LevelShapes.fbx
+      m_Severity: 0
+    - m_ResultName: 95a115b4795e79e5944c7d747b1c885e_assets_all.bundle:Implicit:Assets/Partak/Levels/LevelShapes.fbx
+      m_Severity: 0
+    - m_ResultName: 95a115b4795e79e5944c7d747b1c885e_assets_all.bundle:Implicit:Assets/Partak/Levels/LevelShapes.fbx
+      m_Severity: 0
+    - m_ResultName: c5cfe2381a355d0a3d07fdbc5720f46c_assets_all.bundle:Implicit:Assets/Partak/UI/REZ.ttf
+      m_Severity: 0
+    - m_ResultName: c5cfe2381a355d0a3d07fdbc5720f46c_assets_all.bundle:Implicit:Assets/Partak/UI/REZ.ttf
+      m_Severity: 0
+    - m_ResultName: c5cfe2381a355d0a3d07fdbc5720f46c_assets_all.bundle:Implicit:Assets/Partak/UI/REZ.ttf
+      m_Severity: 0
+    - m_ResultName: c5cfe2381a355d0a3d07fdbc5720f46c_assets_all.bundle:Implicit:Assets/GeoTetra/GTUI/Sounds/DefaultBloop.aif
+      m_Severity: 0
+  - RuleName: UnityEditor.AddressableAssets.Build.AnalyzeRules.AnalyzeRule
     Results: []

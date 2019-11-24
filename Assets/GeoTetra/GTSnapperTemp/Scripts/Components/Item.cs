@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using GeoTetra.GTSnapper.ScriptableObjects;
+using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
 
 namespace GeoTetra.GTSnapper
@@ -344,7 +345,8 @@ namespace GeoTetra.GTSnapper
 
             RemoveUniqueTickRecursive(this);
             Destroy(GetComponent<ItemDrag>().TargetTransform.gameObject);
-            Destroy(gameObject);
+            Addressables.ReleaseInstance(gameObject);
+//            Destroy(gameObject);
 
             //TODO use Resources.UnloadAsset and find all assets to do this faster
             Resources.UnloadUnusedAssets(); //TODO use pooling

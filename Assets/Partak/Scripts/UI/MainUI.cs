@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using GeoTetra.GTUI;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 
 namespace Partak
@@ -8,13 +9,13 @@ namespace Partak
     public class MainUI : StackUI
     {
         [SerializeField] private Button _playButton;
-        [SerializeField] private StackUI _playUI;
+        [SerializeField] private AssetReference _playUI;
         [SerializeField] private Button _levelButton;
-        [SerializeField] private StackUI _levelUI;
+        [SerializeField] private AssetReference _levelUI;
         [SerializeField] private Button _optionButton;
-        [SerializeField] private StackUI _optionsUI;
+        [SerializeField] private AssetReference _optionsUI;
 
-        private void Awake()
+        protected override void Awake()
         {
             base.Awake();
             InstantiateAndDisplayStackUIOnClick(_playButton, _playUI);
