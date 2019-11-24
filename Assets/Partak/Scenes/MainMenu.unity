@@ -1008,9 +1008,7 @@ MonoBehaviour:
   _levelBounds:
     m_Center: {x: 9.6, y: 0, z: 9.6}
     m_Extent: {x: 9.6, y: 0, z: 9.6}
-  _rootDimension:
-    _x: 192
-    _y: 192
+  _rootDimension: {x: 192, y: 192}
   _fps: 60
   _particleCount: 5000
   _moveCycleTime: 16
@@ -1579,8 +1577,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentContainer: {fileID: 11400000, guid: ed956f91a7b883142bf9b588e32e0f1a,
     type: 2}
-  _stackUI: {fileID: 7211395502732636243, guid: 1e03f451607b1c34d84d827613838bd0,
-    type: 3}
+  _stackUIReference:
+    m_AssetGUID: 1e03f451607b1c34d84d827613838bd0
+    m_SubObjectName: 
+  _delay: 0.5
+  TransitionFinished:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1580461695389549546}
+        m_MethodName: AddTransitionListener
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &1863464794
 Transform:
   m_ObjectHideFlags: 0

@@ -7,3 +7,6 @@
 [submodule "Assets/GeoTetra/GTTween"]
 	path = Assets/GeoTetra/GTTween
 	url = https://github.com/rygo6/GTTween.git
+[submodule "Assets/GeoTetra/GTPooling"]
+	path = Assets/GeoTetra/GTPooling
+	url = git@github.com:rygo6/GTPooling.git
