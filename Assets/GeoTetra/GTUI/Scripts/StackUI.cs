@@ -15,8 +15,6 @@ namespace GeoTetra.GTUI
         [SerializeField] private AssetReference _messageModalUiReference;
         [SerializeField] private AssetReference _selectionModalUiReference;
         
-//        [SerializeField] private MessageModalUI _messageModalUIPrefab;
-//        [SerializeField] private SelectionModalUI _selectionModalUIPrefab;
         [SerializeField] private Button _backButton;
         
         protected override void Awake()
@@ -52,26 +50,26 @@ namespace GeoTetra.GTUI
             }
         }
         
-        protected void InstantiateAndDisplayStackUIOnClick(Button button, AssetReference stackUI)
+        public void InstantiateAndDisplayStackUIOnClick(Button button, AssetReference stackUI)
         {
             button.onClick.AddListener(() => InstantiateAndDisplayStackUI(stackUI));
         }
         
-        protected void InstantiateAndDisplayStackUI(AssetReference stackUI)
+        public void InstantiateAndDisplayStackUI(AssetReference stackUI)
         {
             CurrentlyRenderedBy.InstantiateAndDisplayStackUI(stackUI);
         }
         
-        protected async void DisplaySelectionModal(string[] messages, Action[] actions, int focusIndex)
+        public async void DisplaySelectionModal(string[] messages, Action[] actions, int focusIndex)
         {
-            SelectionModalUI messageModalUi = await _selectionModalUiReference.PoolInstantiateAsync<SelectionModalUI>();
+            SelectionModalUI messageModalUi = await CurrentlyRenderedBy.Pool.PoolInstantiateAsync<SelectionModalUI>(_selectionModalUiReference);
             messageModalUi.Init(messages, actions, focusIndex);
             CurrentlyRenderedBy.DisplayModalUI(messageModalUi);
         }
 
-        protected async void DisplayModal(string message, Action action = null)
+        public async void DisplayModal(string message, Action action = null)
         {
-            MessageModalUI messageModalUi = await _messageModalUiReference.PoolInstantiateAsync<MessageModalUI>();
+            MessageModalUI messageModalUi = await CurrentlyRenderedBy.Pool.PoolInstantiateAsync<MessageModalUI>(_messageModalUiReference);
             messageModalUi.Init(message, action);
             CurrentlyRenderedBy.DisplayModalUI(messageModalUi);
         }
