@@ -10,6 +10,7 @@ namespace Partak.UI
 {
     public class PlayerModeButton : MonoBehaviour, IPointerClickHandler, ISubmitHandler
     {
+        [SerializeField] private StackUI _parentStackUI;
         [SerializeField] private GameState _gameState;
         [SerializeField] private SelectionModalUI _selectionModalUi;
         [SerializeField] private int _playerIndex;
@@ -31,6 +32,11 @@ namespace Partak.UI
             _text.text = mode.ToString();
             _gameState.PlayerStates[_playerIndex].PlayerMode = mode;
         }
+        
+        private void OnValidate()
+        {
+            if (_parentStackUI == null) _parentStackUI = GetComponentInParent<StackUI>();
+        }
 
         private void Submit()
         {
@@ -46,9 +52,7 @@ namespace Partak.UI
                 () => { SetPlayerMode(PlayerMode.Comp); },
                 () => { SetPlayerMode(PlayerMode.None); }
             };
-            SelectionModalUI selectionModalUi = Instantiate(_selectionModalUi);
-            selectionModalUi.Init(messages, actions, (int)  _gameState.PlayerStates[_playerIndex].PlayerMode);
-            transform.root.GetComponent<BaseUI>().CurrentlyRenderedBy.DisplayModalUI(selectionModalUi);
+            _parentStackUI.DisplaySelectionModal(messages, actions, (int)  _gameState.PlayerStates[_playerIndex].PlayerMode);
         }
 
         private void SetPlayerMode(PlayerMode mode)

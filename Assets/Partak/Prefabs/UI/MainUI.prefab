@@ -461,7 +461,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7211395504049849688}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -565,6 +565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parentBaseUI: {fileID: 7211395502732636243}
   _audioClip: {fileID: 8300000, guid: df718919875942c498b8ec0b06d88cfe, type: 3}
   _volume: 1
 --- !u!1 &7211395504157175163
@@ -784,6 +785,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parentBaseUI: {fileID: 7211395502732636243}
   _audioClip: {fileID: 8300000, guid: df718919875942c498b8ec0b06d88cfe, type: 3}
   _volume: 1
 --- !u!1 &7211395504280433872
@@ -917,6 +919,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parentBaseUI: {fileID: 7211395502732636243}
   _audioClip: {fileID: 8300000, guid: df718919875942c498b8ec0b06d88cfe, type: 3}
   _volume: 1
 --- !u!1 &7211395504404866580

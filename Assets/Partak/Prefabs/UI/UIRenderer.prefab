@@ -85,6 +85,7 @@ GameObject:
   - component: {fileID: 1089048853691498242}
   - component: {fileID: 1089048853691498245}
   - component: {fileID: 1089048853691498243}
+  - component: {fileID: 6955619709994758185}
   m_Layer: 0
   m_Name: UIRenderer
   m_TagString: Untagged
@@ -121,8 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _componentContainer: {fileID: 11400000, guid: ed956f91a7b883142bf9b588e32e0f1a,
     type: 2}
-  _displayStackUIOnStartDelay: 0.1
-  _displayStackUIOnStart: {fileID: 0}
+  _addressablesPool: {fileID: 6955619709994758185}
   _uiCamera: {fileID: 1089048853664099211}
   _transitionCurve:
     _useConstant: 0
@@ -134,11 +134,10 @@ MonoBehaviour:
       m_RotationOrder: 4
     _variable: {fileID: 11400000, guid: 9515e2d21cf3d7f4b986d221482e87fb, type: 2}
   _transitionMultiplier: 2
+  _fadeMultiplier: 3
   _stackTransitionOccured:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   _audioSource: {fileID: 1089048853691498243}
 --- !u!82 &1089048853691498243
 AudioSource:
@@ -237,3 +236,15 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &6955619709994758185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089048853691498244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57cd2b38ce9dbbd4f83ad2725babddad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

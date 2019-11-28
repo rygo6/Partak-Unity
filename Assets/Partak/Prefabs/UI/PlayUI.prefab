@@ -322,6 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parentBaseUI: {fileID: 4974690308090156280}
   _audioClip: {fileID: 8300000, guid: 80340672862cb4ef894930824b52fd14, type: 3}
   _volume: 1
 --- !u!1 &4974690306470564386
@@ -550,6 +551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68528e7dc12924b32b176a3aa4622126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parentStackUI: {fileID: 4974690308090156280}
   _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
   _selectionModalUi: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
     type: 3}
@@ -567,6 +569,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parentBaseUI: {fileID: 4974690308090156280}
   _audioClip: {fileID: 8300000, guid: 80340672862cb4ef894930824b52fd14, type: 3}
   _volume: 1
 --- !u!1 &4974690306518817357
@@ -1360,6 +1363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parentBaseUI: {fileID: 4974690308090156280}
   _audioClip: {fileID: 8300000, guid: 80340672862cb4ef894930824b52fd14, type: 3}
   _volume: 1
 --- !u!1 &4974690306945656468
@@ -1493,6 +1497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parentBaseUI: {fileID: 4974690308090156280}
   _audioClip: {fileID: 8300000, guid: 24aa1c16259094b8ba194667e93f2e91, type: 3}
   _volume: 1
 --- !u!1 &4974690306955639304
@@ -1670,6 +1675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parentBaseUI: {fileID: 4974690308090156280}
   _audioClip: {fileID: 8300000, guid: 80340672862cb4ef894930824b52fd14, type: 3}
   _volume: 1
 --- !u!1 &4974690306968943597
@@ -2165,6 +2171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68528e7dc12924b32b176a3aa4622126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parentStackUI: {fileID: 4974690308090156280}
   _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
   _selectionModalUi: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
     type: 3}
@@ -2182,6 +2189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parentBaseUI: {fileID: 4974690308090156280}
   _audioClip: {fileID: 8300000, guid: 80340672862cb4ef894930824b52fd14, type: 3}
   _volume: 1
 --- !u!1 &4974690307131711212
@@ -2683,6 +2691,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parentBaseUI: {fileID: 4974690308090156280}
   _audioClip: {fileID: 8300000, guid: 80340672862cb4ef894930824b52fd14, type: 3}
   _volume: 1
 --- !u!1 &4974690307273514242
@@ -3021,6 +3030,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parentBaseUI: {fileID: 4974690308090156280}
   _audioClip: {fileID: 8300000, guid: df718919875942c498b8ec0b06d88cfe, type: 3}
   _volume: 1
 --- !u!1 &4974690307356863499
@@ -3764,6 +3774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parentBaseUI: {fileID: 4974690308090156280}
   _audioClip: {fileID: 8300000, guid: 80340672862cb4ef894930824b52fd14, type: 3}
   _volume: 1
 --- !u!1 &4974690307593930184
@@ -4952,6 +4963,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68528e7dc12924b32b176a3aa4622126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parentStackUI: {fileID: 4974690308090156280}
   _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
   _selectionModalUi: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
     type: 3}
@@ -4969,6 +4981,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parentBaseUI: {fileID: 4974690308090156280}
   _audioClip: {fileID: 8300000, guid: 80340672862cb4ef894930824b52fd14, type: 3}
   _volume: 1
 --- !u!1 &4974690308009882613
@@ -6253,6 +6266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68528e7dc12924b32b176a3aa4622126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parentStackUI: {fileID: 4974690308090156280}
   _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
   _selectionModalUi: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
     type: 3}
@@ -6270,6 +6284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b38af96af82cc40bc68626b1f7f7d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parentBaseUI: {fileID: 4974690308090156280}
   _audioClip: {fileID: 8300000, guid: 80340672862cb4ef894930824b52fd14, type: 3}
   _volume: 1
 --- !u!1 &4974690308469458143
