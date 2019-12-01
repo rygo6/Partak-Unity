@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Partak
 {
-    [CreateAssetMenu]
+    [CreateAssetMenu(menuName = "GeoTetra/Partak/GameState")]
     public class GameState : ScriptableObject
     {
         [SerializeField] private string _version = "2.0.5";

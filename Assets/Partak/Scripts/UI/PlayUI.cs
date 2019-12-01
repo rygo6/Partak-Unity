@@ -4,17 +4,18 @@ using System.Collections;
 using GeoTetra.GTCommon.Attributes;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTUI;
+using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 
 namespace Partak
 {
     public class PlayUI : StackUI
     {
-        [SerializeField] private ComponentContainer _componentContainer;
+        [SerializeField] private SceneLoadSystem _sceneLoadSystem;
         [SerializeField] private GameState _gameState;
         [SerializeField] private Button _startButton;
-        [ScenePath] [SerializeField] private string _unloadScene;
-        [ScenePath] [SerializeField] private string _loadScene;
+        [SerializeField] private AssetReference _gameSessionScene;
+        [SerializeField] private AssetReference _mainMenuScene;
 
         protected override void Awake()
         {
@@ -43,7 +44,7 @@ namespace Partak
 
         private void Load()
         {
-            _componentContainer.Get<SceneLoadSystem>().Load(_unloadScene, _loadScene);
+            _sceneLoadSystem.Load(_mainMenuScene, _gameSessionScene);
         }
     }
 }

@@ -7,12 +7,18 @@ namespace GeoTetra.GTUI
 {
 	public class MessageModalUI : ModalUI
 	{
-		[SerializeField]
-		private Text _messageText;
+		[SerializeField] private Text _messageText;
+		[SerializeField] private Button _okButton;
 
 		private Action _action;
+		
+		protected override void Awake()
+		{
+			base.Awake();
+			_okButton.onClick.AddListener(OkClicked);
+		}
 
-		protected override void Close()
+		private void OkClicked()
 		{
 			_action?.Invoke();
 			base.Close();

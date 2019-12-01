@@ -1989,6 +1989,7 @@ MonoBehaviour:
     m_AssetGUID: c01e8933723a2b541b05ddefbf07b07c
     m_SubObjectName: 
   _backButton: {fileID: 0}
+  _sceneLoadSystem: {fileID: 11400000, guid: b30141a42589e924e97c08dbbe68ad23, type: 2}
   _componentContainer: {fileID: 11400000, guid: ed956f91a7b883142bf9b588e32e0f1a,
     type: 2}
   _analyticsRelay: {fileID: 11400000, guid: 17010a8528f4c0b43a5469286e4a9730, type: 2}
@@ -1996,8 +1997,12 @@ MonoBehaviour:
   _pauseButtons:
   - {fileID: 5525812421828997953}
   - {fileID: 5525812420352053631}
-  _gameSessionScene: Assets/Partak/Scenes/GameSession.unity
-  _mainMenuScene: Assets/Partak/Scenes/MainMenu.unity
+  _mainMenuScene:
+    m_AssetGUID: efa1e429e9b9149c0ace66aa5e10b21d
+    m_SubObjectName: 
+  _gameSessionScene:
+    m_AssetGUID: e13a610edb1f29e458ca513afc1b8c33
+    m_SubObjectName: 
 --- !u!1 &5525812421202105137
 GameObject:
   m_ObjectHideFlags: 0
