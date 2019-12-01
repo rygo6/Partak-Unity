@@ -2,20 +2,23 @@
 using UnityEngine;
 using UnityEngine.UI;
 using GeoTetra.GTUI;
+using UnityEngine.WSA;
 
 namespace Partak
 {
     public class LevelButton : MonoBehaviour
     {
-        [SerializeField] private Image _image;
+        [SerializeField] private RawImage _image;
         [SerializeField] private Button _button;
         [SerializeField] private Text _text;
 
         public event Action<LevelButton> ButtonClicked;
         
+        public LevelUI.Level Level { get; set; }
+        
         public Button Button => _button;
         public Text Text => _text;
-        public Image Image => _image;
+        public RawImage Image => _image;
 
         private void Awake()
         {
@@ -25,6 +28,14 @@ namespace Partak
         private void OnButtonClick()
         {
             ButtonClicked?.Invoke(this);
+        }
+
+        public void SetLevel(LevelUI.Level level)
+        {
+            Level = level;
+            _text.text = "";
+            _image.texture = level?.PreviewImage;
+            _button.interactable = level != null;
         }
     }
 }

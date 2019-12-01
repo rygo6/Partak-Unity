@@ -60,6 +60,13 @@ namespace GeoTetra.GTUI
             StackUI uiInstance = await _addressablesPool.PoolInstantiateAsync<StackUI>(ui);
             DisplayStackUI(uiInstance, onFinish);
         }
+        
+        public async void InstantiateAndDisplayModalUI(AssetReference ui, Action onFinish = null)
+        {
+            ModalUI uiInstance = await _addressablesPool.PoolInstantiateAsync<ModalUI>(ui);
+            DisplayModalUI(uiInstance, onFinish);
+        }
+
 
         public void DisplayModalUI(ModalUI ui, Action onFinish = null)
         {

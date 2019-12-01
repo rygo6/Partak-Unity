@@ -8,12 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Partak/Scenes/Main.unity
     guid: 577a818291702044f97cea19734e6a9d
-  - enabled: 1
-    path: Assets/Partak/Scenes/MainMenu.unity
-    guid: efa1e429e9b9149c0ace66aa5e10b21d
-  - enabled: 1
-    path: Assets/Partak/Scenes/GameSession.unity
-    guid: e13a610edb1f29e458ca513afc1b8c33
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: ecb6b4af33d62ee449eff25b2b877bfa,
       type: 2}

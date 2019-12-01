@@ -3,7 +3,9 @@ using System.Collections;
 using GeoTetra.GTCommon.Attributes;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTUI;
+using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -11,17 +13,16 @@ namespace Partak.UI
 {
     public class GameMenuUI : StackUI
     {
+        [SerializeField] private SceneLoadSystem _sceneLoadSystem;
         [SerializeField] private ComponentContainer _componentContainer;
         [SerializeField] private AnalyticsRelay _analyticsRelay;
         [SerializeField] private GameState _gameState;
         [SerializeField] private Button[] _pauseButtons;
-        [SerializeField] [ScenePath] private string _gameSessionScene;
-        [SerializeField] [ScenePath] private string _mainMenuScene;
-
+        [SerializeField] private AssetReference _mainMenuScene;
+        [SerializeField] private AssetReference _gameSessionScene;
+        
         private string[] PauseMessages;
         private Action[] PauseActions;
-
-        private SceneLoadSystem _sceneLoadSystem;
 
         protected override void Awake()
         {
@@ -35,7 +36,6 @@ namespace Partak.UI
         protected void Start()
         {
             _componentContainer.Get<CellParticleStore>().WinEvent += ShowWinMenu;
-            _sceneLoadSystem = _componentContainer.Get<SceneLoadSystem>();
         }
 
         private void ShowPauseMenu()
