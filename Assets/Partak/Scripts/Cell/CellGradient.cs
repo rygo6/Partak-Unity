@@ -1,6 +1,7 @@
 ﻿//#define DEBUG_GRADIENT
 
 using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTPooling;
 using GT.Threading;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ namespace Partak
     /// </summary>
     public class CellGradient : MonoBehaviour
     {
-        [SerializeField] private GameState _gameState;
+        [SerializeField] private ServiceReference _gameStateReference;
         [SerializeField] private CellHiearchy _cellHiearchy;
         [SerializeField] private int _cycleTime = 33;
 
@@ -40,6 +41,7 @@ namespace Partak
         private int _lastAddedGroupStepArrayIndex;
         private LoopThread _loopThread;
         private bool _reverseMovement;
+        private GameState _gameState;
 
         private int CurrentStepDirectionIndex
         {
@@ -55,6 +57,7 @@ namespace Partak
 
         private void Awake()
         {
+            _gameState = _gameStateReference.Service<GameState>();
             _cursorStore = FindObjectOfType<CursorStore>();
             PriorStartCell = new CellGroup[_gameState.PlayerCount()];
             _cellGroupStepArray = new CellGroup[_cellHiearchy.ParticleCellGrid.Grid.Length * 2];

@@ -10,26 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Scenes
+  m_Name: Services
   m_EditorClassIdentifier: 
-  m_GroupName: Scenes
+  m_GroupName: Services
   m_Data:
     m_SerializedData: []
-  m_GUID: 9085bb24ab3c3d849b1f723dd192ff93
+  m_GUID: a7f3b886ddecc8641a6b6f58dfac5222
   m_SerializeEntries:
-  - m_GUID: e13a610edb1f29e458ca513afc1b8c33
-    m_Address: GameSession
+  - m_GUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_Address: GameState
     m_ReadOnly: 0
     m_SerializedLabels:
-    - Scene
-  - m_GUID: efa1e429e9b9149c0ace66aa5e10b21d
-    m_Address: MainMenu
+    - Service
+  - m_GUID: b30141a42589e924e97c08dbbe68ad23
+    m_Address: SceneLoadSystem
     m_ReadOnly: 0
     m_SerializedLabels:
-    - Scene
+    - Service
+  - m_GUID: ed956f91a7b883142bf9b588e32e0f1a
+    m_Address: ComponentContainer
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Service
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8897a9da1308dad4cb94657883af64f0, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 96e2b660223d7b749b001ba75ec20268, type: 2}
-    - {fileID: 11400000, guid: 1c7ca967586031d4ca65dcc596866bf8, type: 2}
+    - {fileID: 11400000, guid: f8922f4c493ed264ba20455a35266da7, type: 2}
+    - {fileID: 11400000, guid: b99111a9353b1ef4e9ecc1712766e266, type: 2}

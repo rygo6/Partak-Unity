@@ -10,7 +10,7 @@ namespace GeoTetra.GTUI
     public class BaseUI : MonoBehaviour
     {
         [SerializeField] protected Selectable _focusSelectable;
-        [FormerlySerializedAs("_root")] [SerializeField] private RectTransform _transitionRoot;
+        [SerializeField] private RectTransform _transitionRoot;
         [SerializeField] private Canvas _canvas;
         [SerializeField] private CanvasGroup _group;
 
@@ -33,12 +33,16 @@ namespace GeoTetra.GTUI
         {
             gameObject.SetActive(false);
         }
-        
+
         public virtual void OnTransitionInStart(UIRenderer uiRenderer)
         {
-            CurrentlyRenderedBy = uiRenderer;
-            Canvas.worldCamera = uiRenderer.UICamera;
-            Canvas.renderMode = RenderMode.ScreenSpaceCamera;
+            if (CurrentlyRenderedBy == null)
+            {
+                CurrentlyRenderedBy = uiRenderer;
+                Canvas.worldCamera = uiRenderer.UICamera;
+                Canvas.renderMode = RenderMode.ScreenSpaceCamera;
+            }
+
             Group.blocksRaycasts = false;
             gameObject.SetActive(true);
         }

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTPooling;
 using GeoTetra.GTUI;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -10,7 +11,7 @@ namespace Partak
 {
     public class BackgroundCubes : MonoBehaviour
     {
-        [SerializeField] private ComponentContainer _componentContainer;
+        [SerializeField] private ServiceReference _componentContainer;
         [SerializeField] private string _fadeInState = "FadeIn";
         [SerializeField] private string _straightToPerspectiveState = "StraightToPerspective";
         [SerializeField] private string _perspectiveToStraightState = "PerspectiveToStraight";
@@ -20,7 +21,7 @@ namespace Partak
 
         private void Start()
         {
-            _componentContainer.Populate(out _uiRenderer);
+            _componentContainer.Service<ComponentContainer>().Populate(out _uiRenderer);
         }
 
         public void AddTransitionListener()

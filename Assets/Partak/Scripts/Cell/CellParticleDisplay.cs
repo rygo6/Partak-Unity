@@ -1,19 +1,23 @@
 ﻿using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTPooling;
 using UnityEngine;
 
 namespace Partak
 {
     public class CellParticleDisplay : MonoBehaviour
     {
-        [SerializeField] private GameState _gameState;
+        [SerializeField] private ServiceReference _gameStateReference;
         [SerializeField] private CellHiearchy _cellHiearchy;
         [SerializeField] private CellParticleSystem _cellParticleSystemPrefab;
         
         private CellParticleSystem[] _cellParticleSystems;
         private int[] _levelCount;
+        private GameState _gameState;
 
         private void Start()
         {
+            _gameState = _gameStateReference.Service<GameState>();
+            
             int systemCount = _cellHiearchy.CellGroupGrids.Length;
             LevelConfig levelConfig = FindObjectOfType<LevelConfig>();
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTPooling;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +8,7 @@ namespace Partak.UI
 {
     public class LevelGallery : MonoBehaviour
     {
-        [SerializeField] private GameState _gameState;
+        [SerializeField] private ServiceReference _gameState;
         [SerializeField] public Button _leftButton;
         [SerializeField] public Button _rightButton;
         [SerializeField] private float _transitionSpeed = 4f;
@@ -17,11 +18,11 @@ namespace Partak.UI
 
         private void Start()
         {
-            _gameState.LevelIndex = PlayerPrefs.GetInt("LevelIndex");
+            _gameState.Service<GameState>().LevelIndex = PlayerPrefs.GetInt("LevelIndex");
             _leftButton.onClick.AddListener(GalleryLeft);
             _rightButton.onClick.AddListener(GalleryRight);
             _material = GetComponent<RawImage>().material;
-            _material.SetTexture("_Texture1", (Texture) Resources.Load("LevelPreviews/" + _gameState.LevelIndex));
+            _material.SetTexture("_Texture1", (Texture) Resources.Load("LevelPreviews/" + _gameState.Service<GameState>().LevelIndex));
         }
 
         private void GalleryRight()
@@ -38,10 +39,10 @@ namespace Partak.UI
         {
             _rightButton.interactable = false;
             _leftButton.interactable = false;
-            _gameState.LevelIndex += direction;
-            _gameState.LevelIndex = (int) Mathf.Repeat(_gameState.LevelIndex, LevelCount);
-            PlayerPrefs.SetInt("LevelIndex", _gameState.LevelIndex);
-            _material.SetTexture("_Texture2", (Texture) Resources.Load("LevelPreviews/" + _gameState.LevelIndex));
+            _gameState.Service<GameState>().LevelIndex += direction;
+            _gameState.Service<GameState>().LevelIndex = (int) Mathf.Repeat(_gameState.Service<GameState>().LevelIndex, LevelCount);
+            PlayerPrefs.SetInt("LevelIndex", _gameState.Service<GameState>().LevelIndex);
+            _material.SetTexture("_Texture2", (Texture) Resources.Load("LevelPreviews/" + _gameState.Service<GameState>().LevelIndex));
             yield return null;
             yield return null;
             Vector2 mainStart = new Vector2(0, 0);

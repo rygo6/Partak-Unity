@@ -1,14 +1,16 @@
 ﻿using System;
+using GeoTetra.GTCommon.Components;
 using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTPooling;
 using GT.Threading;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Partak
 {
-    public class CellParticleEngine : MonoBehaviour
+    public class CellParticleEngine : SubscribableBehaviour
     {
-        [SerializeField] private ComponentContainer _componentContainer;
+        [SerializeField] private ServiceReference _componentContainer;
         [SerializeField] private int _attackMultiplier = 3;
         [SerializeField] private CellParticleStore _cellParticleStore;
         [SerializeField] private CellParticleSpawn _cellParticleSpawn;
@@ -21,8 +23,8 @@ namespace Partak
 
         private void Awake()
         {
-            _componentContainer.RegisterComponent(this);
-
+            _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
+            
             _randomRotate = new int[128];
             for (int i = 0; i < _randomRotate.Length; ++i)
                 if (i % 4 == 0)
@@ -38,12 +40,11 @@ namespace Partak
             };
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
             if (_loopThread != null)
                 _loopThread.Stop();
-            
-            _componentContainer.UnregisterComponent(this);
         }
 
         private void MoveParticles()

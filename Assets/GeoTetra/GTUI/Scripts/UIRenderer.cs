@@ -16,7 +16,7 @@ namespace GeoTetra.GTUI
     [RequireComponent(typeof(AudioSource))]
     public class UIRenderer : SubscribableBehaviour
     {
-        [SerializeField] private ComponentContainer _componentContainer;
+        [SerializeField] private ServiceReference _componentContainer;
         [SerializeField] private AddressablesPool _addressablesPool;
         [SerializeField] private Camera _uiCamera;
         [SerializeField] private AnimationCurveReference _transitionCurve;
@@ -25,6 +25,13 @@ namespace GeoTetra.GTUI
         [SerializeField] private UnityEvent _stackTransitionOccured;
         [SerializeField] private AudioSource _audioSource;
 
+        public enum TransitionType
+        {
+            Fade,
+            Vertical,
+            Horizontal
+        }
+        
         private readonly Stack<StackUI> _priorStackUIs = new Stack<StackUI>();
         private StackUI _currentStackUI;
         private ModalUI _currentModal;
@@ -42,7 +49,7 @@ namespace GeoTetra.GTUI
 
         private void Awake()
         {
-            _componentContainer.RegisterComponent(this);
+            _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
         }
 
         private void Reset()
@@ -50,15 +57,10 @@ namespace GeoTetra.GTUI
             _audioSource = GetComponent<AudioSource>();
         }
 
-        protected override void OnDestroy()
-        {
-            _componentContainer.UnregisterComponent(this);
-        }
-
-        public async void InstantiateAndDisplayStackUI(AssetReference ui, Action onFinish = null)
+        public async void InstantiateAndDisplayStackUI(AssetReference ui, TransitionType transitionType = TransitionType.Vertical, Action onFinish = null)
         {
             StackUI uiInstance = await _addressablesPool.PoolInstantiateAsync<StackUI>(ui);
-            DisplayStackUI(uiInstance, onFinish);
+            DisplayStackUI(uiInstance, transitionType, onFinish);
         }
         
         public async void InstantiateAndDisplayModalUI(AssetReference ui, Action onFinish = null)
@@ -67,48 +69,33 @@ namespace GeoTetra.GTUI
             DisplayModalUI(uiInstance, onFinish);
         }
 
-
         public void DisplayModalUI(ModalUI ui, Action onFinish = null)
         {
-            ui.OnTransitionInStart(this);
             _currentModal = ui;
-            StartCoroutine(
-                Tweens.ToFloat(0,
-                    1,
-                    _fadeMultiplier,
-                    _transitionCurve.Value,
-                    f => ui.Group.alpha = f,
-                    () =>
-                    {
-                        ui.OnTransitionInFinish();
-                        onFinish?.Invoke();
-                    }));
+            if (_currentStackUI != null) _currentStackUI.Group.blocksRaycasts = false;
+            FadeIn(ui, () =>
+            {
+                if (_currentStackUI != null) _currentStackUI.Group.blocksRaycasts = true;
+                onFinish?.Invoke();
+            });
         }
 
         public void CloseModal(Action onFinish = null)
         {
             ModalUI ui = _currentModal;
             _currentModal = null;
-            ui.OnTransitionOutStart();
-            StartCoroutine(
-                Tweens.ToFloat(
-                    1,
-                    0,
-                    _fadeMultiplier,
-                    _transitionCurve.Value,
-                    f => ui.Group.alpha = f,
-                    () =>
-                    {
-                        ui.OnTransitionOutFinish();
-                        _addressablesPool.ReleaseToPool(ui.gameObject);
-                        if (_currentStackUI != null) _currentStackUI.Group.blocksRaycasts = true;
-                        onFinish?.Invoke();
-                    }));
+            if (_currentStackUI != null) _currentStackUI.Group.blocksRaycasts = false;
+            FadeOut(ui, () =>
+            {
+                if (_currentStackUI != null) _currentStackUI.Group.blocksRaycasts = true;
+                 onFinish?.Invoke();
+            });
         }
 
-        public void DisplayStackUI(StackUI ui, Action onFinish = null)
+        public void DisplayStackUI(StackUI ui, TransitionType transitionType,  Action onFinish = null)
         {
-            TweenIn(ui, Direction4.Up, onFinish);
+            if (transitionType == TransitionType.Fade) FadeIn(ui, onFinish);
+            else if (transitionType == TransitionType.Vertical) TweenIn(ui, Direction4.Up, onFinish);
 
             if (_currentStackUI != null)
             {
@@ -125,11 +112,7 @@ namespace GeoTetra.GTUI
         {
             StackUI currentUI = _currentStackUI;
             _currentStackUI = null;
-            TweenOut(currentUI, Direction4.Down, () =>
-            {
-                _addressablesPool.ReleaseToPool(currentUI.gameObject);
-                onFinish?.Invoke();
-            });
+            TweenOut(currentUI, Direction4.Down, onFinish);
 
             while (_priorStackUIs.Count > 0)
             {
@@ -138,6 +121,42 @@ namespace GeoTetra.GTUI
             }
         }
 
+        private void FadeIn(BaseUI ui, Action onFinish)
+        {
+            ui.TransitionRoot.anchoredPosition = Vector2.zero; 
+            ui.OnTransitionInStart(this);
+            StartCoroutine(
+                Tweens.ToFloat(0,
+                    1,
+                    _fadeMultiplier,
+                    _transitionCurve.Value,
+                    f => ui.Group.alpha = f,
+                    () =>
+                    {
+                        ui.OnTransitionInFinish();
+                        onFinish?.Invoke();
+                    }));
+        }
+        
+        private void FadeOut(BaseUI ui, Action onFinish)
+        {
+            ui.TransitionRoot.anchoredPosition = Vector2.zero; 
+            ui.OnTransitionOutStart();
+            StartCoroutine(
+                Tweens.ToFloat(
+                    1,
+                    0,
+                    _fadeMultiplier,
+                    _transitionCurve.Value,
+                    f => ui.Group.alpha = f,
+                    () =>
+                    {
+                        ui.OnTransitionOutFinish();
+                        _addressablesPool.ReleaseToPool(ui.gameObject);
+                        onFinish?.Invoke();
+                    }));
+        }
+        
         private void TweenIn(StackUI ui, Direction4 direction, Action OnFinish)
         {
             ui.OnTransitionInStart(this);
@@ -154,8 +173,7 @@ namespace GeoTetra.GTUI
                 {
                     ui.OnTransitionInFinish();
                     OnFinish?.Invoke();
-                } 
-                ));
+                }));
         }
 
         private void TweenOut(StackUI ui, Direction4 direction, Action OnFinish)
@@ -171,6 +189,7 @@ namespace GeoTetra.GTUI
                 _transitionCurve.Value,
                 () =>
                 {
+                    _addressablesPool.ReleaseToPool(ui.gameObject);
                     ui.OnTransitionOutFinish();
                     OnFinish?.Invoke();
                 }));
@@ -179,7 +198,7 @@ namespace GeoTetra.GTUI
         public void GoBack()
         {
             StackUI currentUI = _currentStackUI;
-            TweenOut(currentUI, Direction4.Down, () => { _addressablesPool.ReleaseToPool(currentUI.gameObject); });
+            TweenOut(currentUI, Direction4.Down, null);
 
             _currentStackUI = _priorStackUIs.Pop();
             TweenIn(_currentStackUI, Direction4.Down, null);

@@ -1,4 +1,5 @@
 ﻿using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTPooling;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -7,7 +8,7 @@ namespace Partak
 {
     public class ColorScroll : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
-        [SerializeField] private GameState _gameState;
+        [SerializeField] private ServiceReference _gameState;
         [SerializeField] private Material[] setMaterialColors;
 
         private RawImage _rawImage;
@@ -74,10 +75,10 @@ namespace Partak
         private void SetColors()
         {
             var u = 0.125f + _rawImage.uvRect.x;
-            for (var i = 0; i < _gameState.PlayerCount(); ++i)
+            for (var i = 0; i < _gameState.Service<GameState>().PlayerCount(); ++i)
             {
-                _gameState.PlayerStates[i].PlayerColor = _texture.GetPixelBilinear(u, .5f);
-                setMaterialColors[i].color = _gameState.PlayerStates[i].PlayerColor;
+                _gameState.Service<GameState>().PlayerStates[i].PlayerColor = _texture.GetPixelBilinear(u, .5f);
+                setMaterialColors[i].color = _gameState.Service<GameState>().PlayerStates[i].PlayerColor;
                 u += .25f;
             }
         }

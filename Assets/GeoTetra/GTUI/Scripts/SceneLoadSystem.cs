@@ -1,29 +1,25 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Windows.Markup;
-using GeoTetra.GTCommon.Components;
+﻿using System.Collections.Generic;
 using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTPooling;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
-using Debug = UnityEngine.Debug;
 
 namespace GeoTetra.GTUI
 {
     [CreateAssetMenu(menuName = "GeoTetra/UI/SceneLoadSystem")]
     public class SceneLoadSystem : ScriptableObject
     {
-        [SerializeField] private ComponentContainer _componentContainer;
+        [SerializeField] private ServiceReference _componentContainer;
         [SerializeField] private AssetReference _loadModalUI;
         
-        private readonly Dictionary<string, SceneInstance> _loadedSceneInstances = new Dictionary<string, SceneInstance>();
+        private readonly Dictionary<string, AsyncOperationHandle<SceneInstance>> _loadedSceneInstances = new Dictionary<string,  AsyncOperationHandle<SceneInstance>>();
         private UIRenderer _uiRenderer;
 
-        private UIRenderer UIRenderer => _uiRenderer != null ? _uiRenderer : _uiRenderer = _componentContainer.Get<UIRenderer>();
+        private UIRenderer UIRenderer => _uiRenderer != null ? _uiRenderer : _uiRenderer = _componentContainer.Service<ComponentContainer>().Get<UIRenderer>();
 
         public void Load(AssetReference unloadScene, AssetReference loadScene)
         {
@@ -37,20 +33,22 @@ namespace GeoTetra.GTUI
             if (unloadScene != null && !string.IsNullOrEmpty(unloadScene.AssetGUID))
             {
                 IResourceLocation unloadLocation = GetResourceLocation(unloadScene);
-                if (_loadedSceneInstances.TryGetValue(unloadLocation.PrimaryKey, out SceneInstance sceneInstance))
+                if (_loadedSceneInstances.TryGetValue(unloadLocation.PrimaryKey, out  AsyncOperationHandle<SceneInstance> unloadHandle))
                 {
+                    Debug.Log("Removing scene "+ unloadLocation.PrimaryKey);
                     _loadedSceneInstances.Remove(unloadLocation.PrimaryKey);
-                    await Addressables.UnloadSceneAsync(sceneInstance).Task;                   
+                    await Addressables.UnloadSceneAsync(unloadHandle).Task;
                 }
                 else
                 {
                     Debug.LogWarning($"{unloadScene} Scene instance not found.");
                 }
             }
-            SceneInstance loaded = await loadScene.LoadSceneAsync(LoadSceneMode.Additive).Task;
             IResourceLocation loadLocation = GetResourceLocation(loadScene);
-            if (loadLocation == null) Debug.LogWarning($"Can't find location of {loaded.Scene.name}'");
-            else _loadedSceneInstances.Add(loadLocation.PrimaryKey, loaded);
+            AsyncOperationHandle<SceneInstance> handle = Addressables.LoadSceneAsync(loadLocation, LoadSceneMode.Additive);    
+            await handle.Task;
+            if (loadLocation == null) Debug.LogWarning($"Can't find location of {handle.Result.Scene.name}'");
+            else _loadedSceneInstances.Add(loadLocation.PrimaryKey, handle);
             UIRenderer.CloseModal();
         }
         

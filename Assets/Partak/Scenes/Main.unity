@@ -120,6 +120,88 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &415679718
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 415679720}
+  - component: {fileID: 415679719}
+  m_Layer: 0
+  m_Name: GlobalAddressablesPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &415679719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415679718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89072e4b80ba7b9488a26fa61100eb0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isGlobalPool: 1
+  _prePoolReferences:
+  - m_AssetGUID: b30141a42589e924e97c08dbbe68ad23
+    m_SubObjectName: 
+  - m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_SubObjectName: 
+  - m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
+    m_SubObjectName: 
+  _prePoolingComplete:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 948209123}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1312332009}
+        m_MethodName: Load
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+--- !u!4 &415679720
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415679718}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &948209123 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1089048853691498244, guid: ee4750cb362a0e84ca03a025a3bb2107,
+    type: 3}
+  m_PrefabInstance: {fileID: 1089048853414874790}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1312332008
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,7 +231,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d94e6a6ab6a094408ac844c5fa3f50e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sceneLoadSystem: {fileID: 11400000, guid: b30141a42589e924e97c08dbbe68ad23, type: 2}
+  _onStart: 0
+  _sceneLoadSystem:
+    m_AssetGUID: b30141a42589e924e97c08dbbe68ad23
+    m_SubObjectName: 
   _sceneReference:
     m_AssetGUID: efa1e429e9b9149c0ace66aa5e10b21d
     m_SubObjectName: 
@@ -208,7 +293,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1953049091
 MonoBehaviour:
@@ -237,7 +322,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1959115267
 GameObject:
@@ -326,7 +411,7 @@ PrefabInstance:
     - target: {fileID: 1089048853691498242, guid: ee4750cb362a0e84ca03a025a3bb2107,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1089048853691498242, guid: ee4750cb362a0e84ca03a025a3bb2107,
         type: 3}

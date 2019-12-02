@@ -9,12 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3dfbe589d68a5fd43a4e726d3fade920, type: 3}
-  m_Name: SceneLoadSystem
+  m_Script: {fileID: 11500000, guid: 5834b5087d578d24c926ce20cd31e6d6, type: 3}
+  m_Name: 9085bb24ab3c3d849b1f723dd192ff93_ContentUpdateGroupSchema
   m_EditorClassIdentifier: 
-  _componentContainer:
-    m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
-    m_SubObjectName: 
-  _loadModalUI:
-    m_AssetGUID: 10e4e0a564ea0b54a9e5616acfa15975
-    m_SubObjectName: 
+  m_Group: {fileID: 0}
+  m_StaticContent: 0

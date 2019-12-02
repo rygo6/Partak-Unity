@@ -27,22 +27,6 @@ namespace GeoTetra.GTUI
         {
             base.Reset();
 
-#if UNITY_EDITOR
-//            string[] modalPrefabGUID = AssetDatabase.FindAssets("MessageModalUI");
-//            if (modalPrefabGUID.Length > 0)
-//            {
-//                string modalPrefabPath = AssetDatabase.GUIDToAssetPath(modalPrefabGUID[0]);
-//                _messageModalUIPrefab = AssetDatabase.LoadAssetAtPath<MessageModalUI>(modalPrefabPath);  
-//            }
-//
-//            string[] selectionModalPrefabPath = AssetDatabase.FindAssets("SelectionModalUI");
-//            if (selectionModalPrefabPath.Length > 0)
-//            {
-//                string selectionModalPrefabGUID = AssetDatabase.GUIDToAssetPath(selectionModalPrefabPath[0]);
-//                _selectionModalUIPrefab = AssetDatabase.LoadAssetAtPath<SelectionModalUI>(selectionModalPrefabGUID);
-//            }
-#endif
-            
             Button[] buttons = transform.GetComponentsInChildren<Button>();
             foreach (Button button in buttons)
             {

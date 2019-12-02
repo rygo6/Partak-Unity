@@ -45,7 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a3a1741e4e80417f8d970183d9d25e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
+  _gameState:
+    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_SubObjectName: 
   _audioMixerGroup: {fileID: 24370422, guid: d3bfd22e606cb45119db1d7e9c3b5894, type: 2}
   _winAudioSource: {fileID: 8264450}
 --- !u!82 &8264450

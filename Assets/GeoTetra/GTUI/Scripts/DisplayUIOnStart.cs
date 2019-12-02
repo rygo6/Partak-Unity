@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTPooling;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
@@ -11,16 +13,17 @@ namespace GeoTetra.GTUI
 {
     public class DisplayUIOnStart : MonoBehaviour
     {
-        [SerializeField] private ComponentContainer _componentContainer;
+        [SerializeField] private UIRenderer.TransitionType _transitionType = UIRenderer.TransitionType.Vertical;
+        [SerializeField] private ServiceReference _componentContainer;
         [SerializeField] private AssetReference _stackUIReference;
         [SerializeField] private float _delay = .5f;
         [SerializeField] UnityEvent TransitionFinished = new UnityEvent();
-        
+
         private IEnumerator Start()
         {
             yield return new WaitForSeconds(_delay);
-            UIRenderer uiRenderer = _componentContainer.Get<UIRenderer>();
-            uiRenderer.InstantiateAndDisplayStackUI(_stackUIReference, OnTransitionFinish);
+            UIRenderer uiRenderer = _componentContainer.Service<ComponentContainer>().Get<UIRenderer>();
+            uiRenderer.InstantiateAndDisplayStackUI(_stackUIReference, _transitionType, OnTransitionFinish);
         }
 
         private void OnTransitionFinish()

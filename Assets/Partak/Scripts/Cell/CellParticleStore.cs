@@ -1,46 +1,42 @@
 ﻿using System;
 using System.Collections;
+using GeoTetra.GTCommon.Components;
 using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTPooling;
 using UnityEngine;
 
 namespace Partak
 {
-    public class CellParticleStore : MonoBehaviour
+    public class CellParticleStore : SubscribableBehaviour
     {
-        [SerializeField] private GameState _gameState;
-        [SerializeField] private ComponentContainer _componentContainer;
+        [SerializeField] private CellParticleSpawn _cellParticleSpawn;
+        [SerializeField] private ServiceReference _componentContainer;
+        [SerializeField] private ServiceReference _gameStateReference;
+        [SerializeField] private CursorStore _cursorStore;
+        [SerializeField] private LevelConfig _levelConfig;
         public bool[] PlayerLost;
         public int[] PlayerParticleCount;
-        private CursorStore _cursorStore;
-        private LevelConfig _levelConfig;
         private int _startParticleCount;
         private bool _winEventFired;
+        private GameState _gameState;
         public CellParticle[] CellParticleArray { get; private set; }
         public event Action WinEvent;
         public event Action<int> LoseEvent;
 
         private void Awake()
         {
-            _componentContainer.RegisterComponent(this);
+            _gameState = _gameStateReference.Service<GameState>();
+            _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
         }
 
         private void Start()
         {
-            _levelConfig = _componentContainer.Get<LevelConfig>();
-            _cursorStore = _componentContainer.Get<CursorStore>();
-
             PlayerLost = new bool[_gameState.PlayerCount()];
             PlayerParticleCount = new int[_gameState.PlayerCount()];
             CellParticleArray = new CellParticle[_levelConfig.ParticleCount];
             _startParticleCount = _levelConfig.ParticleCount / _gameState.ActivePlayerCount();
 
-            _componentContainer.Get<CellParticleSpawn>().SpawnComplete +=
-                () => { StartCoroutine(CalculatePercentages()); };
-        }
-
-        private void OnDestroy()
-        {
-            _componentContainer.UnregisterComponent(this);
+            _cellParticleSpawn.SpawnComplete += () => { StartCoroutine(CalculatePercentages()); };
         }
 
         public void IncrementPlayerParticleCount(int playerIndex)

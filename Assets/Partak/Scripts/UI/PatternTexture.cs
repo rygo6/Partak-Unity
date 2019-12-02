@@ -1,12 +1,13 @@
 ﻿using System;
 using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTPooling;
 using UnityEngine;
 
 namespace Partak
 {
     public class PatternTexture : MonoBehaviour
     {
-        [SerializeField] private GameState _gameState;
+        [SerializeField] private ServiceReference _gameState;
         [SerializeField] private Material _applyMaterial;
         private const int TextureSize = 256;
         private const int Divisions = 8;
@@ -19,13 +20,13 @@ namespace Partak
         {
             _texture2D = new Texture2D(TextureSize, TextureSize, TextureFormat.RGBA32, false, false);
             _applyMaterial.mainTexture = _texture2D;
-            _gameState.PlayerStates[0].ColorChanged += SetTexture;
+            _gameState.Service<GameState>().PlayerStates[0].ColorChanged += SetTexture;
             SetTexture(Color.white);
         }
 
         private void OnDestroy()
         {
-            _gameState.PlayerStates[0].ColorChanged -= SetTexture;
+            _gameState.Service<GameState>().PlayerStates[0].ColorChanged -= SetTexture;
         }
 
         private void SetTexture(Color color)
@@ -48,9 +49,9 @@ namespace Partak
                     }
                     else
                     {
-                        SetPixelColors(_gameState.PlayerStates[playerIndex].PlayerColor);
+                        SetPixelColors(_gameState.Service<GameState>().PlayerStates[playerIndex].PlayerColor);
                         playerIndex++;
-                        if (playerIndex == _gameState.PlayerCount())
+                        if (playerIndex == _gameState.Service<GameState>().PlayerCount())
                             playerIndex = 0;
                         xblack = true;
                     }

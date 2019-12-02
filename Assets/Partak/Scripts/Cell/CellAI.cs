@@ -1,4 +1,5 @@
-﻿using GT.Threading;
+﻿using GeoTetra.GTPooling;
+using GT.Threading;
 using UnityEngine;
 using Random = System.Random;
 
@@ -6,7 +7,7 @@ namespace Partak
 {
     public class CellAI : MonoBehaviour
     {
-        [SerializeField] private GameState _gameState;
+        [SerializeField] private ServiceReference _gameStateReference;
         [SerializeField] private int _randomCycleRate = 20;
 
         private readonly Random _random = new Random();
@@ -19,9 +20,12 @@ namespace Partak
         private GameClock _gameTimer;
         private LevelConfig _levelConfig;
         private LoopThread _loopThread;
+        private GameState _gameState;
         
         private void Awake()
         {
+            _gameState = _gameStateReference.Service<GameState>();
+            
             //TODO get rid of FindObjectOfType
             _cursorStore = FindObjectOfType<CursorStore>();
             _cellParticleStore = FindObjectOfType<CellParticleStore>();
