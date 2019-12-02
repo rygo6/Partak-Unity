@@ -60,11 +60,11 @@ namespace Partak
                 {
                     _levelButtons[i].SetLevel(null);
                 }
-                _levelButtons[i].ButtonClicked += OnButtonClicked;
+                _levelButtons[i].ButtonClicked += OnLevelButtonClicked;
             }
         }
         
-        private void OnButtonClicked(LevelButton levelButton)
+        private void OnLevelButtonClicked(LevelButton levelButton)
         {
             _selectedLevelButton = levelButton;
             DisplaySelectionModal(EmptyLevelClickMessages, EmptyLevelClickActions, 0);
@@ -77,6 +77,7 @@ namespace Partak
 
         private void CreateNewLevel()
         {
+            CurrentlyRenderedBy.Flush();
             _sceneLoadSystem.Service<SceneLoadSystem>().Load(_mainMenuScene, _newLevelScene);
         }
 

@@ -52,6 +52,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - UI
+  - m_GUID: c948c7d0e87a80342a820fb7bf03ba00
+    m_Address: LevelCreateUI
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - UI
   - m_GUID: decd7486ac5492442882f300edeac3a8
     m_Address: PlayUI
     m_ReadOnly: 0

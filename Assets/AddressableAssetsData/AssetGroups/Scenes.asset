@@ -17,6 +17,11 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 9085bb24ab3c3d849b1f723dd192ff93
   m_SerializeEntries:
+  - m_GUID: d296c88181da32247bb22aeb6b5c04e5
+    m_Address: LevelMaker
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Scene
   - m_GUID: e13a610edb1f29e458ca513afc1b8c33
     m_Address: GameSession
     m_ReadOnly: 0

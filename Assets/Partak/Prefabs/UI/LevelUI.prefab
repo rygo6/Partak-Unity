@@ -590,6 +590,9 @@ MonoBehaviour:
     m_AssetGUID: c01e8933723a2b541b05ddefbf07b07c
     m_SubObjectName: 
   _backButton: {fileID: 891808240469393983}
+  _sceneLoadSystem:
+    m_AssetGUID: b30141a42589e924e97c08dbbe68ad23
+    m_SubObjectName: 
   _levelButtons:
   - {fileID: 5094264500419416789}
   - {fileID: 992600673186979679}
@@ -603,6 +606,12 @@ MonoBehaviour:
   - {fileID: 8944252870980315794}
   - {fileID: 6822650856576097769}
   - {fileID: 5772665032776650840}
+  _newLevelScene:
+    m_AssetGUID: d296c88181da32247bb22aeb6b5c04e5
+    m_SubObjectName: 
+  _mainMenuScene:
+    m_AssetGUID: efa1e429e9b9149c0ace66aa5e10b21d
+    m_SubObjectName: 
 --- !u!1 &891808241496461428
 GameObject:
   m_ObjectHideFlags: 0
