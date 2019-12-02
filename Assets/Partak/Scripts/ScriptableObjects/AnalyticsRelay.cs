@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTPooling;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
@@ -10,7 +11,7 @@ namespace Partak
     [CreateAssetMenu(menuName = "Partak/AnalyticsRelay")]
     public class AnalyticsRelay : ScriptableObject
     {
-        [SerializeField] private GameState _gameState;
+        [SerializeField] private ServiceReference _gameStateReference;
         
         private int _levelPlayCount;
 
@@ -32,17 +33,17 @@ namespace Partak
         {
             Analytics.CustomEvent("GamePlayerCount", new Dictionary<string, object>
             {
-                {"PlayerCount", _gameState.ActivePlayerCount()}
+                {"PlayerCount", _gameStateReference.Service<GameState>().ActivePlayerCount()}
             });
             Analytics.CustomEvent("HumanPlayerCount", new Dictionary<string, object>
             {
-                {"PlayerCount", _gameState.ActiveHumanPlayerCount()}
+                {"PlayerCount", _gameStateReference.Service<GameState>().ActiveHumanPlayerCount()}
             });
         }
 
         public void MenuLevelLoad()
         {
-            string levelName = "Level" + (_gameState.LevelIndex + 1);
+            string levelName = "Level" + (_gameStateReference.Service<GameState>().LevelIndex + 1);
             Analytics.CustomEvent("MenuLeveLoad", new Dictionary<string, object>
             {
                 {"LevelName", levelName}

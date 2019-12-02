@@ -27,6 +27,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f1568fd4a309691468f8b0adcf7f9e68, type: 2}
   - {fileID: 11400000, guid: 5460f62604aeba24eb4e31da6498ad11, type: 2}
   - {fileID: 11400000, guid: 6316e2330cf77414d8f94ff176e5ed88, type: 2}
+  - {fileID: 11400000, guid: d60288dd9d1e83440bfba1f70670b9e0, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -72,6 +73,7 @@ MonoBehaviour:
     - ItemReference
     - UI
     - Scene
+    - Service
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 186ab7aafca21634aa8f44dda49e090d, type: 2}

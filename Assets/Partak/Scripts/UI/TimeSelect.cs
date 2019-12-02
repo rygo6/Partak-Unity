@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTPooling;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
@@ -8,7 +9,7 @@ namespace Partak
 {
     public class TimeSelect : MonoBehaviour, IPointerClickHandler
     {
-        [SerializeField] private GameState _gameState;
+        [SerializeField] private ServiceReference _gameState;
         [SerializeField] private Text _minutesText;
 
         private int _minutes = 1;
@@ -17,7 +18,7 @@ namespace Partak
         {
             _minutes = PlayerPrefs.GetInt("GameTime", 3);
             _minutesText.text = _minutes.ToString();
-            _gameState.TimeLimitMinutes = _minutes;
+            _gameState.Service<GameState>().TimeLimitMinutes = _minutes;
         }
 
         public void OnPointerClick(PointerEventData eventData)
@@ -35,7 +36,7 @@ namespace Partak
                     break;
             }
 
-            _gameState.TimeLimitMinutes = _minutes;
+            _gameState.Service<GameState>().TimeLimitMinutes = _minutes;
             _minutesText.text = _minutes.ToString();
             PlayerPrefs.SetInt("GameTime", _minutes);
         }

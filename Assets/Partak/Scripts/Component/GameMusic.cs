@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.Audio;
 using System.Collections;
+using GeoTetra.GTPooling;
 
 namespace Partak
 {
     public class GameMusic : MonoBehaviour
     {
-        [SerializeField] private GameState _gameState;
+        [SerializeField] private ServiceReference _gameState;
         [SerializeField] AudioMixerGroup _audioMixerGroup;
         [SerializeField] AudioSource _winAudioSource;
         AudioClip[,] _music;
@@ -18,11 +19,11 @@ namespace Partak
 
         void Start()
         {
-            _music = new AudioClip[_gameState.PlayerCount(), 3];
-            _audioSource = new AudioSource[_gameState.PlayerCount(), 3];
-            _playingClip = new int[_gameState.PlayerCount()];
+            _music = new AudioClip[_gameState.Service<GameState>().PlayerCount(), 3];
+            _audioSource = new AudioSource[_gameState.Service<GameState>().PlayerCount(), 3];
+            _playingClip = new int[_gameState.Service<GameState>().PlayerCount()];
             int rand;
-            for (int i = 0; i < _gameState.PlayerCount(); i++)
+            for (int i = 0; i < _gameState.Service<GameState>().PlayerCount(); i++)
             {
                 rand = Random.Range(0, 4);
                 for (int o = 0; o < 3; o++)
@@ -59,7 +60,7 @@ namespace Partak
         {
             if (_playMusic)
             {
-                for (int i = 0; i < _gameState.PlayerCount(); i++)
+                for (int i = 0; i < _gameState.Service<GameState>().PlayerCount(); i++)
                 {
                     if (_cellParticleStore.PlayerParticleCount[i] == -100)
                     {
@@ -106,7 +107,7 @@ namespace Partak
             _playMusic = false;
             while (true)
             {
-                for (int i = 0; i < _gameState.PlayerCount(); i++)
+                for (int i = 0; i < _gameState.Service<GameState>().PlayerCount(); i++)
                 {
                     for (int o = 0; o < 3; o++)
                     {

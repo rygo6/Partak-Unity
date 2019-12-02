@@ -1,22 +1,29 @@
 ﻿using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTPooling;
 using UnityEngine;
 
 namespace Partak.UI
 {
     public class InputPadGroup : MonoBehaviour
     {
-        [SerializeField] private GameState _gameState;
+        [SerializeField] private ServiceReference _componentContainer;
+        [SerializeField] private ServiceReference _gameState;
         [SerializeField] private InputPad[] _inputPads;
         [SerializeField] private GameObject _horizontalTop;
         [SerializeField] private GameObject _horizontalBottom;
-
-        private void Start()
+        
+        public void Initialize()
         {
             for (int i = 0; i < _inputPads.Length; ++i)
             {
-                if (_gameState.PlayerStates[i].PlayerMode != PlayerMode.Human)
+                if (_gameState.Service<GameState>().PlayerStates[i].PlayerMode != PlayerMode.Human)
                 {
                     _inputPads[i].gameObject.SetActive(false);
+                }
+                else
+                {
+                    _inputPads[i].gameObject.SetActive(true);
+                    _inputPads[i].Initialize();
                 }
             }
 
@@ -24,14 +31,22 @@ namespace Partak.UI
             {
                 _horizontalTop.SetActive(false);
             }
+            else
+            {
+                _horizontalTop.SetActive(true);
+            }
 
             if (!_inputPads[2].gameObject.activeSelf && !_inputPads[3].gameObject.activeSelf)
             {
                 _horizontalBottom.SetActive(false);
             }
+            else
+            {
+                _horizontalBottom.SetActive(true);
+            }
 
-            FindObjectOfType<CellParticleStore>().LoseEvent += DisablePad;
-            FindObjectOfType<CellParticleStore>().WinEvent += DisableAllPads;
+            _componentContainer.Service<ComponentContainer>().Get<CellParticleStore>().LoseEvent += DisablePad;
+            _componentContainer.Service<ComponentContainer>().Get<CellParticleStore>().WinEvent += DisableAllPads;
         }
 
         private void DisableAllPads()

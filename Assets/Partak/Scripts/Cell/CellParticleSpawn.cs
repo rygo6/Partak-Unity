@@ -1,34 +1,33 @@
 ﻿using System;
 using System.Collections;
+using GeoTetra.GTCommon.Components;
 using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTPooling;
 using UnityEngine;
 
 namespace Partak
 {
-    public class CellParticleSpawn : MonoBehaviour
+    public class CellParticleSpawn : SubscribableBehaviour
     {
-        [SerializeField] private GameState _gameState;
-        [SerializeField] private ComponentContainer _componentContainer;
+        [SerializeField] private ServiceReference _gameStateReference;
         [SerializeField] private CellHiearchy _cellHiearchy;
         [SerializeField] private CellParticleEngine _cellParticleMover;
         [SerializeField] private CellParticleStore _cellParticleStore;
-        
-        private CursorStore _cursorStore;
+        [SerializeField] private CursorStore _cursorStore;
+        [SerializeField] private LevelConfig _levelConfig;
+        private GameState _gameState;
 
         public event Action SpawnComplete;
 
         private void Awake()
         {
-            _componentContainer.RegisterComponent(this);
+            _gameState = _gameStateReference.Service<GameState>();
         }
 
         private IEnumerator Start()
         {
-            LevelConfig levelConfig =  _componentContainer.Get<LevelConfig>();
-            _cursorStore =  _componentContainer.Get<CursorStore>();
-
             YieldInstruction[] spawnYield = new YieldInstruction[_gameState.PlayerCount()];
-            int spawnCount = levelConfig.ParticleCount / _gameState.PlayerCount();
+            int spawnCount = _levelConfig.ParticleCount / _gameState.PlayerCount();
             int startIndex = 0;
             int trailingSpawn = 0;
             bool trailingAdded = false;
@@ -39,7 +38,7 @@ namespace Partak
                     if (!trailingAdded)
                     {
                         trailingAdded = true;
-                        trailingSpawn = levelConfig.ParticleCount - spawnCount * _gameState.ActivePlayerCount();
+                        trailingSpawn = _levelConfig.ParticleCount - spawnCount * _gameState.ActivePlayerCount();
                     }
                     else
                     {
@@ -60,11 +59,6 @@ namespace Partak
                     yield return spawnYield[i];
 
             SpawnComplete();
-        }
-
-        private void OnDestroy()
-        {
-            _componentContainer.UnregisterComponent(this);
         }
 
         private IEnumerator SpawnPlayerParticles(ParticleCell startParticleCell, int playerIndex, int startIndex,

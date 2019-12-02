@@ -1,14 +1,17 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using GeoTetra.GTCommon.Components;
 using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTPooling;
 
 namespace Partak
 {
-    public class CursorStore : MonoBehaviour
+    public class CursorStore : SubscribableBehaviour
     {
-        [SerializeField] private GameState _gameState;
-        [SerializeField] private ComponentContainer _componentContainer;
+        [SerializeField] private ServiceReference _componentContainer;
+        [SerializeField] private LevelConfig _levelConfig;
+        [SerializeField] private ServiceReference _gameState;
         [SerializeField] private Transform[] _cursorTranforms;
 
         public Vector3[] CursorPositions { get; private set; }
@@ -18,9 +21,9 @@ namespace Partak
 
         private void Awake()
         {
-            _componentContainer.RegisterComponent(this);
+            _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
             
-            CursorPositions = new Vector3[_gameState.PlayerCount()];
+            CursorPositions = new Vector3[_gameState.Service<GameState>().PlayerCount()];
             _skinnedMeshRenderers = new SkinnedMeshRenderer[_cursorTranforms.Length];
             for (int i = 0; i < CursorPositions.Length; ++i)
             {
@@ -31,12 +34,7 @@ namespace Partak
 
         private void Start()
         {
-            _levelBounds = _componentContainer.Get<LevelConfig>().LevelBounds;
-        }
-
-        private void OnDestroy()
-        {
-            _componentContainer.UnregisterComponent(this);
+            _levelBounds = _levelConfig.LevelBounds;
         }
 
         private void LateUpdate()

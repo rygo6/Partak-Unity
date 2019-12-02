@@ -8,10 +8,8 @@ public class DisableIn : MonoBehaviour
 
 	private RectTransform _centerBounds;
 
-	private IEnumerator Start()
+	public void Initialize()
 	{
-		yield return null;
-
 		Vector3[] corners = new Vector3[4];
 		GetComponent<RectTransform>().GetWorldCorners(corners);
 
@@ -23,6 +21,10 @@ public class DisableIn : MonoBehaviour
 			if (bounds.Contains(_rectTransforms[i].position))
 			{
 				_rectTransforms[i].gameObject.SetActive(false);
+			}
+			else
+			{
+				_rectTransforms[i].gameObject.SetActive(true);
 			}
 		}
 	}

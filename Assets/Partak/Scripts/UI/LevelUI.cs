@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GeoTetra.GTCommon.Attributes;
 using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTPooling;
 using GeoTetra.GTUI;
 using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
@@ -14,7 +15,7 @@ namespace Partak
 {
     public class LevelUI : StackUI
     {
-        [SerializeField] private SceneLoadSystem _sceneLoadSystem;
+        [SerializeField] private ServiceReference _sceneLoadSystem;
         [SerializeField] private List<LevelButton> _levelButtons;
         [SerializeField] private AssetReference _newLevelScene;
         [SerializeField] private AssetReference _mainMenuScene;
@@ -76,7 +77,7 @@ namespace Partak
 
         private void CreateNewLevel()
         {
-            _sceneLoadSystem.Load(_mainMenuScene, _newLevelScene);
+            _sceneLoadSystem.Service<SceneLoadSystem>().Load(_mainMenuScene, _newLevelScene);
         }
 
         private void Cancel()

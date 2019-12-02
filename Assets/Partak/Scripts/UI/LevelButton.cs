@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
-using GeoTetra.GTUI;
-using UnityEngine.WSA;
 
 namespace Partak
 {

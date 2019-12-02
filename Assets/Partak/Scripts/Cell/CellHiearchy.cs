@@ -1,21 +1,21 @@
-﻿using UnityEngine;
+﻿using GeoTetra.GTPooling;
+using UnityEngine;
 
 namespace Partak
 {
     public class CellHiearchy : MonoBehaviour
     {
-        [SerializeField] private GameState _gameState;
+        [SerializeField] private ServiceReference _gameStateReference;
+        private GameState _gameState;
 
         public int ParentCellGridLevel { get; private set; }
-
         public ParticleCellGrid ParticleCellGrid { get; private set; }
-
         public CellGroupGrid[] CellGroupGrids { get; private set; }
-
         public CellGroup[] CombinedFlatCellGroups { get; private set; }
 
         private void Awake()
         {
+            _gameState = _gameStateReference.Service<GameState>();
             LevelConfig levelConfig = FindObjectOfType<LevelConfig>();
             int x = levelConfig.RootDimension.x;
             int y = levelConfig.RootDimension.y;

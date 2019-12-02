@@ -1,5 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
+using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTPooling;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -8,6 +11,9 @@ namespace Partak.UI
     public class InputPad : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler,
         IEndDragHandler, IInitializePotentialDragHandler
     {
+        [SerializeField] private ServiceReference _componentContainer;
+        [SerializeField] private LineRenderer _lineRenderer;
+        [SerializeField] private CanvasGroup _overlayCanvasGroup;
         [SerializeField] private int _playerIndex;
         private CursorStore _cursorStore;
         private Vector3 _hitPosition;
@@ -16,16 +22,27 @@ namespace Partak.UI
         private Vector3 _deltaPosition;
         private bool _dragging;
         private int _particleLayer = 1 << 8;
-        private LineRenderer _lineRenderer;
-        private CanvasGroup _overlayCanvasGroup;
-
+        
         private void Awake()
         {
-            _overlayCanvasGroup = GetComponentInChildren<CanvasGroup>();
-            _cursorStore = FindObjectOfType<CursorStore>();
-            _lineRenderer = GetComponentInChildren<LineRenderer>();
             _lineRenderer.SetVertexCount(2);
             _lineRenderer.enabled = false;
+        }
+
+        private void OnValidate()
+        {
+            _lineRenderer = GetComponentInChildren<LineRenderer>();
+            _overlayCanvasGroup = GetComponentInChildren<CanvasGroup>();
+        }
+
+        public void Initialize()
+        {
+            _lineRenderer.enabled = false;
+            _visible = true;
+            _overlayCanvasGroup.alpha = 1;
+            _lineRenderer.SetPosition(0, Vector3.zero);
+            _lineRenderer.SetPosition(1, Vector3.zero);
+            _cursorStore = _componentContainer.Service<ComponentContainer>().Get<CursorStore>();
         }
 
         public void Disable()

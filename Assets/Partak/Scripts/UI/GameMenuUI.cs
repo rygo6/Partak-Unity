@@ -1,47 +1,57 @@
 ﻿using System;
 using System.Collections;
-using GeoTetra.GTCommon.Attributes;
 using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTPooling;
 using GeoTetra.GTUI;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Partak.UI
 {
     public class GameMenuUI : StackUI
     {
-        [SerializeField] private SceneLoadSystem _sceneLoadSystem;
-        [SerializeField] private ComponentContainer _componentContainer;
+        [SerializeField] private ServiceReference _componentContainer;
+        [SerializeField] private ServiceReference _sceneLoadSystem;
         [SerializeField] private AnalyticsRelay _analyticsRelay;
-        [SerializeField] private GameState _gameState;
+        [SerializeField] private ServiceReference _gameState;
         [SerializeField] private Button[] _pauseButtons;
         [SerializeField] private AssetReference _mainMenuScene;
         [SerializeField] private AssetReference _gameSessionScene;
+        [SerializeField] private InputPadGroup _inputPadGroup;
+        [SerializeField] private DisableIn _disableIn;
         
-        private string[] PauseMessages;
-        private Action[] PauseActions;
-
+        private string[] _pauseMessages;
+        private Action[] _pauseActions;
+        
         protected override void Awake()
         {
+            base.Awake();
             _pauseButtons[0].onClick.AddListener(ShowPauseMenu);
             _pauseButtons[1].onClick.AddListener(ShowPauseMenu);
 
-            PauseMessages = new[] {"main menu", "resume", "skip level"};
-            PauseActions = new Action[] {MainMenu, Resume, Skip};
+            _pauseMessages = new[] {"main menu", "resume", "skip level"};
+            _pauseActions = new Action[] {MainMenu, Resume, Skip};
         }
 
-        protected void Start()
+        public override void OnTransitionInStart(UIRenderer uiRenderer)
         {
-            _componentContainer.Get<CellParticleStore>().WinEvent += ShowWinMenu;
+            base.OnTransitionInStart(uiRenderer);
+            _inputPadGroup.Initialize();
+            _componentContainer.Service<ComponentContainer>().Get<CellParticleStore>().WinEvent += ShowWinMenu;
+            StartCoroutine(InitializeDelay());
+        }
+
+        private IEnumerator InitializeDelay()
+        {
+            yield return null;
+            _disableIn.Initialize();
         }
 
         private void ShowPauseMenu()
         {
-            DisplaySelectionModal(PauseMessages, PauseActions, 0);
-            _componentContainer.Get<CellParticleEngine>().Pause = true;
+            DisplaySelectionModal(_pauseMessages, _pauseActions, 0);
+            _componentContainer.Service<ComponentContainer>().Get<CellParticleEngine>().Pause = true;
         }
 
         private void ShowWinMenu()
@@ -51,14 +61,14 @@ namespace Partak.UI
 
         private void Resume()
         {
-            _componentContainer.Get<CellParticleEngine>().Pause = false;
+            _componentContainer.Service<ComponentContainer>().Get<CellParticleEngine>().Pause = false;
         }
 
         private void MainMenu()
         {
             CurrentlyRenderedBy.Flush(() =>
             {
-                _sceneLoadSystem.Load(_gameSessionScene, _mainMenuScene);
+                _sceneLoadSystem.Service<SceneLoadSystem>().Load(_gameSessionScene, _mainMenuScene);
             });
         }
 
@@ -70,13 +80,13 @@ namespace Partak.UI
 
             CurrentlyRenderedBy.Flush(() =>
             {
-                _sceneLoadSystem.Load(_gameSessionScene, _gameSessionScene);
+                _sceneLoadSystem.Service<SceneLoadSystem>().Load(_gameSessionScene, _gameSessionScene);
             });
         }
 
         private void Skip()
         {
-            _gameState.LevelIndex++;
+            _gameState.Service<GameState>().LevelIndex++;
             PlayerPrefs.SetInt("LevelIndex",
                 (int) Mathf.Repeat(PlayerPrefs.GetInt("LevelIndex") + 1, 18)); //this is bad 
             string levelName = "Level" + (PlayerPrefs.GetInt("LevelIndex") + 1);
@@ -85,7 +95,7 @@ namespace Partak.UI
             
             CurrentlyRenderedBy.Flush(() =>
             {
-                _sceneLoadSystem.Load(_gameSessionScene, _gameSessionScene);
+                _sceneLoadSystem.Service<SceneLoadSystem>().Load(_gameSessionScene, _gameSessionScene);
             });
         }
 
@@ -98,7 +108,7 @@ namespace Partak.UI
             
             CurrentlyRenderedBy.Flush(() =>
             {
-                _sceneLoadSystem.Load(_gameSessionScene, _gameSessionScene);
+                _sceneLoadSystem.Service<SceneLoadSystem>().Load(_gameSessionScene, _gameSessionScene);
             });
         }
     }

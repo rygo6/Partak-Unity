@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using GeoTetra.GTCommon.Attributes;
 using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTPooling;
 using GeoTetra.GTUI;
 using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
@@ -11,11 +12,11 @@ namespace Partak
 {
     public class PlayUI : StackUI
     {
-        [SerializeField] private SceneLoadSystem _sceneLoadSystem;
-        [SerializeField] private GameState _gameState;
-        [SerializeField] private Button _startButton;
+        [SerializeField] private ServiceReference _loadSystem;
+        [SerializeField] private ServiceReference _gameState;
         [SerializeField] private AssetReference _gameSessionScene;
         [SerializeField] private AssetReference _mainMenuScene;
+        [SerializeField] private Button _startButton;
 
         protected override void Awake()
         {
@@ -26,9 +27,9 @@ namespace Partak
         private void OnStartClick()
         {
             int activeCount = 0;
-            for (int i = 0; i < _gameState.PlayerCount(); ++i)
+            for (int i = 0; i < _gameState.Service<GameState>().PlayerCount(); ++i)
             {
-                if (_gameState.PlayerStates[i].PlayerMode != PlayerMode.None)
+                if (_gameState.Service<GameState>().PlayerStates[i].PlayerMode != PlayerMode.None)
                     activeCount++;
             }
 
@@ -44,7 +45,7 @@ namespace Partak
 
         private void Load()
         {
-            _sceneLoadSystem.Load(_mainMenuScene, _gameSessionScene);
+            _loadSystem.Service<SceneLoadSystem>().Load(_mainMenuScene, _gameSessionScene);
         }
     }
 }

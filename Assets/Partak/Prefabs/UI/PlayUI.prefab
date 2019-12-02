@@ -552,7 +552,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parentStackUI: {fileID: 4974690308090156280}
-  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
+  _gameState:
+    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_SubObjectName: 
   _selectionModalUi: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
     type: 3}
   _playerIndex: 3
@@ -2172,7 +2174,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parentStackUI: {fileID: 4974690308090156280}
-  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
+  _gameState:
+    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_SubObjectName: 
   _selectionModalUi: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
     type: 3}
   _playerIndex: 2
@@ -2677,7 +2681,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 481fb6ecd238f4c539bbe151d7d605f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
+  _gameState:
+    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_SubObjectName: 
   _minutesText: {fileID: 4974690308299312726}
 --- !u!114 &2399452949653627655
 MonoBehaviour:
@@ -2823,7 +2829,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
+  _gameState:
+    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_SubObjectName: 
   _playerIndex: 3
   _constantUpdate: 1
 --- !u!1 &4974690307286034244
@@ -4145,7 +4153,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
+  _gameState:
+    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_SubObjectName: 
   _playerIndex: 2
   _constantUpdate: 1
 --- !u!1 &4974690307783550784
@@ -4737,7 +4747,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c14611e5f2e442e3b005d4abb53ce61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
+  _gameState:
+    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_SubObjectName: 
   setMaterialColors:
   - {fileID: 2100000, guid: 8f7046df2233e41e784e81a0b8827aa6, type: 2}
   - {fileID: 2100000, guid: 83805d7830e954ac0a640b6a89f8116b, type: 2}
@@ -4826,7 +4838,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa68b8e3c09687e49b3283c31ea70fc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
+  _gameState:
+    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_SubObjectName: 
   _leftButton: {fileID: 4974690307569558318}
   _rightButton: {fileID: 4974690306919138462}
   _transitionSpeed: 4
@@ -4964,7 +4978,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parentStackUI: {fileID: 4974690308090156280}
-  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
+  _gameState:
+    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_SubObjectName: 
   _selectionModalUi: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
     type: 3}
   _playerIndex: 1
@@ -5235,15 +5251,19 @@ MonoBehaviour:
     m_AssetGUID: c01e8933723a2b541b05ddefbf07b07c
     m_SubObjectName: 
   _backButton: {fileID: 4974690307297324498}
-  _sceneLoadSystem: {fileID: 11400000, guid: b30141a42589e924e97c08dbbe68ad23, type: 2}
-  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
-  _startButton: {fileID: 4974690306945656473}
+  _loadSystem:
+    m_AssetGUID: b30141a42589e924e97c08dbbe68ad23
+    m_SubObjectName: 
+  _gameState:
+    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_SubObjectName: 
   _gameSessionScene:
     m_AssetGUID: e13a610edb1f29e458ca513afc1b8c33
     m_SubObjectName: 
   _mainMenuScene:
     m_AssetGUID: efa1e429e9b9149c0ace66aa5e10b21d
     m_SubObjectName: 
+  _startButton: {fileID: 4974690306945656473}
 --- !u!223 &4974690308090156284
 Canvas:
   m_ObjectHideFlags: 0
@@ -5647,7 +5667,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
+  _gameState:
+    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_SubObjectName: 
   _playerIndex: 1
   _constantUpdate: 1
 --- !u!1 &4974690308250222609
@@ -5965,7 +5987,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
+  _gameState:
+    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_SubObjectName: 
   _playerIndex: 0
   _constantUpdate: 1
 --- !u!1 &4974690308405859299
@@ -6270,7 +6294,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parentStackUI: {fileID: 4974690308090156280}
-  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
+  _gameState:
+    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_SubObjectName: 
   _selectionModalUi: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
     type: 3}
   _playerIndex: 0
