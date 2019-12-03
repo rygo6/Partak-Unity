@@ -13,6 +13,7 @@ namespace GeoTetra.GTUI
 {
     public class DisplayUIOnStart : MonoBehaviour
     {
+        [SerializeField] private bool _onlyDisplayIfEmpty;
         [SerializeField] private UIRenderer.TransitionType _transitionType = UIRenderer.TransitionType.Vertical;
         [SerializeField] private ServiceReference _componentContainer;
         [SerializeField] private AssetReference _stackUIReference;
@@ -23,7 +24,14 @@ namespace GeoTetra.GTUI
         {
             yield return new WaitForSeconds(_delay);
             UIRenderer uiRenderer = _componentContainer.Service<ComponentContainer>().Get<UIRenderer>();
-            uiRenderer.InstantiateAndDisplayStackUI(_stackUIReference, _transitionType, OnTransitionFinish);
+            if (_onlyDisplayIfEmpty)
+            {
+                if (uiRenderer.CurrentStackUI == null) uiRenderer.InstantiateAndDisplayStackUI(_stackUIReference, _transitionType, OnTransitionFinish);
+            }
+            else
+            {
+                uiRenderer.InstantiateAndDisplayStackUI(_stackUIReference, _transitionType, OnTransitionFinish);
+            }
         }
 
         private void OnTransitionFinish()

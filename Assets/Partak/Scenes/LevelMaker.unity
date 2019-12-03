@@ -456,11 +456,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48a754ba68ea529438e59056eeb8653b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentContainer:
+    m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
+    m_SubObjectName: 
   _catcher: {fileID: 140253005}
   _itemSettings: {fileID: 11400000, guid: 65a59aa8109b1e949b21e61173594d4d, type: 2}
   _rootItems:
   - {fileID: 1329045295}
-  _itemCatalogUI: {fileID: 0}
 --- !u!4 &1286567770
 Transform:
   m_ObjectHideFlags: 0
