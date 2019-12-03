@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTPooling;
 using GeoTetra.GTSnapper.ScriptableObjects;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -11,33 +14,40 @@ namespace GeoTetra.GTSnapper
 {
     public class ItemCatalogUI : MonoBehaviour
     {
+        [SerializeField] private Canvas _canvas;
+        [SerializeField] private ServiceReference _componentContainer;
         [SerializeField] private RectTransform _scrollbarContent;
         [SerializeField] private ScrollItem _scrollItemPrefab;
         [SerializeField] private Canvas _scrollItemHighlight;
         [SerializeField] private ItemSettings _itemSettings;
-        
+
         private readonly List<ScrollItem> _scrollItemPool = new List<ScrollItem>();
 
-        private ItemRoot ItemRoot { get; set; }
-
-        public RectTransform ScrollbarContent => _scrollbarContent;
-        private Catcher _catcher;
+        private ItemRoot _itemRoot;
         private ScrollItem _selectedItem;
         private IList<ItemReference> _itemArray;
+        private AsyncOperationHandle<IList<ItemReference>> _loadHandle;
+
+        public ItemRoot ItemRoot => _itemRoot;
+        public Canvas Canvas => _canvas;
 
         private void Start()
         {
-            ItemRoot = FindObjectOfType<ItemRoot>();
-            _catcher = FindObjectOfType<Catcher>();
+            _itemRoot = _componentContainer.Service<ComponentContainer>().Get<ItemRoot>();
             LoadItemReferencesFromAssets("ItemReference");
             _scrollItemHighlight.enabled = false;
+        }
+
+        private void OnDestroy()
+        {
+            Addressables.Release(_loadHandle);
         }
 
         public void UnselectSelectedItem()
         {
             if (_selectedItem != null)
             {
-                ItemRoot.SetAllOutlineNormalAttach();
+                _itemRoot.SetAllOutlineNormalAttach();
                 _scrollItemHighlight.enabled = false;
                 _selectedItem = null;
             }
@@ -79,21 +89,21 @@ namespace GeoTetra.GTSnapper
                     return false;
                 };
 
-                int trueCount = ItemRoot.CallDelegateTagFilter(filterAction, trueAction, falseAction);
+                int trueCount = _itemRoot.CallDelegateTagFilter(filterAction, trueAction, falseAction);
 
                 if (trueCount == 0)
                 {
-                    ItemRoot.SetAllOutlineNormalAttach();
+                    _itemRoot.SetAllOutlineNormalAttach();
                     _selectedItem = null;
                 }
                 else
                 {
                     System.Action action = delegate()
                     {
-                        ItemRoot.UnHighlightAll();
+                        _itemRoot.UnHighlightAll();
                         UnselectSelectedItem();
                     };
-                    _catcher.EmptyClickAction = action;
+                    _itemRoot.Catcher.EmptyClickAction = action;
 
                     _scrollItemHighlight.enabled = true;
                     _scrollItemHighlight.transform.SetParent(_selectedItem.transform);
@@ -110,7 +120,7 @@ namespace GeoTetra.GTSnapper
         public void SpawnItemFromMenuDrag(PointerEventData data, ScrollItem scrollItem)
         {
             Debug.Log("SpawnItemFromMenuDrag");
-            ItemRoot.UnHighlightAll();
+            _itemRoot.UnHighlightAll();
             UnselectSelectedItem();
             InstantiateSelectedItemOnDrag(data, scrollItem.ItemReference, OnDragInstantiateCompleted);
         }
@@ -137,7 +147,7 @@ namespace GeoTetra.GTSnapper
             data.useDragThreshold = false;
             UnselectSelectedItem();
             Item item = gameObject.GetComponent<Item>();
-            item.Initialize(item.transform.position, ItemRoot, itemReference, _catcher);
+            item.Initialize(item.transform.position, _itemRoot, itemReference, _itemRoot.Catcher);
             item.Highlight();
             SwitchStandaloneInputModule.SwitchToGameObject(item.gameObject, data);
         }
@@ -195,18 +205,14 @@ namespace GeoTetra.GTSnapper
         {
             Debug.Log("Loaded " + obj);
         }
-
-        private void OnDownloadComplete(AsyncOperationHandle<IList<ItemReference>> listAssets)
-        {
-            _itemArray = listAssets.Result;
-            LoadItemArray(_itemArray);
-        }
-
+        
         [ContextMenu("LoadItemReferencesFromAssets")]
-        public void LoadItemReferencesFromAssets(string key)
+        public async void LoadItemReferencesFromAssets(string key)
         {
-            Addressables.LoadAssetsAsync<ItemReference>(key, OnDownloadCategoryComplete).Completed +=
-                OnDownloadComplete;
+            _loadHandle = Addressables.LoadAssetsAsync<ItemReference>(key, OnDownloadCategoryComplete);
+            await _loadHandle.Task;
+            _itemArray = _loadHandle.Result;
+            LoadItemArray(_itemArray);
         }
     }
 }

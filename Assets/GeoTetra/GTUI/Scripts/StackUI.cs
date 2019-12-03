@@ -14,7 +14,6 @@ namespace GeoTetra.GTUI
     {
         [SerializeField] private AssetReference _messageModalUiReference;
         [SerializeField] private AssetReference _selectionModalUiReference;
-        
         [SerializeField] private Button _backButton;
         
         protected override void Awake()
@@ -58,7 +57,7 @@ namespace GeoTetra.GTUI
             CurrentlyRenderedBy.DisplayModalUI(messageModalUi);
         }
         
-        private void OnBackClicked()
+        protected void OnBackClicked()
         {
             CurrentlyRenderedBy.GoBack();
         }

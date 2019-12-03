@@ -1,21 +1,24 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using GeoTetra.GTCommon.Components;
+using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTPooling;
 using GeoTetra.GTSnapper.ScriptableObjects;
+using UnityEditor;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 
 namespace GeoTetra.GTSnapper
 {
-    public class ItemRoot : MonoBehaviour
+    public class ItemRoot : SubscribableBehaviour
     {
+        [SerializeField] private ServiceReference _componentContainer;
         [SerializeField] private Catcher _catcher;
         [SerializeField] private ItemSettings _itemSettings;
         [SerializeField] private List<Item> _rootItems;
-        [SerializeField] private ItemCatalogUI _itemCatalogUI;
-
-        //what was this used for? Undo?
+        
         public readonly Dictionary<string, MonoBehaviour> UniqueTickDictionary = new Dictionary<string, MonoBehaviour>();
 
         public readonly List<Item> ItemHoldList = new List<Item>();
@@ -23,15 +26,12 @@ namespace GeoTetra.GTSnapper
         private ItemRootDatum _itemRootDatum;
 
         public ItemSettings ItemSettings => _itemSettings;
-
-        public ItemCatalogUI ItemCatalogUI => _itemCatalogUI;
-
+        
         public Catcher Catcher => _catcher;
 
         private void Awake()
         {
-            _itemCatalogUI = FindObjectOfType<ItemCatalogUI>();
-//			_rootItems = new List<Item>(Item.FindObjectsOfType<Item>());
+            _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
         }
 
         public void UnHighlightAll(Action<Item> postAction = null)

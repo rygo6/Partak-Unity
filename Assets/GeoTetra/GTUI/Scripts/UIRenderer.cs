@@ -37,16 +37,11 @@ namespace GeoTetra.GTUI
         private ModalUI _currentModal;
 
         public Camera UICamera => _uiCamera;
-
         public UnityEvent StackTransitionOccured => _stackTransitionOccured;
-
-        public AudioSource AudioSource
-        {
-            get => _audioSource;
-        }
-
+        public AudioSource AudioSource => _audioSource;
         public AddressablesPool Pool => _addressablesPool;
-
+        public StackUI CurrentStackUI => _currentStackUI;
+        
         private void Awake()
         {
             _componentContainer.Service<ComponentContainer>().RegisterComponent(this);

@@ -77,7 +77,6 @@ namespace Partak
 
         private void CreateNewLevel()
         {
-            CurrentlyRenderedBy.Flush();
             _sceneLoadSystem.Service<SceneLoadSystem>().Load(_mainMenuScene, _newLevelScene);
         }
 

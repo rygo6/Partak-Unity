@@ -51,8 +51,10 @@ namespace GeoTetra.GTSnapper
 		{
 			_inputMoved.x += Mathf.Abs(data.delta.x);
 			_inputMoved.y += Mathf.Abs(data.delta.y);
-			
-			if (data.position.x > RectTransform.rect.xMax && _inputMoved.y < _dragThreshold && !spawnItem)
+
+			RectTransformUtility.ScreenPointToLocalPointInRectangle(RectTransform, data.position, data.pressEventCamera, out Vector2 localPoint);
+			Debug.Log(localPoint);
+			if (localPoint.x < 0 && _inputMoved.y < _dragThreshold && !spawnItem)
 			{
 				spawnItem = true;
 				_parentUI.SpawnItemFromMenuDrag(data, this);
