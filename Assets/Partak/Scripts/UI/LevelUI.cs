@@ -15,11 +15,11 @@ namespace Partak
 {
     public class LevelUI : StackUI
     {
+        [SerializeField] private ServiceReference _gameState;
         [SerializeField] private ServiceReference _sceneLoadSystem;
         [SerializeField] private List<LevelButton> _levelButtons;
         [SerializeField] private AssetReference _newLevelScene;
         [SerializeField] private AssetReference _mainMenuScene;
-        private List<Level> _levels = new List<Level>();
 
         private LevelButton _selectedLevelButton;
 
@@ -32,42 +32,85 @@ namespace Partak
         private string[] EmptyLevelClickMessages;
         private Action[] EmptyLevelClickActions;
         
+        private string[] LoadedLevelMessages;
+        private Action[] LoadedLevelActions;
+        
         protected override void Awake()
         {
             base.Awake();
             
-            EmptyLevelClickMessages = new[] {"Download Existing Level", "Create New Level", "Cancel"};
+            LoadedLevelMessages = new[] {"Edit Level", "Clear Level", "Cancel"};
+            LoadedLevelActions = new Action[] {EditLevel, ClearLevel, Cancel};
+            
+            EmptyLevelClickMessages = new[] {"Download Level", "Create Level", "Cancel"};
             EmptyLevelClickActions = new Action[] {DownloadExistingLevel, CreateNewLevel, Cancel};
-
-            LayoutUI();
+            
+            for (int i = 0; i < _levelButtons.Count; ++i)
+            {
+                _levelButtons[i].ButtonClicked += OnLevelButtonClicked;
+            }
         }
 
         private void LayoutUI()
         {
+            bool addLevelSet = false;
             for (int i = 0; i < _levelButtons.Count; ++i)
             {
-                if (i < _levels.Count)
+                string levelPath = LevelPath(i);
+                bool levelExists = System.IO.File.Exists(levelPath);
+                
+                _levelButtons[i].Initialize(i);
+                if (levelExists)
                 {
-                    _levelButtons[i].SetLevel(_levels[i]);
+                    _levelButtons[i].Text.text = i.ToString();
+                    _levelButtons[i].Level = true;
+                    _levelButtons[i].Button.interactable = true;
                 }
-                else if (i == _levels.Count)
+                else if (!addLevelSet)
                 {
-                    _levelButtons[i].SetLevel(null);
+                    addLevelSet = true;
                     _levelButtons[i].Text.text = "Add\nLevel";
+                    _levelButtons[i].Level = false;
                     _levelButtons[i].Button.interactable = true;
                 }
                 else
                 {
-                    _levelButtons[i].SetLevel(null);
+                    _levelButtons[i].Text.text = "";
+                    _levelButtons[i].Level = false;
+                    _levelButtons[i].Button.interactable = false;
                 }
-                _levelButtons[i].ButtonClicked += OnLevelButtonClicked;
             }
         }
-        
+
+        public override void OnTransitionInStart(UIRenderer uiRenderer)
+        {
+            base.OnTransitionInStart(uiRenderer);
+            LayoutUI();
+        }
+
         private void OnLevelButtonClicked(LevelButton levelButton)
         {
             _selectedLevelButton = levelButton;
-            DisplaySelectionModal(EmptyLevelClickMessages, EmptyLevelClickActions, 0);
+            if (_selectedLevelButton.Level)
+            {
+                DisplaySelectionModal(LoadedLevelMessages, LoadedLevelActions, 0);
+            }
+            else
+            {
+                DisplaySelectionModal(EmptyLevelClickMessages, EmptyLevelClickActions, 0);
+            }
+        }
+        
+        private void ClearLevel()
+        {
+//            _levels.RemoveAt(_selectedLevelButton.Index);
+            LayoutUI();
+        }
+        
+        private void EditLevel()
+        {
+            _gameState.Service<GameState>().EditingLevelIndex = _selectedLevelButton.Index;
+            _sceneLoadSystem.Service<SceneLoadSystem>().Load(_mainMenuScene, _newLevelScene);
         }
 
         private void DownloadExistingLevel()
@@ -77,6 +120,7 @@ namespace Partak
 
         private void CreateNewLevel()
         {
+            _gameState.Service<GameState>().EditingLevelIndex = _selectedLevelButton.Index;
             _sceneLoadSystem.Service<SceneLoadSystem>().Load(_mainMenuScene, _newLevelScene);
         }
 
@@ -89,6 +133,11 @@ namespace Partak
         private void CollectLevels()
         {
             _levelButtons = FindObjectsOfType<LevelButton>().ToList();
+        }
+        
+        public string LevelPath(int index)
+        {
+            return System.IO.Path.Combine(Application.persistentDataPath, $"level{index}");
         }
     }
 }

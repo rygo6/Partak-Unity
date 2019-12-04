@@ -124,8 +124,14 @@ namespace GeoTetra.GTSnapper
         }
 
         [ContextMenu("Serialize")]
-        public void Serialize()
+        private void SerializeTest()
         {
+            Serialize("TestSave");
+        }
+        
+        public void Serialize(string filename)
+        {
+            Debug.Log($"Serializing {filename}");
             if (_itemRootDatum == null)
             {
                 _itemRootDatum = new ItemRootDatum();
@@ -141,14 +147,26 @@ namespace GeoTetra.GTSnapper
 
             string json = JsonUtility.ToJson(_itemRootDatum);
 
-            System.IO.File.WriteAllText("save", json);
+            System.IO.File.WriteAllText(filename, json);
             Debug.Log(json);
         }
-
+        
         [ContextMenu("Deserialize")]
-        public void Deserialize()
+        private void DeserializeTest()
         {
-            string json = System.IO.File.ReadAllText("save");
+            Deserialize("TestSave");
+        }
+        
+        public void Deserialize(string filename)
+        {
+            Debug.Log($"Deserializing {filename}");
+            if (!System.IO.File.Exists(filename))
+            {
+                Debug.Log($"{filename} not found to load.");
+                return;
+            }
+            
+            string json = System.IO.File.ReadAllText(filename);
             _itemRootDatum = JsonUtility.FromJson<ItemRootDatum>(json);
 
             _currentLoadingItemCount = 0;
