@@ -27,14 +27,13 @@ namespace GeoTetra.GTSnapper
 
 		public void OnPointerDown(PointerEventData data)
 		{
-			Debug.Log("ScrollItem OnPointerDown");
 			_inputMoved = Vector2.zero;
 			spawnItem = false;
 		}
 	
 		public void OnPointerUp(PointerEventData data)
 		{
-			Debug.Log("ScrollItem OnPointerUp");
+
 		}
 	
 		public void OnPointerClick(PointerEventData data)
@@ -53,7 +52,6 @@ namespace GeoTetra.GTSnapper
 			_inputMoved.y += Mathf.Abs(data.delta.y);
 
 			RectTransformUtility.ScreenPointToLocalPointInRectangle(RectTransform, data.position, data.pressEventCamera, out Vector2 localPoint);
-			Debug.Log(localPoint);
 			if (localPoint.x < 0 && _inputMoved.y < _dragThreshold && !spawnItem)
 			{
 				spawnItem = true;

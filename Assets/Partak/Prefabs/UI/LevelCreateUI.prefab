@@ -1453,6 +1453,9 @@ MonoBehaviour:
     m_AssetGUID: c01e8933723a2b541b05ddefbf07b07c
     m_SubObjectName: 
   _backButton: {fileID: 0}
+  _gameState:
+    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_SubObjectName: 
   _sceneLoadSystem:
     m_AssetGUID: b30141a42589e924e97c08dbbe68ad23
     m_SubObjectName: 
@@ -1479,6 +1482,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvas: {fileID: 7343701488105535541}
+  _gameState:
+    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_SubObjectName: 
   _componentContainer:
     m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
     m_SubObjectName: 
@@ -1498,11 +1504,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ScrollItemHighlight
-      objectReference: {fileID: 0}
-    - target: {fileID: 6188751964433521137, guid: 3575658466cb3e64bb6b15d4b0910eb8,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6188751964433521138, guid: 3575658466cb3e64bb6b15d4b0910eb8,
         type: 3}

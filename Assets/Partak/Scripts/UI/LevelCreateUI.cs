@@ -13,6 +13,7 @@ namespace Partak
 {
     public class LevelCreateUI : StackUI
     {
+        [SerializeField] private ServiceReference _gameState;
         [SerializeField] private ServiceReference _sceneLoadSystem;
         [SerializeField] private AssetReference _mainMenuScene;
         [SerializeField] private AssetReference _newLevelScene;
@@ -31,8 +32,9 @@ namespace Partak
 
         private void OnClickSave()
         {
-            _itemCatalogUI.ItemRoot.Serialize();
+            _itemCatalogUI.ItemRoot.Serialize(_gameState.Service<GameState>().EditingLevelPath());
             OnBackClicked();
+            _sceneLoadSystem.Service<SceneLoadSystem>().Load(_newLevelScene, _mainMenuScene);
         }
 
         private void OnClickCancel()

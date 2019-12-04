@@ -12,7 +12,8 @@ namespace Partak
         [SerializeField] private PlayerState[] _playerStates;
         [SerializeField] private int _timeLimitMinutes;
         [SerializeField] private int _levelIndex;
-
+        [SerializeField] private int _editingLevelIndex;
+        
         public bool FullVersion { get; set; }
         public int SessionCount { get; private set; }
 
@@ -26,6 +27,12 @@ namespace Partak
         {
             get => _levelIndex;
             set => _levelIndex = value;
+        }
+        
+        public int EditingLevelIndex
+        {
+            get => _editingLevelIndex;
+            set => _editingLevelIndex = value;
         }
 
         public PlayerState[] PlayerStates => _playerStates;
@@ -121,6 +128,11 @@ namespace Partak
             }
 
             return count;
+        }
+
+        public string EditingLevelPath()
+        {
+            return System.IO.Path.Combine(Application.persistentDataPath, $"level{_editingLevelIndex}");
         }
     }
 }
