@@ -20,7 +20,7 @@ namespace GeoTetra.GTSnapper
         [SerializeField] private ItemDrag _itemDrag;
         [SerializeField] private ItemDrop _itemDrop;
 
-        private Catcher _catcher;
+        private InputCatcher _inputCatcher;
 
         public ItemDrag Drag => _itemDrag;
         public ItemDrop Drop => _itemDrop;
@@ -87,21 +87,41 @@ namespace GeoTetra.GTSnapper
             ColliderArrayInitialize();
         }
 
-        public void Initialize(Vector3 position, ItemRoot itemRoot, ItemReference itemReference, Catcher catcher)
+        private void OnDestroy()
+        {
+            Deinitialize();
+        }
+
+        public void Initialize(ItemRoot itemRoot, ItemReference itemReference, InputCatcher inputCatcher)
         {
             ItemRoot = itemRoot;
+            transform.SetParent(ItemRoot.transform);
             ItemReference = itemReference;
-            _catcher = catcher;
+            _inputCatcher = inputCatcher;
+
+            if (_itemDrag != null)
+            {
+                _itemDrag.TargetTransform.SetParent(ItemRoot.transform);
+            }
+        }
+
+        public void Deinitialize()
+        {
+            if (ItemReference != null)
+            {
+                Debug.Log("Releasing " + ItemReference.AssetPrefabName);
+                Addressables.Release(ItemReference);
+            }
         }
 
         private void Start()
         {
             //for debug, should be set through initialize
-            if (ItemRoot == null) ItemRoot = FindObjectOfType<ItemRoot>();
-            if (_catcher == null) _catcher = FindObjectOfType<Catcher>();
+//            if (ItemRoot == null) ItemRoot = FindObjectOfType<ItemRoot>();
+//            if (_inputCatcher == null) _inputCatcher = FindObjectOfType<InputCatcher>();
         }
 
-        private void Reset()
+        private void OnValidate()
         {
             _itemDrag = GetComponent<ItemDrag>();
             _itemDrop = GetComponent<ItemDrop>();
@@ -237,7 +257,7 @@ namespace GeoTetra.GTSnapper
             ItemRoot.UnHighlightAll(i => i.State = ItemState.NoInstantiate);
 
             Item item = gameObject.GetComponent<Item>();
-            item.Initialize(item.transform.position, ItemRoot, itemReference, _catcher);
+            item.Initialize(ItemRoot, itemReference, _inputCatcher);
             
             item.SetShaderOutline(ItemRoot.ItemSettings.HighlightItemColor);
             item.State = ItemState.AttachedHighlighted;
@@ -318,7 +338,7 @@ namespace GeoTetra.GTSnapper
             //if you click on a non-instantiable item, exit instantiate mode and highlight clicked item to start moving it.
             if (data.pointerCurrentRaycast.gameObject == data.pointerPressRaycast.gameObject)
             {
-                ItemRoot.Catcher.OnPointerClick(data);
+                ItemRoot.InputCatcher.OnPointerClick(data);
                 Highlight();
             }
             else
@@ -376,10 +396,10 @@ namespace GeoTetra.GTSnapper
 
         public void Highlight()
         {
-            if (_catcher.EmptyClickAction == null)
+            if (_inputCatcher.EmptyClickAction == null)
             {
                 Action action = delegate() { ItemRoot.UnHighlightAll(); };
-                _catcher.EmptyClickAction = action;
+                _inputCatcher.EmptyClickAction = action;
             }
 
             SetShaderOutline(ItemRoot.ItemSettings.HighlightItemColor);

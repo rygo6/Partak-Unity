@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using GeoTetra.GTSnapper.ScriptableObjects;
+using GeoTetra.Partak;
 using Partak;
 using UnityEngine.AddressableAssets;
-using UnityEngine.Analytics;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 
@@ -28,7 +28,6 @@ namespace GeoTetra.GTSnapper
 
         private ItemRoot _itemRoot;
         private ScrollItem _selectedItem;
-        private IList<ItemReference> _itemArray;
         private AsyncOperationHandle<IList<ItemReference>> _loadHandle;
 
         public ItemRoot ItemRoot => _itemRoot;
@@ -36,17 +35,28 @@ namespace GeoTetra.GTSnapper
 
         private void Start()
         {
+            _scrollItemHighlight.enabled = false;
+        }
+
+        public void Initialize()
+        {
             _itemRoot = _componentContainer.Service<ComponentContainer>().Get<ItemRoot>();
             LoadItemReferencesFromAssets("ItemReference");
-            _scrollItemHighlight.enabled = false;
-            
-            string editingLevelName = _gameState.Service<GameState>().EditingLevelPath();
-            if (!string.IsNullOrEmpty(editingLevelName)) _itemRoot.Deserialize(editingLevelName);
+        }
+        
+        public void Deinitialize()
+        {
+            _itemRoot = null;
+            foreach (ScrollItem scrollItem in _scrollItemPool)
+            {
+                scrollItem.Deinitialize();
+            }
+            Addressables.Release(_loadHandle);
         }
 
         private void OnDestroy()
         {
-            Addressables.Release(_loadHandle);
+            Deinitialize();
         }
 
         public void UnselectSelectedItem()
@@ -109,7 +119,7 @@ namespace GeoTetra.GTSnapper
                         _itemRoot.UnHighlightAll();
                         UnselectSelectedItem();
                     };
-                    _itemRoot.Catcher.EmptyClickAction = action;
+                    _itemRoot.InputCatcher.EmptyClickAction = action;
 
                     _scrollItemHighlight.enabled = true;
                     _scrollItemHighlight.transform.SetParent(_selectedItem.transform);
@@ -153,7 +163,7 @@ namespace GeoTetra.GTSnapper
             data.useDragThreshold = false;
             UnselectSelectedItem();
             Item item = gameObject.GetComponent<Item>();
-            item.Initialize(item.transform.position, _itemRoot, itemReference, _itemRoot.Catcher);
+            item.Initialize(_itemRoot, itemReference, _itemRoot.InputCatcher);
             item.Highlight();
             SwitchStandaloneInputModule.SwitchToGameObject(item.gameObject, data);
         }
@@ -178,13 +188,9 @@ namespace GeoTetra.GTSnapper
                     scrollItem = Instantiate(_scrollItemPrefab);
                     scrollItem.transform.SetParent(_scrollbarContent.GetComponent<RectTransform>(), false);
                     _scrollItemPool.Add(scrollItem);
-                    _scrollItemPool[i].GetComponent<ScrollItem>().Initialize(this, itemReferences[i]);
                 }
-
-                if (itemReferences[i].PreviewImage != null)
-                {
-                    Resources.UnloadAsset(itemReferences[i].PreviewImage);
-                }
+                
+                scrollItem.Initialize(this, itemReferences[i]);;
 
                 //load preview images
                 RawImage image = scrollItem.GetComponent<RawImage>();
@@ -203,8 +209,6 @@ namespace GeoTetra.GTSnapper
             {
                 _scrollItemPool[i].gameObject.SetActive(false);
             }
-
-            Resources.UnloadUnusedAssets();
         }
 
         private void OnDownloadCategoryComplete(ItemReference obj)
@@ -217,8 +221,7 @@ namespace GeoTetra.GTSnapper
         {
             _loadHandle = Addressables.LoadAssetsAsync<ItemReference>(key, OnDownloadCategoryComplete);
             await _loadHandle.Task;
-            _itemArray = _loadHandle.Result;
-            LoadItemArray(_itemArray);
+            LoadItemArray(_loadHandle.Result);
         }
     }
 }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1318866920509516670}
   - component: {fileID: 677959255480263187}
   - component: {fileID: 1897857370851889279}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: LTriOdd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,7 +140,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6912606158749933049}
   - component: {fileID: 1453949724099945589}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AttachPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

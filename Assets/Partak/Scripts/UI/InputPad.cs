@@ -25,7 +25,7 @@ namespace Partak.UI
         
         private void Awake()
         {
-            _lineRenderer.SetVertexCount(2);
+            _lineRenderer.positionCount = 2;
             _lineRenderer.enabled = false;
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using GeoTetra.Partak;
 using UnityEngine;
 
 namespace Partak
@@ -128,11 +129,6 @@ namespace Partak
             }
 
             return count;
-        }
-
-        public string EditingLevelPath()
-        {
-            return System.IO.Path.Combine(Application.persistentDataPath, $"level{_editingLevelIndex}");
         }
     }
 }

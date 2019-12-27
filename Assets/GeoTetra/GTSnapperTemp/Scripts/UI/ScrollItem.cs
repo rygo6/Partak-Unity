@@ -24,6 +24,11 @@ namespace GeoTetra.GTSnapper
 			_parentUI = parentUI;
 			ItemReference = itemReference;
 		}
+		
+		public void Deinitialize()
+		{
+			ItemReference = null;
+		}
 
 		public void OnPointerDown(PointerEventData data)
 		{

@@ -15,7 +15,7 @@ namespace GeoTetra.GTSnapper
     public class ItemRoot : SubscribableBehaviour
     {
         [SerializeField] private ServiceReference _componentContainer;
-        [SerializeField] private Catcher _catcher;
+        [SerializeField] private InputCatcher _inputCatcher;
         [SerializeField] private ItemSettings _itemSettings;
         [SerializeField] private List<Item> _rootItems;
         
@@ -23,17 +23,34 @@ namespace GeoTetra.GTSnapper
 
         public readonly List<Item> ItemHoldList = new List<Item>();
         public readonly List<Item> ItemHighlightList = new List<Item>();
+        private List<AsyncOperationHandle<ItemReference>> _referenceHandles = new List<AsyncOperationHandle<ItemReference>>();
         private ItemRootDatum _itemRootDatum;
 
         public ItemSettings ItemSettings => _itemSettings;
         
-        public Catcher Catcher => _catcher;
+        public InputCatcher InputCatcher => _inputCatcher;
 
         private void Awake()
         {
             _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
+            for (int i = 0; i < _rootItems.Count; ++i)
+            {
+                _rootItems[i].Initialize(this, null, _inputCatcher);
+            }
         }
 
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            foreach (KeyValuePair<string,MonoBehaviour> pair in UniqueTickDictionary)
+            {
+                if (pair.Value is Item)
+                {
+                    Addressables.ReleaseInstance(pair.Value.gameObject);
+                }
+            }
+        }
+        
         public void UnHighlightAll(Action<Item> postAction = null)
         {
             for (int i = 0; i < ItemHighlightList.Count; ++i)
@@ -123,21 +140,13 @@ namespace GeoTetra.GTSnapper
             }
         }
 
-        [ContextMenu("Serialize")]
-        private void SerializeTest()
+        public string Serialize()
         {
-            Serialize("TestSave");
-        }
-        
-        public void Serialize(string filename)
-        {
-            Debug.Log($"Serializing {filename}");
             if (_itemRootDatum == null)
             {
                 _itemRootDatum = new ItemRootDatum();
             }
-
-            _itemRootDatum._dateCreated = DateTime.Now.ToFileTimeUtc();
+            
             _itemRootDatum._itemDatums.Clear();
 
             for (int i = 0; i < _rootItems.Count; ++i)
@@ -145,28 +154,11 @@ namespace GeoTetra.GTSnapper
                 _rootItems[i].Serialize(_itemRootDatum._itemDatums);
             }
 
-            string json = JsonUtility.ToJson(_itemRootDatum);
+            return JsonUtility.ToJson(_itemRootDatum);
+        }
 
-            System.IO.File.WriteAllText(filename, json);
-            Debug.Log(json);
-        }
-        
-        [ContextMenu("Deserialize")]
-        private void DeserializeTest()
+        public void Deserialize(string json)
         {
-            Deserialize("TestSave");
-        }
-        
-        public void Deserialize(string filename)
-        {
-            Debug.Log($"Deserializing {filename}");
-            if (!System.IO.File.Exists(filename))
-            {
-                Debug.Log($"{filename} not found to load.");
-                return;
-            }
-            
-            string json = System.IO.File.ReadAllText(filename);
             _itemRootDatum = JsonUtility.FromJson<ItemRootDatum>(json);
 
             _currentLoadingItemCount = 0;
@@ -203,7 +195,7 @@ namespace GeoTetra.GTSnapper
         private void OnInstantiateComplete(GameObject gameObject, ItemReference itemReference, ItemDatum itemDatum)
         {
             Item item = gameObject.GetComponent<Item>();
-            item.Initialize(item.transform.position, this, itemReference, _catcher);
+            item.Initialize(this, itemReference, _inputCatcher);
             item.Deserialize(itemDatum);
 
             _currentLoadingItemCount++;
