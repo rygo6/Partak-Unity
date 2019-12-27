@@ -37,7 +37,7 @@ namespace GeoTetra.GTUI
                 {
                     Debug.Log("Removing scene "+ unloadLocation.PrimaryKey);
                     _loadedSceneInstances.Remove(unloadLocation.PrimaryKey);
-                    await Addressables.UnloadSceneAsync(unloadHandle).Task;
+                    await Addressables.UnloadSceneAsync(unloadHandle.Result, true).Task;
                 }
                 else
                 {

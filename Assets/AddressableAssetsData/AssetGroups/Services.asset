@@ -17,6 +17,11 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: a7f3b886ddecc8641a6b6f58dfac5222
   m_SerializeEntries:
+  - m_GUID: 276f5bb3082e1654f93a49fb34fe90b4
+    m_Address: PartakDatabase
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Service
   - m_GUID: 7c6ed4b39d69fd245b4d46e08295a60d
     m_Address: GameState
     m_ReadOnly: 0

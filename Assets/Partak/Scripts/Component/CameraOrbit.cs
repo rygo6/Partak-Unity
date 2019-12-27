@@ -11,15 +11,20 @@ namespace Partak
         [SerializeField] private CellParticleStore _cellParticleStore;
         [SerializeField] private float _rotateMultiplier = 16f;
         [SerializeField] private float _tweenMainCameraDivider = 8f;
-        private Transform childCameraTransform;
+        [SerializeField] private Transform _childCameraTransform;
+        [SerializeField] private Camera _mainCamera;
 
         private void Start()
         {
-            childCameraTransform = transform.GetComponentsInChildren<Transform>()[1];
             _cellParticleStore.WinEvent += PlayerWin;
         }
 
-        public void PlayerWin()
+        public void SetSize(Vector2Int newSize)
+        {
+            Vector3 cameraPos = new Vector3((newSize.x / 2f)/ 10f, 0, (newSize.y / 2f)/ 10f);
+        }
+        
+        private void PlayerWin()
         {
             StartCoroutine(MainCameraTweenCoroutine());
             StartCoroutine(OrbitCoroutine());
@@ -27,24 +32,22 @@ namespace Partak
 
         private IEnumerator MainCameraTweenCoroutine()
         {
-            Transform mainCameraTransform = Camera.main.transform;
-
-            Vector3 startPos = mainCameraTransform.position;
-            Quaternion startRot = mainCameraTransform.rotation;
+            Vector3 startPos = _mainCamera.transform.position;
+            Quaternion startRot = _mainCamera.transform.rotation;
 
             float time = 0.0f;
             while (time < 1.0f)
             {
                 time += Time.deltaTime / _tweenMainCameraDivider;
-                mainCameraTransform.position = Vector3.Lerp(startPos, childCameraTransform.position, time);
-                mainCameraTransform.rotation = Quaternion.Slerp(startRot, childCameraTransform.rotation, time);
+                _mainCamera.transform.position = Vector3.Lerp(startPos, _childCameraTransform.position, time);
+                _mainCamera.transform.rotation = Quaternion.Slerp(startRot, _childCameraTransform.rotation, time);
                 yield return null;
             }
 
             while (true)
             {
-                mainCameraTransform.position = childCameraTransform.position;
-                mainCameraTransform.rotation = childCameraTransform.rotation;
+                _mainCamera.transform.position = _childCameraTransform.position;
+                _mainCamera.transform.rotation = _childCameraTransform.rotation;
                 yield return null;
             }
         }

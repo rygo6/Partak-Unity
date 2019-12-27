@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcb921c958e15324386fe8a2a4774a21, type: 3}
   m_Name: GameState
   m_EditorClassIdentifier: 
+  _version: 2.0.5
   _playerStates:
   - _playerColor: {r: 0.6222258, g: 0.82014406, b: 0.011764706, a: 1}
-    _playerMode: 2
+    _playerMode: 0
   - _playerColor: {r: 0.011764706, g: 0.45425016, b: 0.7256689, a: 1}
     _playerMode: 0
   - _playerColor: {r: 0.70617676, g: 0.13980971, b: 0.501309, a: 1}
-    _playerMode: 1
+    _playerMode: 0
   - _playerColor: {r: 1, g: 0.56024814, b: 0.015686275, a: 1}
-    _playerMode: 2
+    _playerMode: 1
   _timeLimitMinutes: 3
-  _levelIndex: 10
+  _levelIndex: 0
+  _editingLevelIndex: 0

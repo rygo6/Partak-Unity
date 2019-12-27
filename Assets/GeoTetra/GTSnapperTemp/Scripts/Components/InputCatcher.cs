@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 namespace GeoTetra
 {
-	public class Catcher : MonoBehaviour,
+	public class InputCatcher : MonoBehaviour,
 							IPointerEnterHandler, 
 							IPointerExitHandler, 
 							IBeginDragHandler, 

@@ -17,7 +17,6 @@ namespace Partak
         [SerializeField] private string _perspectiveToStraightState = "PerspectiveToStraight";
         [SerializeField] private Animator _animator;
         private UIRenderer _uiRenderer;
-        private bool _perspective = true;
 
         private void Start()
         {

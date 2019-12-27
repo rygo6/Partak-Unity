@@ -10,7 +10,7 @@ namespace Partak.UI
         [SerializeField] private ServiceReference _gameState;
         [SerializeField] private InputPad[] _inputPads;
         [SerializeField] private GameObject _horizontalTop;
-        [SerializeField] private GameObject _horizontalBottom;
+        [SerializeField] private GameObject _horizontalBottom ;
         
         public void Initialize()
         {

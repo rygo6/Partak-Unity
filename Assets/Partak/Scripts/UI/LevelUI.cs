@@ -8,6 +8,7 @@ using GeoTetra.GTCommon.Attributes;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using GeoTetra.GTUI;
+using GeoTetra.Partak;
 using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 
@@ -20,15 +21,10 @@ namespace Partak
         [SerializeField] private List<LevelButton> _levelButtons;
         [SerializeField] private AssetReference _newLevelScene;
         [SerializeField] private AssetReference _mainMenuScene;
+        [SerializeField] private AssetReference _levelDownloadUI;
 
         private LevelButton _selectedLevelButton;
 
-        public class Level
-        {
-            public string LevelName;
-            public Texture PreviewImage;
-        }
-        
         private string[] EmptyLevelClickMessages;
         private Action[] EmptyLevelClickActions;
         
@@ -56,25 +52,34 @@ namespace Partak
             bool addLevelSet = false;
             for (int i = 0; i < _levelButtons.Count; ++i)
             {
-                string levelPath = LevelPath(i);
+                string levelPath = LevelUtility.LevelPath(i);
                 bool levelExists = System.IO.File.Exists(levelPath);
                 
                 _levelButtons[i].Initialize(i);
                 if (levelExists)
                 {
-                    _levelButtons[i].Text.text = i.ToString();
+                    string imagePath = LevelUtility.LevelImagePath(i);
+                    byte[] imageBytes = System.IO.File.ReadAllBytes(imagePath);
+                    Texture2D image = new Texture2D(0,0);
+                    image.LoadImage(imageBytes);
+
+                    _levelButtons[i].Text.text = "";
+                    _levelButtons[i].Image.color = Color.white;
+                    _levelButtons[i].Image.texture = image;
                     _levelButtons[i].Level = true;
                     _levelButtons[i].Button.interactable = true;
                 }
                 else if (!addLevelSet)
                 {
                     addLevelSet = true;
+                    _levelButtons[i].Image.color = new Color(1,1,1,.5f);
                     _levelButtons[i].Text.text = "Add\nLevel";
                     _levelButtons[i].Level = false;
                     _levelButtons[i].Button.interactable = true;
                 }
                 else
                 {
+                    _levelButtons[i].Image.color = new Color(1,1,1,.5f);
                     _levelButtons[i].Text.text = "";
                     _levelButtons[i].Level = false;
                     _levelButtons[i].Button.interactable = false;
@@ -115,7 +120,7 @@ namespace Partak
 
         private void DownloadExistingLevel()
         {
-            
+            CurrentlyRenderedBy.InstantiateAndDisplayStackUI(_levelDownloadUI);
         }
 
         private void CreateNewLevel()
@@ -133,11 +138,6 @@ namespace Partak
         private void CollectLevels()
         {
             _levelButtons = FindObjectsOfType<LevelButton>().ToList();
-        }
-        
-        public string LevelPath(int index)
-        {
-            return System.IO.Path.Combine(Application.persistentDataPath, $"level{index}");
         }
     }
 }

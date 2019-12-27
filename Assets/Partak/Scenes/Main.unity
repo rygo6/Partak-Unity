@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 415679720}
   - component: {fileID: 415679719}
   m_Layer: 0
-  m_Name: GlobalAddressablesPool
+  m_Name: GlobalAddressablesServicePool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -156,6 +156,8 @@ MonoBehaviour:
   - m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
     m_SubObjectName: 
   - m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
+    m_SubObjectName: 
+  - m_AssetGUID: 276f5bb3082e1654f93a49fb34fe90b4
     m_SubObjectName: 
   _prePoolingComplete:
     m_PersistentCalls:

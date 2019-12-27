@@ -7,9 +7,9 @@ namespace Partak
     public class AdvertisementDispatch : MonoBehaviour
     {
         private int _gameCount;
-        private int _gameCountLimit = 2;
-        private readonly int _gameCountLimitAdd = 2;
-        private readonly int _sessionCount = 6;
+//        private int _gameCountLimit = 2;
+//        private readonly int _gameCountLimitAdd = 2;
+//        private readonly int _sessionCount = 6;
 
         public void ShowAdvertisement()
         {

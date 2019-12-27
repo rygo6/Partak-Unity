@@ -1,35 +1,40 @@
-﻿#if UNITY_EDITOR
+﻿using System;
+using GeoTetra.GTCommon.Components;
+using GeoTetra.GTCommon.ScriptableObjects;
+using GeoTetra.GTPooling;
 using UnityEngine;
-using UnityEditor;
-using System.Collections;
+
+#if  UNITY_EDITOR
+using UnityEditor.SceneManagement;
+#endif
 
 namespace GeoTetra.GTSnapper
 {
-	public class PreviewGenerator : MonoBehaviour
+	public class CameraCapture : SubscribableBehaviour
 	{
-		private void Start()
+		[SerializeField] private ServiceReference _componentContainer;
+		[SerializeField] private Camera _camera;
+		[SerializeField] private int resWidth = 1024;
+		[SerializeField] private int resHeight = 1024;
+		[SerializeField] private bool _saveOnStart;
+
+		private void Awake()
 		{
-			string path = EditorApplication.currentScene;
-			path = path.Replace("unity", "png");
-			SaveTransparentScreenshotToFile(path);
+			_componentContainer.Service<ComponentContainer>().RegisterComponent(this);
 		}
 
-		private Color[] InvertAlpha(Color[] pixels)
+		private void Start()
 		{
-			for (int i = 0; i < pixels.Length; ++i)
+#if  UNITY_EDITOR
+			if (_saveOnStart)
 			{
-				if (pixels[i].a == 0)
-				{
-					pixels[i].a = 1;
-				}
-				else if (pixels[i].a == 1)
-				{
-					pixels[i].a = 0;
-				}
+				string path = EditorSceneManager.GetActiveScene().ToString();
+				path = path.Replace("unity", "png");
+				SaveScreenshotToFile(path);
 			}
-			return pixels;
+#endif
 		}
-			
+
 		private int CoordinateToGridIndex(int x, int y, int xMax, int yMax)
 		{       
 			if (x >= xMax || y >= yMax || x < 0 || y < 0)
@@ -76,41 +81,31 @@ namespace GeoTetra.GTSnapper
 			return new Rect(left, bottom, right - left, top - bottom);
 		}
 
-		private void SaveTransparentScreenshotToFile(string fileName)
+		public void SaveScreenshotToFile(string fileName)
 		{
-			int resWidth = 1024;
-			int resHeight = 1024;
-
-			Camera camera = GetComponent<Camera>();
 			RenderTexture rt = new RenderTexture(resWidth, resHeight, 32);
-
-			//yes, for some reason you set this to SolidColor black if you want a transparent BG
-			camera.clearFlags = CameraClearFlags.Color;
-			camera.backgroundColor = new Color(0,0,0, 0);
-			camera.targetTexture = rt;
-			camera.Render();
+			
+			_camera.clearFlags = CameraClearFlags.Color;
+			_camera.backgroundColor = new Color(0,0,0, 0);
+			_camera.targetTexture = rt;
+			_camera.Render();
 
 			RenderTexture.active = rt;
 
 			Texture2D texture = new Texture2D(resWidth, resHeight, TextureFormat.ARGB32, false);
 			texture.ReadPixels(new Rect(0, 0, resWidth, resHeight), 0, 0);
 
-			camera.targetTexture = null;
+			_camera.targetTexture = null;
 			RenderTexture.active = null; 
-
-//			texture.SetPixels(InvertAlpha(texture.GetPixels()));
-
+			
 			Rect cropRect = CropRect(texture);
-//			Rect cropRect = new Rect(0,0, texture.width, texture.height);
-			Debug.Log(((int)cropRect.width) + "   " + ((int)cropRect.height));
 			Texture2D cropTexture = new Texture2D((int)cropRect.width, (int)cropRect.height, TextureFormat.ARGB32, false);
 			Color[] cropPixels = texture.GetPixels((int)cropRect.x, (int)cropRect.y, (int)cropRect.width, (int)cropRect.height);
 			cropTexture.SetPixels(cropPixels);	
 
 			byte[] bytes = cropTexture.EncodeToPNG();
-			System.IO.File.Delete(fileName);
+			if (System.IO.File.Exists(fileName))System.IO.File.Delete(fileName);
 			System.IO.File.WriteAllBytes(fileName, bytes);
 		}
 	}
 }
-#endif
