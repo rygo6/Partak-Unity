@@ -1,4 +1,4 @@
-﻿namespace Partak
+﻿namespace GeoTetra.Partak
 {
     public enum PlayerMode
     {

@@ -6,7 +6,7 @@ using GT.Threading;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     public class CellParticleEngine : SubscribableBehaviour
     {
@@ -14,6 +14,7 @@ namespace Partak
         [SerializeField] private int _attackMultiplier = 3;
         [SerializeField] private CellParticleStore _cellParticleStore;
         [SerializeField] private CellParticleSpawn _cellParticleSpawn;
+        [SerializeField] private LevelConfig _levelConfig;
         private readonly int[] RotateDirectionMove = {0, -1, 1, -2, 2, -3, 3, -4, 4};
         private LoopThread _loopThread;
         private int[] _randomRotate;
@@ -24,20 +25,20 @@ namespace Partak
         private void Awake()
         {
             _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
-            
+        }
+
+        public void Initialize()
+        {
             _randomRotate = new int[128];
             for (int i = 0; i < _randomRotate.Length; ++i)
                 if (i % 4 == 0)
                     _randomRotate[i] = Random.Range(-2, 2);
                 else
                     _randomRotate[i] = Random.Range(-1, 1);
-
-            _cellParticleSpawn.SpawnComplete += () =>
-            {
-                _loopThread = LoopThread.Create(MoveParticles, "CellParticleEngine", Priority.High,
-                    FindObjectOfType<LevelConfig>().MoveCycleTime);
-                _loopThread.Start();
-            };
+            
+            //particle need to spawn first
+            _loopThread = LoopThread.Create(MoveParticles, "CellParticleEngine", Priority.High, _levelConfig.Datum.MoveCycleTime);
+            _loopThread.Start();
         }
 
         protected override void OnDestroy()

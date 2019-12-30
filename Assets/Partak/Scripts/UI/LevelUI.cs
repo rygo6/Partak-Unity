@@ -12,7 +12,7 @@ using GeoTetra.Partak;
 using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     public class LevelUI : StackUI
     {
@@ -73,6 +73,7 @@ namespace Partak
                 {
                     addLevelSet = true;
                     _levelButtons[i].Image.color = new Color(1,1,1,.5f);
+                    _levelButtons[i].Image.texture = null;
                     _levelButtons[i].Text.text = "Add\nLevel";
                     _levelButtons[i].Level = false;
                     _levelButtons[i].Button.interactable = true;
@@ -80,6 +81,7 @@ namespace Partak
                 else
                 {
                     _levelButtons[i].Image.color = new Color(1,1,1,.5f);
+                    _levelButtons[i].Image.texture = null;
                     _levelButtons[i].Text.text = "";
                     _levelButtons[i].Level = false;
                     _levelButtons[i].Button.interactable = false;
@@ -98,17 +100,21 @@ namespace Partak
             _selectedLevelButton = levelButton;
             if (_selectedLevelButton.Level)
             {
-                DisplaySelectionModal(LoadedLevelMessages, LoadedLevelActions, 0);
+                DisplaySelectionModal("", LoadedLevelMessages, LoadedLevelActions, 0);
             }
             else
             {
-                DisplaySelectionModal(EmptyLevelClickMessages, EmptyLevelClickActions, 0);
+                DisplaySelectionModal("", EmptyLevelClickMessages, EmptyLevelClickActions, 0);
             }
         }
         
         private void ClearLevel()
         {
-//            _levels.RemoveAt(_selectedLevelButton.Index);
+            string levelPath = LevelUtility.LevelPath(_selectedLevelButton.Index);
+            string imagePath = LevelUtility.LevelImagePath(_selectedLevelButton.Index);
+            System.IO.File.Delete(levelPath);
+            System.IO.File.Delete(imagePath);
+            
             LayoutUI();
         }
         

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     [CreateAssetMenu]
     public class LevelState : ScriptableObject

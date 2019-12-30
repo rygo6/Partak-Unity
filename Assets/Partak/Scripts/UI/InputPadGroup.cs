@@ -2,7 +2,7 @@
 using GeoTetra.GTPooling;
 using UnityEngine;
 
-namespace Partak.UI
+namespace GeoTetra.Partak.UI
 {
     public class InputPadGroup : MonoBehaviour
     {

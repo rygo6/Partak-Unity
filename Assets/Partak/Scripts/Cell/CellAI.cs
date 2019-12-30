@@ -3,11 +3,16 @@ using GT.Threading;
 using UnityEngine;
 using Random = System.Random;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     public class CellAI : MonoBehaviour
     {
         [SerializeField] private ServiceReference _gameStateReference;
+        [SerializeField] private CursorStore _cursorStore;
+        [SerializeField] private CellParticleStore _cellParticleStore;
+        [SerializeField] private CellParticleSpawn _cellParticleSpawn;
+        [SerializeField] private GameClock _gameTimer;
+        [SerializeField] private LevelConfig _levelConfig;
         [SerializeField] private int _randomCycleRate = 20;
 
         private readonly Random _random = new Random();
@@ -15,23 +20,22 @@ namespace Partak
         private Vector3[] _aiCursorTarget;
         private Vector3[] _aiCursorVelocity;
         private int[] _randomPullCycle;
-        private CellParticleStore _cellParticleStore;
-        private CursorStore _cursorStore;
-        private GameClock _gameTimer;
-        private LevelConfig _levelConfig;
+
         private LoopThread _loopThread;
         private GameState _gameState;
+        
+        public bool Initialized { get; private set; }
         
         private void Awake()
         {
             _gameState = _gameStateReference.Service<GameState>();
-            
-            //TODO get rid of FindObjectOfType
-            _cursorStore = FindObjectOfType<CursorStore>();
-            _cellParticleStore = FindObjectOfType<CellParticleStore>();
-            _gameTimer = FindObjectOfType<GameClock>();
-            _levelConfig = FindObjectOfType<LevelConfig>();
+        }
 
+        /// <summary>
+        /// Start after particles spawn
+        /// </summary>
+        public void Initialize()
+        {
             _aiCellParticleIndex = new int[_gameState.PlayerCount()];
             _aiCursorTarget = new Vector3[_gameState.PlayerCount()];
             _aiCursorVelocity = new Vector3[_gameState.PlayerCount()];
@@ -42,17 +46,16 @@ namespace Partak
                 _aiCellParticleIndex[i] = i * 10;
                 _randomPullCycle[i] = i * (_randomCycleRate / _gameState.PlayerCount());
             }
+            
+            _loopThread = LoopThread.Create(UpdateAICursor, "CellAI", Priority.Low);
+            _loopThread.Start();
 
-            FindObjectOfType<CellParticleSpawn>().SpawnComplete += () =>
-            {
-                _loopThread = LoopThread.Create(UpdateAICursor, "CellAI", Priority.Low);
-                _loopThread.Start();
-            };
+            Initialized = true;
         }
 
         private void Update()
         {
-            MoveAICursor();
+            if (Initialized) MoveAICursorUpdate();
         }
 
         private void OnDestroy()
@@ -61,7 +64,7 @@ namespace Partak
                 _loopThread.Stop();
         }
 
-        private void MoveAICursor()
+        public void MoveAICursorUpdate()
         {
             for (int playerIndex = 0; playerIndex < _gameState.PlayerCount(); ++playerIndex)
                 if (_gameState.PlayerStates[playerIndex].PlayerMode == PlayerMode.Comp &&

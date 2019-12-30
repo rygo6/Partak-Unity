@@ -5,7 +5,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     public class MainUI : StackUI
     {

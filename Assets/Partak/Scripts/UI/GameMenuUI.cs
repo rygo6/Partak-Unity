@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 
-namespace Partak.UI
+namespace GeoTetra.Partak.UI
 {
     public class GameMenuUI : StackUI
     {
@@ -50,7 +50,7 @@ namespace Partak.UI
 
         private void ShowPauseMenu()
         {
-            DisplaySelectionModal(_pauseMessages, _pauseActions, 0);
+            DisplaySelectionModal("", _pauseMessages, _pauseActions, 0);
             _componentContainer.Service<ComponentContainer>().Get<CellParticleEngine>().Pause = true;
         }
 

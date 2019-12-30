@@ -3,7 +3,7 @@ using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using UnityEngine;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     public class GameClock : MonoBehaviour
     {

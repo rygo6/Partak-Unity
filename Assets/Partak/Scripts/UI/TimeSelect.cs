@@ -5,7 +5,7 @@ using GeoTetra.GTPooling;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     public class TimeSelect : MonoBehaviour, IPointerClickHandler
     {

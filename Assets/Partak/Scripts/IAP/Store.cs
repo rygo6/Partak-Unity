@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Purchasing;
 using UnityEngine.Serialization;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     public class Store : MonoBehaviour, IStoreListener
     {

@@ -43,10 +43,10 @@ namespace GeoTetra.GTUI
             CurrentlyRenderedBy.InstantiateAndDisplayStackUI(stackUI);
         }
         
-        public async void DisplaySelectionModal(string[] messages, Action[] actions, int focusIndex)
+        public async void DisplaySelectionModal(string mainMessage, string[] messages, Action[] actions, int focusIndex)
         {
             SelectionModalUI messageModalUi = await CurrentlyRenderedBy.Pool.PoolInstantiateAsync<SelectionModalUI>(_selectionModalUiReference);
-            messageModalUi.Init(messages, actions, focusIndex);
+            messageModalUi.Init(mainMessage, messages, actions, focusIndex);
             CurrentlyRenderedBy.DisplayModalUI(messageModalUi);
         }
 

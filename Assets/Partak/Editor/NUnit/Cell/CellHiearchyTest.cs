@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     [TestFixture]
     public class CellHiearchyTest

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using GeoTetra.GTUI;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     public class OptionsUI : StackUI
     {

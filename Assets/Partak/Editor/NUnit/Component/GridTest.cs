@@ -4,7 +4,7 @@ using System.Threading;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
 	[TestFixture]
 	public class GridTest 

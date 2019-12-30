@@ -1,7 +1,7 @@
 ﻿using GeoTetra.GTCommon.ScriptableObjects;
 using UnityEngine;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     public class SystemSettings : MonoBehaviour
     {

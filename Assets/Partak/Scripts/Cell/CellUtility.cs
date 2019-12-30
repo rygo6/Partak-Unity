@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     static public class CellUtility
 	{

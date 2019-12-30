@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     public class LevelButtonRow : MonoBehaviour
     {

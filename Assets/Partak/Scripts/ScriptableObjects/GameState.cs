@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using GeoTetra.Partak;
 using UnityEngine;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     [CreateAssetMenu(menuName = "GeoTetra/Partak/GameState")]
     public class GameState : ScriptableObject

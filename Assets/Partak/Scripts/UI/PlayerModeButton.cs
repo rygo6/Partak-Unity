@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace Partak.UI
+namespace GeoTetra.Partak.UI
 {
     public class PlayerModeButton : MonoBehaviour, IPointerClickHandler, ISubmitHandler
     {
@@ -43,9 +43,9 @@ namespace Partak.UI
         {
             string[] messages =
             {
-                "human",
-                "comp",
-                "none"
+                "Human",
+                "Computer",
+                "None"
             };
             Action[] actions =
             {
@@ -53,7 +53,7 @@ namespace Partak.UI
                 () => { SetPlayerMode(PlayerMode.Comp); },
                 () => { SetPlayerMode(PlayerMode.None); }
             };
-            _parentStackUI.DisplaySelectionModal(messages, actions, (int)  _gameState.Service<GameState>().PlayerStates[_playerIndex].PlayerMode);
+            _parentStackUI.DisplaySelectionModal("Player Type:", messages, actions, (int)  _gameState.Service<GameState>().PlayerStates[_playerIndex].PlayerMode);
         }
 
         private void SetPlayerMode(PlayerMode mode)

@@ -5,11 +5,13 @@ using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using UnityEngine;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
+    /// <summary>
+    /// Keeps track of how many players belong to each player.
+    /// </summary>
     public class CellParticleStore : SubscribableBehaviour
     {
-        [SerializeField] private CellParticleSpawn _cellParticleSpawn;
         [SerializeField] private ServiceReference _componentContainer;
         [SerializeField] private ServiceReference _gameStateReference;
         [SerializeField] private CursorStore _cursorStore;
@@ -27,16 +29,15 @@ namespace Partak
         {
             _gameState = _gameStateReference.Service<GameState>();
             _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
-        }
-
-        private void Start()
-        {
             PlayerLost = new bool[_gameState.PlayerCount()];
             PlayerParticleCount = new int[_gameState.PlayerCount()];
-            CellParticleArray = new CellParticle[_levelConfig.ParticleCount];
-            _startParticleCount = _levelConfig.ParticleCount / _gameState.ActivePlayerCount();
+        }
 
-            _cellParticleSpawn.SpawnComplete += () => { StartCoroutine(CalculatePercentages()); };
+        public void Initialize()
+        {
+            CellParticleArray = new CellParticle[_levelConfig.Datum.ParticleCount];
+            _startParticleCount = _levelConfig.Datum.ParticleCount / _gameState.ActivePlayerCount();
+            StartCoroutine(CalculatePercentages());
         }
 
         public void IncrementPlayerParticleCount(int playerIndex)
@@ -63,7 +64,7 @@ namespace Partak
                 for (int playerIndex = 0; playerIndex < PlayerParticleCount.Length; ++playerIndex)
                 {
                     float percentage = (PlayerParticleCount[playerIndex] - _startParticleCount) /
-                                       (float) (_levelConfig.ParticleCount - _startParticleCount);
+                                       (float) (_levelConfig.Datum.ParticleCount - _startParticleCount);
                     percentage = Mathf.Clamp(percentage, 0f, 1f) * 100f;
                     _cursorStore.SetPlayerCursorMorph(playerIndex, percentage);
                     if (percentage == 100f)

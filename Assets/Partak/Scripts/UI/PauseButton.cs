@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.EventSystems;
 
-namespace Partak.UI
+namespace GeoTetra.Partak.UI
 {
 	public class PauseButton : MonoBehaviour, IPointerClickHandler
 	{
