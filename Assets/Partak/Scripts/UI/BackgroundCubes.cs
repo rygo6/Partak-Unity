@@ -7,7 +7,7 @@ using GeoTetra.GTUI;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     public class BackgroundCubes : MonoBehaviour
     {

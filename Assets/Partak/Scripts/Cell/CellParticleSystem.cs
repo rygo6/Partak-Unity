@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     [RequireComponent(typeof(ParticleSystem))]
     public class CellParticleSystem : MonoBehaviour

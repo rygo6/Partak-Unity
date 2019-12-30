@@ -1,11 +1,17 @@
-﻿using GeoTetra.GTPooling;
+﻿using System;
+using Amazon.Auth.AccessControlPolicy.ActionIdentifiers;
+using GeoTetra.GTPooling;
 using UnityEngine;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
+    /// <summary>
+    /// Entry point of quadtree data structure.
+    /// </summary>
     public class CellHiearchy : MonoBehaviour
     {
         [SerializeField] private ServiceReference _gameStateReference;
+        [SerializeField] private LevelConfig _levelConfig;
         private GameState _gameState;
 
         public int ParentCellGridLevel { get; private set; }
@@ -16,9 +22,14 @@ namespace Partak
         private void Awake()
         {
             _gameState = _gameStateReference.Service<GameState>();
-            LevelConfig levelConfig = FindObjectOfType<LevelConfig>();
-            int x = levelConfig.RootDimension.x;
-            int y = levelConfig.RootDimension.y;
+        }
+
+        public void Initialize()
+        {
+            Debug.Log("Initialize Cell Hierarchy");
+            
+            int x = _levelConfig.Datum.LevelSize.x;
+            int y = _levelConfig.Datum.LevelSize.y;
             while (x % 2 == 0 && y % 2 == 0)
             {
                 x /= 2;
@@ -28,8 +39,8 @@ namespace Partak
 
             ParentCellGridLevel++;
 
-            Vector2Int rootDimensin = FindObjectOfType<LevelConfig>().RootDimension;
-            ParticleCellGrid = new ParticleCellGrid(rootDimensin);
+            Vector2Int rootDimension = _levelConfig.Datum.LevelSize;
+            ParticleCellGrid = new ParticleCellGrid(rootDimension);
             CellGroupGrids = new CellGroupGrid[ParentCellGridLevel];
             CellGroupGrids[0] = new CellGroupGrid(ParticleCellGrid, _gameState.PlayerCount());
             for (int i = 1; i < CellGroupGrids.Length; ++i)
@@ -55,6 +66,11 @@ namespace Partak
             for (int o = 0; o < CellGroupGrids[i].Grid.Length; ++o)
                 if (CellGroupGrids[i].Grid[o] != null)
                     CellGroupGrids[i].Grid[o].FillParentCellGroups();
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            ParticleCellGrid.DrawDebugRay();
         }
     }
 }

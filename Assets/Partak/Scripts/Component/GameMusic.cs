@@ -1,23 +1,24 @@
-using UnityEngine;
-using UnityEngine.Audio;
 using System.Collections;
 using GeoTetra.GTPooling;
+using UnityEngine;
+using UnityEngine.Audio;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     public class GameMusic : MonoBehaviour
     {
+        [SerializeField] private AudioMixerGroup _audioMixerGroup;
         [SerializeField] private ServiceReference _gameState;
-        [SerializeField] AudioMixerGroup _audioMixerGroup;
-        [SerializeField] AudioSource _winAudioSource;
-        AudioClip[,] _music;
-        AudioSource[,] _audioSource;
-        int[] _playingClip;
-        int[] _particleInterval;
-        bool _playMusic;
-        CellParticleStore _cellParticleStore;
-
-        void Start()
+        [SerializeField] private AudioSource _winAudioSource;
+        [SerializeField] private LevelConfig _levelConfig;
+        [SerializeField] private CellParticleStore _cellParticleStore;
+        private AudioSource[,] _audioSource;
+        private AudioClip[,] _music;
+        private int[] _particleInterval;
+        private int[] _playingClip;
+        private bool _playMusic;
+        
+        public void Initialize()
         {
             _music = new AudioClip[_gameState.Service<GameState>().PlayerCount(), 3];
             _audioSource = new AudioSource[_gameState.Service<GameState>().PlayerCount(), 3];
@@ -29,7 +30,7 @@ namespace Partak
                 for (int o = 0; o < 3; o++)
                 {
                     _music[i, o] = (AudioClip) Resources.Load("Music/" + rand + "-" + i + "-" + o);
-                    _audioSource[i, o] = (AudioSource) gameObject.AddComponent<AudioSource>();
+                    _audioSource[i, o] = gameObject.AddComponent<AudioSource>();
                     _audioSource[i, o].clip = _music[i, o];
                     _audioSource[i, o].outputAudioMixerGroup = _audioMixerGroup;
                     _audioSource[i, o].playOnAwake = false;
@@ -41,14 +42,12 @@ namespace Partak
 
                 _playingClip[i] = -1;
             }
-
-            LevelConfig levelConfig = FindObjectOfType<LevelConfig>();
-            _cellParticleStore = FindObjectOfType<CellParticleStore>();
+            
             _particleInterval = new int[3];
-            _particleInterval[0] = levelConfig.ParticleCount - (levelConfig.ParticleCount / 3);
-            _particleInterval[1] = levelConfig.ParticleCount - (levelConfig.ParticleCount / 8);
-            _particleInterval[2] = levelConfig.ParticleCount;
-            FindObjectOfType<CellParticleSpawn>().SpawnComplete += () => { _playMusic = true; };
+            _particleInterval[0] = _levelConfig.Datum.ParticleCount - _levelConfig.Datum.ParticleCount / 3;
+            _particleInterval[1] = _levelConfig.Datum.ParticleCount - _levelConfig.Datum.ParticleCount / 8;
+            _particleInterval[2] = _levelConfig.Datum.ParticleCount;
+            _playMusic = true;
             _cellParticleStore.WinEvent += () =>
             {
                 StartCoroutine(MuteAll());
@@ -56,12 +55,11 @@ namespace Partak
             };
         }
 
-        void Update()
+        private void Update()
         {
             if (_playMusic)
             {
                 for (int i = 0; i < _gameState.Service<GameState>().PlayerCount(); i++)
-                {
                     if (_cellParticleStore.PlayerParticleCount[i] == -100)
                     {
                         _audioSource[i, 0].mute = true;
@@ -98,7 +96,6 @@ namespace Partak
                         _audioSource[i, 2].mute = false;
                         _playingClip[i] = 2;
                     }
-                }
             }
         }
 
@@ -108,12 +105,8 @@ namespace Partak
             while (true)
             {
                 for (int i = 0; i < _gameState.Service<GameState>().PlayerCount(); i++)
-                {
-                    for (int o = 0; o < 3; o++)
-                    {
-                        _audioSource[i, o].volume -= Time.deltaTime / 4f;
-                    }
-                }
+                for (int o = 0; o < 3; o++)
+                    _audioSource[i, o].volume -= Time.deltaTime / 4f;
 
                 yield return null;
             }

@@ -8,7 +8,7 @@ using GeoTetra.GTUI;
 using GeoTetra.Partak;
 using UnityEngine.AddressableAssets;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     public class LevelCreateUI : StackUI
     {
@@ -20,9 +20,7 @@ namespace Partak
         [SerializeField] private ItemCatalogUI _itemCatalogUI;
         [SerializeField] private Button _saveButton;
         [SerializeField] private Button _cancelButton;
-        [SerializeField] private Button _changeSizeButton;
-        [SerializeField] private Button _changeSpeedButton;
-
+        
         private string[] ChangeSizeMessages;
         private Action[] ChangeSizeActions;
         
@@ -41,7 +39,6 @@ namespace Partak
             
             _saveButton.onClick.AddListener(OnClickSave);
             _cancelButton.onClick.AddListener(OnClickCancel);
-            _changeSizeButton.onClick.AddListener(OnClickChangeSize);
         }
 
         public override void OnTransitionInFinish()
@@ -49,7 +46,16 @@ namespace Partak
             base.OnTransitionInFinish();
             _itemCatalogUI.Initialize();
             
-            _componentContainer.Service<ComponentContainer>().Get<LevelConfig>().Deserialize(_gameState.Service<GameState>().EditingLevelIndex);
+            string levelPath = LevelUtility.LevelPath(_gameState.Service<GameState>().EditingLevelIndex);
+            
+            if (!System.IO.File.Exists(levelPath))
+            {
+                DisplaySelectionModal("Select Size", ChangeSizeMessages, ChangeSizeActions, 0);
+            }
+            else
+            {
+                _componentContainer.Service<ComponentContainer>().Get<LevelConfig>().Deserialize(_gameState.Service<GameState>().EditingLevelIndex, true);   
+            }
         }
 
         public override void OnTransitionOutStart()
@@ -74,12 +80,12 @@ namespace Partak
 
         private void OnClickChangeSize()
         {
-            DisplaySelectionModal(ChangeSizeMessages, ChangeSizeActions, 0);
+
         }
 
         private void SizeChanged(Vector2Int newSize)
         {
-            _componentContainer.Service<ComponentContainer>().Get<LevelConfig>().SetLevelSize(newSize);
+            _componentContainer.Service<ComponentContainer>().Get<LevelConfig>().SetLevelSize(newSize, true);
         }
     }
 }

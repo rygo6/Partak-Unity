@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Advertisements;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     public class AdvertisementDispatch : MonoBehaviour
     {

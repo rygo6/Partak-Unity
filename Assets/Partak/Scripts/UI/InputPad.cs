@@ -6,7 +6,7 @@ using GeoTetra.GTPooling;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Partak.UI
+namespace GeoTetra.Partak.UI
 {
     public class InputPad : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler,
         IEndDragHandler, IInitializePotentialDragHandler

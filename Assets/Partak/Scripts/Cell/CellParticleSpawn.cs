@@ -5,7 +5,7 @@ using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using UnityEngine;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     public class CellParticleSpawn : SubscribableBehaviour
     {
@@ -17,17 +17,15 @@ namespace Partak
         [SerializeField] private LevelConfig _levelConfig;
         private GameState _gameState;
 
-        public event Action SpawnComplete;
-
         private void Awake()
         {
             _gameState = _gameStateReference.Service<GameState>();
         }
 
-        private IEnumerator Start()
+        public IEnumerator Initialize()
         {
             YieldInstruction[] spawnYield = new YieldInstruction[_gameState.PlayerCount()];
-            int spawnCount = _levelConfig.ParticleCount / _gameState.PlayerCount();
+            int spawnCount = _levelConfig.Datum.ParticleCount / _gameState.PlayerCount();
             int startIndex = 0;
             int trailingSpawn = 0;
             bool trailingAdded = false;
@@ -38,7 +36,7 @@ namespace Partak
                     if (!trailingAdded)
                     {
                         trailingAdded = true;
-                        trailingSpawn = _levelConfig.ParticleCount - spawnCount * _gameState.ActivePlayerCount();
+                        trailingSpawn = _levelConfig.Datum.ParticleCount - spawnCount * _gameState.ActivePlayerCount();
                     }
                     else
                     {
@@ -57,12 +55,9 @@ namespace Partak
             for (int i = 0; i < spawnYield.Length; ++i)
                 if (spawnYield[i] != null)
                     yield return spawnYield[i];
-
-            SpawnComplete();
         }
 
-        private IEnumerator SpawnPlayerParticles(ParticleCell startParticleCell, int playerIndex, int startIndex,
-            int spawnCount)
+        private IEnumerator SpawnPlayerParticles(ParticleCell startParticleCell, int playerIndex, int startIndex, int spawnCount)
         {
             yield return null;
             yield return null;

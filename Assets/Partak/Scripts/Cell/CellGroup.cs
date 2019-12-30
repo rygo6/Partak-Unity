@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     /// <summary>
     /// Cell group.

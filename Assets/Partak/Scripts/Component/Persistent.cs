@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
 	public class Persistent : MonoBehaviour
 	{

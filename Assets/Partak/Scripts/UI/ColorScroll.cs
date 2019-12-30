@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     public class ColorScroll : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
     {

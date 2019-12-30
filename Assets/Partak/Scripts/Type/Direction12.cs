@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
 	public class Direction12 
 	{

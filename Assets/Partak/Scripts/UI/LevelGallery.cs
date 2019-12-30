@@ -1,10 +1,11 @@
 using System.Collections;
+using System.IO;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Partak.UI
+namespace GeoTetra.Partak.UI
 {
     public class LevelGallery : MonoBehaviour
     {
@@ -12,8 +13,7 @@ namespace Partak.UI
         [SerializeField] public Button _leftButton;
         [SerializeField] public Button _rightButton;
         [SerializeField] private float _transitionSpeed = 4f;
-
-        private const int LevelCount = 18;
+        
         private Material _material;
 
         private void Start()
@@ -22,7 +22,13 @@ namespace Partak.UI
             _leftButton.onClick.AddListener(GalleryLeft);
             _rightButton.onClick.AddListener(GalleryRight);
             _material = GetComponent<RawImage>().material;
-            _material.SetTexture("_Texture1", (Texture) Resources.Load("LevelPreviews/" + _gameState.Service<GameState>().LevelIndex));
+            
+            string imagePath = LevelUtility.LevelImagePath(_gameState.Service<GameState>().LevelIndex);
+            byte[] imageBytes = System.IO.File.ReadAllBytes(imagePath);
+            Texture2D image = new Texture2D(0,0);
+            image.LoadImage(imageBytes);
+            
+            _material.SetTexture("_Texture1", image);
         }
 
         private void GalleryRight()
@@ -40,9 +46,28 @@ namespace Partak.UI
             _rightButton.interactable = false;
             _leftButton.interactable = false;
             _gameState.Service<GameState>().LevelIndex += direction;
-            _gameState.Service<GameState>().LevelIndex = (int) Mathf.Repeat(_gameState.Service<GameState>().LevelIndex, LevelCount);
+            
+            string imagePath = LevelUtility.LevelImagePath(_gameState.Service<GameState>().LevelIndex);
+            if (!File.Exists(imagePath))
+            {
+                if (direction > 0)
+                {
+                    _gameState.Service<GameState>().LevelIndex = 0;
+                }
+                else if (direction < 0)
+                {
+                    _gameState.Service<GameState>().LevelIndex = GetMaxLevelIndex() - 1;
+                }
+                
+                imagePath = LevelUtility.LevelImagePath(_gameState.Service<GameState>().LevelIndex);
+            }
+            
+            byte[] imageBytes = System.IO.File.ReadAllBytes(imagePath);
+            Texture2D image = new Texture2D(0,0);
+            image.LoadImage(imageBytes);
+
             PlayerPrefs.SetInt("LevelIndex", _gameState.Service<GameState>().LevelIndex);
-            _material.SetTexture("_Texture2", (Texture) Resources.Load("LevelPreviews/" + _gameState.Service<GameState>().LevelIndex));
+            _material.SetTexture("_Texture2", image);
             yield return null;
             yield return null;
             Vector2 mainStart = new Vector2(0, 0);
@@ -68,8 +93,7 @@ namespace Partak.UI
 
                 yield return null;
             }
-
-            Resources.UnloadAsset(_material.GetTexture("_Texture1"));
+            
             _material.SetTexture("_Texture1", _material.GetTexture("_Texture2"));
             _material.SetFloat("_Blend", 0);
             _material.SetTextureOffset("_Texture1", mainStart);
@@ -77,6 +101,21 @@ namespace Partak.UI
             _material.SetTexture("_Texture2", null);
             _rightButton.interactable = true;
             _leftButton.interactable = true;
+        }
+
+        private int GetMaxLevelIndex()
+        {
+            int index = 0;
+            string imagePath = LevelUtility.LevelImagePath(index);
+            while (File.Exists(imagePath))
+            {
+                index++;
+                imagePath = LevelUtility.LevelImagePath(index);
+            }
+
+            Debug.Log("Returning max " + index);
+            
+            return index;
         }
 
         private void OnDestroy()

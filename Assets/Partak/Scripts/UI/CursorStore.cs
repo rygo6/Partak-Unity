@@ -5,7 +5,7 @@ using GeoTetra.GTCommon.Components;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     public class CursorStore : SubscribableBehaviour
     {

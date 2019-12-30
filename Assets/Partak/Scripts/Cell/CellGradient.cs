@@ -5,7 +5,7 @@ using GeoTetra.GTPooling;
 using GT.Threading;
 using UnityEngine;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     /// <summary>
     ///     Cell gradient.
@@ -15,6 +15,8 @@ namespace Partak
     public class CellGradient : MonoBehaviour
     {
         [SerializeField] private ServiceReference _gameStateReference;
+        [SerializeField] private CellParticleStore _cellParticleStore;
+        [SerializeField] private CursorStore _cursorStore;
         [SerializeField] private CellHiearchy _cellHiearchy;
         [SerializeField] private int _cycleTime = 33;
 
@@ -36,7 +38,7 @@ namespace Partak
         private CellGroup[] PriorStartCell;
         private CellGroup[] _cellGroupStepArray;
         private int _currentStepDirectionIndex;
-        private CursorStore _cursorStore;
+
         private float _debugRayHeight;
         private int _lastAddedGroupStepArrayIndex;
         private LoopThread _loopThread;
@@ -58,14 +60,13 @@ namespace Partak
         private void Awake()
         {
             _gameState = _gameStateReference.Service<GameState>();
-            _cursorStore = FindObjectOfType<CursorStore>();
-            PriorStartCell = new CellGroup[_gameState.PlayerCount()];
-            _cellGroupStepArray = new CellGroup[_cellHiearchy.ParticleCellGrid.Grid.Length * 2];
-            FindObjectOfType<CellParticleStore>().WinEvent += () => { _reverseMovement = true; };
         }
 
-        private void Start()
+        public void Initialize()
         {
+            PriorStartCell = new CellGroup[_gameState.PlayerCount()];
+            _cellGroupStepArray = new CellGroup[_cellHiearchy.ParticleCellGrid.Grid.Length * 2];
+            _cellParticleStore.WinEvent += () => { _reverseMovement = true; };
             _loopThread = LoopThread.Create(CalculateGradient, "CellGradient", Priority.Low, _cycleTime);
             _loopThread.Start();
         }

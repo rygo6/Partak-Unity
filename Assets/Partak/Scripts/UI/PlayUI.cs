@@ -8,7 +8,7 @@ using GeoTetra.GTUI;
 using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     public class PlayUI : StackUI
     {

@@ -5,7 +5,6 @@ using GeoTetra.GTCommon.Components;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using GeoTetra.GTSnapper.ScriptableObjects;
-using UnityEditor;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
@@ -18,6 +17,8 @@ namespace GeoTetra.GTSnapper
         [SerializeField] private InputCatcher _inputCatcher;
         [SerializeField] private ItemSettings _itemSettings;
         [SerializeField] private List<Item> _rootItems;
+
+        public event Action DeserializationComplete;
         
         public readonly Dictionary<string, MonoBehaviour> UniqueTickDictionary = new Dictionary<string, MonoBehaviour>();
 
@@ -216,6 +217,9 @@ namespace GeoTetra.GTSnapper
                     }
                 }
             }
+            
+            Debug.Log("ItemRoot Deserialization Complete");
+            DeserializationComplete?.Invoke();
         }
 
         private int _currentLoadingItemCount = 0;

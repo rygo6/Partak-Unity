@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Partak {
+namespace GeoTetra.Partak {
 /// <summary>
 /// Particle cell.
 /// Cell which contains particle.
@@ -37,7 +37,7 @@ public class ParticleCell {
 	/// CellParticle contained in this ParticleCell
 	/// </summary>
 	public CellParticle CellParticle { 
-		get { return _cellParticle; }
+		get => _cellParticle;
 		set {
 			if (value == null) {
 				BottomCellGroup.RemovePlayerParticle(InhabitedBy);

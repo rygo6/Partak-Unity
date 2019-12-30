@@ -2,28 +2,33 @@
 using GeoTetra.GTPooling;
 using UnityEngine;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     public class CellParticleDisplay : MonoBehaviour
     {
         [SerializeField] private ServiceReference _gameStateReference;
         [SerializeField] private CellHiearchy _cellHiearchy;
         [SerializeField] private CellParticleSystem _cellParticleSystemPrefab;
+        [SerializeField] private LevelConfig _levelConfig;
         
         private CellParticleSystem[] _cellParticleSystems;
         private int[] _levelCount;
         private GameState _gameState;
+        
+        public bool Initialized { get; private set; }
 
         private void Start()
         {
             _gameState = _gameStateReference.Service<GameState>();
-            
+        }
+
+        public void Initialize()
+        {
             int systemCount = _cellHiearchy.CellGroupGrids.Length;
-            LevelConfig levelConfig = FindObjectOfType<LevelConfig>();
 
             //you add additional positions onto the particle count as a buffer in case when it is reading in
             //particle positions one of the particles is updated from another thread and ends up registering twice
-            int particleCount = levelConfig.ParticleCount + levelConfig.ParticleCount / 4;
+            int particleCount = _levelConfig.Datum.ParticleCount + _levelConfig.Datum.ParticleCount / 4;
 
             _cellParticleSystems = new CellParticleSystem[systemCount];
             for (int i = 0; i < systemCount; ++i)
@@ -42,11 +47,13 @@ namespace Partak
 
             _levelCount = new int[_cellHiearchy.ParentCellGridLevel];
             for (int i = 0; i < _levelCount.Length; ++i) _levelCount[i] = (int) Mathf.Pow(4, i) - (i / 2 + 1);
+
+            Initialized = true;
         }
 
         private void Update()
         {
-            DrawParticleSystems();
+           if (Initialized) DrawParticleSystemsUpdate();
         }
 
         private void DrawCellGroup(CellGroup cellGroup)
@@ -85,7 +92,7 @@ namespace Partak
             for (int i = 0; i < _cellParticleSystems.Length; ++i) _cellParticleSystems[i].UpdateParticleSystem();
         }
 
-        private void DrawParticleSystems()
+        private void DrawParticleSystemsUpdate()
         {
             ResetParticleSystemsCount();
 

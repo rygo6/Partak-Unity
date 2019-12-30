@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 
-namespace Partak
+namespace GeoTetra.Partak
 {
     [CreateAssetMenu(menuName = "Partak/AnalyticsRelay")]
     public class AnalyticsRelay : ScriptableObject
