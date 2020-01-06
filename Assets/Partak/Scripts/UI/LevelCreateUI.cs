@@ -1,4 +1,5 @@
 ﻿using System;
+using GeoTetra.GTBackend;
 using UnityEngine;
 using UnityEngine.UI;
 using GeoTetra.GTCommon.ScriptableObjects;
@@ -15,21 +16,27 @@ namespace GeoTetra.Partak
         [SerializeField] private ServiceReference _gameState;
         [SerializeField] private ServiceReference _sceneLoadSystem;
         [SerializeField] private ServiceReference _componentContainer;
+        [SerializeField] private ServiceReference _database;
         [SerializeField] private AssetReference _mainMenuScene;
         [SerializeField] private AssetReference _newLevelScene;
         [SerializeField] private ItemCatalogUI _itemCatalogUI;
         [SerializeField] private Button _saveButton;
         [SerializeField] private Button _cancelButton;
         
-        private string[] ChangeSizeMessages;
-        private Action[] ChangeSizeActions;
+        private string[] _changeSizeMessages;
+        private Action[] _changeSizeActions;
+        
+        private string[] _saveMessages;
+        private Action[] _saveActions;
+
+        private LevelConfig _levelConfig;
         
         protected override void Awake()
         {
             base.Awake();
             
-            ChangeSizeMessages = new[] {"128x128", "192x192", "256x144", "256x256"};
-            ChangeSizeActions = new Action[]
+            _changeSizeMessages = new[] {"128x128", "192x192", "256x144", "256x256"};
+            _changeSizeActions = new Action[]
             {
                 () => SizeChanged(new Vector2Int(128,128)), 
                 () => SizeChanged(new Vector2Int(192,192)),
@@ -37,20 +44,29 @@ namespace GeoTetra.Partak
                 () => SizeChanged(new Vector2Int(256,256))
             };
             
+            _saveMessages = new[] {"Yes", "No"};
+            _saveActions = new Action[]
+            {
+                SaveToAWS,
+                SerializeLevel,
+            };
+
+            
             _saveButton.onClick.AddListener(OnClickSave);
-            _cancelButton.onClick.AddListener(OnClickCancel);
+            _cancelButton.onClick.AddListener(CloseLevelMaker);
         }
 
         public override void OnTransitionInFinish()
         {
             base.OnTransitionInFinish();
+            _levelConfig = _componentContainer.Service<ComponentContainer>().Get<LevelConfig>();
             _itemCatalogUI.Initialize();
             
             string levelPath = LevelUtility.LevelPath(_gameState.Service<GameState>().EditingLevelIndex);
             
             if (!System.IO.File.Exists(levelPath))
             {
-                DisplaySelectionModal("Select Size", ChangeSizeMessages, ChangeSizeActions, 0);
+                DisplaySelectionModal("Select Size", _changeSizeMessages, _changeSizeActions, 0);
             }
             else
             {
@@ -66,16 +82,37 @@ namespace GeoTetra.Partak
 
         private void OnClickSave()
         {
-            _componentContainer.Service<ComponentContainer>().Get<LevelConfig>().Serialize(_gameState.Service<GameState>().EditingLevelIndex);
+            _levelConfig.Datum.Shared = false;
+            if (_levelConfig.Datum.Shared)
+            {
+                SerializeLevel();
+                CloseLevelMaker();
+            }
+            else
+            {
+                DisplaySelectionModal("Share Level Online?", _saveMessages, _saveActions, 0);
+            }
+        }
 
+        private void CloseLevelMaker()
+        {
             OnBackClicked();
             _sceneLoadSystem.Service<SceneLoadSystem>().Load(_newLevelScene, _mainMenuScene);
         }
 
-        private void OnClickCancel()
+        private void SerializeLevel()
         {
-            OnBackClicked();
-            _sceneLoadSystem.Service<SceneLoadSystem>().Load(_newLevelScene, _mainMenuScene);
+            _levelConfig.Serialize(_gameState.Service<GameState>().EditingLevelIndex);
+        }
+
+        private async void SaveToAWS()
+        {
+            int levelIndex = _gameState.Service<GameState>().EditingLevelIndex;
+            _levelConfig.Datum.Shared = true;
+            SerializeLevel();
+            await _database.Service<PartakDatabase>().SaveLevel(levelIndex);
+            
+            CloseLevelMaker();
         }
 
         private void OnClickChangeSize()
