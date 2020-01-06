@@ -61,7 +61,7 @@ namespace GeoTetra.Partak
                     string imagePath = LevelUtility.LevelImagePath(i);
                     byte[] imageBytes = System.IO.File.ReadAllBytes(imagePath);
                     Texture2D image = new Texture2D(0,0);
-                    image.LoadImage(imageBytes);
+                    image.LoadImage(imageBytes, true);
 
                     _levelButtons[i].Text.text = "";
                     _levelButtons[i].Image.color = Color.white;
@@ -126,6 +126,7 @@ namespace GeoTetra.Partak
 
         private void DownloadExistingLevel()
         {
+            _gameState.Service<GameState>().EditingLevelIndex = _selectedLevelButton.Index;
             CurrentlyRenderedBy.InstantiateAndDisplayStackUI(_levelDownloadUI);
         }
 
