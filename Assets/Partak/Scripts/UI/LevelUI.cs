@@ -55,7 +55,7 @@ namespace GeoTetra.Partak
                 string levelPath = LevelUtility.LevelPath(i);
                 bool levelExists = System.IO.File.Exists(levelPath);
                 
-                _levelButtons[i].Initialize(i);
+                _levelButtons[i].Index0 = i;
                 if (levelExists)
                 {
                     string imagePath = LevelUtility.LevelImagePath(i);
@@ -110,8 +110,8 @@ namespace GeoTetra.Partak
         
         private void ClearLevel()
         {
-            string levelPath = LevelUtility.LevelPath(_selectedLevelButton.Index);
-            string imagePath = LevelUtility.LevelImagePath(_selectedLevelButton.Index);
+            string levelPath = LevelUtility.LevelPath(_selectedLevelButton.Index0);
+            string imagePath = LevelUtility.LevelImagePath(_selectedLevelButton.Index0);
             System.IO.File.Delete(levelPath);
             System.IO.File.Delete(imagePath);
             
@@ -120,19 +120,19 @@ namespace GeoTetra.Partak
         
         private void EditLevel()
         {
-            _gameState.Service<GameState>().EditingLevelIndex = _selectedLevelButton.Index;
+            _gameState.Service<GameState>().EditingLevelIndex = _selectedLevelButton.Index0;
             _sceneLoadSystem.Service<SceneLoadSystem>().Load(_mainMenuScene, _newLevelScene);
         }
 
         private void DownloadExistingLevel()
         {
-            _gameState.Service<GameState>().EditingLevelIndex = _selectedLevelButton.Index;
+            _gameState.Service<GameState>().EditingLevelIndex = _selectedLevelButton.Index0;
             CurrentlyRenderedBy.InstantiateAndDisplayStackUI(_levelDownloadUI);
         }
 
         private void CreateNewLevel()
         {
-            _gameState.Service<GameState>().EditingLevelIndex = _selectedLevelButton.Index;
+            _gameState.Service<GameState>().EditingLevelIndex = _selectedLevelButton.Index0;
             _sceneLoadSystem.Service<SceneLoadSystem>().Load(_mainMenuScene, _newLevelScene);
         }
 
