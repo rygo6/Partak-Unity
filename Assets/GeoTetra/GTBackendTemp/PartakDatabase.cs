@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Security;
+using System.Threading;
 using System.Threading.Tasks;
 using Amazon;
 using Amazon.CognitoIdentity;
@@ -18,6 +19,7 @@ using Amazon.S3.Transfer;
 using Amazon.Util;
 using GeoTetra.Partak;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = System.Random;
 
 namespace GeoTetra.GTBackend
@@ -47,6 +49,7 @@ namespace GeoTetra.GTBackend
         } 
         
         private Table _table;
+        private AmazonS3Client _s3Client;
         private TransferUtility _transferUtility;
 
         private void OnEnable()
@@ -78,8 +81,8 @@ namespace GeoTetra.GTBackend
                 Debug.Log($"AmazonDynamoDBClient Success");
                 _table = Table.LoadTable(client, _tableName);
                 Debug.Log($"{_tableName} Table Success");
-                AmazonS3Client s3Client = new AmazonS3Client(credentials, endpoint);
-                _transferUtility = new TransferUtility(s3Client);
+                _s3Client = new AmazonS3Client(credentials, endpoint);
+                _transferUtility = new TransferUtility(_s3Client);
                 Debug.Log($"{_transferUtility} Success");
             }
         }
@@ -98,14 +101,34 @@ namespace GeoTetra.GTBackend
             return _table.Query(config);
         }
         
-        public async Task<Texture> DownloadLevelImage(Document document)
+        public async Task DownloadLevelImage(Document document, Texture2D image, CancellationToken cancellationToken)
         {
-            string tempImage = Path.Combine(Application.persistentDataPath, "temp.png");
-            await _transferUtility.DownloadAsync(tempImage, _s3Bucket, $"{_levelImagesFolder}/{document[LevelFields.IdKey]}.png");
-            byte[] imageBytes = System.IO.File.ReadAllBytes(tempImage);
-            Texture2D image = new Texture2D(0,0);
-            image.LoadImage(imageBytes, true);
-            return image;
+            string key = $"{_levelImagesFolder}/{document[LevelFields.IdKey]}.png";
+            byte[] bytes = await GetImageBytesFromS3(key, cancellationToken);
+            if (!cancellationToken.IsCancellationRequested) image.LoadImage(bytes, true);
+        }
+
+        private async Task<byte[]> GetImageBytesFromS3(string key, CancellationToken cancellationToken)
+        {
+            return await Task.Run( () =>
+            {
+                GetObjectRequest request = new GetObjectRequest
+                {
+                    BucketName = _s3Bucket,
+                    Key = key
+                };
+
+                using (GetObjectResponse response = _s3Client.GetObject(request))
+                {
+                    MemoryStream memoryStream = new MemoryStream();
+                    using (Stream responseStream = response.ResponseStream)
+                    {
+                        responseStream.CopyTo(memoryStream);
+                    }
+
+                    return memoryStream.ToArray();
+                }
+            }, cancellationToken);
         }
 
         public async Task SaveLevel(int levelIndex)
