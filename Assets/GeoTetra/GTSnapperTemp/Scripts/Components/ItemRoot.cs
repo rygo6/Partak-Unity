@@ -26,6 +26,9 @@ namespace GeoTetra.GTSnapper
         public readonly List<Item> ItemHighlightList = new List<Item>();
         private List<AsyncOperationHandle<ItemReference>> _referenceHandles = new List<AsyncOperationHandle<ItemReference>>();
         private ItemRootDatum _itemRootDatum;
+        
+        public int IgnoreLayer { get; private set; }
+        public int ItemLayer { get; private set; }
 
         public ItemSettings ItemSettings => _itemSettings;
         
@@ -34,6 +37,8 @@ namespace GeoTetra.GTSnapper
         private void Awake()
         {
             _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
+            IgnoreLayer = LayerMask.NameToLayer("Ignore Raycast");
+            ItemLayer = LayerMask.NameToLayer("Item");
             for (int i = 0; i < _rootItems.Count; ++i)
             {
                 _rootItems[i].Initialize(this, null, _inputCatcher);

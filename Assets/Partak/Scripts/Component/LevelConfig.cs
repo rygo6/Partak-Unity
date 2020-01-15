@@ -56,6 +56,8 @@ namespace GeoTetra.Partak
             public Vector2Int LevelSize;
             public int ParticleCount;
             public int MoveCycleTime;
+            public int ThumbsUp;
+            public int ThumbsDown;
             public string ItemRootDatumJSON;
         }
         

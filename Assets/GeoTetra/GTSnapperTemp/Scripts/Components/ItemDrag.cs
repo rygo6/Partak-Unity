@@ -317,7 +317,7 @@ namespace GeoTetra.GTSnapper
             _item.ResetColliderSize();
             _item.AddToHoldList();
             _item.State = ItemState.Dragging;
-            _item.SetLayerRecursive(2);
+            _item.SetLayerRecursive(_item.ItemRoot.IgnoreLayer);
 
             //This ensure that the item is still hovering over the item_Drop it was attached to
             //otherwise it disattaches it, this is done because OnPointerExit will only get called on
@@ -404,14 +404,14 @@ namespace GeoTetra.GTSnapper
             {
 //				StartCoroutine(_item.DestroyItemCoroutine());
                 _item.State = ItemState.Floating;
-                _item.SetLayerRecursive(0);
+                _item.SetLayerRecursive(_item.ItemRoot.ItemLayer);
             }
             else
             {
                 ParentItemDrop = ThisEnteredDropItem;
                 _item.RemoveFromHoldList();
                 AccessoryRendererState = true;
-                _item.SetLayerRecursive(0);
+                _item.SetLayerRecursive(_item.ItemRoot.ItemLayer);
                 _item.State = ItemState.AttachedHighlighted;
             }
         }

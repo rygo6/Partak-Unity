@@ -312,7 +312,7 @@ namespace GeoTetra.GTSnapper
 			Debug.Log( "OnPointerUpAttachedHighlighted " + this.name );
 #endif
 
-            SetLayerRecursive(0);
+            SetLayerRecursive(ItemRoot.ItemLayer);
             ItemRoot.UnHighlightAll();
         }
 

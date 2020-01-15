@@ -14,8 +14,8 @@ namespace GeoTetra.GTSnapper
 	{
 		[SerializeField] private ServiceReference _componentContainer;
 		[SerializeField] private Camera _camera;
-		[SerializeField] private int resWidth = 1024;
-		[SerializeField] private int resHeight = 1024;
+		[SerializeField] private int _resWidth = 256;
+		[SerializeField] private int _resHeight = 256;
 		[SerializeField] private bool _saveOnStart;
 
 		private void Awake()
@@ -83,7 +83,7 @@ namespace GeoTetra.GTSnapper
 
 		public void SaveScreenshotToFile(string fileName)
 		{
-			RenderTexture rt = new RenderTexture(resWidth, resHeight, 32);
+			RenderTexture rt = new RenderTexture(_resWidth, _resHeight, 32);
 			
 			_camera.clearFlags = CameraClearFlags.Color;
 			_camera.backgroundColor = new Color(0,0,0, 0);
@@ -92,8 +92,8 @@ namespace GeoTetra.GTSnapper
 
 			RenderTexture.active = rt;
 
-			Texture2D texture = new Texture2D(resWidth, resHeight, TextureFormat.ARGB32, false);
-			texture.ReadPixels(new Rect(0, 0, resWidth, resHeight), 0, 0);
+			Texture2D texture = new Texture2D(_resWidth, _resHeight, TextureFormat.ARGB32, false);
+			texture.ReadPixels(new Rect(0, 0, _resWidth, _resHeight), 0, 0);
 
 			_camera.targetTexture = null;
 			RenderTexture.active = null; 
