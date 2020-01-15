@@ -32,6 +32,8 @@ namespace GeoTetra.GTBackend
         [SerializeField] private string _tableName = "Partak";
         [SerializeField] private string _s3Bucket = "partak";
         [SerializeField] private string _levelImagesFolder = "LevelImages";
+        [SerializeField] private string _createdAtIndex = "pk-created_at-index";
+        [SerializeField] private string _thumbsUpIndex = "pk-thumbs_up-index";
         
         public static class LevelFields
         {
@@ -71,41 +73,61 @@ namespace GeoTetra.GTBackend
                 loggingConfig.LogResponses = ResponseLoggingOption.Always;
                 loggingConfig.LogResponsesSizeLimit = 4096;
                 loggingConfig.LogMetricsFormat = LogMetricsFormatOption.JSON;
-                
-                
-                RegionEndpoint endpoint = RegionEndpoint.GetBySystemName(_regionEndpoint);
-                CognitoAWSCredentials credentials = new CognitoAWSCredentials(_identityPoolId, endpoint);
-                ImmutableCredentials credentialsResult = await credentials.GetCredentialsAsync();
-                Debug.Log($"Credential Success: {credentialsResult.Token}");
-                AmazonDynamoDBClient client = new AmazonDynamoDBClient(credentials, endpoint);
-                Debug.Log($"AmazonDynamoDBClient Success");
-                _table = Table.LoadTable(client, _tableName);
-                Debug.Log($"{_tableName} Table Success");
-                _s3Client = new AmazonS3Client(credentials, endpoint);
-                _transferUtility = new TransferUtility(_s3Client);
-                Debug.Log($"{_transferUtility} Success");
+
+                try
+                {
+                    RegionEndpoint endpoint = RegionEndpoint.GetBySystemName(_regionEndpoint);
+                    CognitoAWSCredentials credentials = new CognitoAWSCredentials(_identityPoolId, endpoint);
+                    ImmutableCredentials credentialsResult = await credentials.GetCredentialsAsync();
+                    Debug.Log($"Credential Success: {credentialsResult.Token}");
+                    AmazonDynamoDBClient client = new AmazonDynamoDBClient(credentials, endpoint);
+                    Debug.Log($"AmazonDynamoDBClient Success");
+                    _table = Table.LoadTable(client, _tableName);
+                    Debug.Log($"{_tableName} Table Success");
+                    _s3Client = new AmazonS3Client(credentials, endpoint);
+                    _transferUtility = new TransferUtility(_s3Client);
+                    Debug.Log($"{_transferUtility} Success");
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError(ex.Message);
+                }
             }
         }
+        
+        public Search QueryLevelsCreatedAt(int pageSize)
+        {
+            return QueryLevels(pageSize, _createdAtIndex);
+        }
 
-        public Search QueryLevels(int pageSize)
+        public Search QueryLevelsThumbsUp(int pageSize)
+        {
+            return QueryLevels(pageSize, _thumbsUpIndex);
+        }
+        
+        private Search QueryLevels(int pageSize, string index)
         {
             QueryFilter filter = new QueryFilter("pk", QueryOperator.Equal, "level");
+
             QueryOperationConfig config = new QueryOperationConfig()
             {
                 Limit = pageSize, 
                 Select = SelectValues.SpecificAttributes,
-                AttributesToGet = new List<string> { LevelFields.IdKey },
-                ConsistentRead = true,
-                Filter = filter
+                AttributesToGet = new List<string> { LevelFields.IdKey, LevelFields.ThumbsUpKey, LevelFields.ThumbsDownKey },
+                ConsistentRead = false,
+                Filter = filter,
+                IndexName = index,
+                BackwardSearch = true,
             };
             return _table.Query(config);
         }
         
-        public async Task DownloadLevelImage(Document document, Texture2D image, CancellationToken cancellationToken)
+        public async Task DownloadLevelPreview(Document document, Texture2D image, CancellationToken cancellationToken)
         {
             string key = $"{_levelImagesFolder}/{document[LevelFields.IdKey]}.png";
             byte[] bytes = await GetImageBytesFromS3(key, cancellationToken);
-            if (!cancellationToken.IsCancellationRequested) image.LoadImage(bytes, true);
+            if (cancellationToken.IsCancellationRequested) return;
+            image.LoadImage(bytes, true);
         }
 
         private async Task<byte[]> GetImageBytesFromS3(string key, CancellationToken cancellationToken)
@@ -120,13 +142,15 @@ namespace GeoTetra.GTBackend
 
                 using (GetObjectResponse response = _s3Client.GetObject(request))
                 {
+                    if (cancellationToken.IsCancellationRequested) return null;
+                    
                     MemoryStream memoryStream = new MemoryStream();
                     using (Stream responseStream = response.ResponseStream)
                     {
                         responseStream.CopyTo(memoryStream);
                     }
 
-                    return memoryStream.ToArray();
+                    return cancellationToken.IsCancellationRequested ? null : memoryStream.ToArray();
                 }
             }, cancellationToken);
         }
@@ -146,11 +170,11 @@ namespace GeoTetra.GTBackend
             level[LevelFields.LevelDataKey] = json;
             level[LevelFields.ThumbsUpKey] = 0;
             level[LevelFields.ThumbsDownKey] = 0;
-            level[LevelFields.CreatedAtKey] = DateTime.UtcNow;
-            level[LevelFields.DownloadedCountKey] = 1;
+            level[LevelFields.CreatedAtKey] = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            level[LevelFields.DownloadedCountKey] = 0;
             level[LevelFields.DeleteCountKey] = 0;
             level[LevelFields.PlayCountKey] = 0;
-            level[LevelFields.LastPlayedKey] = DateTime.UtcNow;
+            level[LevelFields.LastPlayedKey] = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
             try
             {

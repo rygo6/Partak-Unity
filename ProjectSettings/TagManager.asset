@@ -14,7 +14,7 @@ TagManager:
   - 
   - 
   - ParticleLayer
-  - Obstacle
+  - Item
   - ParticleSystem
   - Cursor
   - 
