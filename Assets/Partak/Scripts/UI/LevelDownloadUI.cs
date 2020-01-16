@@ -19,6 +19,8 @@ namespace GeoTetra.Partak
 {
     public class LevelDownloadUI : StackUI
     {
+        [SerializeField] private AssetReference _loadModalUI;
+        [SerializeField] private ServiceReference _gameState;
         [SerializeField] private ServiceReference _databaseService;
         [SerializeField] private List<LevelButtonRow> _levelButtonRows;
         [SerializeField] private ScrollRect _scrollRect;
@@ -26,18 +28,14 @@ namespace GeoTetra.Partak
         [SerializeField] private Button _mostPopularButton;
         [SerializeField] private Button _mostRecentButton;
         
-        private const int CollumnCount = 3;
-        
+        private const int ColumnCount = 3;
+        private readonly List<List<Document>> _documentLists = new List<List<Document>>();
         private LevelButton _selectedLevelButton;
         private PartakDatabase _partakDatabase;
-
         private Search _search;
-        private List<List<Document>> _documentLists = new List<List<Document>>();
         private int _topRowIndex;
-        private int _lastCollumnIndex;
         private Rect _itemRect;
         private bool _downloading;
-        private bool _layingOut;
         private CancellationTokenSource _layoutCancelToken;
         
         protected override void Awake()
@@ -47,6 +45,13 @@ namespace GeoTetra.Partak
             _scrollRect.onValueChanged.AddListener(OnScrolled);
             _mostPopularButton.onClick.AddListener(OnMostPopularClicked);
             _mostRecentButton.onClick.AddListener(OnMostRecentClicked);
+            for (int r = 0; r < _levelButtonRows.Count; ++r)
+            {
+                for (int c = 0; c < ColumnCount; ++c)
+                {
+                    _levelButtonRows[r].LevelButtons[c].ButtonClicked += OnLevelButtonClicked;
+                }
+            }
         }
 
         private void Start()
@@ -62,7 +67,7 @@ namespace GeoTetra.Partak
         public override void OnTransitionInFinish()
         {
             base.OnTransitionInFinish();
-            _search = _partakDatabase.QueryLevelsThumbsUp(CollumnCount);
+            _search = _partakDatabase.QueryLevelsThumbsUp(ColumnCount);
             LayoutUI();
         }
 
@@ -75,8 +80,7 @@ namespace GeoTetra.Partak
         private void Clear()
         {
             _topRowIndex = 0;
-            _lastCollumnIndex = 0;
-            
+
             Vector3 newPos = _scrollRect.content.anchoredPosition3D;
             newPos.y = 0;
             _scrollRect.content.anchoredPosition3D = newPos;
@@ -89,7 +93,7 @@ namespace GeoTetra.Partak
                 Vector3 rowPos = _levelButtonRows[r].RectTransform.anchoredPosition3D;
                 rowPos.y = -r * (_itemRect.height + _rowSpacing);
                 _levelButtonRows[r].RectTransform.anchoredPosition3D = rowPos;
-                for (int c = 0; c < CollumnCount; ++c)
+                for (int c = 0; c < ColumnCount; ++c)
                 {
                     _levelButtonRows[r].LevelButtons[c].SetEmpty();
                 }
@@ -98,14 +102,14 @@ namespace GeoTetra.Partak
 
         private void OnMostPopularClicked()
         {
-            _search = _partakDatabase.QueryLevelsThumbsUp(CollumnCount);
+            _search = _partakDatabase.QueryLevelsThumbsUp(ColumnCount);
             Clear();
             LayoutUI();
         }
 
         private void OnMostRecentClicked()
         {
-            _search = _partakDatabase.QueryLevelsCreatedAt(CollumnCount);
+            _search = _partakDatabase.QueryLevelsCreatedAt(ColumnCount);
             Clear();
             LayoutUI();
         }
@@ -124,7 +128,7 @@ namespace GeoTetra.Partak
             bool nextSetShouldDownload = false;
             for (int r = 0; r < _levelButtonRows.Count; ++r)
             {
-                for (int c = 0; c < CollumnCount; ++c)
+                for (int c = 0; c < ColumnCount; ++c)
                 {
                     if (cancellationToken.IsCancellationRequested) return;
                     if (_levelButtonRows[r].LevelButtons[c].IsIndex(r, c)) continue;
@@ -138,7 +142,6 @@ namespace GeoTetra.Partak
                         _levelButtonRows[r].LevelButtons[c].ThumbsUpText.text =_documentLists[documentRowIndex][c][PartakDatabase.LevelFields.ThumbsUpKey];
                         _levelButtonRows[r].LevelButtons[c].ThumbsDownText.text =_documentLists[documentRowIndex][c][PartakDatabase.LevelFields.ThumbsDownKey];
                         if (cancellationToken.IsCancellationRequested) return;
-                        _lastCollumnIndex = c;
                     }
                     else
                     {
@@ -151,7 +154,6 @@ namespace GeoTetra.Partak
             }
             
             if (nextSetShouldDownload) DownloadNextSet();
-            _layingOut = false;
         }
 
         private void OnScrolled(Vector2 delta)
@@ -211,9 +213,13 @@ namespace GeoTetra.Partak
             LayoutUI();
         }
 
-        private void OnLevelButtonClicked(LevelButton levelButton)
+        private async void OnLevelButtonClicked(LevelButton levelButton)
         {
-
+            Document document = _documentLists[levelButton.Index0][levelButton.Index1];
+            CurrentlyRenderedBy.InstantiateAndDisplayModalUI(_loadModalUI);
+            await _partakDatabase.DownloadLevel(document, _gameState.Service<GameState>().EditingLevelIndex);
+            CurrentlyRenderedBy.CloseModal();
+            OnBackClicked();
         }
 
         private void Cancel()

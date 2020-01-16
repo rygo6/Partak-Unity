@@ -53,6 +53,7 @@ namespace GeoTetra.Partak
         public class LevelDatum
         {
             public bool Shared;
+            public bool Downloaded;
             public Vector2Int LevelSize;
             public int ParticleCount;
             public int MoveCycleTime;

@@ -27,7 +27,7 @@ namespace GeoTetra.Partak
 
         public int Index0 { get; set; } = -1;
         public int Index1 { get; set; } = -1;
-        public bool Level { get; set; }
+        public bool ShowingLevel { get; set; }
         
         public Button Button => _button;
         public Text Text => _text;
@@ -35,19 +35,11 @@ namespace GeoTetra.Partak
         public Text ThumbsUpText => _thumbsUpText;
         public Text ThumbsDownText => _thumbsDownText;
 
-        private Task _downloadLevelTask;
-        private CancellationTokenSource _downloadLevelCancellationTokenSource;
-
         private void Awake()
         {
             _button.onClick.AddListener(OnButtonClick);
             ShowRating(false);
         }
-
-//        public void Initialize(int index)
-//        {
-//            Index = index;
-//        }
 
         private void OnButtonClick()
         {
@@ -63,7 +55,6 @@ namespace GeoTetra.Partak
             Text.text = "Download";
             Text.color = new Color(1, 1, 1, .1f);
             _image.color = Color.white;
-            _downloadLevelCancellationTokenSource = null;
         }
 
         public bool IsIndex(int index0, int index1)
