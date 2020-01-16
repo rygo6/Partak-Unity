@@ -1238,6 +1238,12 @@ MonoBehaviour:
     m_AssetGUID: c01e8933723a2b541b05ddefbf07b07c
     m_SubObjectName: 
   _backButton: {fileID: 8954500893047510831}
+  _loadModalUI:
+    m_AssetGUID: 10e4e0a564ea0b54a9e5616acfa15975
+    m_SubObjectName: 
+  _gameState:
+    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_SubObjectName: 
   _databaseService:
     m_AssetGUID: 276f5bb3082e1654f93a49fb34fe90b4
     m_SubObjectName: 

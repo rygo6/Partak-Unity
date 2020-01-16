@@ -66,7 +66,7 @@ namespace GeoTetra.Partak
                     _levelButtons[i].Text.text = "";
                     _levelButtons[i].Image.color = Color.white;
                     _levelButtons[i].Image.texture = image;
-                    _levelButtons[i].Level = true;
+                    _levelButtons[i].ShowingLevel = true;
                     _levelButtons[i].Button.interactable = true;
                 }
                 else if (!addLevelSet)
@@ -75,7 +75,7 @@ namespace GeoTetra.Partak
                     _levelButtons[i].Image.color = new Color(1,1,1,.5f);
                     _levelButtons[i].Image.texture = null;
                     _levelButtons[i].Text.text = "Add\nLevel";
-                    _levelButtons[i].Level = false;
+                    _levelButtons[i].ShowingLevel = false;
                     _levelButtons[i].Button.interactable = true;
                 }
                 else
@@ -83,7 +83,7 @@ namespace GeoTetra.Partak
                     _levelButtons[i].Image.color = new Color(1,1,1,.5f);
                     _levelButtons[i].Image.texture = null;
                     _levelButtons[i].Text.text = "";
-                    _levelButtons[i].Level = false;
+                    _levelButtons[i].ShowingLevel = false;
                     _levelButtons[i].Button.interactable = false;
                 }
             }
@@ -98,7 +98,7 @@ namespace GeoTetra.Partak
         private void OnLevelButtonClicked(LevelButton levelButton)
         {
             _selectedLevelButton = levelButton;
-            if (_selectedLevelButton.Level)
+            if (_selectedLevelButton.ShowingLevel)
             {
                 DisplaySelectionModal("", LoadedLevelMessages, LoadedLevelActions, 0);
             }

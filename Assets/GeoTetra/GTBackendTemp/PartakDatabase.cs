@@ -48,6 +48,7 @@ namespace GeoTetra.GTBackend
             public const string DeleteCountKey = "delete_count";
             public const string PlayCountKey = "play_count";
             public const string LastPlayedKey = "last_played";
+            public const string PkLevelValue = "level";
         } 
         
         private Table _table;
@@ -94,6 +95,23 @@ namespace GeoTetra.GTBackend
                 }
             }
         }
+
+        public async Task DownloadLevel(Document document, int levelIndex)
+        {
+            string levelPath = LevelUtility.LevelPath(levelIndex);
+            string imagePath = LevelUtility.LevelImagePath(levelIndex);
+
+            Debug.Log("Downloading datum  " + levelPath);
+            GetItemOperationConfig config = new GetItemOperationConfig();
+            Document result = await _table.GetItemAsync(LevelFields.PkLevelValue, document[LevelFields.IdKey].AsString(), config);
+            
+            string levelData = result[LevelFields.LevelDataKey];
+            File.WriteAllText(levelPath, levelData);
+            
+            Debug.Log("Downloading image  " + imagePath);
+            string imagekey = S3LevelImageKey(document);
+            await _transferUtility.DownloadAsync(imagePath, _s3Bucket, imagekey);
+        }
         
         public Search QueryLevelsCreatedAt(int pageSize)
         {
@@ -107,7 +125,7 @@ namespace GeoTetra.GTBackend
         
         private Search QueryLevels(int pageSize, string index)
         {
-            QueryFilter filter = new QueryFilter("pk", QueryOperator.Equal, "level");
+            QueryFilter filter = new QueryFilter(LevelFields.PkKey, QueryOperator.Equal, LevelFields.PkLevelValue);
 
             QueryOperationConfig config = new QueryOperationConfig()
             {
@@ -124,7 +142,7 @@ namespace GeoTetra.GTBackend
         
         public async Task DownloadLevelPreview(Document document, Texture2D image, CancellationToken cancellationToken)
         {
-            string key = $"{_levelImagesFolder}/{document[LevelFields.IdKey]}.png";
+            string key = S3LevelImageKey(document);
             byte[] bytes = await GetImageBytesFromS3(key, cancellationToken);
             if (cancellationToken.IsCancellationRequested) return;
             image.LoadImage(bytes, true);
@@ -197,6 +215,11 @@ namespace GeoTetra.GTBackend
             {
                 Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
             }
+        }
+
+        private string S3LevelImageKey(Document document)
+        {
+            return $"{_levelImagesFolder}/{document[LevelFields.IdKey]}.png";
         }
     }
 }
