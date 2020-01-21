@@ -23,7 +23,7 @@ namespace GeoTetra.Partak.UI
             _rightButton.onClick.AddListener(GalleryRight);
             _material = GetComponent<RawImage>().material;
             
-            string imagePath = LevelUtility.LevelImagePath(_gameState.Service<GameState>().LevelIndex);
+            string imagePath = LevelUtility.LevelImagePath(_gameState.Service<GameState>().GetSelectedLevelId());
             byte[] imageBytes = System.IO.File.ReadAllBytes(imagePath);
             Texture2D image = new Texture2D(0,0);
             image.LoadImage(imageBytes);
@@ -47,7 +47,7 @@ namespace GeoTetra.Partak.UI
             _leftButton.interactable = false;
             _gameState.Service<GameState>().LevelIndex += direction;
             
-            string imagePath = LevelUtility.LevelImagePath(_gameState.Service<GameState>().LevelIndex);
+            string imagePath = LevelUtility.LevelImagePath(_gameState.Service<GameState>().GetSelectedLevelId());
             if (!File.Exists(imagePath))
             {
                 if (direction > 0)
@@ -59,7 +59,7 @@ namespace GeoTetra.Partak.UI
                     _gameState.Service<GameState>().LevelIndex = GetMaxLevelIndex() - 1;
                 }
                 
-                imagePath = LevelUtility.LevelImagePath(_gameState.Service<GameState>().LevelIndex);
+                imagePath = LevelUtility.LevelImagePath(_gameState.Service<GameState>().GetSelectedLevelId());
             }
             
             byte[] imageBytes = System.IO.File.ReadAllBytes(imagePath);
@@ -105,17 +105,7 @@ namespace GeoTetra.Partak.UI
 
         private int GetMaxLevelIndex()
         {
-            int index = 0;
-            string imagePath = LevelUtility.LevelImagePath(index);
-            while (File.Exists(imagePath))
-            {
-                index++;
-                imagePath = LevelUtility.LevelImagePath(index);
-            }
-
-            Debug.Log("Returning max " + index);
-            
-            return index;
+            return _gameState.Service<GameState>().LevelCatalogDatum.LevelIDs.Count;
         }
 
         private void OnDestroy()

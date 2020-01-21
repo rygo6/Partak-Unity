@@ -25,7 +25,7 @@ namespace GeoTetra.Partak
         {
             for (int i = 0; i < _levelButtons.Count; ++i)
             {
-                _levelButtons[i].SetEmpty();
+                _levelButtons[i].SetEmpty(true);
             }
         }
     }

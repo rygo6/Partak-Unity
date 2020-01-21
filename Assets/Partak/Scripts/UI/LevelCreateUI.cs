@@ -30,6 +30,7 @@ namespace GeoTetra.Partak
         private Action[] _saveActions;
 
         private LevelConfig _levelConfig;
+        private string _editingLevelId;
         
         protected override void Awake()
         {
@@ -61,8 +62,9 @@ namespace GeoTetra.Partak
             base.OnTransitionInFinish();
             _levelConfig = _componentContainer.Service<ComponentContainer>().Get<LevelConfig>();
             _itemCatalogUI.Initialize();
-            
-            string levelPath = LevelUtility.LevelPath(_gameState.Service<GameState>().EditingLevelIndex);
+
+            _editingLevelId = _gameState.Service<GameState>().GetEditingLevelId();
+            string levelPath = LevelUtility.LevelPath(_editingLevelId);
             
             if (!System.IO.File.Exists(levelPath))
             {
@@ -70,7 +72,7 @@ namespace GeoTetra.Partak
             }
             else
             {
-                _componentContainer.Service<ComponentContainer>().Get<LevelConfig>().Deserialize(_gameState.Service<GameState>().EditingLevelIndex, true);   
+                _componentContainer.Service<ComponentContainer>().Get<LevelConfig>().Deserialize(_editingLevelId, true);   
             }
         }
 
@@ -102,7 +104,8 @@ namespace GeoTetra.Partak
 
         private void SerializeLevel()
         {
-            _levelConfig.Serialize(_gameState.Service<GameState>().EditingLevelIndex);
+            _levelConfig.Serialize(_editingLevelId);
+            _gameState.Service<GameState>().AddLevelId(_editingLevelId);
         }
 
         private async void SaveToAWS()
@@ -110,7 +113,7 @@ namespace GeoTetra.Partak
             int levelIndex = _gameState.Service<GameState>().EditingLevelIndex;
             _levelConfig.Datum.Shared = true;
             SerializeLevel();
-            await _database.Service<PartakDatabase>().SaveLevel(levelIndex);
+            await _database.Service<PartakDatabase>().SaveLevel(_editingLevelId);
             
             CloseLevelMaker();
         }

@@ -42,7 +42,6 @@ namespace GeoTetra.GTBackend
             public const string AuthorKey = "author";
             public const string LevelDataKey = "level_data";
             public const string ThumbsUpKey = "thumbs_up";
-            public const string ThumbsDownKey = "thumbs_down";
             public const string CreatedAtKey = "created_at";
             public const string DownloadedCountKey = "download_count";
             public const string DeleteCountKey = "delete_count";
@@ -96,21 +95,26 @@ namespace GeoTetra.GTBackend
             }
         }
 
-        public async Task DownloadLevel(Document document, int levelIndex)
+        public async Task DownloadLevel(string levelId)
         {
-            string levelPath = LevelUtility.LevelPath(levelIndex);
-            string imagePath = LevelUtility.LevelImagePath(levelIndex);
+            string levelPath = LevelUtility.LevelPath(levelId);
+            string imagePath = LevelUtility.LevelImagePath(levelId);
 
             Debug.Log("Downloading datum  " + levelPath);
             GetItemOperationConfig config = new GetItemOperationConfig();
-            Document result = await _table.GetItemAsync(LevelFields.PkLevelValue, document[LevelFields.IdKey].AsString(), config);
-            
-            string levelData = result[LevelFields.LevelDataKey];
-            File.WriteAllText(levelPath, levelData);
+            Document result = await _table.GetItemAsync(LevelFields.PkLevelValue, levelId, config);
+
+            LevelDatum levelDatum = JsonUtility.FromJson<LevelDatum>(result[LevelFields.LevelDataKey]);
+            levelDatum.Shared = true;
+            levelDatum.Downloaded = true;
+            levelDatum.LevelID = levelId; //still needed?
+            string json = JsonUtility.ToJson(levelDatum);
+
+            File.WriteAllText(levelPath, json);
             
             Debug.Log("Downloading image  " + imagePath);
-            string imagekey = S3LevelImageKey(document);
-            await _transferUtility.DownloadAsync(imagePath, _s3Bucket, imagekey);
+            string imageKey = S3LevelImageKey(levelId);
+            await _transferUtility.DownloadAsync(imagePath, _s3Bucket, imageKey);
         }
         
         public Search QueryLevelsCreatedAt(int pageSize)
@@ -131,7 +135,7 @@ namespace GeoTetra.GTBackend
             {
                 Limit = pageSize, 
                 Select = SelectValues.SpecificAttributes,
-                AttributesToGet = new List<string> { LevelFields.IdKey, LevelFields.ThumbsUpKey, LevelFields.ThumbsDownKey },
+                AttributesToGet = new List<string> { LevelFields.IdKey, LevelFields.ThumbsUpKey },
                 ConsistentRead = false,
                 Filter = filter,
                 IndexName = index,
@@ -140,9 +144,9 @@ namespace GeoTetra.GTBackend
             return _table.Query(config);
         }
         
-        public async Task DownloadLevelPreview(Document document, Texture2D image, CancellationToken cancellationToken)
+        public async Task DownloadLevelPreview(string id, Texture2D image, CancellationToken cancellationToken)
         {
-            string key = S3LevelImageKey(document);
+            string key = S3LevelImageKey(id);
             byte[] bytes = await GetImageBytesFromS3(key, cancellationToken);
             if (cancellationToken.IsCancellationRequested) return;
             image.LoadImage(bytes, true);
@@ -173,21 +177,19 @@ namespace GeoTetra.GTBackend
             }, cancellationToken);
         }
 
-        public async Task SaveLevel(int levelIndex)
+        public async Task SaveLevel(string levelId)
         {
-            Debug.Log("Saving level " + levelIndex);
-            string levelPath = LevelUtility.LevelPath(levelIndex);
-            string imagePath = LevelUtility.LevelImagePath(levelIndex);
+            Debug.Log("Saving level " + levelId);
+            string levelPath = LevelUtility.LevelPath(levelId);
+            string imagePath = LevelUtility.LevelImagePath(levelId);
             string json = File.ReadAllText(levelPath);
-            string guid = Guid.NewGuid().ToString();
-            
+
             Document level = new Document();
             level[LevelFields.PkKey] = "level";
-            level[LevelFields.IdKey] = guid;
+            level[LevelFields.IdKey] = levelId;
             level[LevelFields.AuthorKey] = SystemInfo.deviceUniqueIdentifier;
             level[LevelFields.LevelDataKey] = json;
             level[LevelFields.ThumbsUpKey] = 0;
-            level[LevelFields.ThumbsDownKey] = 0;
             level[LevelFields.CreatedAtKey] = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             level[LevelFields.DownloadedCountKey] = 0;
             level[LevelFields.DeleteCountKey] = 0;
@@ -196,7 +198,7 @@ namespace GeoTetra.GTBackend
 
             try
             {
-                Debug.Log("Saving to Dynamo " + levelIndex);
+                Debug.Log("Saving to Dynamo " + levelId);
                 await _table.PutItemAsync(level);
                 Debug.Log("Success");
             }
@@ -207,8 +209,8 @@ namespace GeoTetra.GTBackend
 
             try
             {
-                Debug.Log("Saving to S3 " + levelIndex);
-                await _transferUtility.UploadAsync(imagePath, _s3Bucket, $"{_levelImagesFolder}/{guid}.png");
+                Debug.Log("Saving to S3 " + levelId);
+                await _transferUtility.UploadAsync(imagePath, _s3Bucket, S3LevelImageKey(levelId));
                 Debug.Log("Success");
             }
             catch (Exception e)
@@ -217,9 +219,9 @@ namespace GeoTetra.GTBackend
             }
         }
 
-        private string S3LevelImageKey(Document document)
+        private string S3LevelImageKey(string id)
         {
-            return $"{_levelImagesFolder}/{document[LevelFields.IdKey]}.png";
+            return $"{_levelImagesFolder}/{id}.png";
         }
     }
 }

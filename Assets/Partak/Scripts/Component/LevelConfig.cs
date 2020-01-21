@@ -49,19 +49,7 @@ namespace GeoTetra.Partak
         }
 
         private LevelDatum _levelDatum;
-        
-        public class LevelDatum
-        {
-            public bool Shared;
-            public bool Downloaded;
-            public Vector2Int LevelSize;
-            public int ParticleCount;
-            public int MoveCycleTime;
-            public int ThumbsUp;
-            public int ThumbsDown;
-            public string ItemRootDatumJSON;
-        }
-        
+
         private void Awake()
         {
             _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
@@ -79,36 +67,27 @@ namespace GeoTetra.Partak
         {
             if (_deserializeLevelOnStart)
             {
-                int levelIndex = _gameState.Service<GameState>().LevelIndex;
-                Deserialize(levelIndex, false);
+                string levelId = _gameState.Service<GameState>().GetSelectedLevelId();
+                Deserialize(levelId, false);
             }
         }
 
-        public void Deserialize(int levelIndex, bool editing)
+        public void Deserialize(string levelId, bool editing)
         {
-            string levelPath = LevelUtility.LevelPath(levelIndex);
-            
-            if (!System.IO.File.Exists(levelPath))
-            {
-                Debug.Log($"{levelPath} not found to load.");
-                return;
-            }
-
-            string json = System.IO.File.ReadAllText(levelPath);
-            _levelDatum = JsonUtility.FromJson<LevelDatum>(json);
+            _levelDatum = LevelUtility.GetLevelDatum(levelId);
             SetLevelSize(_levelDatum.LevelSize, editing);
             _itemRoot.Deserialize(_levelDatum.ItemRootDatumJSON);
         }
         
-        public void Serialize(int levelIndex)
+        public void Serialize(string levelId)
         {
-            string levelPath = LevelUtility.LevelPath(levelIndex);
+            string levelPath = LevelUtility.LevelPath(levelId);
 
             Datum.ItemRootDatumJSON = _itemRoot.Serialize();
             string json = JsonUtility.ToJson(Datum);
             System.IO.File.WriteAllText(levelPath, json);
             
-            string imagePath = LevelUtility.LevelImagePath(levelIndex);
+            string imagePath = LevelUtility.LevelImagePath(levelId);
             _cameraCapture.SaveScreenshotToFile(imagePath);
         }
 

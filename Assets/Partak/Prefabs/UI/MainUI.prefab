@@ -69,7 +69,7 @@ MonoBehaviour:
     m_SubObjectName: 
   _levelButton: {fileID: 7211395504204496868}
   _levelUI:
-    m_AssetGUID: 653f317c9758ca845aebd31aed265956
+    m_AssetGUID: 6af1bb744bb26734990727768d53ae09
     m_SubObjectName: 
   _optionButton: {fileID: 7211395504280433874}
   _optionsUI:
