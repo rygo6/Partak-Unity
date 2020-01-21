@@ -27,7 +27,9 @@ namespace GeoTetra.Partak
 
         public int Index0 { get; set; } = -1;
         public int Index1 { get; set; } = -1;
+        
         public bool ShowingLevel { get; set; }
+        public LevelDatum LevelDatum;
         
         public Button Button => _button;
         public Text Text => _text;
@@ -45,16 +47,19 @@ namespace GeoTetra.Partak
         {
             ButtonClicked?.Invoke(this);
         }
-
-        public async Task DownloadAndDisplayLevelAsync(PartakDatabase partakDatabase, Document document, CancellationToken cancellationToken)
+        
+        public void LoadTextureFromDisk(string path)
         {
             if (_image.texture == null || !(_image.texture is Texture2D)) _image.texture = new Texture2D(0,0, TextureFormat.RGBA32, 0, false);
-            await partakDatabase.DownloadLevelPreview(document, Image.texture as Texture2D, cancellationToken);
-            if (cancellationToken.IsCancellationRequested) return;
-            Button.interactable = true;
-            Text.text = "Download";
-            Text.color = new Color(1, 1, 1, .1f);
-            _image.color = Color.white;
+            byte[] imageBytes = System.IO.File.ReadAllBytes(path);
+            Texture2D image = (Texture2D) _image.texture;
+            image.LoadImage(imageBytes, true);
+        }
+
+        public async Task DownloadAndDisplayLevelAsync(PartakDatabase partakDatabase, string id, CancellationToken cancellationToken)
+        {
+            if (_image.texture == null || !(_image.texture is Texture2D)) _image.texture = new Texture2D(0,0, TextureFormat.RGBA32, 0, false);
+            await partakDatabase.DownloadLevelPreview(id, Image.texture as Texture2D, cancellationToken);
         }
 
         public bool IsIndex(int index0, int index1)
@@ -70,13 +75,23 @@ namespace GeoTetra.Partak
             _thumbsUpText.gameObject.SetActive(state);
         }
 
-        public void SetEmpty()
+        public void SetEmpty(bool clearIndeces)
         {
-            Index0 = -1;
-            Index1 = -1;
+            if (clearIndeces)
+            {
+                Index0 = -1;
+                Index1 = -1;
+            }
             Text.text = "";
+            LevelDatum = null;
+            ShowingLevel = false;
             ShowRating(false);
             Button.interactable = false;
+        }
+
+        public int TotalIndex()
+        {
+            return Index0 + Index1;
         }
     }
 }

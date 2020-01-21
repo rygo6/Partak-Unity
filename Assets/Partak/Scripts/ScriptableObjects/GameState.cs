@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using GeoTetra.Partak;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ namespace GeoTetra.Partak
         [SerializeField] private int _levelIndex;
         [SerializeField] private int _editingLevelIndex;
         
+        public LevelCatalogDatum LevelCatalogDatum { get; private set; }
         public bool FullVersion { get; set; }
         public int SessionCount { get; private set; }
 
@@ -41,7 +43,7 @@ namespace GeoTetra.Partak
         public string Version => _version;
 
         [System.Serializable]
-        public struct PlayerState
+        public class PlayerState
         {
             public event Action<Color> ColorChanged;
             
@@ -90,9 +92,43 @@ namespace GeoTetra.Partak
                     break;
             }
 
+            LevelCatalogDatum = LevelCatalogDatum.LoadLevelCatalogDatum();
+
 //		CrashReporting.Init("ff1d2528-adf9-4ba4-bf2d-d34f2ccfe587", Version);
         }
+
+        public string GetSelectedLevelId()
+        {
+            return LevelCatalogDatum.LevelIDs[_levelIndex];
+        }
         
+        public string GetEditingLevelId()
+        {
+            if (_editingLevelIndex >= LevelCatalogDatum.LevelIDs.Count)
+            {
+                return Guid.NewGuid().ToString();
+            }
+            
+            return LevelCatalogDatum.LevelIDs[_editingLevelIndex];
+        }
+
+        public void AddLevelId(string id)
+        {
+            if (!LevelCatalogDatum.LevelIDs.Contains(id))
+            {
+                if (_editingLevelIndex < LevelCatalogDatum.LevelIDs.Count)
+                {
+                    LevelCatalogDatum.LevelIDs[_editingLevelIndex] = id;
+                }
+                else
+                {
+                    LevelCatalogDatum.LevelIDs.Add(id);
+                }
+                
+                LevelCatalogDatum.SaveLevelCatalogDatum();
+            }
+        }
+
         public int PlayerCount()
         {
             return PlayerStates.Length;

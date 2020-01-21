@@ -22,51 +22,78 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - UI
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - m_GUID: 1144fcb99198eaf488dabcc8fa333704
     m_Address: LevelDownloadUI
     m_ReadOnly: 0
     m_SerializedLabels:
     - UI
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - m_GUID: 1e03f451607b1c34d84d827613838bd0
     m_Address: MainUI
     m_ReadOnly: 0
     m_SerializedLabels:
     - UI
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - m_GUID: 26d04cd4720b31345bb87388faa14cb3
     m_Address: OptionsUI
     m_ReadOnly: 0
     m_SerializedLabels:
     - UI
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - m_GUID: 653f317c9758ca845aebd31aed265956
     m_Address: LevelUI
     m_ReadOnly: 0
     m_SerializedLabels:
     - UI
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - m_GUID: 6af1bb744bb26734990727768d53ae09
+    m_Address: LevelCatalogUI
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - UI
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - m_GUID: a449b5a172335124cab656b556e9f03d
     m_Address: MessageModalUI
     m_ReadOnly: 0
     m_SerializedLabels:
     - UI
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - m_GUID: a91ae41ea06a5ea4581409751e00de50
     m_Address: GameMenuUI
     m_ReadOnly: 0
     m_SerializedLabels:
     - UI
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - m_GUID: c01e8933723a2b541b05ddefbf07b07c
     m_Address: SelectionModalUI
     m_ReadOnly: 0
     m_SerializedLabels:
     - UI
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - m_GUID: c948c7d0e87a80342a820fb7bf03ba00
     m_Address: LevelCreateUI
     m_ReadOnly: 0
     m_SerializedLabels:
     - UI
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - m_GUID: decd7486ac5492442882f300edeac3a8
     m_Address: PlayUI
     m_ReadOnly: 0
     m_SerializedLabels:
     - UI
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8897a9da1308dad4cb94657883af64f0, type: 2}
   m_SchemaSet:
