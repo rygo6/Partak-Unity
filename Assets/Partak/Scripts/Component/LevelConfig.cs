@@ -84,6 +84,7 @@ namespace GeoTetra.Partak
             string levelPath = LevelUtility.LevelPath(levelId);
 
             Datum.ItemRootDatumJSON = _itemRoot.Serialize();
+            Datum.LevelID = levelId;
             string json = JsonUtility.ToJson(Datum);
             System.IO.File.WriteAllText(levelPath, json);
             

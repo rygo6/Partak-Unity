@@ -15,11 +15,16 @@ namespace GeoTetra.Partak
         [SerializeField] private int _timeLimitMinutes;
         [SerializeField] private int _levelIndex;
         [SerializeField] private int _editingLevelIndex;
-        
-        public LevelCatalogDatum LevelCatalogDatum { get; private set; }
-        public bool FullVersion { get; set; }
-        public int SessionCount { get; private set; }
+        [SerializeField] private LevelCatalogDatum _levelCatalogDatum;
+        [SerializeField] private bool _fullVersion;
+        [SerializeField] private int _sessionCount;
 
+        public LevelCatalogDatum LevelCatalogDatum => _levelCatalogDatum;
+        public bool FullVersion => _fullVersion;
+        public int SessionCount => _sessionCount;
+        public PlayerState[] PlayerStates => _playerStates;
+        public string Version => _version;
+        
         public int TimeLimitMinutes
         {
             get => _timeLimitMinutes;
@@ -29,19 +34,29 @@ namespace GeoTetra.Partak
         public int LevelIndex
         {
             get => _levelIndex;
-            set => _levelIndex = value;
+            set
+            {
+                if (value >= _levelCatalogDatum.LevelIDs.Count)
+                {
+                    _levelIndex = 0;
+                }
+                else if (value < 0)
+                {
+                    _levelIndex = _levelCatalogDatum.LevelIDs.Count - 1;
+                }
+                else
+                {
+                    _levelIndex = value;
+                }
+            }
         }
-        
+
         public int EditingLevelIndex
         {
             get => _editingLevelIndex;
             set => _editingLevelIndex = value;
         }
-
-        public PlayerState[] PlayerStates => _playerStates;
-
-        public string Version => _version;
-
+        
         [System.Serializable]
         public class PlayerState
         {
@@ -70,17 +85,17 @@ namespace GeoTetra.Partak
             }
         }
 
-        private void Awake()
+        private void OnEnable()
         {
             if (PlayerPrefs.HasKey("isFullVersion"))
             {
                 Debug.Log("isFullVersion");
-                FullVersion = true;
+                _fullVersion = true;
             }
 
-            SessionCount = PlayerPrefs.GetInt("SessionCount");
-            Debug.Log("SessionCount: " + SessionCount);
-            PlayerPrefs.SetInt("SessionCount", ++SessionCount);
+            _sessionCount = PlayerPrefs.GetInt("SessionCount");
+            Debug.Log("SessionCount: " + _sessionCount);
+            PlayerPrefs.SetInt("SessionCount", ++_sessionCount);
 
             switch (PlayerPrefs.GetInt("muted"))
             {
@@ -92,7 +107,9 @@ namespace GeoTetra.Partak
                     break;
             }
 
-            LevelCatalogDatum = LevelCatalogDatum.LoadLevelCatalogDatum();
+            _levelCatalogDatum = LevelCatalogDatum.LoadLevelCatalogDatum();
+            _levelIndex = 0;
+            _editingLevelIndex = 0;
 
 //		CrashReporting.Init("ff1d2528-adf9-4ba4-bf2d-d34f2ccfe587", Version);
         }

@@ -110,7 +110,8 @@ namespace GeoTetra.GTSnapper
             if (ItemReference != null)
             {
                 Debug.Log("Releasing " + ItemReference.AssetPrefabName);
-                Addressables.Release(ItemReference);
+                //These do not actually individually call their references,  it loaded from ItemCatalagUI or ItemRoot
+//                Addressables.Release(ItemReference);
             }
         }
 

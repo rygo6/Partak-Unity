@@ -20,6 +20,9 @@ namespace GeoTetra.Partak.UI
         [SerializeField] private AssetReference _gameSessionScene;
         [SerializeField] private InputPadGroup _inputPadGroup;
         [SerializeField] private DisableIn _disableIn;
+        [SerializeField] private Button _mainMenuButton;
+        [SerializeField] private Button _replayButton;
+        [SerializeField] private Button _nextButton;
         
         private string[] _pauseMessages;
         private Action[] _pauseActions;
@@ -30,8 +33,16 @@ namespace GeoTetra.Partak.UI
             _pauseButtons[0].onClick.AddListener(ShowPauseMenu);
             _pauseButtons[1].onClick.AddListener(ShowPauseMenu);
 
-            _pauseMessages = new[] {"main menu", "resume", "skip level"};
-            _pauseActions = new Action[] {MainMenu, Resume, Skip};
+            _pauseMessages = new[] {"Main Menu", "Skip Level", "Resume"};
+            _pauseActions = new Action[] {MainMenu, Skip, Resume};
+            
+            _mainMenuButton.gameObject.SetActive(false);
+            _replayButton.gameObject.SetActive(false);
+            _nextButton.gameObject.SetActive(false);
+            
+            _mainMenuButton.onClick.AddListener(MainMenu);
+            _replayButton.onClick.AddListener(Replay);
+            _nextButton.onClick.AddListener(Next);
         }
 
         public override void OnTransitionInStart(UIRenderer uiRenderer)
@@ -56,7 +67,9 @@ namespace GeoTetra.Partak.UI
 
         private void ShowWinMenu()
         {
-            Debug.Log("Win");
+            _mainMenuButton.gameObject.SetActive(true);
+            _replayButton.gameObject.SetActive(true);
+            _nextButton.gameObject.SetActive(true);
         }
 
         private void Resume()
@@ -74,8 +87,6 @@ namespace GeoTetra.Partak.UI
 
         private void Replay()
         {
-            string levelName = "Level" + (PlayerPrefs.GetInt("LevelIndex") + 1);
-            Debug.Log("Replaying " + levelName);
             _analyticsRelay.ReplayLevel();
 
             CurrentlyRenderedBy.Flush(() =>
@@ -87,10 +98,6 @@ namespace GeoTetra.Partak.UI
         private void Skip()
         {
             _gameState.Service<GameState>().LevelIndex++;
-            PlayerPrefs.SetInt("LevelIndex",
-                (int) Mathf.Repeat(PlayerPrefs.GetInt("LevelIndex") + 1, 18)); //this is bad 
-            string levelName = "Level" + (PlayerPrefs.GetInt("LevelIndex") + 1);
-            Debug.Log("Skipping " + levelName);
             _analyticsRelay.SkipLevel();
             
             CurrentlyRenderedBy.Flush(() =>
@@ -101,9 +108,7 @@ namespace GeoTetra.Partak.UI
 
         private void Next()
         {
-//            _componentContainer.Get<AdvertisementDispatch>().ShowAdvertisement(); //TODO HOOKUP
-            PlayerPrefs.SetInt("LevelIndex",
-                (int) Mathf.Repeat(PlayerPrefs.GetInt("LevelIndex") + 1, 18)); //this is bad 
+            _gameState.Service<GameState>().LevelIndex++;
             _analyticsRelay.NextLevel();
             
             CurrentlyRenderedBy.Flush(() =>

@@ -19,10 +19,7 @@ namespace GeoTetra.Partak
 
         [SerializeField] private Image _thumbsUpIcon;
         [SerializeField] private Text _thumbsUpText;
-        
-        [SerializeField] private Image _thumbsDownIcon;    
-        [SerializeField] private Text _thumbsDownText;
-        
+
         public event Action<LevelButton> ButtonClicked;
 
         public int Index0 { get; set; } = -1;
@@ -35,7 +32,6 @@ namespace GeoTetra.Partak
         public Text Text => _text;
         public RawImage Image => _image;
         public Text ThumbsUpText => _thumbsUpText;
-        public Text ThumbsDownText => _thumbsDownText;
 
         private void Awake()
         {
@@ -69,8 +65,6 @@ namespace GeoTetra.Partak
 
         public void ShowRating(bool state)
         {
-            _thumbsDownIcon.gameObject.SetActive(state);
-            _thumbsDownText.gameObject.SetActive(state);
             _thumbsUpIcon.gameObject.SetActive(state);
             _thumbsUpText.gameObject.SetActive(state);
         }
@@ -89,9 +83,9 @@ namespace GeoTetra.Partak
             Button.interactable = false;
         }
 
-        public int TotalIndex()
+        public int TotalIndex(int collumnCount)
         {
-            return Index0 + Index1;
+            return (Index0 * collumnCount) + Index1;
         }
     }
 }
