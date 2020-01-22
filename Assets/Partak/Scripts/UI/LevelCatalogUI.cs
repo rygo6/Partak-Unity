@@ -74,6 +74,7 @@ namespace GeoTetra.Partak
 
         private async Task PopulateLevelButton(LevelButton levelButton, CancellationToken cancellationToken)
         {
+            levelButton.ShowRating(false);
             levelButton.LoadTextureFromDisk(LevelUtility.LevelImagePath(levelButton.LevelDatum.LevelID));
         }
 
@@ -143,19 +144,19 @@ namespace GeoTetra.Partak
         
         private void EditLevel()
         {
-            _gameState.EditingLevelIndex = _selectedLevelButton.TotalIndex();
+            _gameState.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
             _sceneLoadSystem.Service<SceneLoadSystem>().Load(_mainMenuScene, _newLevelScene);
         }
         
         private void DownloadExistingLevel()
         {
-            _gameState.EditingLevelIndex = _selectedLevelButton.TotalIndex();
+            _gameState.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
             CurrentlyRenderedBy.InstantiateAndDisplayStackUI(_levelDownloadUI);
         }
 
         private void CreateNewLevel()
         {
-            _gameState.EditingLevelIndex = _selectedLevelButton.TotalIndex();
+            _gameState.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
             _sceneLoadSystem.Service<SceneLoadSystem>().Load(_mainMenuScene, _newLevelScene);
         }
     }

@@ -46,21 +46,8 @@ namespace GeoTetra.Partak.UI
             _rightButton.interactable = false;
             _leftButton.interactable = false;
             _gameState.Service<GameState>().LevelIndex += direction;
-            
+
             string imagePath = LevelUtility.LevelImagePath(_gameState.Service<GameState>().GetSelectedLevelId());
-            if (!File.Exists(imagePath))
-            {
-                if (direction > 0)
-                {
-                    _gameState.Service<GameState>().LevelIndex = 0;
-                }
-                else if (direction < 0)
-                {
-                    _gameState.Service<GameState>().LevelIndex = GetMaxLevelIndex() - 1;
-                }
-                
-                imagePath = LevelUtility.LevelImagePath(_gameState.Service<GameState>().GetSelectedLevelId());
-            }
             
             byte[] imageBytes = System.IO.File.ReadAllBytes(imagePath);
             Texture2D image = new Texture2D(0,0);

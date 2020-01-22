@@ -140,13 +140,13 @@ namespace GeoTetra.GTSnapper
             InstantiateSelectedItemOnDrag(data, scrollItem.ItemReference, OnDragInstantiateCompleted);
         }
 
-        public void InstantiateSelectedItemOnDrag(PointerEventData data, ItemReference reference, System.Action<GameObject, ItemReference, PointerEventData> OnComplete)
+        public void InstantiateSelectedItemOnDrag(PointerEventData data, ItemReference itemReference, System.Action<GameObject, ItemReference, PointerEventData> OnComplete)
         {
             Ray ray = Camera.main.ScreenPointToRay(data.position);
             Vector3 position = ray.GetPoint(5);
-            Addressables.InstantiateAsync(reference.AssetPrefabName,
+            Addressables.InstantiateAsync(itemReference.AssetPrefabName,
                     new InstantiationParameters(position, Quaternion.identity, null)) //TODO does the transform ref break this going on stack?
-                .Completed += handle => OnComplete(handle.Result, reference, data);
+                .Completed += handle => OnComplete(handle.Result, itemReference, data);
         }
         
         public void InstantiateSelectedItemOnClick(PointerEventData data, System.Action<GameObject, ItemReference, PointerEventData> OnComplete)
