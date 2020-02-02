@@ -145,6 +145,15 @@ namespace GeoTetra.Partak
                 LevelCatalogDatum.SaveLevelCatalogDatum();
             }
         }
+        
+        public void RemoveLevelId(string id)
+        {
+            if (LevelCatalogDatum.LevelIDs.Contains(id))
+            {
+                LevelCatalogDatum.LevelIDs.Remove(id);
+                LevelCatalogDatum.SaveLevelCatalogDatum();
+            }
+        }
 
         public int PlayerCount()
         {
@@ -155,6 +164,17 @@ namespace GeoTetra.Partak
         {
             return PlayerStates[playerIndex].PlayerMode != PlayerMode.None;
         }
+        
+//        public bool[] ActivePlayers()
+//        {
+//            bool[] activePlayers = new bool[PlayerStates.Length];
+//            for (int i = 0; i < PlayerStates.Length; ++i)
+//            {
+//                activePlayers
+//            }
+//
+//            return count;
+//        }
 
         public int ActivePlayerCount()
         {

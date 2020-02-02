@@ -7,6 +7,7 @@ namespace GeoTetra.Partak
 {
     public class GameClock : MonoBehaviour
     {
+        [SerializeField] private ServiceReference _analyticsRelay;
         [SerializeField] private ServiceReference _gameStateReference;
         [SerializeField] private Material _surroundMaterial;
         [SerializeField] private CellParticleEngine _cellParticleMover;
@@ -57,7 +58,7 @@ namespace GeoTetra.Partak
         private void Win()
         {
             CancelInvoke();
-//            _componentContainer.Get<AnalyticsRelay>().GameTime(GameTime); //TODO hook up
+             _analyticsRelay.Service<AnalyticsRelay>().GameTime(GameTime);
         }
 
         private void TimeOut()

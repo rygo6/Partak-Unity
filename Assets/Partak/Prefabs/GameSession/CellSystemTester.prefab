@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4615143963081382789
+--- !u!1 &2477013746912145407
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,60 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4615143963081635193}
-  - component: {fileID: 4615143963075889971}
-  m_Layer: 0
-  m_Name: CellAI
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4615143963081635193
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4615143963081382789}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4615143963081684435}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4615143963075889971
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4615143963081382789}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41001b0cde9cd4787b181bb30fede30f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _gameStateReference:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
-    m_SubObjectName: 
-  _cursorStore: {fileID: 0}
-  _cellParticleStore: {fileID: 4615143963075930931}
-  _cellParticleSpawn: {fileID: 4615143963075929343}
-  _gameTimer: {fileID: 0}
-  _levelConfig: {fileID: 0}
-  _randomCycleRate: 20
---- !u!1 &4615143963081388747
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4615143963081658435}
-  - component: {fileID: 4615143963075847137}
+  - component: {fileID: 2477013746911890807}
+  - component: {fileID: 2477013746918670037}
   m_Layer: 0
   m_Name: CellHiearchy
   m_TagString: Untagged
@@ -69,27 +17,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4615143963081658435
+--- !u!4 &2477013746911890807
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4615143963081388747}
+  m_GameObject: {fileID: 2477013746912145407}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4615143963081684435}
+  m_Father: {fileID: 2477013746911914215}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4615143963075847137
+--- !u!114 &2477013746918670037
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4615143963081388747}
+  m_GameObject: {fileID: 2477013746912145407}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d36438550d341408587a8356dd0e1841, type: 3}
@@ -99,7 +47,7 @@ MonoBehaviour:
     m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
     m_SubObjectName: 
   _levelConfig: {fileID: 0}
---- !u!1 &4615143963081403881
+--- !u!1 &2477013746912162013
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,8 +55,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4615143963081584115}
-  - component: {fileID: 4615143963075921039}
+  - component: {fileID: 2477013746911817927}
+  - component: {fileID: 2477013746918742459}
   m_Layer: 0
   m_Name: CellGradient
   m_TagString: Untagged
@@ -116,27 +64,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4615143963081584115
+--- !u!4 &2477013746911817927
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4615143963081403881}
+  m_GameObject: {fileID: 2477013746912162013}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4615143963081684435}
+  m_Father: {fileID: 2477013746911914215}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4615143963075921039
+--- !u!114 &2477013746918742459
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4615143963081403881}
+  m_GameObject: {fileID: 2477013746912162013}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d36027acb6b5f4b7c9b9a284da89afb2, type: 3}
@@ -145,11 +93,11 @@ MonoBehaviour:
   _gameStateReference:
     m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
     m_SubObjectName: 
-  _cellParticleStore: {fileID: 4615143963075930931}
+  _cellParticleStore: {fileID: 2477013746918749703}
   _cursorStore: {fileID: 0}
-  _cellHiearchy: {fileID: 4615143963075847137}
+  _cellHiearchy: {fileID: 2477013746918670037}
   _cycleTime: 33
---- !u!1 &4615143963081414831
+--- !u!1 &2477013746912167323
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -157,8 +105,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4615143963081624955}
-  - component: {fileID: 4615143963075930931}
+  - component: {fileID: 2477013746911858767}
+  - component: {fileID: 2477013746918749703}
   m_Layer: 0
   m_Name: CellParticleStore
   m_TagString: Untagged
@@ -166,27 +114,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4615143963081624955
+--- !u!4 &2477013746911858767
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4615143963081414831}
+  m_GameObject: {fileID: 2477013746912167323}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4615143963081684435}
+  m_Father: {fileID: 2477013746911914215}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4615143963075930931
+--- !u!114 &2477013746918749703
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4615143963081414831}
+  m_GameObject: {fileID: 2477013746912167323}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70d53fee73e31454f8d8a8766490ebd5, type: 3}
@@ -202,7 +150,7 @@ MonoBehaviour:
   _levelConfig: {fileID: 0}
   PlayerLost: 
   PlayerParticleCount: 
---- !u!1 &4615143963081416985
+--- !u!1 &2477013746912181293
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -210,8 +158,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4615143963081667077}
-  - component: {fileID: 4615143963075850541}
+  - component: {fileID: 2477013746911899441}
+  - component: {fileID: 2477013746918665241}
   m_Layer: 0
   m_Name: CellParticleDisplay
   m_TagString: Untagged
@@ -219,27 +167,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4615143963081667077
+--- !u!4 &2477013746911899441
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4615143963081416985}
+  m_GameObject: {fileID: 2477013746912181293}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4615143963081684435}
+  m_Father: {fileID: 2477013746911914215}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4615143963075850541
+--- !u!114 &2477013746918665241
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4615143963081416985}
+  m_GameObject: {fileID: 2477013746912181293}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4568bc849d794a6f87813ce2a5c034d, type: 3}
@@ -248,11 +196,11 @@ MonoBehaviour:
   _gameStateReference:
     m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
     m_SubObjectName: 
-  _cellHiearchy: {fileID: 4615143963075847137}
+  _cellHiearchy: {fileID: 2477013746918670037}
   _cellParticleSystemPrefab: {fileID: 11428694, guid: 0fbca4a86790a4abdb803558fb304c55,
     type: 3}
   _levelConfig: {fileID: 0}
---- !u!1 &4615143963081425921
+--- !u!1 &2477013746912183321
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -260,45 +208,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4615143963081684435}
-  m_Layer: 0
-  m_Name: CellSystem 1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4615143963081684435
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4615143963081425921}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 4615143963081675833}
-  - {fileID: 4615143963081658435}
-  - {fileID: 4615143963081584115}
-  - {fileID: 4615143963081667077}
-  - {fileID: 4615143963081624955}
-  - {fileID: 4615143963081625773}
-  - {fileID: 4615143963081635193}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &4615143963081431341
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4615143963081625773}
-  - component: {fileID: 4615143963075935265}
+  - component: {fileID: 2477013746911858073}
+  - component: {fileID: 2477013746918744341}
   m_Layer: 0
   m_Name: CellParticleEngine
   m_TagString: Untagged
@@ -306,27 +217,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4615143963081625773
+--- !u!4 &2477013746911858073
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4615143963081431341}
+  m_GameObject: {fileID: 2477013746912183321}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4615143963081684435}
+  m_Father: {fileID: 2477013746911914215}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4615143963075935265
+--- !u!114 &2477013746918744341
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4615143963081431341}
+  m_GameObject: {fileID: 2477013746912183321}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63580d5e5f0814ea99d70051fe75c38c, type: 3}
@@ -336,10 +247,10 @@ MonoBehaviour:
     m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
     m_SubObjectName: 
   _attackMultiplier: 14
-  _cellParticleStore: {fileID: 4615143963075930931}
-  _cellParticleSpawn: {fileID: 4615143963075929343}
+  _cellParticleStore: {fileID: 2477013746918749703}
+  _cellParticleSpawn: {fileID: 2477013746918750667}
   _levelConfig: {fileID: 0}
---- !u!1 &4615143963081459085
+--- !u!1 &2477013746912188725
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -347,8 +258,70 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4615143963081675833}
-  - component: {fileID: 4615143963075929343}
+  - component: {fileID: 2477013746911914215}
+  - component: {fileID: 6595894874887153957}
+  m_Layer: 0
+  m_Name: CellSystemTester
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2477013746911914215
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2477013746912188725}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2477013746911906061}
+  - {fileID: 2477013746911890807}
+  - {fileID: 2477013746911817927}
+  - {fileID: 2477013746911899441}
+  - {fileID: 2477013746911858767}
+  - {fileID: 2477013746911858073}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6595894874887153957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2477013746912188725}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6624df973c4e9b14888953218ae2a5ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentContainer:
+    m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
+    m_SubObjectName: 
+  _gameSate:
+    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_SubObjectName: 
+  _levelConfig: {fileID: 0}
+  _cellHiearchy: {fileID: 2477013746918670037}
+  _cellGradient: {fileID: 2477013746918742459}
+  _cellParticleDisplay: {fileID: 2477013746918665241}
+  _cellParticleEngine: {fileID: 2477013746918744341}
+  _cellParticleSpawn: {fileID: 2477013746918750667}
+  _cellParticleStore: {fileID: 2477013746918749703}
+--- !u!1 &2477013746912221369
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2477013746911906061}
+  - component: {fileID: 2477013746918750667}
   m_Layer: 0
   m_Name: CellParticleSpawn
   m_TagString: Untagged
@@ -356,27 +329,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4615143963081675833
+--- !u!4 &2477013746911906061
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4615143963081459085}
+  m_GameObject: {fileID: 2477013746912221369}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4615143963081684435}
+  m_Father: {fileID: 2477013746911914215}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4615143963075929343
+--- !u!114 &2477013746918750667
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4615143963081459085}
+  m_GameObject: {fileID: 2477013746912221369}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 690e140f5bea045469bfe666ee26d024, type: 3}
@@ -385,8 +358,8 @@ MonoBehaviour:
   _gameStateReference:
     m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
     m_SubObjectName: 
-  _cellHiearchy: {fileID: 4615143963075847137}
-  _cellParticleMover: {fileID: 4615143963075935265}
-  _cellParticleStore: {fileID: 4615143963075930931}
+  _cellHiearchy: {fileID: 2477013746918670037}
+  _cellParticleMover: {fileID: 2477013746918744341}
+  _cellParticleStore: {fileID: 2477013746918749703}
   _cursorStore: {fileID: 0}
   _levelConfig: {fileID: 0}

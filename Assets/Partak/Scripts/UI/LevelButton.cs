@@ -26,7 +26,7 @@ namespace GeoTetra.Partak
         public int Index1 { get; set; } = -1;
         
         public bool ShowingLevel { get; set; }
-        public LevelDatum LevelDatum;
+        public LocalLevelDatum LevelDatum;
         
         public Button Button => _button;
         public Text Text => _text;

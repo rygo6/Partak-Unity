@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86f3ae92944134dcfa91e6895040110e, type: 3}
   m_Name: AnalyticsRelay
   m_EditorClassIdentifier: 
-  _gameState: {fileID: 11400000, guid: 7c6ed4b39d69fd245b4d46e08295a60d, type: 2}
+  _gameStateReference:
+    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_SubObjectName: 

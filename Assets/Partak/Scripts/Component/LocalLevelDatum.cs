@@ -9,7 +9,7 @@ using UnityEngine.Analytics;
 
 namespace GeoTetra.Partak
 {
-    public class LevelDatum
+    public class LocalLevelDatum
     {
         public bool Shared;
         public bool Downloaded;

@@ -282,8 +282,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b0321611998d246989abe26830bea18d, type: 3}
-    m_FontSize: 40
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
@@ -375,8 +375,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b0321611998d246989abe26830bea18d, type: 3}
-    m_FontSize: 40
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
@@ -387,7 +387,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Change Size
+  m_Text: Validate
 --- !u!114 &7495114242874891765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -583,8 +583,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b0321611998d246989abe26830bea18d, type: 3}
-    m_FontSize: 40
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
@@ -595,7 +595,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: save
+  m_Text: Save
 --- !u!114 &1892204007027658406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -958,12 +958,12 @@ GameObject:
   - component: {fileID: 6212177591129927576}
   - component: {fileID: 8877905688221023196}
   m_Layer: 5
-  m_Name: LevelSizeButton
+  m_Name: ValidateButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8706946240614833070
 RectTransform:
   m_ObjectHideFlags: 0
@@ -979,9 +979,9 @@ RectTransform:
   m_Father: {fileID: 5662744646547719707}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -224}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 128, y: 96}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &4519839244536650220
@@ -1680,9 +1680,13 @@ MonoBehaviour:
   _newLevelScene:
     m_AssetGUID: d296c88181da32247bb22aeb6b5c04e5
     m_SubObjectName: 
+  _loadModalUI:
+    m_AssetGUID: 10e4e0a564ea0b54a9e5616acfa15975
+    m_SubObjectName: 
   _itemCatalogUI: {fileID: 7343701488105535539}
   _saveButton: {fileID: 3805812752209072619}
   _cancelButton: {fileID: 1389485752112313248}
+  _validateButton: {fileID: 6212177591129927576}
 --- !u!114 &7343701488105535539
 MonoBehaviour:
   m_ObjectHideFlags: 0

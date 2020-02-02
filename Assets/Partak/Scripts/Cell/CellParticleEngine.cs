@@ -22,12 +22,14 @@ namespace GeoTetra.Partak
         public bool Pause { get; set; }
         public bool FastKill { get; set; }
 
+        public LoopThread Thread => _loopThread;
+
         private void Awake()
         {
             _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
         }
 
-        public void Initialize()
+        public void Initialize(bool startThread)
         {
             _randomRotate = new int[128];
             for (int i = 0; i < _randomRotate.Length; ++i)
@@ -36,8 +38,12 @@ namespace GeoTetra.Partak
                 else
                     _randomRotate[i] = Random.Range(-1, 1);
             
-            //particle need to spawn first
-            _loopThread = LoopThread.Create(MoveParticles, "CellParticleEngine", Priority.High, _levelConfig.Datum.MoveCycleTime);
+            if (startThread) StartThread(_levelConfig.Datum.MoveCycleTime);
+        }
+
+        public void StartThread(int moveCycleTime)
+        {
+            _loopThread = LoopThread.Create(MoveParticles, "CellParticleEngine", Priority.High, moveCycleTime);
             _loopThread.Start();
         }
 
@@ -58,49 +64,51 @@ namespace GeoTetra.Partak
             int winningPlayer = _cellParticleStore.WinningPlayer();
             int checkDirection, d, p, life;
             for (p = 0; p < particleLimit; ++p)
-            for (d = 0; d < directionLimit; ++d)
             {
-                currentCellParticle = cellParticleArray[p];
-                currentParticleCell = currentCellParticle.ParticleCell;
-                checkDirection = CellUtility.RotateDirection(
-                    currentCellParticle.ParticleCell.PrimaryDirectionArray[currentCellParticle.PlayerIndex],
-                    RotateDirectionMove[d] + _randomRotate[_randomRotateIndex]);
-                ++_randomRotateIndex;
-                if (_randomRotateIndex == _randomRotate.Length)
-                    _randomRotateIndex = 0;
-                nextParticleCell = currentParticleCell.DirectionalParticleCellArray[checkDirection];
-
-                if (nextParticleCell == null || nextParticleCell.InhabitedBy == 255)
-                    //edge or wall
-                    break;
-
-                if (nextParticleCell.InhabitedBy == -1)
+                for (d = 0; d < directionLimit; ++d)
                 {
-                    //is empty move
-                    currentCellParticle.ParticleCell = nextParticleCell;
-                    break;
-                }
+                    currentCellParticle = cellParticleArray[p];
+                    currentParticleCell = currentCellParticle.ParticleCell;
+                    checkDirection = CellUtility.RotateDirection(
+                        currentCellParticle.ParticleCell.PrimaryDirectionArray[currentCellParticle.PlayerIndex],
+                        RotateDirectionMove[d] + _randomRotate[_randomRotateIndex]);
+                    ++_randomRotateIndex;
+                    if (_randomRotateIndex == _randomRotate.Length)
+                        _randomRotateIndex = 0;
+                    nextParticleCell = currentParticleCell.DirectionalParticleCellArray[checkDirection];
 
-                if (currentParticleCell.InhabitedBy != nextParticleCell.InhabitedBy)
-                {
-                    //if other player, take life
-                    if (FastKill && currentParticleCell.InhabitedBy == winningPlayer)
-                        life = nextParticleCell._cellParticle.Life - _attackMultiplier * 2;
-                    else
-                        life = nextParticleCell._cellParticle.Life - _attackMultiplier;
-                    if (life <= 0)
-                        nextParticleCell._cellParticle.ChangePlayer(currentCellParticle.PlayerIndex);
-                    else
-                        nextParticleCell._cellParticle.Life = life;
-                    if (d > 2)
+                    if (nextParticleCell == null || nextParticleCell.InhabitedBy == 255)
+                        //edge or wall
                         break;
-                }
-                else if (currentParticleCell.InhabitedBy == nextParticleCell.InhabitedBy)
-                {
-                    //if other cell is same player, give it additional life boost
-                    nextParticleCell._cellParticle.Life++;
-                    if (d > 2)
+
+                    if (nextParticleCell.InhabitedBy == -1)
+                    {
+                        //is empty move
+                        currentCellParticle.ParticleCell = nextParticleCell;
                         break;
+                    }
+
+                    if (currentParticleCell.InhabitedBy != nextParticleCell.InhabitedBy)
+                    {
+                        //if other player, take life
+                        if (FastKill && currentParticleCell.InhabitedBy == winningPlayer)
+                            life = nextParticleCell._cellParticle.Life - _attackMultiplier * 2;
+                        else
+                            life = nextParticleCell._cellParticle.Life - _attackMultiplier;
+                        if (life <= 0)
+                            nextParticleCell._cellParticle.ChangePlayer(currentCellParticle.PlayerIndex);
+                        else
+                            nextParticleCell._cellParticle.Life = life;
+                        if (d > 2)
+                            break;
+                    }
+                    else if (currentParticleCell.InhabitedBy == nextParticleCell.InhabitedBy)
+                    {
+                        //if other cell is same player, give it additional life boost
+                        nextParticleCell._cellParticle.Life++;
+                        if (d > 2)
+                            break;
+                    }
                 }
             }
         }
