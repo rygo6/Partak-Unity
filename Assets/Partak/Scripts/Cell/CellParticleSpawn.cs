@@ -17,6 +17,8 @@ namespace GeoTetra.Partak
         [SerializeField] private LevelConfig _levelConfig;
         private GameState _gameState;
 
+        public bool SpawnSuccessful { get; private set; }
+
         private void Awake()
         {
             _gameState = _gameStateReference.Service<GameState>();
@@ -24,37 +26,58 @@ namespace GeoTetra.Partak
 
         public IEnumerator Initialize()
         {
-            YieldInstruction[] spawnYield = new YieldInstruction[_gameState.PlayerCount()];
-            int spawnCount = _levelConfig.Datum.ParticleCount / _gameState.PlayerCount();
+            yield return StartCoroutine(Initialize(_levelConfig.Datum.ParticleCount, _gameState.PlayerStates));
+        }
+
+        public IEnumerator Initialize(int particleCount, GameState.PlayerState[] PlayerStates)
+        {
+            SpawnSuccessful = true;
+            
+            int playerCount = PlayerStates.Length;
+            int activePlayerCount = 0;
+            for (int i = 0; i < PlayerStates.Length; ++i)
+            {
+                if (PlayerStates[i].PlayerMode != PlayerMode.None)
+                {
+                    activePlayerCount++;
+                }
+            }
+            
+            YieldInstruction[] spawnYield = new YieldInstruction[playerCount];
+            int spawnCount = particleCount / playerCount;
             int startIndex = 0;
             int trailingSpawn = 0;
             bool trailingAdded = false;
-            for (int playerIndex = 0; playerIndex < _gameState.PlayerCount(); ++playerIndex)
-                if (_gameState.PlayerActive(playerIndex))
+            for (int playerIndex = 0; playerIndex < playerCount; ++playerIndex)
+            {
+                if (PlayerStates[playerIndex].PlayerMode != PlayerMode.None)
                 {
                     //in odd numbers, 3, first player may need a few extra particles to produce an even number of particles and have the system work
                     if (!trailingAdded)
                     {
                         trailingAdded = true;
-                        trailingSpawn = _levelConfig.Datum.ParticleCount - spawnCount * _gameState.ActivePlayerCount();
+                        trailingSpawn = particleCount - spawnCount * activePlayerCount;
                     }
                     else
                     {
                         trailingSpawn = 0;
                     }
 
-                    int particleIndex = CellUtility.WorldPositionToGridIndex(
-                        _cursorStore.CursorPositions[playerIndex].x, _cursorStore.CursorPositions[playerIndex].z,
-                        _cellHiearchy.ParticleCellGrid.Dimension);
+                    int particleIndex = CellUtility.WorldPositionToGridIndex(_cursorStore.CursorPositions[playerIndex].x, _cursorStore.CursorPositions[playerIndex].z, _cellHiearchy.ParticleCellGrid.Dimension);
                     ParticleCell startParticleCell = _cellHiearchy.ParticleCellGrid.Grid[particleIndex];
-                    spawnYield[playerIndex] = StartCoroutine(SpawnPlayerParticles(startParticleCell, playerIndex,
-                        startIndex, spawnCount + trailingSpawn));
+                    Debug.Log(startParticleCell);
+                    spawnYield[playerIndex] = StartCoroutine(SpawnPlayerParticles(startParticleCell, playerIndex, startIndex, spawnCount + trailingSpawn));
                     startIndex += spawnCount + trailingSpawn;
                 }
+            }
 
             for (int i = 0; i < spawnYield.Length; ++i)
+            {
                 if (spawnYield[i] != null)
+                {
                     yield return spawnYield[i];
+                }
+            }
         }
 
         private IEnumerator SpawnPlayerParticles(ParticleCell startParticleCell, int playerIndex, int startIndex, int spawnCount)
@@ -68,22 +91,24 @@ namespace GeoTetra.Partak
             ParticleCell[] spawnArray = new ParticleCell[spawnCount * 4];
 
             spawnArray[currentIndex] = startParticleCell;
-            _cellParticleStore.CellParticleArray[currentIndex] =
-                new CellParticle(playerIndex, startParticleCell, _cellParticleStore);
+            _cellParticleStore.CellParticleArray[currentIndex] = new CellParticle(playerIndex, startParticleCell, _cellParticleStore);
 
             while (currentIndex < endIndex)
             {
                 ParticleCell currentParticleCell = spawnArray[currentIndex];
                 CellParticle currentCellParticle = _cellParticleStore.CellParticleArray[currentIndex];
+                if (currentCellParticle == null)
+                {
+                    SpawnSuccessful = false;
+                    yield break;
+                }
                 _cellParticleStore.CellParticleArray[currentIndex] = currentCellParticle;
                 for (int d = 0; d < Direction12.Count; ++d)
                 {
                     ParticleCell directionalParticleCell = currentParticleCell.DirectionalParticleCellArray[d];
-                    if (directionalParticleCell != null && directionalParticleCell.InhabitedBy == -1 &&
-                        directionalParticleCell.CellParticle == null && currentAddedIndex < endIndex)
+                    if (directionalParticleCell != null && directionalParticleCell.InhabitedBy == -1 && directionalParticleCell.CellParticle == null && currentAddedIndex < endIndex)
                     {
-                        _cellParticleStore.CellParticleArray[currentAddedIndex] =
-                            new CellParticle(playerIndex, directionalParticleCell, _cellParticleStore);
+                        _cellParticleStore.CellParticleArray[currentAddedIndex] = new CellParticle(playerIndex, directionalParticleCell, _cellParticleStore);
                         spawnArray[currentAddedIndex] = directionalParticleCell;
                         currentAddedIndex++;
                     }

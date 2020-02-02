@@ -30,6 +30,12 @@ namespace GeoTetra.Partak
             
             int x = _levelConfig.Datum.LevelSize.x;
             int y = _levelConfig.Datum.LevelSize.y;
+            if (x == 0 || y == 0)
+            {
+                Debug.LogError("Dimensions are " + x + "  " + y);
+                return;
+            }
+            
             while (x % 2 == 0 && y % 2 == 0)
             {
                 x /= 2;
@@ -70,7 +76,7 @@ namespace GeoTetra.Partak
 
         private void OnDrawGizmosSelected()
         {
-            ParticleCellGrid.DrawDebugRay();
+            ParticleCellGrid?.DrawDebugRay();
         }
     }
 }

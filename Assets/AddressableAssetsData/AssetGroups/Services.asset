@@ -17,26 +17,41 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: a7f3b886ddecc8641a6b6f58dfac5222
   m_SerializeEntries:
+  - m_GUID: 17010a8528f4c0b43a5469286e4a9730
+    m_Address: AnalyticsRelay
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Service
+    m_mainAssetType: GeoTetra.Partak.AnalyticsRelay, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - m_GUID: 276f5bb3082e1654f93a49fb34fe90b4
     m_Address: PartakDatabase
     m_ReadOnly: 0
     m_SerializedLabels:
     - Service
+    m_mainAssetType: GeoTetra.GTBackend.PartakDatabase, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - m_GUID: 7c6ed4b39d69fd245b4d46e08295a60d
     m_Address: GameState
     m_ReadOnly: 0
     m_SerializedLabels:
     - Service
+    m_mainAssetType: GeoTetra.Partak.GameState, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - m_GUID: b30141a42589e924e97c08dbbe68ad23
     m_Address: SceneLoadSystem
     m_ReadOnly: 0
     m_SerializedLabels:
     - Service
+    m_mainAssetType: GeoTetra.GTUI.SceneLoadSystem, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - m_GUID: ed956f91a7b883142bf9b588e32e0f1a
     m_Address: ComponentContainer
     m_ReadOnly: 0
     m_SerializedLabels:
     - Service
+    m_mainAssetType: GeoTetra.GTCommon.ScriptableObjects.ComponentContainer, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8897a9da1308dad4cb94657883af64f0, type: 2}
   m_SchemaSet:

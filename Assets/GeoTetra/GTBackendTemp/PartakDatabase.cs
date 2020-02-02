@@ -104,7 +104,7 @@ namespace GeoTetra.GTBackend
             GetItemOperationConfig config = new GetItemOperationConfig();
             Document result = await _table.GetItemAsync(LevelFields.PkLevelValue, levelId, config);
 
-            LevelDatum levelDatum = JsonUtility.FromJson<LevelDatum>(result[LevelFields.LevelDataKey]);
+            LocalLevelDatum levelDatum = JsonUtility.FromJson<LocalLevelDatum>(result[LevelFields.LevelDataKey]);
             levelDatum.Shared = true;
             levelDatum.Downloaded = true;
             levelDatum.LevelID = levelId; //still needed?

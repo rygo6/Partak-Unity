@@ -73,7 +73,7 @@ namespace GeoTetra.Partak
             await levelButton.DownloadAndDisplayLevelAsync(_partakDatabase, levelButton.LevelDatum.LevelID, cancellationToken);
         }
 
-        private async Task<bool> DownloadNextSet(List<List<LevelDatum>> datumLists)
+        private async Task<bool> DownloadNextSet(List<List<LocalLevelDatum>> datumLists)
         {
             if (_search.IsDone) return true;
 
@@ -87,10 +87,10 @@ namespace GeoTetra.Partak
                 Debug.LogError(ex.Message);
             }
 
-            List<LevelDatum> levelDatumList = new List<LevelDatum>();
+            List<LocalLevelDatum> levelDatumList = new List<LocalLevelDatum>();
             for (int i = 0; i < documentList.Count; ++i)
             {
-                LevelDatum levelDatum = new LevelDatum
+                LocalLevelDatum levelDatum = new LocalLevelDatum
                 {
                     LevelID = documentList[i][PartakDatabase.LevelFields.IdKey].AsString(),
                     ThumbsUp = documentList[i][PartakDatabase.LevelFields.ThumbsUpKey].AsInt()

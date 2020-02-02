@@ -87,8 +87,7 @@ namespace GeoTetra.Partak.UI
 
         private void Replay()
         {
-            _analyticsRelay.ReplayLevel();
-
+            _analyticsRelay.GamePlayerCount();
             CurrentlyRenderedBy.Flush(() =>
             {
                 _sceneLoadSystem.Service<SceneLoadSystem>().Load(_gameSessionScene, _gameSessionScene);
@@ -98,7 +97,7 @@ namespace GeoTetra.Partak.UI
         private void Skip()
         {
             _gameState.Service<GameState>().LevelIndex++;
-            _analyticsRelay.SkipLevel();
+            _analyticsRelay.GamePlayerCount();
             
             CurrentlyRenderedBy.Flush(() =>
             {
@@ -109,7 +108,7 @@ namespace GeoTetra.Partak.UI
         private void Next()
         {
             _gameState.Service<GameState>().LevelIndex++;
-            _analyticsRelay.NextLevel();
+            _analyticsRelay.GamePlayerCount();
             
             CurrentlyRenderedBy.Flush(() =>
             {

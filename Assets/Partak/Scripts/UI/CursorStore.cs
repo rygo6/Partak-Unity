@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using System.Runtime.InteropServices;
 using GeoTetra.GTCommon.Components;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
@@ -10,9 +11,10 @@ namespace GeoTetra.Partak
     public class CursorStore : SubscribableBehaviour
     {
         [SerializeField] private ServiceReference _componentContainer;
-        [SerializeField] private LevelConfig _levelConfig;
         [SerializeField] private ServiceReference _gameState;
+        [SerializeField] private LevelConfig _levelConfig;
         [SerializeField] private Transform[] _cursorTranforms;
+        [SerializeField] private float _offset = .8f;
 
         public Vector3[] CursorPositions { get; private set; }
         private SkinnedMeshRenderer[] _skinnedMeshRenderers;
@@ -30,11 +32,14 @@ namespace GeoTetra.Partak
                 _skinnedMeshRenderers[i] = _cursorTranforms[i].GetComponent<SkinnedMeshRenderer>();
                 CursorPositions[i] = _cursorTranforms[i].position;
             }
+            
+            _levelConfig.LevelDeserialized += LevelConfigOnLevelDeserialized;
         }
 
-        private void Start()
+        private void LevelConfigOnLevelDeserialized()
         {
             _levelBounds = _levelConfig.LevelBounds;
+            SetCursorsToStartPosition();
         }
 
         private void LateUpdate()
@@ -44,7 +49,23 @@ namespace GeoTetra.Partak
                 UpdateCursorTransforms();
             }
         }
-
+        
+        public void SetCursorsToStartPosition()
+        {
+            CursorPositions[0] = new Vector3(_offset,0, _offset);
+            CursorPositions[1] = new Vector3(_offset,0, _levelBounds.size.z - _offset);
+            CursorPositions[2] = new Vector3( _levelBounds.size.x - _offset,0, _offset);
+            CursorPositions[3] = new Vector3( _levelBounds.size.x - _offset,0, _levelBounds.size.z - _offset);
+        }
+        
+        public void SetCursorsToCenter()
+        {
+            CursorPositions[0] = _levelBounds.center;
+            CursorPositions[1] = _levelBounds.center;
+            CursorPositions[2] = _levelBounds.center;
+            CursorPositions[3] = _levelBounds.center;
+        }
+        
         public void SetCursorPositionClamp(int playerIndex, Vector3 position)
         {
             position.x = Mathf.Clamp(position.x, _levelBounds.min.x, _levelBounds.max.x);

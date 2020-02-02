@@ -8,7 +8,7 @@ using UnityEngine;
 namespace GeoTetra.Partak
 {
     /// <summary>
-    /// Keeps track of how many players belong to each player.
+    /// Keeps track of how many particles belong to each player.
     /// </summary>
     public class CellParticleStore : SubscribableBehaviour
     {
@@ -16,28 +16,32 @@ namespace GeoTetra.Partak
         [SerializeField] private ServiceReference _gameStateReference;
         [SerializeField] private CursorStore _cursorStore;
         [SerializeField] private LevelConfig _levelConfig;
+        public event Action WinEvent;
+        public event Action<int> LoseEvent;
         public bool[] PlayerLost;
         public int[] PlayerParticleCount;
+        private Coroutine _calcualtePercentagesCoroutine;
         private int _startParticleCount;
         private bool _winEventFired;
         private GameState _gameState;
+        
         public CellParticle[] CellParticleArray { get; private set; }
-        public event Action WinEvent;
-        public event Action<int> LoseEvent;
 
         private void Awake()
         {
             _gameState = _gameStateReference.Service<GameState>();
             _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
-            PlayerLost = new bool[_gameState.PlayerCount()];
-            PlayerParticleCount = new int[_gameState.PlayerCount()];
         }
 
         public void Initialize()
         {
+            PlayerLost = new bool[_gameState.PlayerCount()];
+            PlayerParticleCount = new int[_gameState.PlayerCount()];
             CellParticleArray = new CellParticle[_levelConfig.Datum.ParticleCount];
             _startParticleCount = _levelConfig.Datum.ParticleCount / _gameState.ActivePlayerCount();
-            StartCoroutine(CalculatePercentages());
+            
+            if (_calcualtePercentagesCoroutine != null) {StopCoroutine(_calcualtePercentagesCoroutine);}
+            _calcualtePercentagesCoroutine = StartCoroutine(CalculatePercentages());
         }
 
         public void IncrementPlayerParticleCount(int playerIndex)
@@ -63,21 +67,20 @@ namespace GeoTetra.Partak
 
                 for (int playerIndex = 0; playerIndex < PlayerParticleCount.Length; ++playerIndex)
                 {
-                    float percentage = (PlayerParticleCount[playerIndex] - _startParticleCount) /
-                                       (float) (_levelConfig.Datum.ParticleCount - _startParticleCount);
+                    float percentage = ParticleCountPercentage(playerIndex);
                     percentage = Mathf.Clamp(percentage, 0f, 1f) * 100f;
                     _cursorStore.SetPlayerCursorMorph(playerIndex, percentage);
-                    if (percentage == 100f)
+                    if (percentage >= 100f)
                     {
                         Win();
                         yield break;
                     }
 
-                    if (PlayerParticleCount[playerIndex] == 0f && !PlayerLost[playerIndex])
+                    if (PlayerParticleCount[playerIndex] <= 0f && !PlayerLost[playerIndex])
                     {
                         PlayerLost[playerIndex] = true;
                         _cursorStore.PlayerLose(playerIndex);
-                        LoseEvent(playerIndex);
+                        LoseEvent?.Invoke(playerIndex);
                     }
                 }
 
@@ -85,6 +88,22 @@ namespace GeoTetra.Partak
             }
         }
 
+        private float ParticleCountPercentage(int playerIndex)
+        {
+            return (PlayerParticleCount[playerIndex] - _startParticleCount) / (float) (_levelConfig.Datum.ParticleCount - _startParticleCount);
+        }
+
+        public bool AllPercentagesChanged()
+        {
+            bool changed = true;
+            for (int playerIndex = 0; playerIndex < PlayerParticleCount.Length; ++playerIndex)
+            {
+                if (Mathf.Approximately(ParticleCountPercentage(playerIndex), 0)) changed = false;
+            }
+
+            return changed;
+        }
+        
         //should be its own object WinSequence
         public void Win()
         {

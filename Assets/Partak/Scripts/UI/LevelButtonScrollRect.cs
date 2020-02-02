@@ -25,7 +25,7 @@ namespace GeoTetra.Partak
         [SerializeField]  private int _columnCount = 3;
         
         public event Action<LevelButton> LevelButtonClicked;
-        private readonly List<List<LevelDatum>> _datumLists = new List<List<LevelDatum>>();
+        private readonly List<List<LocalLevelDatum>> _datumLists = new List<List<LocalLevelDatum>>();
         private LevelButton _selectedLevelButton;
         private int _topRowIndex;
         private Rect _itemRect;
@@ -33,7 +33,7 @@ namespace GeoTetra.Partak
         private bool _populatingNextSet;
         private bool _isDonePopulating;
 
-        private Func<List<List<LevelDatum>>, Task<bool>> _populateNextSet;
+        private Func<List<List<LocalLevelDatum>>, Task<bool>> _populateNextSet;
         private Func<LevelButton, CancellationToken, Task> _populateLevelButton;
         private Action<LevelButton> _finalButton;
 
@@ -58,7 +58,7 @@ namespace GeoTetra.Partak
         }
 
         public void Initialize(
-            Func<List<List<LevelDatum>>, Task<bool>> populateNextSet, 
+            Func<List<List<LocalLevelDatum>>, Task<bool>> populateNextSet, 
             Func<LevelButton, CancellationToken, Task> populateLevelButton,
             Action<LevelButton> finalButton)
         {
@@ -184,7 +184,7 @@ namespace GeoTetra.Partak
             
             _isDonePopulating = await _populateNextSet(_datumLists);
             
-            float verticalSize = (_datumLists.Count + (_isDonePopulating ? 0 : 1)) * (_itemRect.height + _rowSpacing);
+            float verticalSize = (_datumLists.Count + (_isDonePopulating ? 0 : 1) + (_finalButton == null ? 0 : 1)) * (_itemRect.height + _rowSpacing);
             _scrollRect.content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, verticalSize);
             
             _populatingNextSet = false;

@@ -17,11 +17,11 @@ namespace GeoTetra.Partak
             return System.IO.Path.Combine(Application.persistentDataPath, $"{index}.png");
         }
         
-        public static LevelDatum GetLevelDatum(string levelId)
+        public static LocalLevelDatum GetLevelDatum(string levelId)
         {
             string path = LevelUtility.LevelPath(levelId);
             string json = System.IO.File.ReadAllText(path);
-            return JsonUtility.FromJson<LevelDatum>(json);
+            return JsonUtility.FromJson<LocalLevelDatum>(json);
         }
     }
     
@@ -38,7 +38,8 @@ namespace GeoTetra.Partak
             if (System.IO.File.Exists(LevelCatalogDatumPath()))
             {
                 string json = System.IO.File.ReadAllText(LevelCatalogDatumPath());
-                return JsonUtility.FromJson<LevelCatalogDatum>(json);
+                LevelCatalogDatum datum = JsonUtility.FromJson<LevelCatalogDatum>(json);
+                return datum;
             }
             else
             {

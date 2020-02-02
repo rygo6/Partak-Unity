@@ -20,7 +20,6 @@ namespace GeoTetra.Partak
         [SerializeField] private Camera _camera;
         [SerializeField] private GameObject[] _backgrounds;
         [SerializeField] private Item _dropItem;
-        [SerializeField] private GameSessionSequencer _gameSessionSequencer;
 
         public event Action LevelDeserialized;
         
@@ -28,27 +27,28 @@ namespace GeoTetra.Partak
         {
             get
             {
-                Bounds bounds = new Bounds(new Vector3((_levelDatum.LevelSize.x / 2f)/ 10f, 0,(_levelDatum.LevelSize.y / 2f) / 10f),
+                Bounds bounds = new Bounds(
+                    new Vector3((_levelDatum.LevelSize.x / 2f)/ 10f, 0,(_levelDatum.LevelSize.y / 2f) / 10f),
                     new Vector3(_levelDatum.LevelSize.x / 10f, 0, _levelDatum.LevelSize.y / 10f));
                 
                 return bounds;              
             }
         }
 
-        public LevelDatum Datum
+        public LocalLevelDatum Datum
         {
             get
             {
                 if (_levelDatum == null)
                 {
-                    _levelDatum = new LevelDatum();
+                    _levelDatum = new LocalLevelDatum();
                     _levelDatum.MoveCycleTime = 16;
                 }
                 return _levelDatum;
             }
         }
 
-        private LevelDatum _levelDatum;
+        private LocalLevelDatum _levelDatum;
 
         private void Awake()
         {

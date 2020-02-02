@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using GeoTetra.GTBackend;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,10 +20,12 @@ namespace GeoTetra.Partak
         [SerializeField] private ServiceReference _database;
         [SerializeField] private AssetReference _mainMenuScene;
         [SerializeField] private AssetReference _newLevelScene;
+        [SerializeField] private AssetReference _loadModalUI;
         [SerializeField] private ItemCatalogUI _itemCatalogUI;
         [SerializeField] private Button _saveButton;
         [SerializeField] private Button _cancelButton;
-        
+        [SerializeField] private Button _validateButton;
+
         private string[] _changeSizeMessages;
         private Action[] _changeSizeActions;
         
@@ -30,8 +33,9 @@ namespace GeoTetra.Partak
         private Action[] _saveActions;
 
         private LevelConfig _levelConfig;
+        private LevelTester _levelTester;
         private string _editingLevelId;
-        
+
         protected override void Awake()
         {
             base.Awake();
@@ -51,16 +55,17 @@ namespace GeoTetra.Partak
                 SaveToAWS,
                 SerializeLevel,
             };
-
             
             _saveButton.onClick.AddListener(OnClickSave);
-            _cancelButton.onClick.AddListener(CloseLevelMaker);
+            _cancelButton.onClick.AddListener(OnCloseClick);
+            _validateButton.onClick.AddListener(OnValidateClick);
         }
 
         public override void OnTransitionInFinish()
         {
             base.OnTransitionInFinish();
             _levelConfig = _componentContainer.Service<ComponentContainer>().Get<LevelConfig>();
+            _levelTester = _componentContainer.Service<ComponentContainer>().Get<LevelTester>();
             _itemCatalogUI.Initialize();
 
             _editingLevelId = _gameState.Service<GameState>().GetEditingLevelId();
@@ -84,19 +89,32 @@ namespace GeoTetra.Partak
 
         private void OnClickSave()
         {
-            _levelConfig.Datum.Shared = false;
-            if (_levelConfig.Datum.Shared)
+            StartCoroutine(OnClickSaveCoroutine());
+        }
+
+        private IEnumerator OnClickSaveCoroutine()
+        {
+            yield return StartCoroutine(RunTestCoroutine());
+            if (_levelTester.Result == LevelTester.TestResult.Success)
             {
-                SerializeLevel();
-                CloseLevelMaker();
+                _levelConfig.Datum.Shared = false;
+                if (_levelConfig.Datum.Shared)
+                {
+                    SerializeLevel();
+                    OnCloseClick();
+                }
+                else
+                {
+                    DisplaySelectionModal("Share Level Online?", _saveMessages, _saveActions, 0);
+                }
             }
             else
             {
-                DisplaySelectionModal("Share Level Online?", _saveMessages, _saveActions, 0);
+                DisplayFailMessages();
             }
         }
-
-        private void CloseLevelMaker()
+        
+        private void OnCloseClick()
         {
             OnBackClicked();
             _sceneLoadSystem.Service<SceneLoadSystem>().Load(_newLevelScene, _mainMenuScene);
@@ -110,17 +128,52 @@ namespace GeoTetra.Partak
 
         private async void SaveToAWS()
         {
-            int levelIndex = _gameState.Service<GameState>().EditingLevelIndex;
             _levelConfig.Datum.Shared = true;
             SerializeLevel();
             await _database.Service<PartakDatabase>().SaveLevel(_editingLevelId);
             
-            CloseLevelMaker();
+            OnCloseClick();
         }
 
-        private void OnClickChangeSize()
+        private void OnValidateClick()
         {
+            StartCoroutine(OnValidateClickCoroutine());
+        }
 
+        private IEnumerator OnValidateClickCoroutine()
+        {
+            yield return StartCoroutine(RunTestCoroutine());
+            if (_levelTester.Result == LevelTester.TestResult.Success)
+            {
+                DisplayModal("Test Successful.", null);
+            }
+            else
+            {
+                DisplayFailMessages();
+            }
+        }
+
+        private void DisplayFailMessages()
+        {
+            if (_levelTester.Result == LevelTester.TestResult.CursorsBlocked)
+            {
+                DisplayModal("An object is blocking the spawn position of a particle. Remove any objects beneath a player cursor.", null);
+            }
+            else if (_levelTester.Result == LevelTester.TestResult.SpawnBlocked)
+            {
+                DisplayModal("There is not enough room for all the particles to spawn. Move objects away from where the particles spawn.", null);
+            } 
+            else if (_levelTester.Result == LevelTester.TestResult.ParticlesBlocked)
+            {
+                DisplayModal("All of the particles could not reach each other. Ensure there are open paths for each player's particles to reach every other player's particles.", null);
+            }
+        }
+        
+        private IEnumerator RunTestCoroutine()
+        {
+            CurrentlyRenderedBy.InstantiateAndDisplayModalUI(_loadModalUI);
+            yield return StartCoroutine(_levelTester.RunTest());
+            CurrentlyRenderedBy.CloseModal();
         }
 
         private void SizeChanged(Vector2Int newSize)

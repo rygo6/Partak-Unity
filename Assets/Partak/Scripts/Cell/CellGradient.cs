@@ -44,6 +44,7 @@ namespace GeoTetra.Partak
         private LoopThread _loopThread;
         private bool _reverseMovement;
         private GameState _gameState;
+        private GameState.PlayerState[] _playerStates;
 
         private int CurrentStepDirectionIndex
         {
@@ -57,16 +58,30 @@ namespace GeoTetra.Partak
             }
         }
 
+        public LoopThread Thread => _loopThread;
+
         private void Awake()
         {
             _gameState = _gameStateReference.Service<GameState>();
         }
 
-        public void Initialize()
+        public void Initialize(bool startThread)
         {
-            PriorStartCell = new CellGroup[_gameState.PlayerCount()];
+            Initialize(startThread, _gameState.PlayerStates);
+        }
+
+        public void Initialize(bool startThread, GameState.PlayerState[] playerStates)
+        {
+            _playerStates = playerStates;
+            PriorStartCell = new CellGroup[_playerStates.Length];
             _cellGroupStepArray = new CellGroup[_cellHiearchy.ParticleCellGrid.Grid.Length * 2];
             _cellParticleStore.WinEvent += () => { _reverseMovement = true; };
+            if (startThread) StartThread();
+        }
+
+        public void StartThread()
+        {
+            if (_loopThread != null) _loopThread.Stop();
             _loopThread = LoopThread.Create(CalculateGradient, "CellGradient", Priority.Low, _cycleTime);
             _loopThread.Start();
         }
@@ -80,13 +95,11 @@ namespace GeoTetra.Partak
         private void CalculateGradient()
         {
             for (int playerIndex = 0; playerIndex < _gameState.PlayerCount(); playerIndex++)
-                if (_gameState.PlayerActive(playerIndex))
+            {
+                if (_playerStates[playerIndex].PlayerMode != PlayerMode.None)
                 {
                     CurrentStepDirectionIndex++;
-                    int particleIndex = CellUtility.WorldPositionToGridIndex(
-                        _cursorStore.CursorPositions[playerIndex].x,
-                        _cursorStore.CursorPositions[playerIndex].z,
-                        _cellHiearchy.ParticleCellGrid.Dimension);
+                    int particleIndex = CellUtility.WorldPositionToGridIndex(_cursorStore.CursorPositions[playerIndex].x,_cursorStore.CursorPositions[playerIndex].z, _cellHiearchy.ParticleCellGrid.Dimension);
                     ParticleCell startParticleCell = _cellHiearchy.ParticleCellGrid.Grid[particleIndex];
                     if (startParticleCell.InhabitedBy != 255)
                     {
@@ -101,6 +114,7 @@ namespace GeoTetra.Partak
 
                     ResetCellHiearchyInStepArray();
                 }
+            }
         }
 
         private void CalculatePlayerGradient(CellGroup startCellGroup, int playerIndex)

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -47,8 +48,10 @@ namespace GeoTetra.Partak
             _gameState = _gameStateService.Service<GameState>();
             _levelButtonScrollRect.LevelButtonClicked += OnLevelButtonClicked;
             
-            LoadedLevelMessages = new[] {"Edit Level", "Clear Level", "Cancel"};
-            LoadedLevelActions = new Action[] {EditLevel, ClearLevel, Cancel};
+//            LoadedLevelMessages = new[] {"Edit Level", "Clear Level", "Cancel"};
+//            LoadedLevelActions = new Action[] {EditLevel, ClearLevel, Cancel};
+            LoadedLevelMessages = new[] {"Delete Level", "Cancel"};
+            LoadedLevelActions = new Action[] {ClearLevel, Cancel};
             
             EmptyLevelClickMessages = new[] {"Download Level", "Create Level", "Cancel"};
             EmptyLevelClickActions = new Action[] {DownloadExistingLevel, CreateNewLevel, Cancel};
@@ -76,20 +79,21 @@ namespace GeoTetra.Partak
         {
             levelButton.ShowRating(false);
             levelButton.LoadTextureFromDisk(LevelUtility.LevelImagePath(levelButton.LevelDatum.LevelID));
+            levelButton.ShowRating(false);
         }
 
-        private async Task<bool> DownloadNextSet(List<List<LevelDatum>> datumLists)
+        private async Task<bool> DownloadNextSet(List<List<LocalLevelDatum>> datumLists)
         {
             if (_catalogDatumIndex >= _gameState.LevelCatalogDatum.LevelIDs.Count) return true;
             
-            List<LevelDatum> levelDatumList = new List<LevelDatum>();
+            List<LocalLevelDatum> levelDatumList = new List<LocalLevelDatum>();
             for (int i = 0; i < _levelButtonScrollRect.ColumnCount; ++i)
             {
                 if (_catalogDatumIndex >= _gameState.LevelCatalogDatum.LevelIDs.Count) break;
 
                 string levelPath = LevelUtility.LevelPath(_gameState.LevelCatalogDatum.LevelIDs[_catalogDatumIndex]);
                 string json = System.IO.File.ReadAllText(levelPath);
-                LevelDatum levelDatum = JsonUtility.FromJson<LevelDatum>(json);
+                LocalLevelDatum levelDatum = JsonUtility.FromJson<LocalLevelDatum>(json);
                 levelDatumList.Add(levelDatum);
                 _catalogDatumIndex++;
             }
@@ -119,12 +123,6 @@ namespace GeoTetra.Partak
             {
                 DisplaySelectionModal("", LoadedLevelMessages, LoadedLevelActions, 0);
             }
-            
-//            Document document = _documentLists[levelButton.Index0][levelButton.Index1];
-//            CurrentlyRenderedBy.InstantiateAndDisplayModalUI(_loadModalUI);
-//            await _partakDatabase.DownloadLevel(document, _gameState.Service<GameState>().EditingLevelIndex);
-//            CurrentlyRenderedBy.CloseModal();
-//            OnBackClicked();
         }
 
         private void Cancel()
@@ -138,8 +136,9 @@ namespace GeoTetra.Partak
             string imagePath = LevelUtility.LevelImagePath(_selectedLevelButton.LevelDatum.LevelID);
             System.IO.File.Delete(levelPath);
             System.IO.File.Delete(imagePath);
+            _gameState.RemoveLevelId(_selectedLevelButton.LevelDatum.LevelID);
             _levelButtonScrollRect.Clear();
-            _levelButtonScrollRect.LayoutUI();
+            _levelButtonScrollRect.Initialize(DownloadNextSet, PopulateLevelButton, FinalButton);
         }
         
         private void EditLevel()

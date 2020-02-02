@@ -36,11 +36,11 @@ namespace GeoTetra.Partak
         {
             yield return null;
             _cellHiearchy.Initialize();
-            _cellGradient.Initialize();
+            _cellGradient.Initialize(true);
             _cellParticleDisplay.Initialize();
             _cellParticleStore.Initialize();
             yield return StartCoroutine(_cellParticleSpawn.Initialize());
-            _cellParticleEngine.Initialize();
+            _cellParticleEngine.Initialize(true);
             _cellAI.Initialize();
             _gameMusic.Initialize();
         }
