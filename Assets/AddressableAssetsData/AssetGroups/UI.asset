@@ -45,13 +45,6 @@ MonoBehaviour:
     - UI
     m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  - m_GUID: 653f317c9758ca845aebd31aed265956
-    m_Address: LevelUI
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - UI
-    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   - m_GUID: 6af1bb744bb26734990727768d53ae09
     m_Address: LevelCatalogUI
     m_ReadOnly: 0

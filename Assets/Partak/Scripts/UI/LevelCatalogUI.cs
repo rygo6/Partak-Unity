@@ -137,6 +137,7 @@ namespace GeoTetra.Partak
             System.IO.File.Delete(levelPath);
             System.IO.File.Delete(imagePath);
             _gameState.RemoveLevelId(_selectedLevelButton.LevelDatum.LevelID);
+            _catalogDatumIndex = 0;
             _levelButtonScrollRect.Clear();
             _levelButtonScrollRect.Initialize(DownloadNextSet, PopulateLevelButton, FinalButton);
         }

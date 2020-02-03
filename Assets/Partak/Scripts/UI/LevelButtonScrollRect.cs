@@ -122,8 +122,6 @@ namespace GeoTetra.Partak
                         _levelButtonRows[r].LevelButtons[c].Button.interactable = true;
                         _levelButtonRows[r].LevelButtons[c].ShowingLevel = true;
                         _levelButtonRows[r].LevelButtons[c].Text.text = "";
-                        _levelButtonRows[r].LevelButtons[c].ShowRating(true);
-                        _levelButtonRows[r].LevelButtons[c].ThumbsUpText.text =_datumLists[documentRowIndex][c].ThumbsUp.ToString();
                     }
                     else
                     {

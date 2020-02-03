@@ -22,6 +22,7 @@ namespace GeoTetra.Partak
         [SerializeField] private Item _dropItem;
 
         public event Action LevelDeserialized;
+        public event Action SizeChanged;
         
         public Bounds LevelBounds
         {
@@ -110,6 +111,8 @@ namespace GeoTetra.Partak
             _backgrounds[1].gameObject.SetActive(newSize.x == 192 && newSize.y == 192);
             _backgrounds[2].gameObject.SetActive(newSize.x == 256 && newSize.y == 144);
             _backgrounds[3].gameObject.SetActive(newSize.x == 256 && newSize.y == 256);
+            
+            SizeChanged?.Invoke();
         }
 
         /// <summary>

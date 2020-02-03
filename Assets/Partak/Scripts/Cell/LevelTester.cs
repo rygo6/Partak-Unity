@@ -58,6 +58,7 @@ namespace GeoTetra.Partak
             
             _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
             _levelConfig.LevelDeserialized += Initialize;
+            _levelConfig.SizeChanged += Initialize;
         }
 
         private void Initialize()
@@ -65,6 +66,7 @@ namespace GeoTetra.Partak
             _cellHiearchy.Initialize();
             _cellGradient.Initialize(false, _playerStates);
             _cellParticleDisplay.Initialize();
+            _cellParticleDisplay.gameObject.SetActive(false);
             _cellParticleEngine.Initialize(false);
         }
 
@@ -72,6 +74,7 @@ namespace GeoTetra.Partak
         {
             //disable floor collider catcher because right now "no-wall" is discerned by no racyast hit
             _itemDrop.gameObject.SetActive(false);
+            _cellParticleDisplay.gameObject.SetActive(true);
             _cursorStore.SetCursorsToStartPosition();
             
             //reconstruct hiearchy
@@ -93,7 +96,7 @@ namespace GeoTetra.Partak
                 yield break;
             }
             
-            _cursorStore.SetCursorsToCenter();
+            _cursorStore.SetCursorsTo(_cursorStore.CursorPositions[0]);
             _cellParticleEngine.StartThread(0);
 
             float counter = 0;
@@ -135,6 +138,8 @@ namespace GeoTetra.Partak
             _cellGradient.Thread?.Stop();
             _cellHiearchy.Initialize();
             _itemDrop.gameObject.SetActive(true);
+            _cursorStore.SetCursorsToStartPosition();
+            _cellParticleDisplay.gameObject.SetActive(false);
         }
     }
 }

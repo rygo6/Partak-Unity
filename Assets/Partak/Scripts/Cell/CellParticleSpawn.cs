@@ -65,7 +65,6 @@ namespace GeoTetra.Partak
 
                     int particleIndex = CellUtility.WorldPositionToGridIndex(_cursorStore.CursorPositions[playerIndex].x, _cursorStore.CursorPositions[playerIndex].z, _cellHiearchy.ParticleCellGrid.Dimension);
                     ParticleCell startParticleCell = _cellHiearchy.ParticleCellGrid.Grid[particleIndex];
-                    Debug.Log(startParticleCell);
                     spawnYield[playerIndex] = StartCoroutine(SpawnPlayerParticles(startParticleCell, playerIndex, startIndex, spawnCount + trailingSpawn));
                     startIndex += spawnCount + trailingSpawn;
                 }
