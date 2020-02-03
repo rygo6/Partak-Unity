@@ -71,6 +71,8 @@ namespace GeoTetra.Partak
         private async Task PopulateLevelButton(LevelButton levelButton, CancellationToken cancellationToken)
         {
             await levelButton.DownloadAndDisplayLevelAsync(_partakDatabase, levelButton.LevelDatum.LevelID, cancellationToken);
+            levelButton.ShowRating(true);
+            levelButton.ThumbsUpText.text = levelButton.LevelDatum.ThumbsUp.ToString();
         }
 
         private async Task<bool> DownloadNextSet(List<List<LocalLevelDatum>> datumLists)

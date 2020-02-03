@@ -33,7 +33,7 @@ namespace GeoTetra.Partak
                 CursorPositions[i] = _cursorTranforms[i].position;
             }
             
-            _levelConfig.LevelDeserialized += LevelConfigOnLevelDeserialized;
+            _levelConfig.SizeChanged += LevelConfigOnLevelDeserialized;
         }
 
         private void LevelConfigOnLevelDeserialized()
@@ -52,18 +52,26 @@ namespace GeoTetra.Partak
         
         public void SetCursorsToStartPosition()
         {
-            CursorPositions[0] = new Vector3(_offset,0, _offset);
-            CursorPositions[1] = new Vector3(_offset,0, _levelBounds.size.z - _offset);
-            CursorPositions[2] = new Vector3( _levelBounds.size.x - _offset,0, _offset);
-            CursorPositions[3] = new Vector3( _levelBounds.size.x - _offset,0, _levelBounds.size.z - _offset);
+            CursorPositions[0] = new Vector3(_offset,0, _levelBounds.size.z - _offset);
+            CursorPositions[1] = new Vector3( _levelBounds.size.x - _offset,0, _levelBounds.size.z - _offset);         
+            CursorPositions[2] = new Vector3(_offset,0, _offset);
+            CursorPositions[3] = new Vector3( _levelBounds.size.x - _offset,0, _offset);
+        }
+        
+        public void SetCursorsTo(Vector3 position)
+        {
+            for (int i = 0; i < CursorPositions.Length; ++i)
+            {
+                CursorPositions[i] = position;
+            }
         }
         
         public void SetCursorsToCenter()
         {
-            CursorPositions[0] = _levelBounds.center;
-            CursorPositions[1] = _levelBounds.center;
-            CursorPositions[2] = _levelBounds.center;
-            CursorPositions[3] = _levelBounds.center;
+            for (int i = 0; i < CursorPositions.Length; ++i)
+            {
+                CursorPositions[i] = _levelBounds.center;
+            }
         }
         
         public void SetCursorPositionClamp(int playerIndex, Vector3 position)
