@@ -53,7 +53,7 @@ namespace GeoTetra.Partak
             _saveActions = new Action[]
             {
                 SaveToAWS,
-                SerializeLevel,
+                SaveLevel,
             };
             
             _saveButton.onClick.AddListener(OnClickSave);
@@ -126,12 +126,17 @@ namespace GeoTetra.Partak
             _gameState.Service<GameState>().AddLevelId(_editingLevelId);
         }
 
+        private void SaveLevel()
+        {
+            SerializeLevel();
+            OnCloseClick();
+        }
+        
         private async void SaveToAWS()
         {
             _levelConfig.Datum.Shared = true;
             SerializeLevel();
             await _database.Service<PartakDatabase>().SaveLevel(_editingLevelId);
-            
             OnCloseClick();
         }
 

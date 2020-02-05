@@ -33,7 +33,7 @@ namespace GeoTetra.Partak
         private bool _populatingNextSet;
         private bool _isDonePopulating;
 
-        private Func<List<List<LocalLevelDatum>>, Task<bool>> _populateNextSet;
+        private Func<List<List<LocalLevelDatum>>, CancellationToken, Task<bool>> _populateNextSet;
         private Func<LevelButton, CancellationToken, Task> _populateLevelButton;
         private Action<LevelButton> _finalButton;
 
@@ -58,7 +58,7 @@ namespace GeoTetra.Partak
         }
 
         public void Initialize(
-            Func<List<List<LocalLevelDatum>>, Task<bool>> populateNextSet, 
+            Func<List<List<LocalLevelDatum>>, CancellationToken, Task<bool>> populateNextSet, 
             Func<LevelButton, CancellationToken, Task> populateLevelButton,
             Action<LevelButton> finalButton)
         {
@@ -66,6 +66,7 @@ namespace GeoTetra.Partak
             _populateLevelButton = populateLevelButton;
             _populateNextSet = populateNextSet;
             _isDonePopulating = false;
+            _populatingNextSet = false;
             LayoutUI();
         }
 
@@ -73,6 +74,7 @@ namespace GeoTetra.Partak
         {
             _topRowIndex = 0;
             _isDonePopulating = false;
+            _populatingNextSet = false;
 
             Vector3 newPos = _scrollRect.content.anchoredPosition3D;
             newPos.y = 0;
@@ -88,7 +90,7 @@ namespace GeoTetra.Partak
                 _levelButtonRows[r].RectTransform.anchoredPosition3D = rowPos;
                 for (int c = 0; c < _columnCount; ++c)
                 {
-                    _levelButtonRows[r].LevelButtons[c].SetEmpty(true);
+                    _levelButtonRows[r].LevelButtons[c].SetEmpty();
                 }
             }
         }
@@ -113,18 +115,15 @@ namespace GeoTetra.Partak
                     
                     if (documentRowIndex >= 0 && documentRowIndex < _datumLists.Count && c < _datumLists[documentRowIndex].Count )
                     {
+                        _levelButtonRows[r].LevelButtons[c].Index0 = documentRowIndex;
+                        _levelButtonRows[r].LevelButtons[c].Index1 = c;
                         _levelButtonRows[r].LevelButtons[c].LevelDatum = _datumLists[documentRowIndex][c];
                         await _populateLevelButton(_levelButtonRows[r].LevelButtons[c], cancellationToken);
                         if (cancellationToken.IsCancellationRequested) return;
-                        _levelButtonRows[r].LevelButtons[c].Index0 = documentRowIndex;
-                        _levelButtonRows[r].LevelButtons[c].Index1 = c;
-                        _levelButtonRows[r].LevelButtons[c].Image.color = Color.white;
-                        _levelButtonRows[r].LevelButtons[c].Button.interactable = true;
-                        _levelButtonRows[r].LevelButtons[c].ShowingLevel = true;
-                        _levelButtonRows[r].LevelButtons[c].Text.text = "";
                     }
                     else
                     {
+                        if (cancellationToken.IsCancellationRequested) return;
                         if (_finalButton != null && (documentRowIndex * ColumnCount) + c == TotalDatumCount())
                         {
                             _levelButtonRows[r].LevelButtons[c].Index0 = documentRowIndex;
@@ -133,7 +132,7 @@ namespace GeoTetra.Partak
                         }
                         else
                         {
-                            _levelButtonRows[r].LevelButtons[c].SetEmpty(true);
+                            _levelButtonRows[r].LevelButtons[c].SetEmpty();
                         }
                     }
                 }
@@ -141,7 +140,7 @@ namespace GeoTetra.Partak
                 documentRowIndex++;
             }
             
-            if (documentRowIndex >= _datumLists.Count) PopulateNextSet();
+            if (documentRowIndex >= _datumLists.Count) PopulateNextSet(cancellationToken);
         }
 
         private void OnScrolled(Vector2 delta)
@@ -175,13 +174,14 @@ namespace GeoTetra.Partak
             }
         }
 
-        private async void PopulateNextSet()
+        private async void PopulateNextSet(CancellationToken cancellationToken)
         {
             if (_populatingNextSet || _isDonePopulating) return;
             _populatingNextSet = true;
             
-            _isDonePopulating = await _populateNextSet(_datumLists);
-            
+            _isDonePopulating = await _populateNextSet(_datumLists, cancellationToken);
+            if (cancellationToken.IsCancellationRequested) return;
+
             float verticalSize = (_datumLists.Count + (_isDonePopulating ? 0 : 1) + (_finalButton == null ? 0 : 1)) * (_itemRect.height + _rowSpacing);
             _scrollRect.content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, verticalSize);
             

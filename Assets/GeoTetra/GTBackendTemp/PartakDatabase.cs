@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Security;
 using System.Threading;
@@ -144,12 +145,34 @@ namespace GeoTetra.GTBackend
             return _table.Query(config);
         }
         
-        public async Task DownloadLevelPreview(string id, Texture2D image, CancellationToken cancellationToken)
+        public async Task DownloadLevelPreview(string id, Texture2D image)
         {
             string key = S3LevelImageKey(id);
-            byte[] bytes = await GetImageBytesFromS3(key, cancellationToken);
-            if (cancellationToken.IsCancellationRequested) return;
+            byte[] bytes = await GetImageBytesFromS3(key);
             image.LoadImage(bytes, true);
+        }
+        
+        private async Task<byte[]> GetImageBytesFromS3(string key)
+        {
+            return await Task.Run( () =>
+            {
+                GetObjectRequest request = new GetObjectRequest
+                {
+                    BucketName = _s3Bucket,
+                    Key = key
+                };
+
+                using (GetObjectResponse response = _s3Client.GetObject(request))
+                {
+                    MemoryStream memoryStream = new MemoryStream();
+                    using (Stream responseStream = response.ResponseStream)
+                    {
+                        responseStream.CopyTo(memoryStream);
+                    }
+
+                    return memoryStream.ToArray();
+                }
+            });
         }
 
         private async Task<byte[]> GetImageBytesFromS3(string key, CancellationToken cancellationToken)

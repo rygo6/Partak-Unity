@@ -96,6 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -155,7 +156,7 @@ MonoBehaviour:
   _gameState:
     m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
     m_SubObjectName: 
-  _fps: 30
+  _fps: 60
   _deserializeLevelOnStart: 0
   _itemRoot: {fileID: 1286567769}
   _cameraCapture: {fileID: 871717654}
@@ -486,11 +487,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5192034690215540494, guid: 6493edc3e539ea04491ec4d3922d5aec,
+    - target: {fileID: 5192034690208483172, guid: 6493edc3e539ea04491ec4d3922d5aec,
         type: 3}
-      propertyPath: m_Name
-      value: CursorStore
-      objectReference: {fileID: 0}
+      propertyPath: _levelConfig
+      value: 
+      objectReference: {fileID: 106529235}
     - target: {fileID: 5192034690215199156, guid: 6493edc3e539ea04491ec4d3922d5aec,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -546,11 +547,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5192034690208483172, guid: 6493edc3e539ea04491ec4d3922d5aec,
+    - target: {fileID: 5192034690215540494, guid: 6493edc3e539ea04491ec4d3922d5aec,
         type: 3}
-      propertyPath: _levelConfig
-      value: 
-      objectReference: {fileID: 106529235}
+      propertyPath: m_Name
+      value: CursorStore
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6493edc3e539ea04491ec4d3922d5aec, type: 3}
 --- !u!114 &591343173 stripped
@@ -1004,11 +1005,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2477013746912188725, guid: 2866778916b6ff54a863e9c85e73ce85,
-        type: 3}
-      propertyPath: m_Name
-      value: CellSystemTester
-      objectReference: {fileID: 0}
     - target: {fileID: 2477013746911914215, guid: 2866778916b6ff54a863e9c85e73ce85,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1064,6 +1060,51 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2477013746912188725, guid: 2866778916b6ff54a863e9c85e73ce85,
+        type: 3}
+      propertyPath: m_Name
+      value: CellSystemTester
+      objectReference: {fileID: 0}
+    - target: {fileID: 2477013746918665241, guid: 2866778916b6ff54a863e9c85e73ce85,
+        type: 3}
+      propertyPath: _levelConfig
+      value: 
+      objectReference: {fileID: 106529235}
+    - target: {fileID: 2477013746918670037, guid: 2866778916b6ff54a863e9c85e73ce85,
+        type: 3}
+      propertyPath: _levelConfig
+      value: 
+      objectReference: {fileID: 106529235}
+    - target: {fileID: 2477013746918742459, guid: 2866778916b6ff54a863e9c85e73ce85,
+        type: 3}
+      propertyPath: _cursorStore
+      value: 
+      objectReference: {fileID: 591343173}
+    - target: {fileID: 2477013746918744341, guid: 2866778916b6ff54a863e9c85e73ce85,
+        type: 3}
+      propertyPath: _levelConfig
+      value: 
+      objectReference: {fileID: 106529235}
+    - target: {fileID: 2477013746918749703, guid: 2866778916b6ff54a863e9c85e73ce85,
+        type: 3}
+      propertyPath: _cursorStore
+      value: 
+      objectReference: {fileID: 591343173}
+    - target: {fileID: 2477013746918749703, guid: 2866778916b6ff54a863e9c85e73ce85,
+        type: 3}
+      propertyPath: _levelConfig
+      value: 
+      objectReference: {fileID: 106529235}
+    - target: {fileID: 2477013746918750667, guid: 2866778916b6ff54a863e9c85e73ce85,
+        type: 3}
+      propertyPath: _cursorStore
+      value: 
+      objectReference: {fileID: 591343173}
+    - target: {fileID: 2477013746918750667, guid: 2866778916b6ff54a863e9c85e73ce85,
+        type: 3}
+      propertyPath: _levelConfig
+      value: 
+      objectReference: {fileID: 106529235}
     - target: {fileID: 6595894874887153957, guid: 2866778916b6ff54a863e9c85e73ce85,
         type: 3}
       propertyPath: _levelConfig
@@ -1079,46 +1120,6 @@ PrefabInstance:
       propertyPath: _cursorStore
       value: 
       objectReference: {fileID: 591343173}
-    - target: {fileID: 2477013746918750667, guid: 2866778916b6ff54a863e9c85e73ce85,
-        type: 3}
-      propertyPath: _cursorStore
-      value: 
-      objectReference: {fileID: 591343173}
-    - target: {fileID: 2477013746918750667, guid: 2866778916b6ff54a863e9c85e73ce85,
-        type: 3}
-      propertyPath: _levelConfig
-      value: 
-      objectReference: {fileID: 106529235}
-    - target: {fileID: 2477013746918670037, guid: 2866778916b6ff54a863e9c85e73ce85,
-        type: 3}
-      propertyPath: _levelConfig
-      value: 
-      objectReference: {fileID: 106529235}
-    - target: {fileID: 2477013746918742459, guid: 2866778916b6ff54a863e9c85e73ce85,
-        type: 3}
-      propertyPath: _cursorStore
-      value: 
-      objectReference: {fileID: 591343173}
-    - target: {fileID: 2477013746918665241, guid: 2866778916b6ff54a863e9c85e73ce85,
-        type: 3}
-      propertyPath: _levelConfig
-      value: 
-      objectReference: {fileID: 106529235}
-    - target: {fileID: 2477013746918749703, guid: 2866778916b6ff54a863e9c85e73ce85,
-        type: 3}
-      propertyPath: _cursorStore
-      value: 
-      objectReference: {fileID: 591343173}
-    - target: {fileID: 2477013746918749703, guid: 2866778916b6ff54a863e9c85e73ce85,
-        type: 3}
-      propertyPath: _levelConfig
-      value: 
-      objectReference: {fileID: 106529235}
-    - target: {fileID: 2477013746918744341, guid: 2866778916b6ff54a863e9c85e73ce85,
-        type: 3}
-      propertyPath: _levelConfig
-      value: 
-      objectReference: {fileID: 106529235}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2866778916b6ff54a863e9c85e73ce85, type: 3}
 --- !u!1001 &8503495098352223310
@@ -1128,11 +1129,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8503495098874890262, guid: 2edcda2afeed9cb41a6379379914d9af,
-        type: 3}
-      propertyPath: m_Name
-      value: Background128x128
-      objectReference: {fileID: 0}
     - target: {fileID: 8503495098874532918, guid: 2edcda2afeed9cb41a6379379914d9af,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1188,6 +1184,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8503495098874890262, guid: 2edcda2afeed9cb41a6379379914d9af,
+        type: 3}
+      propertyPath: m_Name
+      value: Background128x128
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2edcda2afeed9cb41a6379379914d9af, type: 3}
 --- !u!1001 &9080175333759410478
@@ -1197,11 +1198,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 9080175333540703033, guid: 4ae8e050e947b804bbec77085ebc636a,
-        type: 3}
-      propertyPath: m_Name
-      value: Background256x144
-      objectReference: {fileID: 0}
     - target: {fileID: 9080175333540542233, guid: 4ae8e050e947b804bbec77085ebc636a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1256,6 +1252,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9080175333540703033, guid: 4ae8e050e947b804bbec77085ebc636a,
+        type: 3}
+      propertyPath: m_Name
+      value: Background256x144
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ae8e050e947b804bbec77085ebc636a, type: 3}

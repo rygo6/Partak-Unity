@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8242521370984571066}
   - component: {fileID: 5899796835354309069}
   - component: {fileID: 263207019947684764}
+  - component: {fileID: 8775989655578932237}
   m_Layer: 5
   m_Name: ScrollItem
   m_TagString: Untagged
@@ -90,8 +91,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!114 &5899796835354309069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,8 +109,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Texture: {fileID: 0}
   m_UVRect:
     serializedVersion: 2
@@ -131,4 +128,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a49811046527c64f98063d343953748, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _button: {fileID: 8242521370984571066}
+  _dragThreshold: 40
+--- !u!114 &8775989655578932237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8242521370984571064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5019608}
+  m_EffectDistance: {x: 2, y: 2}
+  m_UseGraphicAlpha: 1

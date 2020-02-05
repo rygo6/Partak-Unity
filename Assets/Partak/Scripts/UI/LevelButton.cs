@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,8 +26,8 @@ namespace GeoTetra.Partak
         public int Index0 { get; set; } = -1;
         public int Index1 { get; set; } = -1;
         
-        public bool ShowingLevel { get; set; }
-        public LocalLevelDatum LevelDatum;
+//        public bool ShowingLevel { get; set; }
+        public LocalLevelDatum LevelDatum { get; set; }
         
         public Button Button => _button;
         public Text Text => _text;
@@ -46,16 +47,10 @@ namespace GeoTetra.Partak
         
         public void LoadTextureFromDisk(string path)
         {
-            if (_image.texture == null || !(_image.texture is Texture2D)) _image.texture = new Texture2D(0,0, TextureFormat.RGBA32, 0, false);
+            if (_image.texture  == null) _image.texture  = new Texture2D(0,0, TextureFormat.RGBA32, 0, false);
             byte[] imageBytes = System.IO.File.ReadAllBytes(path);
-            Texture2D image = (Texture2D) _image.texture;
-            image.LoadImage(imageBytes, true);
-        }
-
-        public async Task DownloadAndDisplayLevelAsync(PartakDatabase partakDatabase, string id, CancellationToken cancellationToken)
-        {
-            if (_image.texture == null || !(_image.texture is Texture2D)) _image.texture = new Texture2D(0,0, TextureFormat.RGBA32, 0, false);
-            await partakDatabase.DownloadLevelPreview(id, Image.texture as Texture2D, cancellationToken);
+            Texture2D textured2d = (Texture2D)_image.texture;
+            textured2d.LoadImage(imageBytes, true);;
         }
 
         public bool IsIndex(int index0, int index1)
@@ -69,16 +64,14 @@ namespace GeoTetra.Partak
             _thumbsUpText.gameObject.SetActive(state);
         }
 
-        public void SetEmpty(bool clearIndeces)
+        public void SetEmpty()
         {
-            if (clearIndeces)
-            {
-                Index0 = -1;
-                Index1 = -1;
-            }
+            Index0 = -1;
+            Index1 = -1;
             Text.text = "";
+            _image.texture = null;
+            _image.color = Color.gray;
             LevelDatum = null;
-            ShowingLevel = false;
             ShowRating(false);
             Button.interactable = false;
         }

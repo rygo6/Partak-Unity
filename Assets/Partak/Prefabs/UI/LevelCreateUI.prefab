@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 143578182931713570}
   - component: {fileID: 143578182931713569}
   - component: {fileID: 143578182931713571}
+  - component: {fileID: 2025517300952836101}
   m_Layer: 5
   m_Name: ItemScrollMenu
   m_TagString: Untagged
@@ -107,6 +108,21 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2025517300952836101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 143578182931713599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 1, b: 1, a: 0.5019608}
+  m_EffectDistance: {x: 2, y: 2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &143578183832626836
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,6 +639,7 @@ GameObject:
   - component: {fileID: 2010739986888160102}
   - component: {fileID: 5282221296364414117}
   - component: {fileID: 9018422916981013597}
+  - component: {fileID: 137872255549446055}
   m_Layer: 5
   m_Name: Menu
   m_TagString: Untagged
@@ -716,6 +733,21 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &137872255549446055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3660044772243624884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 1, b: 1, a: 0.5019608}
+  m_EffectDistance: {x: 2, y: 2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &3805812752209072617
 GameObject:
   m_ObjectHideFlags: 0
@@ -728,6 +760,7 @@ GameObject:
   - component: {fileID: 3805812752209072629}
   - component: {fileID: 3805812752209072619}
   - component: {fileID: 1680949843453755548}
+  - component: {fileID: 760471534707394748}
   m_Layer: 5
   m_Name: SaveButton
   m_TagString: Untagged
@@ -831,6 +864,21 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &760471534707394748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3805812752209072617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5019608}
+  m_EffectDistance: {x: 2, y: 2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &4058262721455254290
 GameObject:
   m_ObjectHideFlags: 0
@@ -957,6 +1005,7 @@ GameObject:
   - component: {fileID: 4519839244536650220}
   - component: {fileID: 6212177591129927576}
   - component: {fileID: 8877905688221023196}
+  - component: {fileID: 2812268691681953354}
   m_Layer: 5
   m_Name: ValidateButton
   m_TagString: Untagged
@@ -1060,6 +1109,21 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &2812268691681953354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4877786176046005813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5019608}
+  m_EffectDistance: {x: 2, y: 2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &5131217650740013709
 GameObject:
   m_ObjectHideFlags: 0
@@ -1243,7 +1307,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_HandleRect: {fileID: 4995095405659196898}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1261,6 +1325,7 @@ GameObject:
   - component: {fileID: 4416513898401819207}
   - component: {fileID: 1389485752112313248}
   - component: {fileID: 7665712939529951380}
+  - component: {fileID: 958243482665769228}
   m_Layer: 5
   m_Name: CancelButton
   m_TagString: Untagged
@@ -1364,6 +1429,21 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &958243482665769228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5957768372075307769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5019608}
+  m_EffectDistance: {x: 2, y: 2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &6012911341318557589
 GameObject:
   m_ObjectHideFlags: 0
@@ -1830,15 +1910,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3575658466cb3e64bb6b15d4b0910eb8, type: 3}
---- !u!224 &6060941882652002787 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6188751964433521138, guid: 3575658466cb3e64bb6b15d4b0910eb8,
-    type: 3}
-  m_PrefabInstance: {fileID: 143578183563546641}
-  m_PrefabAsset: {fileID: 0}
 --- !u!223 &7770804498999463845 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 7649757720313323444, guid: 3575658466cb3e64bb6b15d4b0910eb8,
+    type: 3}
+  m_PrefabInstance: {fileID: 143578183563546641}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &6060941882652002787 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6188751964433521138, guid: 3575658466cb3e64bb6b15d4b0910eb8,
     type: 3}
   m_PrefabInstance: {fileID: 143578183563546641}
   m_PrefabAsset: {fileID: 0}

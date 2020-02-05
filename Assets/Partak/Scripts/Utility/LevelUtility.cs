@@ -29,7 +29,7 @@ namespace GeoTetra.Partak
     public class LevelCatalogDatum
     {
         [SerializeField]
-        public List<string> _levelIDs = new List<string>();
+        private List<string> _levelIDs = new List<string>();
 
         public List<string> LevelIDs => _levelIDs;
 
