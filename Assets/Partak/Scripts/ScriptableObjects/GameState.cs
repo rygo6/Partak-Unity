@@ -9,8 +9,11 @@ using UnityEngine;
 
 namespace GeoTetra.Partak
 {
+    [Serializable]
     public class GameStateReference : ServiceReference
     {
+        public GameState Service => Service<GameState>();
+        
         public override void LoadServiceFromPool()
         {
             if (string.IsNullOrEmpty(AssetGUID))

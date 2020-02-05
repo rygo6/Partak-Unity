@@ -40,7 +40,6 @@ namespace GeoTetra.Partak
 
         private string[] LoadedLevelMessages;
         private Action[] LoadedLevelActions;
-        
 
         protected override void Awake()
         {
@@ -77,12 +76,14 @@ namespace GeoTetra.Partak
 
         private async Task PopulateLevelButton(LevelButton levelButton, CancellationToken cancellationToken)
         {
-            levelButton.ShowRating(false);
             levelButton.LoadTextureFromDisk(LevelUtility.LevelImagePath(levelButton.LevelDatum.LevelID));
             levelButton.ShowRating(false);
+            levelButton.Text.text = "";
+            levelButton.Image.color = Color.white;
+            levelButton.Button.interactable = true;
         }
 
-        private async Task<bool> DownloadNextSet(List<List<LocalLevelDatum>> datumLists)
+        private async Task<bool> DownloadNextSet(List<List<LocalLevelDatum>> datumLists, CancellationToken cancellationToken)
         {
             if (_catalogDatumIndex >= _gameState.LevelCatalogDatum.LevelIDs.Count) return true;
             
@@ -107,7 +108,7 @@ namespace GeoTetra.Partak
             levelButton.Image.color = new Color(1,1,1,.5f);
             levelButton.Image.texture = null;
             levelButton.Text.text = "Add\nLevel";
-            levelButton.ShowingLevel = false;
+//            levelButton.ShowingLevel = false;
             levelButton.Button.interactable = true;
         }
 
