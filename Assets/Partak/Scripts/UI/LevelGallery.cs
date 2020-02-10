@@ -18,17 +18,20 @@ namespace GeoTetra.Partak.UI
 
         private void Start()
         {
-            _gameState.Service<GameState>().LevelIndex = PlayerPrefs.GetInt("LevelIndex");
             _leftButton.onClick.AddListener(GalleryLeft);
             _rightButton.onClick.AddListener(GalleryRight);
             _material = GetComponent<RawImage>().material;
-            
-            string imagePath = LevelUtility.LevelImagePath(_gameState.Service<GameState>().GetSelectedLevelId());
-            byte[] imageBytes = System.IO.File.ReadAllBytes(imagePath);
-            Texture2D image = new Texture2D(0,0);
-            image.LoadImage(imageBytes);
-            
-            _material.SetTexture("_Texture1", image);
+
+            string levelId = _gameState.Service<GameState>().GetSelectedLevelId();
+            if (!string.IsNullOrEmpty(levelId))
+            {
+                string imagePath = LevelUtility.LevelImagePath(levelId);
+                byte[] imageBytes = System.IO.File.ReadAllBytes(imagePath);
+                Texture2D image = new Texture2D(0,0);
+                image.LoadImage(imageBytes);
+                
+                _material.SetTexture("_Texture1", image);
+            }
         }
 
         private void GalleryRight()
@@ -47,7 +50,9 @@ namespace GeoTetra.Partak.UI
             _leftButton.interactable = false;
             _gameState.Service<GameState>().LevelIndex += direction;
 
-            string imagePath = LevelUtility.LevelImagePath(_gameState.Service<GameState>().GetSelectedLevelId());
+            string levelId = _gameState.Service<GameState>().GetSelectedLevelId();
+            if (string.IsNullOrEmpty(levelId)) yield break;
+            string imagePath = LevelUtility.LevelImagePath(levelId);
             
             byte[] imageBytes = System.IO.File.ReadAllBytes(imagePath);
             Texture2D image = new Texture2D(0,0);

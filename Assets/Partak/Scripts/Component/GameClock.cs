@@ -40,6 +40,7 @@ namespace GeoTetra.Partak
 
         private void OnDestroy()
         {
+            if (_cellParticleStore != null) _cellParticleStore.WinEvent -= Win;
             _surroundMaterial.SetFloat("_Blend", 0f);
             _surroundMaterial.SetTexture("_Texture2", null);
             for (int i = 0; i < _gameStateReference.Service<GameState>().PlayerCount(); ++i)

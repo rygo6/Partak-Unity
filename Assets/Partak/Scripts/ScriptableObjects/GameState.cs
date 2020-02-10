@@ -12,27 +12,23 @@ namespace GeoTetra.Partak
     [Serializable]
     public class GameStateReference : ServiceReference
     {
+        public GameStateReference(string guid) : base(guid)
+        { }
+        
         public GameState Service => Service<GameState>();
         
         public override void LoadServiceFromPool()
         {
-            if (string.IsNullOrEmpty(AssetGUID))
-            {
-                _service = AddressableServicesPool.GlobalPool.PrePooledPopulate<GameState>();
-            }
-            else
-            {
-                _service = AddressableServicesPool.GlobalPool.PrePooledPopulate<GameState>(this);
-            }
+            if (string.IsNullOrEmpty(AssetGUID)) _service = AddressableServicesPool.GlobalPool.PrePooledPopulate<GameState>();
+            else _service = AddressableServicesPool.GlobalPool.PrePooledPopulate<GameState>(this);
         }
         
         public static implicit operator GameState(GameStateReference reference)
         {
             return reference.Service<GameState>();
         }
-
     }
-    
+
     [CreateAssetMenu(menuName = "GeoTetra/Partak/GameState")]
     public class GameState : ScriptableObject
     {
@@ -45,6 +41,8 @@ namespace GeoTetra.Partak
         [SerializeField] private bool _fullVersion;
         [SerializeField] private int _sessionCount;
 
+        private const string LevelIndexPrefKey = "LevelIndex";
+        
         public LevelCatalogDatum LevelCatalogDatum => _levelCatalogDatum;
         public bool FullVersion => _fullVersion;
         public int SessionCount => _sessionCount;
@@ -74,6 +72,7 @@ namespace GeoTetra.Partak
                 {
                     _levelIndex = value;
                 }
+                PlayerPrefs.SetInt(LevelIndexPrefKey, _levelIndex);
             }
         }
 
@@ -113,6 +112,8 @@ namespace GeoTetra.Partak
 
         private void OnEnable()
         {
+           _levelIndex = PlayerPrefs.GetInt("LevelIndex", 0);
+            
             if (PlayerPrefs.HasKey("isFullVersion"))
             {
                 Debug.Log("isFullVersion");
@@ -134,25 +135,18 @@ namespace GeoTetra.Partak
             }
 
             _levelCatalogDatum = LevelCatalogDatum.LoadLevelCatalogDatum();
-            _levelIndex = 0;
-            _editingLevelIndex = 0;
-
+            
 //		CrashReporting.Init("ff1d2528-adf9-4ba4-bf2d-d34f2ccfe587", Version);
         }
 
         public string GetSelectedLevelId()
         {
-            return LevelCatalogDatum.LevelIDs[_levelIndex];
+            return _levelIndex < _levelCatalogDatum.LevelIDs.Count && _levelCatalogDatum.LevelIDs.Count > 0 ? LevelCatalogDatum.LevelIDs[_levelIndex] : "";
         }
         
         public string GetEditingLevelId()
         {
-            if (_editingLevelIndex >= LevelCatalogDatum.LevelIDs.Count)
-            {
-                return Guid.NewGuid().ToString();
-            }
-            
-            return LevelCatalogDatum.LevelIDs[_editingLevelIndex];
+            return _editingLevelIndex < LevelCatalogDatum.LevelIDs.Count && LevelCatalogDatum.LevelIDs.Count > 0 ? Guid.NewGuid().ToString() : LevelCatalogDatum.LevelIDs[_editingLevelIndex];
         }
 
         public void AddLevelId(string id)

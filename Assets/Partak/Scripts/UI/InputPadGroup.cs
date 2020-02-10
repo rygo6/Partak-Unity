@@ -16,6 +16,11 @@ namespace GeoTetra.Partak.UI
         {
             for (int i = 0; i < _inputPads.Length; ++i)
             {
+                _inputPads[i].Visibility(true);
+            }
+            
+            for (int i = 0; i < _inputPads.Length; ++i)
+            {
                 if (_gameState.Service<GameState>().PlayerStates[i].PlayerMode != PlayerMode.Human)
                 {
                     _inputPads[i].gameObject.SetActive(false);
@@ -49,6 +54,12 @@ namespace GeoTetra.Partak.UI
             _componentContainer.Service<ComponentContainer>().Get<CellParticleStore>().WinEvent += DisableAllPads;
         }
 
+        public void Deinitialize()
+        {
+            _componentContainer.Service<ComponentContainer>().Get<CellParticleStore>().LoseEvent -= DisablePad;
+            _componentContainer.Service<ComponentContainer>().Get<CellParticleStore>().WinEvent -= DisableAllPads;
+        }
+
         private void DisableAllPads()
         {
             for (int i = 0; i < _inputPads.Length; ++i)
@@ -59,7 +70,7 @@ namespace GeoTetra.Partak.UI
 
         private void DisablePad(int playerIndex)
         {
-            _inputPads[playerIndex].Disable();
+            _inputPads[playerIndex].Visibility(false);
         }
     }
 }
