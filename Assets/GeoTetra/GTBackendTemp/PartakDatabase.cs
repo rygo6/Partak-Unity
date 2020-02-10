@@ -87,7 +87,7 @@ namespace GeoTetra.GTBackend
                     Debug.Log($"{_tableName} Table Success");
                     _s3Client = new AmazonS3Client(credentials, endpoint);
                     _transferUtility = new TransferUtility(_s3Client);
-                    Debug.Log($"{_transferUtility} Success");
+                    Debug.Log($"{_transferUtility} Success {GetInstanceID()}");
                 }
                 catch (Exception ex)
                 {

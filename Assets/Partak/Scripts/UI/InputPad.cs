@@ -45,11 +45,11 @@ namespace GeoTetra.Partak.UI
             _cursorStore = _componentContainer.Service<ComponentContainer>().Get<CursorStore>();
         }
 
-        public void Disable()
+        public void Visibility(bool state)
         {
-            enabled = false;
-            _lineRenderer.enabled = false;
-            _overlayCanvasGroup.alpha = 0f;
+            enabled = state;
+            _lineRenderer.enabled = state;
+            _overlayCanvasGroup.alpha = state ? 1 : 0;
         }
 
         private void LateUpdate()

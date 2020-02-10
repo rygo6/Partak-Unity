@@ -96,6 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -158,6 +159,8 @@ MonoBehaviour:
   - m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
     m_SubObjectName: 
   - m_AssetGUID: 276f5bb3082e1654f93a49fb34fe90b4
+    m_SubObjectName: 
+  - m_AssetGUID: 17010a8528f4c0b43a5469286e4a9730
     m_SubObjectName: 
   _prePoolingComplete:
     m_PersistentCalls:
@@ -370,11 +373,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1089048853691498244, guid: ee4750cb362a0e84ca03a025a3bb2107,
-        type: 3}
-      propertyPath: m_Name
-      value: UIRenderer
-      objectReference: {fileID: 0}
     - target: {fileID: 1089048853691498242, guid: ee4750cb362a0e84ca03a025a3bb2107,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -429,6 +427,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1089048853691498244, guid: ee4750cb362a0e84ca03a025a3bb2107,
+        type: 3}
+      propertyPath: m_Name
+      value: UIRenderer
       objectReference: {fileID: 0}
     - target: {fileID: 1089048853691498245, guid: ee4750cb362a0e84ca03a025a3bb2107,
         type: 3}

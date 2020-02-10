@@ -1359,7 +1359,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _analyticsRelay:
-    m_AssetGUID: 
+    m_AssetGUID: 17010a8528f4c0b43a5469286e4a9730
     m_SubObjectName: 
   _gameStateReference:
     m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d

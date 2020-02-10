@@ -4,17 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2.DocumentModel;
 using GeoTetra.GTBackend;
 using GeoTetra.GTPooling;
 using GeoTetra.GTUI;
-using UnityEditor.iOS;
 using UnityEngine.AddressableAssets;
-using Debug = UnityEngine.Debug;
 
 namespace GeoTetra.Partak
 {
@@ -99,13 +95,13 @@ namespace GeoTetra.Partak
             if (_gameState.Service.LevelCatalogDatum.LevelIDs.Contains(levelButton.LevelDatum.LevelID))
             {
                 levelButton.Text.text = "Downloaded";
-                levelButton.Image.color = Color.red;
+                levelButton.Image.color = Color.gray;
                 levelButton.Button.interactable = false;
             }
             else
             {
                 levelButton.Text.text = "";
-                levelButton.Image.color = Color.green;
+                levelButton.Image.color = Color.white;
                 levelButton.Button.interactable = true;
             }
             levelButton.ShowRating(true);

@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections;
 using System.Collections.Generic;
 using GeoTetra.GTCommon.Components;
@@ -104,15 +104,27 @@ namespace GeoTetra.GTUI
             _stackTransitionOccured.Invoke();
         }
 
-        public void Flush(Action onFinish = null)
+        public void Flush(Action onFinish = null, TransitionType transitionType = TransitionType.Vertical)
         {
             StackUI currentUI = _currentStackUI;
             _currentStackUI = null;
-            TweenOut(currentUI, Direction4.Down, () =>
+            if (transitionType == TransitionType.Vertical)
             {
-                _addressablesPool.ReleaseToPool(currentUI.gameObject);
-                onFinish?.Invoke();
-            });
+                TweenOut(currentUI, Direction4.Down, () =>
+                {
+                    _addressablesPool.ReleaseToPool(currentUI.gameObject);
+                    onFinish?.Invoke();
+                });
+            }
+            else if (transitionType == TransitionType.Fade)
+            {
+                FadeOut(currentUI, () =>
+                {
+                    _addressablesPool.ReleaseToPool(currentUI.gameObject);
+                    onFinish?.Invoke();
+                });
+            }
+
 
             while (_priorStackUIs.Count > 0)
             {

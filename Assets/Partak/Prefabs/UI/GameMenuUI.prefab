@@ -662,6 +662,7 @@ LineRenderer:
   m_MotionVectors: 0
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1955,6 +1956,7 @@ LineRenderer:
   m_MotionVectors: 0
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2573,13 +2575,12 @@ MonoBehaviour:
   _sceneLoadSystem:
     m_AssetGUID: b30141a42589e924e97c08dbbe68ad23
     m_SubObjectName: 
-  _analyticsRelay: {fileID: 11400000, guid: 17010a8528f4c0b43a5469286e4a9730, type: 2}
+  _analyticsRelay:
+    m_AssetGUID: 17010a8528f4c0b43a5469286e4a9730
+    m_SubObjectName: 
   _gameState:
     m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
     m_SubObjectName: 
-  _pauseButtons:
-  - {fileID: 5525812421828997953}
-  - {fileID: 5525812420352053631}
   _mainMenuScene:
     m_AssetGUID: efa1e429e9b9149c0ace66aa5e10b21d
     m_SubObjectName: 
@@ -2588,6 +2589,9 @@ MonoBehaviour:
     m_SubObjectName: 
   _inputPadGroup: {fileID: 5525812421816723834}
   _disableIn: {fileID: 5525812422082414364}
+  _pauseButtons:
+  - {fileID: 5525812421828997953}
+  - {fileID: 5525812420352053631}
   _mainMenuButton: {fileID: 487877917581125741}
   _replayButton: {fileID: 845482035981751513}
   _nextButton: {fileID: 4048005437205936783}
@@ -2845,6 +2849,7 @@ LineRenderer:
   m_MotionVectors: 0
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4147,6 +4152,7 @@ LineRenderer:
   m_MotionVectors: 0
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
