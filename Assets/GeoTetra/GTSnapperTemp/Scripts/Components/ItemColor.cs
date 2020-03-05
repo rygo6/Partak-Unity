@@ -94,12 +94,12 @@ namespace GeoTetra.GTSnapper
 			if (data.pointerPress != null)
 			{	
 				Item dragItem = data.pointerPress.GetComponent<Item>();
-				if (dragItem != null && dragItem.HasTag("Color"))
-				{	
-					Item item = GetComponent<Item>();
-					_initialBlendTexture = item.BlendMaterialArray[0].GetTexture("_Blend");
-					item.SetBlendMaterial(dragItem.MaterialArray[0].mainTexture);
-				}
+//				if (dragItem != null && dragItem.HasTag("Color"))
+//				{	
+//					Item item = GetComponent<Item>();
+//					_initialBlendTexture = item.BlendMaterialArray[0].GetTexture("_Blend");
+//					item.SetBlendMaterial(dragItem.MaterialArray[0].mainTexture);
+//				}
 			}
 		}
 	}

@@ -146,7 +146,7 @@ namespace GeoTetra.Partak
         
         public string GetEditingLevelId()
         {
-            return _editingLevelIndex < LevelCatalogDatum.LevelIDs.Count && LevelCatalogDatum.LevelIDs.Count > 0 ? Guid.NewGuid().ToString() : LevelCatalogDatum.LevelIDs[_editingLevelIndex];
+            return _editingLevelIndex < LevelCatalogDatum.LevelIDs.Count && LevelCatalogDatum.LevelIDs.Count > 0 && _editingLevelIndex > 0 ? LevelCatalogDatum.LevelIDs[_editingLevelIndex] : Guid.NewGuid().ToString();
         }
 
         public void AddLevelId(string id)

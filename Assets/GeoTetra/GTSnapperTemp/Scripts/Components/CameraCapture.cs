@@ -20,7 +20,7 @@ namespace GeoTetra.GTSnapper
 
 		private void Awake()
 		{
-			_componentContainer.Service<ComponentContainer>().RegisterComponent(this);
+			if (_componentContainer.Asset != null) _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
 		}
 
 		private void Start()
@@ -28,7 +28,7 @@ namespace GeoTetra.GTSnapper
 #if  UNITY_EDITOR
 			if (_saveOnStart)
 			{
-				string path = EditorSceneManager.GetActiveScene().ToString();
+				string path = EditorSceneManager.GetActiveScene().path;
 				path = path.Replace("unity", "png");
 				SaveScreenshotToFile(path);
 			}
@@ -83,6 +83,8 @@ namespace GeoTetra.GTSnapper
 
 		public void SaveScreenshotToFile(string fileName)
 		{
+			Debug.Log("Saving Screenshot " + fileName);
+			
 			RenderTexture rt = new RenderTexture(_resWidth, _resHeight, 32);
 			
 			_camera.clearFlags = CameraClearFlags.Color;

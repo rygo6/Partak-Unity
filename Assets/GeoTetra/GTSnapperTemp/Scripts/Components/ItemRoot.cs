@@ -17,6 +17,7 @@ namespace GeoTetra.GTSnapper
         [SerializeField] private InputCatcher _inputCatcher;
         [SerializeField] private ItemSettings _itemSettings;
         [SerializeField] private List<Item> _rootItems;
+        [SerializeField] private Material _highlightMaterial;
 
         public event Action DeserializationComplete;
         
@@ -33,6 +34,8 @@ namespace GeoTetra.GTSnapper
         public ItemSettings ItemSettings => _itemSettings;
         
         public InputCatcher InputCatcher => _inputCatcher;
+
+        public Material HighlightMaterial => _highlightMaterial;
 
         private void Awake()
         {
