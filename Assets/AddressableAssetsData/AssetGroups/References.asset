@@ -22,16 +22,29 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - ItemReference
+    m_mainAssetType: GeoTetra.GTSnapper.ScriptableObjects.ItemReference, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - m_GUID: 370f6ec3c6af3fa4aae6eb9460cd0169
     m_Address: QuarterCircleReference
     m_ReadOnly: 0
     m_SerializedLabels:
     - ItemReference
+    m_mainAssetType: GeoTetra.GTSnapper.ScriptableObjects.ItemReference, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - m_GUID: 58b2635dd8b280946bb00aa52cf9731e
+    m_Address: ArcReference
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ItemReference
+    m_mainAssetType: GeoTetra.GTSnapper.ScriptableObjects.ItemReference, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - m_GUID: a98829e85f6b295439ffd58a7fc09aa6
     m_Address: LTriOddReference
     m_ReadOnly: 0
     m_SerializedLabels:
     - ItemReference
+    m_mainAssetType: GeoTetra.GTSnapper.ScriptableObjects.ItemReference, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8897a9da1308dad4cb94657883af64f0, type: 2}
   m_SchemaSet:

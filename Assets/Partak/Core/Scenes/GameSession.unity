@@ -914,6 +914,7 @@ MonoBehaviour:
   _itemSettings: {fileID: 11400000, guid: 65a59aa8109b1e949b21e61173594d4d, type: 2}
   _rootItems:
   - {fileID: 9113844}
+  _highlightMaterial: {fileID: 2100000, guid: 219ebdabeb34e9343a65954e7ca6f1c3, type: 2}
 --- !u!4 &1296888193
 Transform:
   m_ObjectHideFlags: 0

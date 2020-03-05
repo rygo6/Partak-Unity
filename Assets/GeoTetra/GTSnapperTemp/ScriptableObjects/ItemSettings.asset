@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a86e29905dc5546900a5980cedbe15, type: 3}
   m_Name: ItemSettings
   m_EditorClassIdentifier: 
-  _downHighlightItemColor: {r: 0.33490568, g: 0.33490568, b: 1, a: 1}
-  _highlightItemColor: {r: 0, g: 0, b: 1, a: 1}
-  _dropOutlineColor: {r: 0, g: 1, b: 0, a: 1}
-  _instantiateOutlineColor: {r: 0, g: 1, b: 1, a: 1}
-  _deleteOutlineColor: {r: 1, g: 0, b: 0, a: 1}
-  _outlineSize: 0.5
+  _downHighlightItemColor: {r: 0.33490568, g: 0.33490568, b: 1, a: 0.2}
+  _highlightItemColor: {r: 0, g: 0, b: 1, a: 0.2}
+  _dropOutlineColor: {r: 0, g: 1, b: 0, a: 0.2}
+  _instantiateOutlineColor: {r: 0, g: 1, b: 1, a: 0.2}
+  _deleteOutlineColor: {r: 1, g: 0, b: 0, a: 0.2}
+  _outlineSize: 0.0045
   _floatDistance: 20

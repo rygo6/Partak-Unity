@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using GeoTetra.GTSnapper.ScriptableObjects;
 using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 
 namespace GeoTetra.GTSnapper
 {
@@ -26,8 +27,8 @@ namespace GeoTetra.GTSnapper
         public ItemDrop Drop => _itemDrop;
         public ItemDatum ItemDatum { get; private set; }
         public ItemReference ItemReference { get; private set; }
-        public Material[] BlendMaterialArray { get; private set; }
-        public Material[] MaterialArray { get; private set; }
+//        public Material[] BlendMaterialArray { get; private set; }
+//        public Material[] MaterialArray { get; private set; }
         public Mesh[] MeshArray { get; private set; }
         public MeshRenderer[] MeshRendererArray { get; private set; }
         public Transform[] MeshTransformArray { get; private set; }
@@ -40,6 +41,9 @@ namespace GeoTetra.GTSnapper
         public ItemState State { get; set; }
         public string[] TagArray => _tagArray;
         public string[] ChildTagArray => _childTagArray;
+        
+        private bool _drawOutline;
+        private MaterialPropertyBlock _outlinePropertyBlock;
 
         public string UniqueTick
         {
@@ -69,22 +73,22 @@ namespace GeoTetra.GTSnapper
 
         private void Awake()
         {
-            MeshRendererArray = GetComponentsInChildren<MeshRenderer>();
-
-            MeshArray = new Mesh[MeshRendererArray.Length];
-            for (int i = 0; i < MeshArray.Length; ++i)
-            {
-                MeshArray[i] = MeshRendererArray[i].GetComponent<MeshFilter>().sharedMesh;
-            }
-
-            MeshTransformArray = new Transform[MeshRendererArray.Length];
-            for (int i = 0; i < MeshTransformArray.Length; ++i)
-            {
-                MeshTransformArray[i] = MeshRendererArray[i].GetComponent<Transform>();
-            }
-
-            MaterialArrayInitialize();
+            _outlinePropertyBlock = new MaterialPropertyBlock();
+            MeshArrayInitialize();
+//            MaterialArrayInitialize();
             ColliderArrayInitialize();
+        }
+
+        private void LateUpdate()
+        {
+            if (_drawOutline)
+            {
+                for (int i = 0; i < MeshRendererArray.Length; ++i)
+                {
+                    Matrix4x4 matrix = Matrix4x4.TRS(MeshTransformArray[i].position, MeshTransformArray[i].rotation, MeshTransformArray[i].lossyScale);
+                    Graphics.DrawMesh(MeshArray[i], matrix, ItemRoot.HighlightMaterial, 0, (Camera) null, 0, _outlinePropertyBlock, ShadowCastingMode.On, true, (Transform) null, LightProbeUsage.BlendProbes, (LightProbeProxyVolume) null);
+                }
+            }
         }
 
         private void OnDestroy()
@@ -162,30 +166,47 @@ namespace GeoTetra.GTSnapper
             }
         }
 
-        private void MaterialArrayInitialize()
+        private void MeshArrayInitialize()
         {
-            Renderer[] renderers = this.GetComponentsInChildren<Renderer>();
-            List<Material> blendMateriaList = new List<Material>();
-            List<Material> materiaList = new List<Material>();
-            for (int i = 0; i < renderers.Length; ++i)
+            MeshRendererArray = GetComponentsInChildren<MeshRenderer>();
+
+            MeshArray = new Mesh[MeshRendererArray.Length];
+            for (int i = 0; i < MeshArray.Length; ++i)
             {
-                for (int m = 0; m < renderers[i].materials.Length; ++m)
-                {
-                    if (renderers[i].materials[m].shader.ToString() ==
-                        "Mobile/VertexLit (Only Directional Lights) Blend (UnityEngine.Shader)")
-                    {
-                        blendMateriaList.Add(renderers[i].materials[m]);
-                    }
-                    else
-                    {
-                        materiaList.Add(renderers[i].materials[m]);
-                    }
-                }
+                MeshArray[i] = MeshRendererArray[i].GetComponent<MeshFilter>().sharedMesh;
             }
 
-            BlendMaterialArray = blendMateriaList.ToArray();
-            MaterialArray = materiaList.ToArray();
+            MeshTransformArray = new Transform[MeshRendererArray.Length];
+            for (int i = 0; i < MeshTransformArray.Length; ++i)
+            {
+                MeshTransformArray[i] = MeshRendererArray[i].GetComponent<Transform>();
+            }
         }
+
+//        private void MaterialArrayInitialize()
+//        {
+//            Renderer[] renderers = this.GetComponentsInChildren<Renderer>();
+//            List<Material> blendMateriaList = new List<Material>();
+//            List<Material> materiaList = new List<Material>();
+//            for (int i = 0; i < renderers.Length; ++i)
+//            {
+//                for (int m = 0; m < renderers[i].materials.Length; ++m)
+//                {
+//                    if (renderers[i].materials[m].shader.ToString() ==
+//                        "Mobile/VertexLit (Only Directional Lights) Blend (UnityEngine.Shader)")
+//                    {
+//                        blendMateriaList.Add(renderers[i].materials[m]);
+//                    }
+//                    else
+//                    {
+//                        materiaList.Add(renderers[i].materials[m]);
+//                    }
+//                }
+//            }
+//
+//            BlendMaterialArray = blendMateriaList.ToArray();
+//            MaterialArray = materiaList.ToArray();
+//        }
 
         private void ColliderArrayInitialize()
         {
@@ -422,12 +443,12 @@ namespace GeoTetra.GTSnapper
 
         public void SetBlendMaterial(Texture texture)
         {
-            for (int i = 0; i < BlendMaterialArray.Length; ++i)
-            {
-                BlendMaterialArray[i].SetTexture("_Blend", texture);
-                //for some reason shader needs to be reapplied some times to get texture to update
-                BlendMaterialArray[i].shader = Shader.Find("Mobile/VertexLit (Only Directional Lights) Blend");
-            }
+//            for (int i = 0; i < BlendMaterialArray.Length; ++i)
+//            {
+//                BlendMaterialArray[i].SetTexture("_Blend", texture);
+//                //for some reason shader needs to be reapplied some times to get texture to update
+//                BlendMaterialArray[i].shader = Shader.Find("Mobile/VertexLit (Only Directional Lights) Blend");
+//            }
         }
 
         public void SetLayerRecursive(int layer)
@@ -500,6 +521,7 @@ namespace GeoTetra.GTSnapper
         }
 
         private Vector3[] _unExpandColliderSize;
+        private static readonly int OutlineColor = Shader.PropertyToID("_OutlineColor");
 
         public void ResetColliderSize()
         {
@@ -511,55 +533,49 @@ namespace GeoTetra.GTSnapper
 
         public void SetShaderOutline(Color color)
         {
-            if (_currentOutlineColor != color && !_disableOutline)
+            if (_outlinePropertyBlock.GetColor(OutlineColor) != color && !_disableOutline)
             {
-                _currentOutlineColor = color;
-                _outlineNormal = false;
-                for (int i = 0; i < BlendMaterialArray.Length; ++i)
-                {
-                    BlendMaterialArray[i].shader = Shader.Find("GeoTetra/VertexLightedBlendOutline");
-                    BlendMaterialArray[i].color = Color.white;
-                    BlendMaterialArray[i].SetFloat("_Outline", ItemRoot.ItemSettings.OutlineSize);
-                    BlendMaterialArray[i].SetColor("_OutlineColor", color);
-                }
-
-                for (int i = 0; i < MaterialArray.Length; ++i)
-                {
-                    MaterialArray[i].shader = Shader.Find("GeoTetra/VertexLightedBlendOutline");
-                    MaterialArray[i].color = Color.white;
-                    MaterialArray[i].SetFloat("_Outline", ItemRoot.ItemSettings.OutlineSize);
-                    MaterialArray[i].SetColor("_OutlineColor", color);
-                }
+                _drawOutline = true;
+                _outlinePropertyBlock.SetColor(OutlineColor, color);
+                
+//                for (int i = 0; i < BlendMaterialArray.Length; ++i)
+//                {
+//                    BlendMaterialArray[i].shader = Shader.Find("GeoTetra/VertexLightedBlendOutline");
+//                    BlendMaterialArray[i].color = Color.white;
+//                    BlendMaterialArray[i].SetFloat("_Outline", ItemRoot.ItemSettings.OutlineSize);
+//                    BlendMaterialArray[i].SetColor("_OutlineColor", color);
+//                }
+//
+//                for (int i = 0; i < MaterialArray.Length; ++i)
+//                {
+//                    MaterialArray[i].shader = Shader.Find("GeoTetra/VertexLightedBlendOutline");
+//                    MaterialArray[i].color = Color.white;
+//                    MaterialArray[i].SetFloat("_Outline", ItemRoot.ItemSettings.OutlineSize);
+//                    MaterialArray[i].SetColor("_OutlineColor", color);
+//                }
             }
         }
 
         public void SetShaderNormal()
         {
-            if (!_outlineNormal)
-            {
-                _outlineNormal = true;
-                _currentOutlineColor = Color.clear;
-                if (BlendMaterialArray != null)
-                {
-                    for (int i = 0; i < BlendMaterialArray.Length; ++i)
-                    {
-                        BlendMaterialArray[i].shader = Shader.Find("Mobile/VertexLit (Only Directional Lights) Blend");
-                    }
-                }
-
-                if (MaterialArray != null)
-                {
-                    for (int i = 0; i < MaterialArray.Length; ++i)
-                    {
-                        MaterialArray[i].shader = Shader.Find("Mobile/VertexLit (Only Directional Lights)");
-                    }
-                }
-            }
+            _drawOutline = false;
+            _outlinePropertyBlock.SetColor(OutlineColor, Color.clear);
+//                if (BlendMaterialArray != null)
+//                {
+//                    for (int i = 0; i < BlendMaterialArray.Length; ++i)
+//                    {
+//                        BlendMaterialArray[i].shader = Shader.Find("Mobile/VertexLit (Only Directional Lights) Blend");
+//                    }
+//                }
+//
+//                if (MaterialArray != null)
+//                {
+//                    for (int i = 0; i < MaterialArray.Length; ++i)
+//                    {
+//                        MaterialArray[i].shader = Shader.Find("Mobile/VertexLit (Only Directional Lights)");
+//                    }
         }
-
-        private bool _outlineNormal = true;
-        private Color _currentOutlineColor;
-
+        
         public void AddToHoldList()
         {
             ItemRoot.ItemHoldList.Add(this);

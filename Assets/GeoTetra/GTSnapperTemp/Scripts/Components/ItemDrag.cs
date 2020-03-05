@@ -130,7 +130,7 @@ namespace GeoTetra.GTSnapper
 
         private void Update()
         {
-            switch (GetComponent<Item>().State)
+            switch (_item.State)
             {
                 case ItemState.Attached:
                     SmoothToTargetPositionRotation();

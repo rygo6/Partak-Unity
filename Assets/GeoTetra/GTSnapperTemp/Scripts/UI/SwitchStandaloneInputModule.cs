@@ -30,20 +30,17 @@ namespace UnityEngine.EventSystems
 
         public void DoTouchSwitch(GameObject gameObject, PointerEventData data)
         {
-            Debug.Log("Touch");
             Touch touch = input.GetTouch(data.pointerId);
             bool released;
             bool pressed;
             var pointer = GetTouchPointerEventData(touch, out pressed, out released);
             
-            RaycastResult result = new RaycastResult();
-            result.gameObject = gameObject;
-            pointer.pointerCurrentRaycast = result;
             ProcessTouchEvent(pointer, false, true);
-
-            pointer = GetTouchPointerEventData(touch, out pressed, out released);
-            if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
+            
+            if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Began)
             {
+                RaycastResult result = new RaycastResult();
+                result.gameObject = gameObject;
                 pointer.pointerPressRaycast = result;
                 pointer.pointerCurrentRaycast = result;
                 ProcessTouchEvent(pointer, true, false);
@@ -65,17 +62,16 @@ namespace UnityEngine.EventSystems
 
         private void DoMouseSwitch(GameObject gameObject, PointerEventData data)
         {
-            Debug.Log("Mouse");
             var mouseData = GetMousePointerEventData();
 
             //send released, PointUp on prior object
-            RaycastResult result = new RaycastResult();
-            result.gameObject = gameObject;
             mouseData.SetButtonState(PointerEventData.InputButton.Left, PointerEventData.FramePressState.Released, mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData.buttonData);
             ProcessMouseEvent(mouseData);
 
             if (input.GetMouseButton(0))
             {
+                RaycastResult result = new RaycastResult();
+                result.gameObject = gameObject;
                 mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData.buttonData.pointerPressRaycast = result;
                 mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData.buttonData.pointerCurrentRaycast = result;
                 mouseData.SetButtonState(PointerEventData.InputButton.Left, PointerEventData.FramePressState.Pressed, mouseData.GetButtonState(PointerEventData.InputButton.Left).eventData.buttonData);

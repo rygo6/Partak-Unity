@@ -16,8 +16,6 @@ namespace GeoTetra
 
         [SerializeField] private Color _deleteOutlineColor = Color.red;
 
-        [SerializeField] private float _outlineSize = .003f;
-        
         [SerializeField] private float _floatDistance = 10;
 
         public Color DownHighlightItemColor => _downHighlightItemColor;
@@ -29,8 +27,6 @@ namespace GeoTetra
         public Color InstantiateOutlineColor => _instantiateOutlineColor;
 
         public Color DeleteOutlineColor => _deleteOutlineColor;
-
-        public float OutlineSize => _outlineSize;
 
         public float FloatDistance => _floatDistance;
     }

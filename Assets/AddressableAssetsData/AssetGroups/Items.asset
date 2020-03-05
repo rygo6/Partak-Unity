@@ -17,21 +17,34 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 8fefc965f27dee0478ac74189553bb6f
   m_SerializeEntries:
+  - m_GUID: 0100486d28bf178418760efd0310fbd7
+    m_Address: Arc
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - m_GUID: 11d595023d3ea3346a6f99d1967fa760
     m_Address: LTriOdd
     m_ReadOnly: 0
     m_SerializedLabels:
     - Item
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - m_GUID: 32d0953b86f9d5f4387d5c3bbeb909b7
     m_Address: QuarterCircle
     m_ReadOnly: 0
     m_SerializedLabels:
     - Item
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - m_GUID: 4999d74fe66b3f04d9904cbed0371e5f
     m_Address: 4Odd
     m_ReadOnly: 0
     m_SerializedLabels:
     - Item
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8897a9da1308dad4cb94657883af64f0, type: 2}
   m_SchemaSet:
