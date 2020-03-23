@@ -21,6 +21,8 @@ namespace GeoTetra.GTSnapper
         [SerializeField] private ItemDrag _itemDrag;
         [SerializeField] private ItemDrop _itemDrop;
 
+        public event Action<Item> Selected;
+        
         private InputCatcher _inputCatcher;
 
         public ItemDrag Drag => _itemDrag;
@@ -119,13 +121,6 @@ namespace GeoTetra.GTSnapper
             }
         }
 
-        private void Start()
-        {
-            //for debug, should be set through initialize
-//            if (ItemRoot == null) ItemRoot = FindObjectOfType<ItemRoot>();
-//            if (_inputCatcher == null) _inputCatcher = FindObjectOfType<InputCatcher>();
-        }
-
         private void OnValidate()
         {
             _itemDrag = GetComponent<ItemDrag>();
@@ -135,6 +130,14 @@ namespace GeoTetra.GTSnapper
         public void Deserialize(ItemDatum itemDatum)
         {
             ItemDatum = itemDatum;
+            transform.position = itemDatum._position;
+            transform.rotation = itemDatum._rotation;
+            transform.localScale = itemDatum._scale;
+            if (Drag != null)
+            {
+                Drag.SetTargetToActualPositionDirection();
+            }
+            
             UniqueTick = itemDatum._uniqueTick;
             if (_itemDrop != null) _itemDrop.Deserialize(ItemDatum);
         }
@@ -153,6 +156,7 @@ namespace GeoTetra.GTSnapper
 
             ItemDatum._position = transform.position;
             ItemDatum._rotation = transform.rotation;
+            ItemDatum._scale = transform.localScale;
             if (_itemDrag != null) ItemDatum._parentItemSnap = _itemDrag.ParentItemSnap.UniqueTick;
 
             itemDatums.Add(ItemDatum);
@@ -281,9 +285,7 @@ namespace GeoTetra.GTSnapper
             Item item = gameObject.GetComponent<Item>();
             item.Initialize(ItemRoot, itemReference, _inputCatcher);
             
-            item.SetShaderOutline(ItemRoot.ItemSettings.HighlightItemColor);
-            item.State = ItemState.AttachedHighlighted;
-            ItemRoot.ItemHighlightList.Add(item);
+            item.Highlight();
             
             item.Drag.ThisEnteredDropItem = _itemDrop;
             item.Drag.ParentItemDrop = _itemDrop;
@@ -418,15 +420,9 @@ namespace GeoTetra.GTSnapper
 
         public void Highlight()
         {
-            if (_inputCatcher.EmptyClickAction == null)
-            {
-                Action action = delegate() { ItemRoot.UnHighlightAll(); };
-                _inputCatcher.EmptyClickAction = action;
-            }
-
             SetShaderOutline(ItemRoot.ItemSettings.HighlightItemColor);
             State = ItemState.AttachedHighlighted;
-            ItemRoot.ItemHighlightList.Add(this);
+            ItemRoot.Highlight(this);
         }
 
         public void UnHighlight()
@@ -438,7 +434,7 @@ namespace GeoTetra.GTSnapper
 
             SetShaderNormal();
             State = ItemState.Attached;
-            ItemRoot.ItemHighlightList.Remove(this);
+            ItemRoot.Unhighlight(this);
         }
 
         public void SetBlendMaterial(Texture texture)
@@ -574,16 +570,6 @@ namespace GeoTetra.GTSnapper
 //                    {
 //                        MaterialArray[i].shader = Shader.Find("Mobile/VertexLit (Only Directional Lights)");
 //                    }
-        }
-        
-        public void AddToHoldList()
-        {
-            ItemRoot.ItemHoldList.Add(this);
-        }
-
-        public void RemoveFromHoldList()
-        {
-            ItemRoot.ItemHoldList.Remove(this);
         }
     }
 }

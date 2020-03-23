@@ -2,6 +2,7 @@
 
 using UnityEngine;
 using System.Collections.Generic;
+using GeoTetra.GTCommon.Utility;
 using UnityEngine.EventSystems;
 
 namespace GeoTetra.GTSnapper
@@ -11,6 +12,8 @@ namespace GeoTetra.GTSnapper
     {
         [SerializeField] private Item _item;
         [SerializeField] private Renderer[] _accessoryRendererArray;
+        [SerializeField] private float _minScale = .4f;
+        [SerializeField] private float _maxScale = 4f;
         
         private ItemDrop _thisEnteredDropItem;
         private ItemSnap _parentItemSnap;
@@ -114,6 +117,10 @@ namespace GeoTetra.GTSnapper
 
         public Item Item => _item;
 
+        public float MinScale => _minScale;
+
+        public float MaxScale => _maxScale;
+
         private void Awake()
         {
             GameObject gameObject = new GameObject(this.name + "Target");
@@ -184,10 +191,9 @@ namespace GeoTetra.GTSnapper
         /// <returns><c>true</c>, if position and target are equal, <c>false</c> otherwise.</returns>
         private bool SmoothToTargetPositionRotation()
         {
-            if (TargetTransform.position != _item.transform.position ||
-                TargetTransform.eulerAngles != _item.transform.eulerAngles)
+            if (TargetTransform.position != _item.transform.position || TargetTransform.eulerAngles != _item.transform.eulerAngles || TargetTransform.localScale != _item.transform.localScale)
             {
-                SmoothToPointAndDirection(TargetTransform.position, _posDamp, TargetTransform.up, _rotDamp);
+                SmoothToTarget(TargetTransform.position, PosDamp, TargetTransform.rotation, RotDamp, TargetTransform.localScale, ScaleDamp);
                 return false;
             }
             else
@@ -196,29 +202,28 @@ namespace GeoTetra.GTSnapper
             }
         }
 
-        private const float _posDamp = .1f;
-        private const float _rotDamp = .2f;
+        private const float PosDamp = .1f;
+        private const float RotDamp = .1f;
+        private const float ScaleDamp = .1f;
 
         /// <summary>
         /// Sets the target position rotation.
         /// </summary>
         public void SetTargetPositionRotation(Vector3 position, Vector3 direction)
         {
-            TranslateTargetPositionRotationRecursive(position - TargetTransform.position,
-                direction - TargetTransform.up);
+//            TranslateTargetPositionRotationRecursive(position - TargetTransform.position,direction - TargetTransform.up);
+            TranslateTargetPositionRotationRecursive(position - TargetTransform.position, Quaternion.identity);
         }
 
-        public void TranslateTargetPositionRotationRecursive(Vector3 deltaPosition, Vector3 deltaDirection)
+        public void TranslateTargetPositionRotationRecursive(Vector3 deltaPosition, Quaternion delatRotation)
         {
             TargetTransform.Translate(deltaPosition, Space.World);
-            TargetTransform.up = TargetTransform.up + deltaDirection;
-            ItemDrop dropItemMod = GetComponent<ItemDrop>();
-            if (dropItemMod != null)
+//            TargetTransform.up = TargetTransform.up + deltaDirection;
+            if (_item.Drop != null)
             {
-                for (int i = 0; i < dropItemMod.ChildItemDragList.Count; ++i)
+                for (int i = 0; i < _item.Drop.ChildItemDragList.Count; ++i)
                 {
-                    dropItemMod.ChildItemDragList[i]
-                        .TranslateTargetPositionRotationRecursive(deltaPosition, deltaDirection);
+                    _item.Drop.ChildItemDragList[i].TranslateTargetPositionRotationRecursive(deltaPosition, delatRotation);
                 }
             }
         }
@@ -230,18 +235,21 @@ namespace GeoTetra.GTSnapper
         /// </summary>
         public void SetActualPositionRotationToTarget()
         {
-             _item.transform.position = TargetTransform.position;
-             _item.transform.rotation = TargetTransform.rotation;
+            _item.transform.position = TargetTransform.position;
+            _item.transform.rotation = TargetTransform.rotation;
             _smoothVelocity = Vector3.zero;
-            _smoothAngleVelocity = Vector3.zero;
+            _smoothScaleVelocity = Vector3.zero;
+            _smoothRotationVelocity = Quaternion.identity;
         }
 
         /// <summary>
         /// Sets the target to actual position direction.
         /// </summary>
-        public void SetTargetToAcualPositionDirection()
+        public void SetTargetToActualPositionDirection()
         {
-            SetTargetPositionRotation(_item.transform.position, _item.transform.up);
+            TargetTransform.position = _item.transform.position;
+            TargetTransform.rotation = _item.transform.rotation;
+            TargetTransform.localScale = _item.transform.localScale;
         }
 
         /// <summary>
@@ -251,14 +259,16 @@ namespace GeoTetra.GTSnapper
         /// <param name="moveSmooth">Move smooth.</param>
         /// <param name="direction">Direction.</param>
         /// <param name="rotSmooth">Rot smooth.</param>
-        private void SmoothToPointAndDirection(Vector3 point, float moveSmooth, Vector3 direction, float rotSmooth)
+        private void SmoothToTarget(Vector3 point, float moveSmooth, Quaternion rotation, float rotSmooth, Vector3 scale, float scaleSmooth)
         {
             _item.transform.position = Vector3.SmoothDamp(transform.position, point, ref _smoothVelocity, moveSmooth);
-            _item.transform.up = Vector3.SmoothDamp(transform.up, direction, ref _smoothAngleVelocity, rotSmooth);
+            _item.transform.rotation = QuaternionUtility.SmoothDamp(_item.transform.rotation, rotation,ref _smoothRotationVelocity, rotSmooth);
+            _item.transform.localScale = Vector3.SmoothDamp(_item.transform.localScale, scale, ref _smoothScaleVelocity, scaleSmooth);
         }
 
         private Vector3 _smoothVelocity;
-        private Vector3 _smoothAngleVelocity;
+        private Vector3 _smoothScaleVelocity;
+        private Quaternion _smoothRotationVelocity;
 
         public void OnBeginDrag(PointerEventData data)
         {
@@ -314,10 +324,12 @@ namespace GeoTetra.GTSnapper
         {
             AccessoryRendererState = false;
             ParentItemDrop = null;
+            SetTargetToActualPositionDirection();
             _item.ResetColliderSize();
-            _item.AddToHoldList();
+            _item.ItemRoot.BeginDragging(this);
             _item.State = ItemState.Dragging;
             _item.SetLayerRecursive(_item.ItemRoot.IgnoreLayer);
+            _dragFirstCycle = true;
 
             //This ensure that the item is still hovering over the item_Drop it was attached to
             //otherwise it disattaches it, this is done because OnPointerExit will only get called on
@@ -330,12 +342,24 @@ namespace GeoTetra.GTSnapper
 //			}
         }
 
+        /// <summary>
+        /// Used to skip the first cycle of the drag. This allows OnEnter to get called on a dropped item
+        /// so that ThisEnteredDropItem is appropriately set, otherwise Item may jump one frame.
+        /// </summary>
+        private bool _dragFirstCycle;
+
         public void OnDrag(PointerEventData data)
         {
 #if LOG
 //		Debug.Log("OnDrag " + this.name);
 #endif
-
+            if (_dragFirstCycle)
+            {
+                _dragFirstCycle = false;
+                return;
+            }
+            
+            
             ItemUtility.StateSwitch(data, _item.State,
                 null,
                 null,
@@ -402,14 +426,14 @@ namespace GeoTetra.GTSnapper
             
             if (ThisEnteredDropItem == null)
             {
-//				StartCoroutine(_item.DestroyItemCoroutine());
-                _item.State = ItemState.Floating;
-                _item.SetLayerRecursive(_item.ItemRoot.ItemLayer);
+				StartCoroutine(_item.DestroyItemCoroutine());
+//                _item.State = ItemState.Floating;
+//                _item.SetLayerRecursive(_item.ItemRoot.ItemLayer);
             }
             else
             {
                 ParentItemDrop = ThisEnteredDropItem;
-                _item.RemoveFromHoldList();
+                _item.ItemRoot.EndDragging(this);
                 AccessoryRendererState = true;
                 _item.SetLayerRecursive(_item.ItemRoot.ItemLayer);
                 _item.State = ItemState.AttachedHighlighted;

@@ -8,6 +8,7 @@ using GeoTetra.GTSnapper.ScriptableObjects;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
+using UnityEngine.Serialization;
 
 namespace GeoTetra.GTSnapper
 {
@@ -17,14 +18,15 @@ namespace GeoTetra.GTSnapper
         [SerializeField] private InputCatcher _inputCatcher;
         [SerializeField] private ItemSettings _itemSettings;
         [SerializeField] private List<Item> _rootItems;
+        [FormerlySerializedAs("_itemGizmo")] [SerializeField] private ItemGizmoRoot _itemGizmoRoot;
         [SerializeField] private Material _highlightMaterial;
 
         public event Action DeserializationComplete;
         
         public readonly Dictionary<string, MonoBehaviour> UniqueTickDictionary = new Dictionary<string, MonoBehaviour>();
 
-        public readonly List<Item> ItemHoldList = new List<Item>();
-        public readonly List<Item> ItemHighlightList = new List<Item>();
+        private readonly List<ItemDrag> ItemDragList = new List<ItemDrag>();
+        private readonly List<Item> ItemHighlightList = new List<Item>();
         private List<AsyncOperationHandle<ItemReference>> _referenceHandles = new List<AsyncOperationHandle<ItemReference>>();
         private ItemRootDatum _itemRootDatum;
         
@@ -58,6 +60,40 @@ namespace GeoTetra.GTSnapper
                     Addressables.ReleaseInstance(pair.Value.gameObject);
                 }
             }
+        }
+
+        public void BeginDragging(ItemDrag itemDrag)
+        {
+            ItemDragList.Add(itemDrag);
+            if (ItemDragList.Count == 1)
+            {
+                _itemGizmoRoot.UntargetItem();
+            }
+        }
+
+        public void EndDragging(ItemDrag itemDrag)
+        {
+            ItemDragList.Remove(itemDrag);
+            if (ItemDragList.Count == 0)
+            {
+                _itemGizmoRoot.TargetItem(itemDrag.Item);
+            }
+        }
+        
+        public void Highlight(Item item)
+        {
+            if (_inputCatcher.EmptyClickAction == null)
+            {
+                _inputCatcher.EmptyClickAction = () => { UnHighlightAll(); };;
+            }
+            ItemHighlightList.Add(item);
+            _itemGizmoRoot.TargetItem(item);
+        }
+        
+        public void Unhighlight(Item item)
+        {
+            ItemHighlightList.Remove(item);
+            _itemGizmoRoot.UntargetItem();
         }
         
         public void UnHighlightAll(Action<Item> postAction = null)
@@ -197,7 +233,7 @@ namespace GeoTetra.GTSnapper
 
         private void OnItemReferenceComplete(AsyncOperationHandle<ItemReference> reference, ItemDatum itemDatum)
         {
-            Addressables.InstantiateAsync(reference.Result.AssetPrefabName, new InstantiationParameters(itemDatum._position, itemDatum._rotation, null))
+            Addressables.InstantiateAsync(reference.Result.AssetPrefabName, new InstantiationParameters(itemDatum._position, itemDatum._rotation, transform))
                 .Completed += handle => OnInstantiateComplete(handle.Result, reference.Result, itemDatum);
         }
 

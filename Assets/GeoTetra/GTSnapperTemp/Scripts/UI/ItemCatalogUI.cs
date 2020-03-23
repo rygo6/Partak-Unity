@@ -75,19 +75,21 @@ namespace GeoTetra.GTSnapper
                 UnselectSelectedItem();
                 _selectedItem = scrollItem;
 
-                System.Action<Item> trueAction = delegate(Item item)
+                void TrueAction(Item item)
                 {
                     item.SetShaderOutline(_itemSettings.InstantiateOutlineColor);
                     item.State = ItemState.Instantiate;
                     item.LastItemCatalogUUI = this;
-                };
-                System.Action<Item> falseAction = delegate(Item item)
+                }
+
+                void FalseAction(Item item)
                 {
                     item.SetShaderNormal();
                     item.State = ItemState.NoInstantiate;
                     item.LastItemCatalogUUI = null;
-                };
-                System.Func<Item, bool> filterAction = delegate(Item item)
+                }
+
+                bool FilterAction(Item item)
                 {
                     if (item.Drop != null)
                     {
@@ -102,9 +104,9 @@ namespace GeoTetra.GTSnapper
                     }
 
                     return false;
-                };
+                }
 
-                int trueCount = _itemRoot.CallDelegateTagFilter(filterAction, trueAction, falseAction);
+                int trueCount = _itemRoot.CallDelegateTagFilter(FilterAction, TrueAction, FalseAction);
 
                 if (trueCount == 0)
                 {
@@ -113,12 +115,13 @@ namespace GeoTetra.GTSnapper
                 }
                 else
                 {
-                    System.Action action = delegate()
-                    {
-                        _itemRoot.UnHighlightAll();
-                        UnselectSelectedItem();
-                    };
-                    _itemRoot.InputCatcher.EmptyClickAction = action;
+//                    void Action()
+//                    {
+//                        _itemRoot.UnHighlightAll();
+//                        UnselectSelectedItem();
+//                    }
+//
+//                    _itemRoot.InputCatcher.EmptyClickAction = Action;
 
                     _scrollItemHighlight.enabled = true;
                     _scrollItemHighlight.transform.SetParent(_selectedItem.transform);
