@@ -45,6 +45,13 @@ MonoBehaviour:
     - Item
     m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  - m_GUID: e250a1202be37a54194aa5aec83217bd
+    m_Address: Cubamid
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8897a9da1308dad4cb94657883af64f0, type: 2}
   m_SchemaSet:

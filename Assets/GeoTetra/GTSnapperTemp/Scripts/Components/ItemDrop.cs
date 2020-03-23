@@ -161,7 +161,7 @@ namespace GeoTetra.GTSnapper
 			Debug.Log( "OnDrop " + this.name );
 #endif
 
-            ItemUtility.StateSwitch(data, GetComponent<Item>().State,
+            ItemUtility.StateSwitch(data, _item.State,
                 OnDropAttached,
                 null,
                 null,
