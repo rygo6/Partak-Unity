@@ -25,7 +25,7 @@ using Random = System.Random;
 
 namespace GeoTetra.GTBackend
 {
-    [CreateAssetMenu(menuName = "GeoTetra/Database")]
+    [CreateAssetMenu(menuName = "GeoTetra/Partak/Services/PartakDatabase")]
     public class PartakDatabase : ScriptableObject
     {
         [SerializeField] private string _identityPoolId = "us-west-2:1c228a7e-eb85-433f-a708-d46b063a488f";

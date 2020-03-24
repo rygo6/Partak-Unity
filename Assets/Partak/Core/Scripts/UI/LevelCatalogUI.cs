@@ -23,13 +23,14 @@ namespace GeoTetra.Partak
 {
     public class LevelCatalogUI : StackUI
     {
-        [SerializeField] private AssetReference _loadModalUI;
+        [SerializeField] private AnalyticsRelayReference _analyticsRelay;
         [SerializeField] private ServiceReference _gameStateService;
-        [SerializeField] private LevelButtonScrollRect _levelButtonScrollRect; 
+        [SerializeField] private ServiceReference _sceneLoadSystem;
+        [SerializeField] private AssetReference _loadModalUI;
         [SerializeField] private AssetReference _newLevelScene;
         [SerializeField] private AssetReference _mainMenuScene;
-        [SerializeField] private ServiceReference _sceneLoadSystem;
         [SerializeField] private AssetReference _levelDownloadUI;
+        [SerializeField] private LevelButtonScrollRect _levelButtonScrollRect; 
         
         private int _catalogDatumIndex;
         private GameState _gameState;
@@ -141,6 +142,7 @@ namespace GeoTetra.Partak
             _catalogDatumIndex = 0;
             _levelButtonScrollRect.Clear();
             _levelButtonScrollRect.Initialize(DownloadNextSet, PopulateLevelButton, FinalButton);
+            _analyticsRelay.Service.LevelDeleted();
         }
         
         private void EditLevel()
@@ -153,12 +155,14 @@ namespace GeoTetra.Partak
         {
             _gameState.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
             CurrentlyRenderedBy.InstantiateAndDisplayStackUI(_levelDownloadUI);
+            _analyticsRelay.Service.DownloadLevelOpened();
         }
 
         private void CreateNewLevel()
         {
             _gameState.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
             _sceneLoadSystem.Service<SceneLoadSystem>().Load(_mainMenuScene, _newLevelScene);
+            _analyticsRelay.Service.CreateLevelOpened();
         }
     }
 }

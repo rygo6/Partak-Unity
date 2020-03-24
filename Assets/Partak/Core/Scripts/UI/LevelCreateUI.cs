@@ -14,6 +14,7 @@ namespace GeoTetra.Partak
 {
     public class LevelCreateUI : StackUI
     {
+        [SerializeField] private AnalyticsRelayReference _analyticsRelay;
         [SerializeField] private ServiceReference _gameState;
         [SerializeField] private ServiceReference _sceneLoadSystem;
         [SerializeField] private ServiceReference _componentContainer;
@@ -118,6 +119,7 @@ namespace GeoTetra.Partak
         {
             OnBackClicked();
             _sceneLoadSystem.Service<SceneLoadSystem>().Load(_newLevelScene, _mainMenuScene);
+            _analyticsRelay.Service.CreateLevelCancelled();
         }
 
         private void SerializeLevel()
@@ -130,6 +132,7 @@ namespace GeoTetra.Partak
         {
             SerializeLevel();
             OnCloseClick();
+            _analyticsRelay.Service.CreateLevelSaved();
         }
         
         private async void SaveToAWS()
@@ -138,6 +141,7 @@ namespace GeoTetra.Partak
             SerializeLevel();
             await _database.Service<PartakDatabase>().SaveLevel(_editingLevelId);
             OnCloseClick();
+            _analyticsRelay.Service.CreateLevelUploaded();
         }
 
         private void OnValidateClick()

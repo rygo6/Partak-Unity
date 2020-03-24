@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 
 namespace GeoTetra.GTUI
 {
-    [CreateAssetMenu(menuName = "GeoTetra/UI/SceneLoadSystem")]
+    [CreateAssetMenu(menuName = "GeoTetra/Services/SceneLoadSystem")]
     public class SceneLoadSystem : ScriptableObject
     {
         [SerializeField] private ServiceReference _componentContainer;

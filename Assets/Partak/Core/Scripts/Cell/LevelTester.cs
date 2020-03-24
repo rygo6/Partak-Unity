@@ -30,6 +30,7 @@ namespace GeoTetra.Partak
         [SerializeField] private CellParticleStore _cellParticleStore;
         [SerializeField] private CursorStore _cursorStore;
         [SerializeField] private ItemDrop _itemDrop;
+        [SerializeField] private InputCatcher _inputCatcher;
 
         private const float MaxTestWaitTime = 5;
         private const int TestPlayerCount = 4;
@@ -74,6 +75,7 @@ namespace GeoTetra.Partak
         {
             //disable floor collider catcher because right now "no-wall" is discerned by no racyast hit
             _itemDrop.gameObject.SetActive(false);
+            _inputCatcher.gameObject.SetActive(false);
             _cellParticleDisplay.gameObject.SetActive(true);
             _cursorStore.SetCursorsToStartPosition();
             
@@ -82,6 +84,7 @@ namespace GeoTetra.Partak
             if (AnyCursorPositionBlocked())
             {
                 _itemDrop.gameObject.SetActive(true);
+                _inputCatcher.gameObject.SetActive(true);
                 Result = TestResult.CursorsBlocked;
                 yield break;
             }
@@ -138,6 +141,7 @@ namespace GeoTetra.Partak
             _cellGradient.Thread?.Stop();
             _cellHiearchy.Initialize();
             _itemDrop.gameObject.SetActive(true);
+            _inputCatcher.gameObject.SetActive(true);
             _cursorStore.SetCursorsToStartPosition();
             _cellParticleDisplay.gameObject.SetActive(false);
         }
