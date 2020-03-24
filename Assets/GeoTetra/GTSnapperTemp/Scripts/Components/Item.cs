@@ -218,8 +218,9 @@ namespace GeoTetra.GTSnapper
             ColliderGameObjectArray = new GameObject[ColliderArray.Length];
             InitialColliderSizeArray = new Vector3[ColliderArray.Length];
             InitialColliderCenterArray = new Vector3[ColliderArray.Length];
-            for (int i = 0; i < ColliderGameObjectArray.Length; ++i)
+            for (int i = 0; i < ColliderArray.Length; ++i)
             {
+                ColliderArray[i].contactOffset = 1;
                 ColliderGameObjectArray[i] = ColliderArray[i].gameObject;
                 InitialColliderSizeArray[i] = ColliderArray[i].transform.localScale;
             }
@@ -375,13 +376,12 @@ namespace GeoTetra.GTSnapper
         {
             UnHighlight();
             SetShaderOutline(Color.red);
-
-            ItemDrop dropItem = GetComponent<ItemDrop>();
-            if (dropItem != null)
+            
+            if (Drop != null)
             {
-                for (int i = 0; i < dropItem.ChildItemDragList.Count; ++i)
+                for (int i = 0; i < Drop.ChildItemDragList.Count; ++i)
                 {
-                    StartCoroutine(dropItem.ChildItemDragList[i].GetComponent<Item>().DestroyItemCoroutine());
+                    StartCoroutine(Drop.ChildItemDragList[i].GetComponent<Item>().DestroyItemCoroutine());
                 }
             }
 
@@ -407,11 +407,10 @@ namespace GeoTetra.GTSnapper
                     ItemRoot.UniqueTickDictionary.Remove(item.Drop.ItemSnapArray[i].UniqueTick);
                 }
             }
-
-            ItemDrop itemDrop = item.GetComponent<ItemDrop>(); //TODO WHY IS THIS TWICE??
+            
             if (item.Drop != null)
             {
-                for (int i = 0; i < itemDrop.ChildItemDragList.Count; ++i)
+                for (int i = 0; i < item.Drop.ChildItemDragList.Count; ++i)
                 {
                     RemoveUniqueTickRecursive(item.Drop.ChildItemDragList[i].Item);
                 }

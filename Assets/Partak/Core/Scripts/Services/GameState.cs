@@ -6,30 +6,18 @@ using System.Runtime.CompilerServices;
 using GeoTetra.GTPooling;
 using GeoTetra.Partak;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 namespace GeoTetra.Partak
 {
     [Serializable]
-    public class GameStateReference : ServiceReference
+    public class GameStateReference : ServiceReferenceT<GameState>
     {
         public GameStateReference(string guid) : base(guid)
         { }
-        
-        public GameState Service => Service<GameState>();
-        
-        public override void LoadServiceFromPool()
-        {
-            if (string.IsNullOrEmpty(AssetGUID)) _service = AddressableServicesPool.GlobalPool.PrePooledPopulate<GameState>();
-            else _service = AddressableServicesPool.GlobalPool.PrePooledPopulate<GameState>(this);
-        }
-        
-        public static implicit operator GameState(GameStateReference reference)
-        {
-            return reference.Service<GameState>();
-        }
     }
 
-    [CreateAssetMenu(menuName = "GeoTetra/Partak/GameState")]
+    [CreateAssetMenu(menuName = "GeoTetra/Partak/Services/GameState")]
     public class GameState : ScriptableObject
     {
         [SerializeField] private string _version = "2.0.5";

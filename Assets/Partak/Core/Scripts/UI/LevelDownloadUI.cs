@@ -16,9 +16,12 @@ namespace GeoTetra.Partak
 {
     public class LevelDownloadUI : StackUI
     {
-        [SerializeField] private AssetReference _loadModalUI;
+        [SerializeField] private AnalyticsRelayReference _analyticsRelay;
         [SerializeField] private GameStateReference _gameState;
         [SerializeField] private ServiceReference _databaseService;
+        
+        [SerializeField] private AssetReference _loadModalUI;
+        
         [SerializeField] private Button _mostPopularButton;
         [SerializeField] private Button _mostRecentButton;
         [SerializeField] private LevelButtonScrollRect _levelButtonScrollRect;
@@ -36,7 +39,6 @@ namespace GeoTetra.Partak
             _mostRecentButton.onClick.AddListener(OnMostRecentClicked);
             _levelButtonScrollRect.LevelButtonClicked += OnLevelButtonClicked;
         }
-
 
         public override void OnTransitionInStart(UIRenderer uiRenderer)
         {
@@ -153,6 +155,7 @@ namespace GeoTetra.Partak
             _gameState.Service.AddLevelId(levelButton.LevelDatum.LevelID);
             CurrentlyRenderedBy.CloseModal();
             OnBackClicked();
+            _analyticsRelay.Service.LevelDownloaded();
         }
 
         private void Cancel()
