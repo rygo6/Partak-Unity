@@ -24,6 +24,9 @@ namespace GeoTetra.GTUI
         [SerializeField] private float _fadeMultiplier = 3;
         [SerializeField] private UnityEvent _stackTransitionOccured;
         [SerializeField] private AudioSource _audioSource;
+        [SerializeField] private AssetReference _loadModalUI;
+        [SerializeField] private AssetReference _messageModalUiReference;
+        [SerializeField] private AssetReference _selectionModalUiReference;
 
         public enum TransitionType
         {
@@ -63,7 +66,26 @@ namespace GeoTetra.GTUI
             ModalUI uiInstance = await _addressablesPool.PoolInstantiateAsync<ModalUI>(ui);
             DisplayModalUI(uiInstance, onFinish);
         }
+        
+        public void DisplayLoadModal()
+        {
+            InstantiateAndDisplayModalUI(_loadModalUI);
+        }
 
+        public async void DisplaySelectionModal(string mainMessage, string[] messages, Action[] actions, int focusIndex)
+        {
+            SelectionModalUI messageModalUi = await Pool.PoolInstantiateAsync<SelectionModalUI>(_selectionModalUiReference);
+            messageModalUi.Init(mainMessage, messages, actions, focusIndex);
+            DisplayModalUI(messageModalUi);
+        }
+
+        public async void DisplayMessageModal(string message, Action action = null)
+        {
+            MessageModalUI messageModalUi = await Pool.PoolInstantiateAsync<MessageModalUI>(_messageModalUiReference);
+            messageModalUi.Init(message, action);
+            DisplayModalUI(messageModalUi);
+        }
+        
         public void DisplayModalUI(ModalUI ui, Action onFinish = null)
         {
             _currentModal = ui;

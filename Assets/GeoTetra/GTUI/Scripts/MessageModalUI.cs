@@ -20,8 +20,8 @@ namespace GeoTetra.GTUI
 
 		private void OkClicked()
 		{
-			_action?.Invoke();
 			base.Close();
+			_action?.Invoke();
 		}
 
 		public void Init(string message, Action action = null)

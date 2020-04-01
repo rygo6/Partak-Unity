@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<package version="software5.7" xmlns="http://apple.com/itunes/importer">
+  <provider>9Y89JAS7V7</provider>
+  <team_id>9Y89JAS7V7</team_id>
+  <software>
+    <vendor_id>enrgy</vendor_id>
+    <software_metadata>
+      <in_app_purchases>
+        <in_app_purchase>
+          <product_id> com.technologicalmages.enrgy.fullversion1 </product_id>
+          <reference_name>FullVersion</reference_name>
+          <type>non-consumable</type>
+          <products>
+            <product>
+              <cleared_for_sale>true</cleared_for_sale>
+              <wholesale_price_tier>2</wholesale_price_tier>
+            </product>
+          </products>
+          <locales>
+            <locale name="en-US">
+              <title>Full Version</title>
+              <description>Permanently unlocks the full version of partak.</description>
+            </locale>
+          </locales>
+          <review_screenshot>
+            <file_name>LargeIconSaturated.png</file_name>
+            <size>420508</size>
+            <checksum>0cd7f6d0fb2c247f25a2c22a847f5919</checksum>
+          </review_screenshot>
+        </in_app_purchase>
+      </in_app_purchases>
+    </software_metadata>
+  </software>
+</package>
