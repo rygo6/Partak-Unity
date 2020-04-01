@@ -162,6 +162,8 @@ MonoBehaviour:
     m_SubObjectName: 
   - m_AssetGUID: 17010a8528f4c0b43a5469286e4a9730
     m_SubObjectName: 
+  - m_AssetGUID: 70ed16389ca75d64f9255160eec5ad47
+    m_SubObjectName: 
   _prePoolingComplete:
     m_PersistentCalls:
       m_Calls:
@@ -299,7 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3273f2bf6664147b7bd18552005e4c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  referenceCount: 2
+  referenceCount: 4
 --- !u!4 &1431012821
 Transform:
   m_ObjectHideFlags: 3

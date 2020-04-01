@@ -11,17 +11,17 @@ using GeoTetra.GTBackend;
 using GeoTetra.GTPooling;
 using GeoTetra.GTUI;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Playables;
 
 namespace GeoTetra.Partak
 {
     public class LevelDownloadUI : StackUI
     {
+        [SerializeField] private AdvertisementDispatchReference _advertisementDispatch;
         [SerializeField] private AnalyticsRelayReference _analyticsRelay;
         [SerializeField] private GameStateReference _gameState;
         [SerializeField] private ServiceReference _databaseService;
-        
-        [SerializeField] private AssetReference _loadModalUI;
-        
+
         [SerializeField] private Button _mostPopularButton;
         [SerializeField] private Button _mostRecentButton;
         [SerializeField] private LevelButtonScrollRect _levelButtonScrollRect;
@@ -30,6 +30,11 @@ namespace GeoTetra.Partak
         private PartakDatabase _partakDatabase;
         private Search _search;
         private OrderedDictionary _textureCache = new OrderedDictionary();
+        private LevelButton _selectedLevelButton;
+
+        private const string FullVersionMessage ="Ad will play while level downloads. To disable all ads, unlock unlimited level slots and the ability to edit levels then purchase the full version.";
+        private string[] _fullVersionDialogLabels;
+        private Action[] _fullVersionDialogActions;
 
         protected override void Awake()
         {
@@ -38,6 +43,9 @@ namespace GeoTetra.Partak
             _mostPopularButton.onClick.AddListener(OnMostPopularClicked);
             _mostRecentButton.onClick.AddListener(OnMostRecentClicked);
             _levelButtonScrollRect.LevelButtonClicked += OnLevelButtonClicked;
+            
+            _fullVersionDialogLabels = new[] {"Watch Ad", "Purchase"};
+            _fullVersionDialogActions = new Action[] {PlayAd, PurchaseFullVersion};
         }
 
         public override void OnTransitionInStart(UIRenderer uiRenderer)
@@ -150,9 +158,37 @@ namespace GeoTetra.Partak
 
         private async void OnLevelButtonClicked(LevelButton levelButton)
         {
-            CurrentlyRenderedBy.InstantiateAndDisplayModalUI(_loadModalUI);
-            await _partakDatabase.DownloadLevel(levelButton.LevelDatum.LevelID);
-            _gameState.Service.AddLevelId(levelButton.LevelDatum.LevelID);
+            _selectedLevelButton = levelButton;
+
+            if (_gameState.Service.FullVersion)
+            {
+                DownloadLevel();
+            }
+            else
+            {
+                CurrentlyRenderedBy.DisplaySelectionModal(FullVersionMessage, 
+                    _fullVersionDialogLabels, 
+                    _fullVersionDialogActions, 
+                    0);
+            }
+        }
+
+        private async void PurchaseFullVersion()
+        {
+            CurrentlyRenderedBy.DisplayMessageModal("Purchase Full!", DownloadLevel);
+        }
+        
+        private async void PlayAd()
+        {
+            await _advertisementDispatch.Service.ShowRewardedAd();
+            DownloadLevel();
+        }
+
+        private async void DownloadLevel()
+        {
+            CurrentlyRenderedBy.DisplayLoadModal();
+            await _partakDatabase.DownloadLevel(_selectedLevelButton.LevelDatum.LevelID);
+            _gameState.Service.AddLevelId(_selectedLevelButton.LevelDatum.LevelID);
             CurrentlyRenderedBy.CloseModal();
             OnBackClicked();
             _analyticsRelay.Service.LevelDownloaded();

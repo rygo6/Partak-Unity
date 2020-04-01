@@ -140,6 +140,15 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _audioSource: {fileID: 1089048853691498243}
+  _loadModalUI:
+    m_AssetGUID: 10e4e0a564ea0b54a9e5616acfa15975
+    m_SubObjectName: 
+  _messageModalUiReference:
+    m_AssetGUID: a449b5a172335124cab656b556e9f03d
+    m_SubObjectName: 
+  _selectionModalUiReference:
+    m_AssetGUID: c01e8933723a2b541b05ddefbf07b07c
+    m_SubObjectName: 
 --- !u!114 &6955619709994758185
 MonoBehaviour:
   m_ObjectHideFlags: 0

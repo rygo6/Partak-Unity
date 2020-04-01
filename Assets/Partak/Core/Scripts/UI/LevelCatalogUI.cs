@@ -36,11 +36,11 @@ namespace GeoTetra.Partak
         private GameState _gameState;
         private LevelButton _selectedLevelButton;
         
-        private string[] EmptyLevelClickMessages;
-        private Action[] EmptyLevelClickActions;
+        private string[] _emptyLevelClickMessages;
+        private Action[] _emptyLevelClickActions;
 
-        private string[] LoadedLevelMessages;
-        private Action[] LoadedLevelActions;
+        private string[] _loadedLevelMessages;
+        private Action[] _loadedLevelActions;
 
         protected override void Awake()
         {
@@ -50,11 +50,11 @@ namespace GeoTetra.Partak
             
 //            LoadedLevelMessages = new[] {"Edit Level", "Clear Level", "Cancel"};
 //            LoadedLevelActions = new Action[] {EditLevel, ClearLevel, Cancel};
-            LoadedLevelMessages = new[] {"Delete Level", "Cancel"};
-            LoadedLevelActions = new Action[] {ClearLevel, Cancel};
+            _loadedLevelMessages = new[] {"Delete Level", "Cancel"};
+            _loadedLevelActions = new Action[] {ClearLevel, Cancel};
             
-            EmptyLevelClickMessages = new[] {"Download Level", "Create Level", "Cancel"};
-            EmptyLevelClickActions = new Action[] {DownloadExistingLevel, CreateNewLevel, Cancel};
+            _emptyLevelClickMessages = new[] {"Download Level", "Create Level", "Cancel"};
+            _emptyLevelClickActions = new Action[] {DownloadExistingLevel, CreateNewLevel, Cancel};
         }
 
         public override void OnTransitionInStart(UIRenderer uiRenderer)
@@ -119,11 +119,11 @@ namespace GeoTetra.Partak
             
             if (levelButton.LevelDatum == null)
             {
-                DisplaySelectionModal("", EmptyLevelClickMessages, EmptyLevelClickActions, 0);
+                DisplaySelectionModal("", _emptyLevelClickMessages, _emptyLevelClickActions, 0);
             }
             else
             {
-                DisplaySelectionModal("", LoadedLevelMessages, LoadedLevelActions, 0);
+                DisplaySelectionModal("", _loadedLevelMessages, _loadedLevelActions, 0);
             }
         }
 

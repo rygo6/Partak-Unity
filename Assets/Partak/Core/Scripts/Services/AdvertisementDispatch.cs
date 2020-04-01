@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using UnityEngine;
@@ -25,31 +26,25 @@ namespace GeoTetra.Partak
         
         private int _gameCount;
         private bool _showOnReady;
-
-        private void OnEnable()
-        {
-            Debug.Log("OnEnable");
-            if (UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
-            {
-                Debug.Log("Advertisement.AddListener(this)");
-
-            }
-        }
-
+        private TaskCompletionSource<bool> _rewardedAdTask;
+        
         private void OnDisable()
         {
-            Debug.Log("OnDisable");
+            Advertisement.RemoveListener(this);
+            Debug.Log("AdvertisementDispatch OnDisable");
         }
 
         [ContextMenu("ShowRewardedAd")]
-        public void ShowRewardedAd()
+        public Task<bool> ShowRewardedAd()
         {
             _showOnReady = false;
-            
+            _rewardedAdTask = new TaskCompletionSource<bool>();
+
             if (!Advertisement.isInitialized)
             {
                 Advertisement.AddListener(this);
-                Advertisement.Initialize(Application.platform == RuntimePlatform.Android ? _googlePlayStoreId : _appleAppStoreId, _testMode);
+                Advertisement.Initialize(
+                    Application.platform == RuntimePlatform.Android ? _googlePlayStoreId : _appleAppStoreId, _testMode);
             }
 
             if (Advertisement.IsReady())
@@ -60,6 +55,8 @@ namespace GeoTetra.Partak
             {
                 _showOnReady = true;
             }
+
+            return _rewardedAdTask.Task;
         }
 
         public void OnUnityAdsReady(string placementId)
@@ -85,7 +82,10 @@ namespace GeoTetra.Partak
         public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
         {
             Debug.Log("OnUnityAdsDidFinish " + placementId + " " + showResult);
-
+            if (placementId == _rewardedVideoId)
+            {
+                _rewardedAdTask.SetResult(showResult == ShowResult.Finished);   
+            }
         }
     }
 }

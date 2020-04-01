@@ -13,11 +13,6 @@ namespace GeoTetra.GTSnapper
         private float _startDistance;
         private float _priorDistance;
 
-        public void Initialize(ItemGizmoRoot parentItemGizmoRoot)
-        {
-            _parentItemGizmoRoot = parentItemGizmoRoot;
-        }
-
         public void OnBeginDrag(PointerEventData eventData)
         {
             float distance = Vector3.Distance(_parentItemGizmoRoot.transform.position, eventData.pointerCurrentRaycast.worldPosition);
