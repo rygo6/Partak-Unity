@@ -1,7 +1,8 @@
 ﻿ using System;
 using System.Collections;
 using System.Collections.Generic;
-using GeoTetra.GTCommon.Components;
+ using System.Threading.Tasks;
+ using GeoTetra.GTCommon.Components;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using UnityEngine;
@@ -61,7 +62,7 @@ namespace GeoTetra.GTUI
             DisplayStackUI(uiInstance, transitionType, onFinish);
         }
         
-        public async void InstantiateAndDisplayModalUI(AssetReference ui, Action onFinish = null)
+        public async Task InstantiateAndDisplayModalUI(AssetReference ui, Action onFinish = null)
         {
             ModalUI uiInstance = await _addressablesPool.PoolInstantiateAsync<ModalUI>(ui);
             DisplayModalUI(uiInstance, onFinish);
@@ -74,14 +75,14 @@ namespace GeoTetra.GTUI
 
         public async void DisplaySelectionModal(string mainMessage, string[] messages, Action[] actions, int focusIndex)
         {
-            SelectionModalUI messageModalUi = await Pool.PoolInstantiateAsync<SelectionModalUI>(_selectionModalUiReference);
+            SelectionModalUI messageModalUi = await _addressablesPool.PoolInstantiateAsync<SelectionModalUI>(_selectionModalUiReference);
             messageModalUi.Init(mainMessage, messages, actions, focusIndex);
             DisplayModalUI(messageModalUi);
         }
 
         public async void DisplayMessageModal(string message, Action action = null)
         {
-            MessageModalUI messageModalUi = await Pool.PoolInstantiateAsync<MessageModalUI>(_messageModalUiReference);
+            MessageModalUI messageModalUi = await _addressablesPool.PoolInstantiateAsync<MessageModalUI>(_messageModalUiReference);
             messageModalUi.Init(message, action);
             DisplayModalUI(messageModalUi);
         }

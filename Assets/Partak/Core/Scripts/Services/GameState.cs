@@ -30,6 +30,7 @@ namespace GeoTetra.Partak
         [SerializeField] private int _sessionCount;
 
         private const string LevelIndexPrefKey = "LevelIndex";
+        private const string FullVersioNKey = "isFullVersion";
         
         public LevelCatalogDatum LevelCatalogDatum => _levelCatalogDatum;
         public bool FullVersion => _fullVersion;
@@ -100,16 +101,14 @@ namespace GeoTetra.Partak
 
         private void OnEnable()
         {
-           _levelIndex = PlayerPrefs.GetInt("LevelIndex", 0);
+            _levelIndex = PlayerPrefs.GetInt("LevelIndex", 0);
             
-            if (PlayerPrefs.HasKey("isFullVersion"))
+            if (PlayerPrefs.HasKey(FullVersioNKey))
             {
-                Debug.Log("isFullVersion");
                 _fullVersion = true;
             }
 
             _sessionCount = PlayerPrefs.GetInt("SessionCount");
-            Debug.Log("SessionCount: " + _sessionCount);
             PlayerPrefs.SetInt("SessionCount", ++_sessionCount);
 
             switch (PlayerPrefs.GetInt("muted"))
@@ -123,8 +122,12 @@ namespace GeoTetra.Partak
             }
 
             _levelCatalogDatum = LevelCatalogDatum.LoadLevelCatalogDatum();
-            
-//		CrashReporting.Init("ff1d2528-adf9-4ba4-bf2d-d34f2ccfe587", Version);
+        }
+
+        public void EnableFullVersion()
+        {
+            PlayerPrefs.SetInt(FullVersioNKey, 1);
+            _fullVersion = true;
         }
 
         public string GetSelectedLevelId()

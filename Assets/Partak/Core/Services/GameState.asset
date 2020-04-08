@@ -14,14 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _version: 2.0.5
   _playerStates:
-  - _playerColor: {r: 0.6222258, g: 0.82014406, b: 0.011764706, a: 1}
+  - _playerColor: {r: 0.011764706, g: 0.49193922, b: 0.7362092, a: 1}
     _playerMode: 0
-  - _playerColor: {r: 0.011764706, g: 0.45425016, b: 0.7256689, a: 1}
+  - _playerColor: {r: 0.6445312, g: 0.13725491, b: 0.53803945, a: 1}
     _playerMode: 0
-  - _playerColor: {r: 0.70617676, g: 0.13980971, b: 0.501309, a: 1}
-    _playerMode: 0
-  - _playerColor: {r: 1, g: 0.56024814, b: 0.015686275, a: 1}
+  - _playerColor: {r: 1, g: 0.5286274, b: 0.015686275, a: 1}
+    _playerMode: 1
+  - _playerColor: {r: 0.6985622, g: 0.8517648, b: 0.011764706, a: 1}
     _playerMode: 1
   _timeLimitMinutes: 3
   _levelIndex: 0
-  _editingLevelIndex: 0
+  _editingLevelIndex: 2
+  _levelCatalogDatum:
+    _levelIDs:
+    - 2fc910a0-3f37-4903-ade8-4cd4571f6caf
+    - 2083ac49-67c1-41fd-9dd7-c8bae9e11a6f
+    - a8d63a36-c1ee-4994-8ac1-b0c03a477676
+  _fullVersion: 0
+  _sessionCount: 1892

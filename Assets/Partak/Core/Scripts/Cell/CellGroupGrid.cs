@@ -11,7 +11,7 @@ namespace GeoTetra.Partak
         public CellGroupGrid(CellGroupGrid cellGroupGrid, int playerCount)
         {
             ParentLevel = cellGroupGrid.ParentLevel + 1;
-            Dimension = new Vector2Int(Dimension.x / 2, Dimension.y / 2);
+            Dimension = new Vector2Int(cellGroupGrid.Dimension.x / 2, cellGroupGrid.Dimension.y / 2);
             Grid = BuildParentCellGroupLayer(cellGroupGrid, this, playerCount);
         }
 
@@ -106,223 +106,222 @@ namespace GeoTetra.Partak
         /// <returns>The parent cell group layer.</returns>
         /// <param name="baseCellGroupArray">Base CellGroup layer array.</param>
         /// <param name="cellGroupDimension">Dimension of baseCellGroup.</param>
-        private CellGroup[] BuildParentCellGroupLayer(CellGroupGrid baseCellGroupGrid,
-            CellGroupGrid parentCellGroupGrid, int playerCount)
+        private CellGroup[] BuildParentCellGroupLayer(CellGroupGrid baseCellGroupGrid, CellGroupGrid parentCellGroupGrid, int playerCount)
         {
             CellGroup[] baseCellGroupArray = baseCellGroupGrid.Grid;
             Vector2Int baseCellGroupDimension = baseCellGroupGrid.Dimension;
             int baseParentLevel = baseCellGroupGrid.ParentLevel;
-            Vector2Int parentCellGroupDimension =
-                new Vector2Int(baseCellGroupDimension.x / 2, baseCellGroupDimension.x / 2);
-            CellGroup[] parentCellGroupGridArray =
-                new CellGroup[parentCellGroupDimension.x * parentCellGroupDimension.y];
+            Vector2Int parentCellGroupDimension = new Vector2Int(baseCellGroupDimension.x / 2, baseCellGroupDimension.x / 2);
+            CellGroup[] parentCellGroupGridArray = new CellGroup[parentCellGroupDimension.x * parentCellGroupDimension.y];
 
             int parentIndex = 0;
             for (int y = 0; y < baseCellGroupDimension.y; y += 2)
-            for (int x = 0; x < baseCellGroupDimension.x; x += 2)
             {
-                //Gather 4 cellGroups that would compose parent cellGroup
-                CellGroup[] childCellGroupArray =
+                for (int x = 0; x < baseCellGroupDimension.x; x += 2)
                 {
-                    baseCellGroupArray[CellUtility.CoordinateToGridIndex(x, y, baseCellGroupDimension)],
-                    baseCellGroupArray[CellUtility.CoordinateToGridIndex(x + 1, y, baseCellGroupDimension)],
-                    baseCellGroupArray[CellUtility.CoordinateToGridIndex(x, y + 1, baseCellGroupDimension)],
-                    baseCellGroupArray[CellUtility.CoordinateToGridIndex(x + 1, y + 1, baseCellGroupDimension)]
-                };
-
-                //check if any are null
-                bool nullQuad = false;
-                for (int i = 0; i < childCellGroupArray.Length; ++i)
-                    if (childCellGroupArray[i] == null)
+                    //Gather 4 cellGroups that would compose parent cellGroup
+                    CellGroup[] childCellGroupArray =
                     {
-                        nullQuad = true;
-                        break;
-                    }
-
-                //if not null check if any neighboring cellGroups are more than one parentLevel difference
-                bool neighborParentLevelTooSmall = false;
-                if (!nullQuad)
-                {
-                    CellGroup[] neigborCellGroupArray =
-                    {
-                        childCellGroupArray[3].DirectionalCellGroupArray[Direction12.NNW],
-                        childCellGroupArray[3].DirectionalCellGroupArray[Direction12.NNE], //0
-                        childCellGroupArray[3].DirectionalCellGroupArray[Direction12.NE], //1
-                        childCellGroupArray[3].DirectionalCellGroupArray[Direction12.NEE], //2
-                        childCellGroupArray[3].DirectionalCellGroupArray[Direction12.SEE],
-
-                        childCellGroupArray[1].DirectionalCellGroupArray[Direction12.NEE],
-                        childCellGroupArray[1].DirectionalCellGroupArray[Direction12.SEE], //3
-                        childCellGroupArray[1].DirectionalCellGroupArray[Direction12.SE], //4
-                        childCellGroupArray[1].DirectionalCellGroupArray[Direction12.SSE], //5
-                        childCellGroupArray[1].DirectionalCellGroupArray[Direction12.SSW],
-
-                        childCellGroupArray[0].DirectionalCellGroupArray[Direction12.SSE],
-                        childCellGroupArray[0].DirectionalCellGroupArray[Direction12.SSW], //6
-                        childCellGroupArray[0].DirectionalCellGroupArray[Direction12.SW], //7
-                        childCellGroupArray[0].DirectionalCellGroupArray[Direction12.SWW], //8
-                        childCellGroupArray[0].DirectionalCellGroupArray[Direction12.NWW],
-
-                        childCellGroupArray[2].DirectionalCellGroupArray[Direction12.SWW],
-                        childCellGroupArray[2].DirectionalCellGroupArray[Direction12.NWW], //9
-                        childCellGroupArray[2].DirectionalCellGroupArray[Direction12.NW], //10
-                        childCellGroupArray[2].DirectionalCellGroupArray[Direction12.NNW], //11
-                        childCellGroupArray[2].DirectionalCellGroupArray[Direction12.NNE]
+                        baseCellGroupArray[CellUtility.CoordinateToGridIndex(x, y, baseCellGroupDimension)],
+                        baseCellGroupArray[CellUtility.CoordinateToGridIndex(x + 1, y, baseCellGroupDimension)],
+                        baseCellGroupArray[CellUtility.CoordinateToGridIndex(x, y + 1, baseCellGroupDimension)],
+                        baseCellGroupArray[CellUtility.CoordinateToGridIndex(x + 1, y + 1, baseCellGroupDimension)]
                     };
 
-                    for (int i = 0; i < neigborCellGroupArray.Length; ++i)
-                        if (neigborCellGroupArray[i] == null)
+                    //check if any are null
+                    bool nullQuad = false;
+                    for (int i = 0; i < childCellGroupArray.Length; ++i)
+                        if (childCellGroupArray[i] == null)
                         {
-                        }
-                        else if (neigborCellGroupArray[i].CellGroupGrid.ParentLevel == baseParentLevel)
-                        {
-                            //parent level is 1 less to the cellGroup that will be created
-                        }
-                        else if (neigborCellGroupArray[i].CellGroupGrid.ParentLevel == baseParentLevel + 1)
-                        {
-                            //parent level is equal to the cellGroup that will be created
-                        }
-                        else if (neigborCellGroupArray[i].CellGroupGrid.ParentLevel == baseParentLevel - 1)
-                        {
-                            //parent level is 2 less to the cellGroup that will be created
-                            neighborParentLevelTooSmall = true;
+                            nullQuad = true;
                             break;
                         }
-                        else
-                        {
-                            Debug.LogError("Neigbor Cell " + i +
-                                           " has greater than 1 one parent level difference. neigborParentLevel: " +
-                                           neigborCellGroupArray[i].CellGroupGrid.ParentLevel +
-                                           " baseParentLevel: " + baseParentLevel);
-                        }
-                }
 
-                //If all is valid, construct parent cell
-                if (!nullQuad && !neighborParentLevelTooSmall)
-                {
-                    //Get child particleCells of Quad
-                    ParticleCell[] childParticleCellArray =
-                        new ParticleCell[childCellGroupArray[0].ChildParticleCellArray.Length * 4];
-                    int particleIndex = 0;
-                    for (int i = 0; i < childCellGroupArray.Length; ++i)
-                        //						childCellGroupArray[i].InStepArray = 2;
-                    for (int o = 0; o < childCellGroupArray[i].ChildParticleCellArray.Length; ++o)
+                    //if not null check if any neighboring cellGroups are more than one parentLevel difference
+                    bool neighborParentLevelTooSmall = false;
+                    if (!nullQuad)
                     {
-                        childParticleCellArray[particleIndex] =
-                            childCellGroupArray[i].ChildParticleCellArray[o];
-                        particleIndex++;
+                        CellGroup[] neigborCellGroupArray =
+                        {
+                            childCellGroupArray[3].DirectionalCellGroupArray[Direction12.NNW],
+                            childCellGroupArray[3].DirectionalCellGroupArray[Direction12.NNE], //0
+                            childCellGroupArray[3].DirectionalCellGroupArray[Direction12.NE], //1
+                            childCellGroupArray[3].DirectionalCellGroupArray[Direction12.NEE], //2
+                            childCellGroupArray[3].DirectionalCellGroupArray[Direction12.SEE],
+
+                            childCellGroupArray[1].DirectionalCellGroupArray[Direction12.NEE],
+                            childCellGroupArray[1].DirectionalCellGroupArray[Direction12.SEE], //3
+                            childCellGroupArray[1].DirectionalCellGroupArray[Direction12.SE], //4
+                            childCellGroupArray[1].DirectionalCellGroupArray[Direction12.SSE], //5
+                            childCellGroupArray[1].DirectionalCellGroupArray[Direction12.SSW],
+
+                            childCellGroupArray[0].DirectionalCellGroupArray[Direction12.SSE],
+                            childCellGroupArray[0].DirectionalCellGroupArray[Direction12.SSW], //6
+                            childCellGroupArray[0].DirectionalCellGroupArray[Direction12.SW], //7
+                            childCellGroupArray[0].DirectionalCellGroupArray[Direction12.SWW], //8
+                            childCellGroupArray[0].DirectionalCellGroupArray[Direction12.NWW],
+
+                            childCellGroupArray[2].DirectionalCellGroupArray[Direction12.SWW],
+                            childCellGroupArray[2].DirectionalCellGroupArray[Direction12.NWW], //9
+                            childCellGroupArray[2].DirectionalCellGroupArray[Direction12.NW], //10
+                            childCellGroupArray[2].DirectionalCellGroupArray[Direction12.NNW], //11
+                            childCellGroupArray[2].DirectionalCellGroupArray[Direction12.NNE]
+                        };
+
+                        for (int i = 0; i < neigborCellGroupArray.Length; ++i)
+                            if (neigborCellGroupArray[i] == null)
+                            {
+                            }
+                            else if (neigborCellGroupArray[i].CellGroupGrid.ParentLevel == baseParentLevel)
+                            {
+                                //parent level is 1 less to the cellGroup that will be created
+                            }
+                            else if (neigborCellGroupArray[i].CellGroupGrid.ParentLevel == baseParentLevel + 1)
+                            {
+                                //parent level is equal to the cellGroup that will be created
+                            }
+                            else if (neigborCellGroupArray[i].CellGroupGrid.ParentLevel == baseParentLevel - 1)
+                            {
+                                //parent level is 2 less to the cellGroup that will be created
+                                neighborParentLevelTooSmall = true;
+                                break;
+                            }
+                            else
+                            {
+                                Debug.LogError("Neigbor Cell " + i +
+                                               " has greater than 1 one parent level difference. neigborParentLevel: " +
+                                               neigborCellGroupArray[i].CellGroupGrid.ParentLevel +
+                                               " baseParentLevel: " + baseParentLevel);
+                            }
                     }
 
-                    CellGroup parentCellGroup = new CellGroup(
-                        parentCellGroupGrid,
-                        childCellGroupArray,
-                        childParticleCellArray,
-                        playerCount);
+                    //If all is valid, construct parent cell
+                    if (!nullQuad && !neighborParentLevelTooSmall)
+                    {
+                        //Get child particleCells of Quad
+                        ParticleCell[] childParticleCellArray =
+                            new ParticleCell[childCellGroupArray[0].ChildParticleCellArray.Length * 4];
+                        int particleIndex = 0;
+                        for (int i = 0; i < childCellGroupArray.Length; ++i)
+                            //						childCellGroupArray[i].InStepArray = 2;
+                        for (int o = 0; o < childCellGroupArray[i].ChildParticleCellArray.Length; ++o)
+                        {
+                            childParticleCellArray[particleIndex] =
+                                childCellGroupArray[i].ChildParticleCellArray[o];
+                            particleIndex++;
+                        }
 
-                    ConnectStraightNeighborCellGroup(
-                        parentCellGroup,
-                        childCellGroupArray[0],
-                        1,
-                        Direction12.SWW,
-                        Direction12.SEE,
-                        Direction12.NEE,
-                        Direction12.NE);
+                        CellGroup parentCellGroup = new CellGroup(
+                            parentCellGroupGrid,
+                            childCellGroupArray,
+                            childParticleCellArray,
+                            playerCount);
 
-                    ConnectDiagonalNeighborCellGroup(
-                        parentCellGroup,
-                        childCellGroupArray[0],
-                        3,
-                        Direction12.SW,
-                        Direction12.NE);
+                        ConnectStraightNeighborCellGroup(
+                            parentCellGroup,
+                            childCellGroupArray[0],
+                            1,
+                            Direction12.SWW,
+                            Direction12.SEE,
+                            Direction12.NEE,
+                            Direction12.NE);
 
-                    ConnectStraightNeighborCellGroup(
-                        parentCellGroup,
-                        childCellGroupArray[0],
-                        2,
-                        Direction12.SSW,
-                        Direction12.NNW,
-                        Direction12.NNE,
-                        Direction12.NE);
+                        ConnectDiagonalNeighborCellGroup(
+                            parentCellGroup,
+                            childCellGroupArray[0],
+                            3,
+                            Direction12.SW,
+                            Direction12.NE);
 
-                    ConnectStraightNeighborCellGroup(
-                        parentCellGroup,
-                        childCellGroupArray[1],
-                        3,
-                        Direction12.SSE,
-                        Direction12.NNE,
-                        Direction12.NNW,
-                        Direction12.NW);
+                        ConnectStraightNeighborCellGroup(
+                            parentCellGroup,
+                            childCellGroupArray[0],
+                            2,
+                            Direction12.SSW,
+                            Direction12.NNW,
+                            Direction12.NNE,
+                            Direction12.NE);
 
-                    ConnectDiagonalNeighborCellGroup(
-                        parentCellGroup,
-                        childCellGroupArray[1],
-                        2,
-                        Direction12.SE,
-                        Direction12.NW);
+                        ConnectStraightNeighborCellGroup(
+                            parentCellGroup,
+                            childCellGroupArray[1],
+                            3,
+                            Direction12.SSE,
+                            Direction12.NNE,
+                            Direction12.NNW,
+                            Direction12.NW);
 
-                    ConnectStraightNeighborCellGroup(
-                        parentCellGroup,
-                        childCellGroupArray[1],
-                        0,
-                        Direction12.SEE,
-                        Direction12.SWW,
-                        Direction12.NWW,
-                        Direction12.NW);
+                        ConnectDiagonalNeighborCellGroup(
+                            parentCellGroup,
+                            childCellGroupArray[1],
+                            2,
+                            Direction12.SE,
+                            Direction12.NW);
 
-                    ConnectStraightNeighborCellGroup(
-                        parentCellGroup,
-                        childCellGroupArray[3],
-                        2,
-                        Direction12.NEE,
-                        Direction12.NWW,
-                        Direction12.SWW,
-                        Direction12.SW);
+                        ConnectStraightNeighborCellGroup(
+                            parentCellGroup,
+                            childCellGroupArray[1],
+                            0,
+                            Direction12.SEE,
+                            Direction12.SWW,
+                            Direction12.NWW,
+                            Direction12.NW);
 
-                    ConnectDiagonalNeighborCellGroup(
-                        parentCellGroup,
-                        childCellGroupArray[3],
-                        0,
-                        Direction12.NE,
-                        Direction12.SW);
+                        ConnectStraightNeighborCellGroup(
+                            parentCellGroup,
+                            childCellGroupArray[3],
+                            2,
+                            Direction12.NEE,
+                            Direction12.NWW,
+                            Direction12.SWW,
+                            Direction12.SW);
 
-                    ConnectStraightNeighborCellGroup(
-                        parentCellGroup,
-                        childCellGroupArray[3],
-                        1,
-                        Direction12.NNE,
-                        Direction12.SSE,
-                        Direction12.SSW,
-                        Direction12.SW);
+                        ConnectDiagonalNeighborCellGroup(
+                            parentCellGroup,
+                            childCellGroupArray[3],
+                            0,
+                            Direction12.NE,
+                            Direction12.SW);
 
-                    ConnectStraightNeighborCellGroup(
-                        parentCellGroup,
-                        childCellGroupArray[2],
-                        0,
-                        Direction12.NNW,
-                        Direction12.SSW,
-                        Direction12.SSE,
-                        Direction12.SE);
+                        ConnectStraightNeighborCellGroup(
+                            parentCellGroup,
+                            childCellGroupArray[3],
+                            1,
+                            Direction12.NNE,
+                            Direction12.SSE,
+                            Direction12.SSW,
+                            Direction12.SW);
 
-                    ConnectDiagonalNeighborCellGroup(
-                        parentCellGroup,
-                        childCellGroupArray[2],
-                        1,
-                        Direction12.NW,
-                        Direction12.SE);
+                        ConnectStraightNeighborCellGroup(
+                            parentCellGroup,
+                            childCellGroupArray[2],
+                            0,
+                            Direction12.NNW,
+                            Direction12.SSW,
+                            Direction12.SSE,
+                            Direction12.SE);
 
-                    ConnectStraightNeighborCellGroup(
-                        parentCellGroup,
-                        childCellGroupArray[2],
-                        3,
-                        Direction12.NWW,
-                        Direction12.NEE,
-                        Direction12.SEE,
-                        Direction12.SE);
+                        ConnectDiagonalNeighborCellGroup(
+                            parentCellGroup,
+                            childCellGroupArray[2],
+                            1,
+                            Direction12.NW,
+                            Direction12.SE);
 
-                    parentCellGroupGridArray[parentIndex] = parentCellGroup;
+                        ConnectStraightNeighborCellGroup(
+                            parentCellGroup,
+                            childCellGroupArray[2],
+                            3,
+                            Direction12.NWW,
+                            Direction12.NEE,
+                            Direction12.SEE,
+                            Direction12.SE);
+
+                        parentCellGroupGridArray[parentIndex] = parentCellGroup;
+                    }
+
+                    parentIndex++;
                 }
-
-                parentIndex++;
             }
 
             return parentCellGroupGridArray;

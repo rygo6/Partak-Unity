@@ -57,6 +57,12 @@ namespace GeoTetra.Partak
             Clear();
         }
 
+        /// <summary>
+        /// Initialize List
+        /// </summary>
+        /// <param name="populateNextSet"> Method that returns true once no more items available. </param>
+        /// <param name="populateLevelButton"> Method that will populate LevelButton visually. </param>
+        /// <param name="finalButton"> An additional optional button to show after all others. </param>
         public void Initialize(
             Func<List<List<LocalLevelDatum>>, CancellationToken, Task<bool>> populateNextSet, 
             Func<LevelButton, CancellationToken, Task> populateLevelButton,

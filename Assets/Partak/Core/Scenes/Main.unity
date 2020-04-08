@@ -150,6 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89072e4b80ba7b9488a26fa61100eb0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _path: 
   _isGlobalPool: 1
   _prePoolReferences:
   - m_AssetGUID: b30141a42589e924e97c08dbbe68ad23
@@ -301,7 +302,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3273f2bf6664147b7bd18552005e4c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  referenceCount: 4
+  referenceCount: 68
 --- !u!4 &1431012821
 Transform:
   m_ObjectHideFlags: 3

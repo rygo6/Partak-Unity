@@ -31,9 +31,7 @@ namespace GeoTetra.GTSnapper
             {
                 return new Ray(hit.point, hit.normal);
             }
-
-            Debug.DrawRay(closestPoint, Vector3.up * 100, Color.red);
-            Debug.Log("Ray didn't hit!'");
+            
             return new Ray(closestPoint, Vector3.one);
         }
 

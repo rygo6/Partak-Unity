@@ -24,16 +24,15 @@ namespace GeoTetra.Partak
     public class LevelCatalogUI : StackUI
     {
         [SerializeField] private AnalyticsRelayReference _analyticsRelay;
-        [SerializeField] private ServiceReference _gameStateService;
+        [SerializeField] private GameStateReference _gameState;
         [SerializeField] private ServiceReference _sceneLoadSystem;
-        [SerializeField] private AssetReference _loadModalUI;
         [SerializeField] private AssetReference _newLevelScene;
         [SerializeField] private AssetReference _mainMenuScene;
         [SerializeField] private AssetReference _levelDownloadUI;
+        [SerializeField] private AssetReference _purchaseUI;
         [SerializeField] private LevelButtonScrollRect _levelButtonScrollRect; 
         
         private int _catalogDatumIndex;
-        private GameState _gameState;
         private LevelButton _selectedLevelButton;
         
         private string[] _emptyLevelClickMessages;
@@ -45,11 +44,8 @@ namespace GeoTetra.Partak
         protected override void Awake()
         {
             base.Awake();
-            _gameState = _gameStateService.Service<GameState>();
             _levelButtonScrollRect.LevelButtonClicked += OnLevelButtonClicked;
             
-//            LoadedLevelMessages = new[] {"Edit Level", "Clear Level", "Cancel"};
-//            LoadedLevelActions = new Action[] {EditLevel, ClearLevel, Cancel};
             _loadedLevelMessages = new[] {"Delete Level", "Cancel"};
             _loadedLevelActions = new Action[] {ClearLevel, Cancel};
             
@@ -86,31 +82,43 @@ namespace GeoTetra.Partak
 
         private async Task<bool> DownloadNextSet(List<List<LocalLevelDatum>> datumLists, CancellationToken cancellationToken)
         {
-            if (_catalogDatumIndex >= _gameState.LevelCatalogDatum.LevelIDs.Count) return true;
+            if (!_gameState.Service.FullVersion && _catalogDatumIndex >= 3)
+            {
+                return true;
+            }
+            
+            if (_catalogDatumIndex >= _gameState.Service.LevelCatalogDatum.LevelIDs.Count) return true;
             
             List<LocalLevelDatum> levelDatumList = new List<LocalLevelDatum>();
             for (int i = 0; i < _levelButtonScrollRect.ColumnCount; ++i)
             {
-                if (_catalogDatumIndex >= _gameState.LevelCatalogDatum.LevelIDs.Count) break;
+                if (_catalogDatumIndex >= _gameState.Service.LevelCatalogDatum.LevelIDs.Count) break;
 
-                string levelPath = LevelUtility.LevelPath(_gameState.LevelCatalogDatum.LevelIDs[_catalogDatumIndex]);
-                string json = System.IO.File.ReadAllText(levelPath);
+                string levelPath = LevelUtility.LevelPath(_gameState.Service.LevelCatalogDatum.LevelIDs[_catalogDatumIndex]);
+                string json = File.ReadAllText(levelPath);
                 LocalLevelDatum levelDatum = JsonUtility.FromJson<LocalLevelDatum>(json);
                 levelDatumList.Add(levelDatum);
                 _catalogDatumIndex++;
             }
             datumLists.Add(levelDatumList);
 
-            return _catalogDatumIndex >= _gameState.LevelCatalogDatum.LevelIDs.Count;
+            return _catalogDatumIndex >= _gameState.Service.LevelCatalogDatum.LevelIDs.Count;
         }
 
         private void FinalButton(LevelButton levelButton)
         {
             levelButton.Image.color = new Color(1,1,1,.5f);
             levelButton.Image.texture = null;
-            levelButton.Text.text = "Add\nLevel";
-//            levelButton.ShowingLevel = false;
             levelButton.Button.interactable = true;
+            
+            if (!_gameState.Service.FullVersion && _catalogDatumIndex >= 3)
+            {
+                levelButton.Text.text = "Unlock\nLevel Slot";
+            }
+            else
+            {
+                levelButton.Text.text = "Add\nLevel";
+            }
         }
 
         private async void OnLevelButtonClicked(LevelButton levelButton)
@@ -119,12 +127,25 @@ namespace GeoTetra.Partak
             
             if (levelButton.LevelDatum == null)
             {
-                DisplaySelectionModal("", _emptyLevelClickMessages, _emptyLevelClickActions, 0);
+                if (!_gameState.Service.FullVersion && _catalogDatumIndex >= 3)
+                {
+                    PurchaseFullVersion();
+//                    CurrentlyRenderedBy.DisplayMessageModal("Purchase full version to unlock unlimited level slots, unlock the ability to edit levels and disable all ads.", PurchaseFullVersion);
+                }
+                else
+                {
+                    CurrentlyRenderedBy.DisplaySelectionModal("", _emptyLevelClickMessages, _emptyLevelClickActions, 0);
+                }
             }
             else
             {
-                DisplaySelectionModal("", _loadedLevelMessages, _loadedLevelActions, 0);
+                CurrentlyRenderedBy.DisplaySelectionModal("", _loadedLevelMessages, _loadedLevelActions, 0);
             }
+        }
+
+        private async void PurchaseFullVersion()
+        {
+            await CurrentlyRenderedBy.InstantiateAndDisplayModalUI(_purchaseUI);
         }
 
         private void Cancel()
@@ -138,7 +159,7 @@ namespace GeoTetra.Partak
             string imagePath = LevelUtility.LevelImagePath(_selectedLevelButton.LevelDatum.LevelID);
             System.IO.File.Delete(levelPath);
             System.IO.File.Delete(imagePath);
-            _gameState.RemoveLevelId(_selectedLevelButton.LevelDatum.LevelID);
+            _gameState.Service.RemoveLevelId(_selectedLevelButton.LevelDatum.LevelID);
             _catalogDatumIndex = 0;
             _levelButtonScrollRect.Clear();
             _levelButtonScrollRect.Initialize(DownloadNextSet, PopulateLevelButton, FinalButton);
@@ -147,20 +168,20 @@ namespace GeoTetra.Partak
         
         private void EditLevel()
         {
-            _gameState.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
+            _gameState.Service.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
             _sceneLoadSystem.Service<SceneLoadSystem>().Load(_mainMenuScene, _newLevelScene);
         }
         
         private void DownloadExistingLevel()
         {
-            _gameState.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
+            _gameState.Service.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
             CurrentlyRenderedBy.InstantiateAndDisplayStackUI(_levelDownloadUI);
             _analyticsRelay.Service.DownloadLevelOpened();
         }
 
         private void CreateNewLevel()
         {
-            _gameState.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
+            _gameState.Service.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
             _sceneLoadSystem.Service<SceneLoadSystem>().Load(_mainMenuScene, _newLevelScene);
             _analyticsRelay.Service.CreateLevelOpened();
         }
