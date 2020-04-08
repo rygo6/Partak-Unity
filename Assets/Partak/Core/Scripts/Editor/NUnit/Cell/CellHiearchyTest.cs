@@ -223,10 +223,14 @@ namespace GeoTetra.Partak
         {
             ParticleCellGrid particleCellGrid = new ParticleCellGrid(192, 192);
             CellGroupGrid cellGroupGrid0 = new CellGroupGrid(particleCellGrid, PlayerCount);
+            Debug.Log(cellGroupGrid0.Grid.Length);
             CellGroupGrid cellGroupGrid1 = new CellGroupGrid(cellGroupGrid0, PlayerCount);
+            Debug.Log(cellGroupGrid1.Grid.Length);
             CellGroupGrid cellGroupGrid2 = new CellGroupGrid(cellGroupGrid1, PlayerCount);
+            Debug.Log(cellGroupGrid2.Grid.Length);
             CellGroupGrid cellGroupGrid3 = new CellGroupGrid(cellGroupGrid2, PlayerCount);
-
+            Debug.Log(cellGroupGrid3.Grid.Length);
+            
             if (cellGroupGrid3.Grid.Length == 24 * 24)
             {
                 DrawRayFromCellGroupCorner(cellGroupGrid0.Grid);
@@ -235,7 +239,7 @@ namespace GeoTetra.Partak
             }
             else
             {
-                Assert.Fail();
+                Assert.Fail($"cellGroupGrid3.Grid.Length was {cellGroupGrid3.Grid.Length} expected {24 * 24}");
             }
         }
 

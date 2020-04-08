@@ -35,7 +35,8 @@ namespace GeoTetra.Partak
                 Debug.LogError("Dimensions are " + x + "  " + y);
                 return;
             }
-            
+
+            ParentCellGridLevel = 0;
             while (x % 2 == 0 && y % 2 == 0)
             {
                 x /= 2;

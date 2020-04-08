@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
-using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using UnityEngine;
 using UnityEngine.Advertisements;
-using Debug = UnityEngine.Debug;
 
 namespace GeoTetra.Partak
 {
@@ -28,11 +25,15 @@ namespace GeoTetra.Partak
         private bool _showOnReady;
         private TaskCompletionSource<bool> _rewardedAdTask;
         
-        private void OnDisable()
-        {
-            Advertisement.RemoveListener(this);
-            Debug.Log("AdvertisementDispatch OnDisable");
-        }
+//        private void OnDisable()
+//        {
+//            if (Advertisement.isInitialized)
+//            {
+//                Advertisement.RemoveListener(this);
+//            }
+//
+//            Debug.Log("AdvertisementDispatch OnDisable");
+//        }
 
         [ContextMenu("ShowRewardedAd")]
         public Task<bool> ShowRewardedAd()

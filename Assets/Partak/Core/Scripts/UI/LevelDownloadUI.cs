@@ -12,6 +12,7 @@ using GeoTetra.GTPooling;
 using GeoTetra.GTUI;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Playables;
+using UnityEngine.Purchasing;
 
 namespace GeoTetra.Partak
 {
@@ -21,7 +22,7 @@ namespace GeoTetra.Partak
         [SerializeField] private AnalyticsRelayReference _analyticsRelay;
         [SerializeField] private GameStateReference _gameState;
         [SerializeField] private ServiceReference _databaseService;
-
+        [SerializeField] private AssetReference _fullPurchaseUI;
         [SerializeField] private Button _mostPopularButton;
         [SerializeField] private Button _mostRecentButton;
         [SerializeField] private LevelButtonScrollRect _levelButtonScrollRect;
@@ -32,7 +33,7 @@ namespace GeoTetra.Partak
         private OrderedDictionary _textureCache = new OrderedDictionary();
         private LevelButton _selectedLevelButton;
 
-        private const string FullVersionMessage ="Ad will play while level downloads. To disable all ads, unlock unlimited level slots and the ability to edit levels then purchase the full version.";
+        private const string FullVersionMessage ="Ad will play while level downloads.";
         private string[] _fullVersionDialogLabels;
         private Action[] _fullVersionDialogActions;
 
@@ -44,13 +45,8 @@ namespace GeoTetra.Partak
             _mostRecentButton.onClick.AddListener(OnMostRecentClicked);
             _levelButtonScrollRect.LevelButtonClicked += OnLevelButtonClicked;
             
-            _fullVersionDialogLabels = new[] {"Watch Ad", "Purchase"};
-            _fullVersionDialogActions = new Action[] {PlayAd, PurchaseFullVersion};
-        }
-
-        public override void OnTransitionInStart(UIRenderer uiRenderer)
-        {
-            base.OnTransitionInStart(uiRenderer);
+            _fullVersionDialogLabels = new[] {"Disable All Ads", "Download Level and Watch Ad", "Cancel"};
+            _fullVersionDialogActions = new Action[] {PurchaseFullVersion, PlayAd, Cancel};
         }
 
         public override void OnTransitionInFinish()
@@ -166,7 +162,7 @@ namespace GeoTetra.Partak
             }
             else
             {
-                CurrentlyRenderedBy.DisplaySelectionModal(FullVersionMessage, 
+                CurrentlyRenderedBy.DisplaySelectionModal(null, 
                     _fullVersionDialogLabels, 
                     _fullVersionDialogActions, 
                     0);
@@ -175,7 +171,7 @@ namespace GeoTetra.Partak
 
         private async void PurchaseFullVersion()
         {
-            CurrentlyRenderedBy.DisplayMessageModal("Purchase Full!", DownloadLevel);
+            await CurrentlyRenderedBy.InstantiateAndDisplayModalUI(_fullPurchaseUI);
         }
         
         private async void PlayAd()
