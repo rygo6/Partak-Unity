@@ -13,16 +13,21 @@ namespace GeoTetra.GTSnapper
         private float _startAngle;
         private float _priorAngle;
 
+        private Plane _plane;
+        
         public void OnBeginDrag(PointerEventData eventData)
         {
             float angle = Vector3Utility.AngleAroundLocalAxis(_parentItemGizmoRoot.transform, eventData.pointerCurrentRaycast.worldPosition);
             _startAngle = SnapAngle(angle);
             _priorAngle = _startAngle;
+            _plane = new Plane(Vector3.up, eventData.pointerCurrentRaycast.worldPosition);
         }
 
         public void OnDrag(PointerEventData eventData)
         {
-            float angle = Vector3Utility.AngleAroundLocalAxis(_parentItemGizmoRoot.transform, eventData.pointerCurrentRaycast.worldPosition);
+            Vector3 worldPosition = RaycastPlane(_plane, eventData);
+            
+            float angle = Vector3Utility.AngleAroundLocalAxis(_parentItemGizmoRoot.transform, worldPosition);
             float snappedAngle = SnapAngle(angle);
             float deltaAngle = snappedAngle - _priorAngle;
             _priorAngle = snappedAngle;
