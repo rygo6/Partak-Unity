@@ -18,11 +18,14 @@ namespace GeoTetra.GTSnapper
             float distance = Vector3.Distance(_parentItemGizmoRoot.transform.position, eventData.pointerCurrentRaycast.worldPosition);
             _startDistance = SnapDistance(distance);
             _priorDistance = _startDistance;
+            _plane = new Plane(Vector3.up, eventData.pointerCurrentRaycast.worldPosition);
         }
 
         public void OnDrag(PointerEventData eventData)
         {
-            float distance = Vector3.Distance(_parentItemGizmoRoot.transform.position, eventData.pointerCurrentRaycast.worldPosition);
+            Vector3 worldPosition = RaycastPlane(_plane, eventData);
+            
+            float distance = Vector3.Distance(_parentItemGizmoRoot.transform.position, worldPosition);
             float snappedDistance = SnapDistance(distance);
             float deltaDistance = snappedDistance - _priorDistance;
             _priorDistance = snappedDistance;

@@ -11,6 +11,7 @@ namespace GeoTetra.GTSnapper
         [SerializeField] private MeshRenderer _meshRenderer;
         
         protected ItemGizmoRoot _parentItemGizmoRoot;
+        protected Plane _plane;
         private Color _originalColor;
 
         private void Awake()
@@ -41,6 +42,13 @@ namespace GeoTetra.GTSnapper
         public void OnPointerUp(PointerEventData eventData)
         {
             _meshRenderer.sharedMaterial.color = _originalColor;
+        }
+
+        protected Vector3 RaycastPlane(Plane pane, PointerEventData eventData)
+        {
+            Ray ray = eventData.pressEventCamera.ScreenPointToRay(eventData.position);
+            pane.Raycast(ray, out float hitDistance);
+            return ray.GetPoint(hitDistance);
         }
     }
 }
