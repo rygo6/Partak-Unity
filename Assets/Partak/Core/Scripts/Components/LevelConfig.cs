@@ -1,11 +1,8 @@
 ﻿using System;
 using GeoTetra.GTCommon.Components;
-using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using GeoTetra.GTSnapper;
-using GeoTetra.Partak;
 using UnityEngine;
-using UnityEngine.Analytics;
 
 namespace GeoTetra.Partak
 {

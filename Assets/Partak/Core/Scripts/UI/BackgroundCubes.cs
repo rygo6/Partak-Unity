@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using GeoTetra.GTCommon.ScriptableObjects;
-using GeoTetra.GTPooling;
+﻿using GeoTetra.GTPooling;
 using GeoTetra.GTUI;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace GeoTetra.Partak
 {

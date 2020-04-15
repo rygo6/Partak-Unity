@@ -3,11 +3,9 @@ using System.Collections;
 using GeoTetra.GTBackend;
 using UnityEngine;
 using UnityEngine.UI;
-using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using GeoTetra.GTSnapper;
 using GeoTetra.GTUI;
-using GeoTetra.Partak;
 using UnityEngine.AddressableAssets;
 
 namespace GeoTetra.Partak
@@ -74,7 +72,7 @@ namespace GeoTetra.Partak
             
             if (!System.IO.File.Exists(levelPath))
             {
-                DisplaySelectionModal("Select Size", _changeSizeMessages, _changeSizeActions, 0);
+                CurrentlyRenderedBy.DisplaySelectionModal("Select Size", _changeSizeMessages, _changeSizeActions, 0);
             }
             else
             {
@@ -106,7 +104,7 @@ namespace GeoTetra.Partak
                 }
                 else
                 {
-                    DisplaySelectionModal("Share Level Online?", _saveMessages, _saveActions, 0);
+                    CurrentlyRenderedBy.DisplaySelectionModal("Share Level Online?", _saveMessages, _saveActions, 0);
                 }
             }
             else
@@ -154,7 +152,7 @@ namespace GeoTetra.Partak
             yield return StartCoroutine(RunTestCoroutine());
             if (_levelTester.Result == LevelTester.TestResult.Success)
             {
-                DisplayModal("Test Successful.", null);
+                CurrentlyRenderedBy.DisplayMessageModal("Test Successful.", null);
             }
             else
             {
@@ -166,15 +164,15 @@ namespace GeoTetra.Partak
         {
             if (_levelTester.Result == LevelTester.TestResult.CursorsBlocked)
             {
-                DisplayModal("An object is blocking the spawn position of a particle. Remove any objects beneath a player cursor.", null);
+                CurrentlyRenderedBy.DisplayMessageModal("An object is blocking the spawn position of a particle. Remove any objects beneath a player cursor.", null);
             }
             else if (_levelTester.Result == LevelTester.TestResult.SpawnBlocked)
             {
-                DisplayModal("There is not enough room for all the particles to spawn. Move objects away from where the particles spawn.", null);
+                CurrentlyRenderedBy.DisplayMessageModal("There is not enough room for all the particles to spawn. Move objects away from where the particles spawn.", null);
             } 
             else if (_levelTester.Result == LevelTester.TestResult.ParticlesBlocked)
             {
-                DisplayModal("All of the particles could not reach each other. Ensure there are open paths for each player's particles to reach every other player's particles.", null);
+                CurrentlyRenderedBy.DisplayMessageModal("All of the particles could not reach each other. Ensure there are open paths for each player's particles to reach every other player's particles.", null);
             }
         }
         

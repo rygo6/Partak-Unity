@@ -1,6 +1,4 @@
-﻿using System;
-using GeoTetra.GTCommon.Components;
-using GeoTetra.GTCommon.ScriptableObjects;
+﻿using GeoTetra.GTCommon.Components;
 using GeoTetra.GTPooling;
 using GT.Threading;
 using UnityEngine;

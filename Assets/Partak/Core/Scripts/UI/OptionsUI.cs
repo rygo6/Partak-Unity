@@ -34,19 +34,19 @@ namespace GeoTetra.Partak
                 case 1:
                     AudioListener.volume = 0f;
                     PlayerPrefs.SetInt("muted", 2);
-                    DisplayModal("Sound Muted");
+                    CurrentlyRenderedBy.DisplayMessageModal("Sound Muted");
                     break;
                 case 2:
                     AudioListener.volume = 1f;
                     PlayerPrefs.SetInt("muted", 1);
-                    DisplayModal("Sound Enabled");
+                    CurrentlyRenderedBy.DisplayMessageModal("Sound Enabled");
                     break;
             }
         }
 
         private void Facebook()
         {
-            DisplayModal(
+            CurrentlyRenderedBy.DisplayMessageModal(
                 "You are now being sent to the GeoTetra Facebook page. GeoTetra is the studio behind partak. Follow GeoTetra on Facebook to see upcoming features, games and provide feedback.",
                 () => { Application.OpenURL("https://www.facebook.com/geotetra/"); }
             );
@@ -54,7 +54,7 @@ namespace GeoTetra.Partak
 
         private void PrivacyPolicy()
         {
-            DisplayModal(
+            CurrentlyRenderedBy.DisplayMessageModal(
                 "You are now being sent to the web page which displays partak's privacy policy.",
                 () => { Application.OpenURL("https://rygo6.github.io/GeoTetraSite/partakprivacypolicy.html"); }
             );

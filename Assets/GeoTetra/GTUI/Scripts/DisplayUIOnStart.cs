@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using GeoTetra.GTCommon.ScriptableObjects;
+﻿using System.Collections;
 using GeoTetra.GTPooling;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 namespace GeoTetra.GTUI
 {
