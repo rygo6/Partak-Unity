@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using GeoTetra.GTCommon.Components;
-using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using UnityEngine;
 

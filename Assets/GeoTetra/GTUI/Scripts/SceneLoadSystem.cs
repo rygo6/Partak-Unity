@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using UnityEngine;
 using UnityEngine.AddressableAssets;

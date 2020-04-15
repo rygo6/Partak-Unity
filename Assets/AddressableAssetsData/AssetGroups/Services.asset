@@ -58,8 +58,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Service
-    m_mainAssetType: GeoTetra.GTUI.SceneLoadSystem, Assembly-CSharp, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
+    m_mainAssetType: GeoTetra.GTUI.SceneLoadSystem, GTUI, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: ed956f91a7b883142bf9b588e32e0f1a
@@ -67,8 +67,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Service
-    m_mainAssetType: GeoTetra.GTCommon.ScriptableObjects.ComponentContainer, Assembly-CSharp,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_mainAssetType: GeoTetra.GTPooling.ComponentContainer, GTPooling, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0

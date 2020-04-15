@@ -53,7 +53,7 @@ namespace GeoTetra.Partak.UI
                 () => { SetPlayerMode(PlayerMode.Comp); },
                 () => { SetPlayerMode(PlayerMode.None); }
             };
-            _parentStackUI.DisplaySelectionModal("Player Type:", messages, actions, (int)  _gameState.Service<GameState>().PlayerStates[_playerIndex].PlayerMode);
+            _parentStackUI.CurrentlyRenderedBy.DisplaySelectionModal("Player Type:", messages, actions, (int)  _gameState.Service<GameState>().PlayerStates[_playerIndex].PlayerMode);
         }
 
         private void SetPlayerMode(PlayerMode mode)

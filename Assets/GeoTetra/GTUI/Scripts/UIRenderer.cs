@@ -1,23 +1,20 @@
-﻿ using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
- using System.Threading.Tasks;
- using GeoTetra.GTCommon.Components;
+using System.Threading.Tasks;
+using GeoTetra.GTCommon.Components;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using UnityEngine;
 using GeoTetra.GTTween;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 namespace GeoTetra.GTUI
 {
     [RequireComponent(typeof(AudioSource))]
     public class UIRenderer : SubscribableBehaviour
     {
-        [SerializeField] private ServiceReference _componentContainer;
+        [SerializeField] internal ServiceReference _componentContainer;
         [SerializeField] private AddressablesPool _addressablesPool;
         [SerializeField] private Camera _uiCamera;
         [SerializeField] private AnimationCurveReference _transitionCurve;
@@ -45,7 +42,7 @@ namespace GeoTetra.GTUI
         public AudioSource AudioSource => _audioSource;
         public AddressablesPool Pool => _addressablesPool;
         public StackUI CurrentStackUI => _currentStackUI;
-        
+
         private void Awake()
         {
             _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
@@ -68,9 +65,9 @@ namespace GeoTetra.GTUI
             DisplayModalUI(uiInstance, onFinish);
         }
         
-        public void DisplayLoadModal()
+        public async Task DisplayLoadModal()
         {
-            InstantiateAndDisplayModalUI(_loadModalUI);
+            await InstantiateAndDisplayModalUI(_loadModalUI);
         }
 
         public async void DisplaySelectionModal(string mainMessage, string[] messages, Action[] actions, int focusIndex)

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using GeoTetra.GTUI;
 using UnityEngine;
@@ -72,7 +71,7 @@ namespace GeoTetra.Partak.UI
 
         private void ShowPauseMenu()
         {
-            DisplaySelectionModal("", _pauseMessages, _pauseActions, 0);
+            CurrentlyRenderedBy.DisplaySelectionModal("", _pauseMessages, _pauseActions, 0);
             _componentContainer.Service<ComponentContainer>().Get<CellParticleEngine>().Pause = true;
         }
 

@@ -1,5 +1,4 @@
-﻿using GeoTetra.GTCommon.ScriptableObjects;
-using GeoTetra.GTPooling;
+﻿using GeoTetra.GTPooling;
 using UnityEngine;
 
 namespace GeoTetra.Partak.UI

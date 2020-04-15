@@ -42,23 +42,7 @@ namespace GeoTetra.GTUI
         {
             CurrentlyRenderedBy.InstantiateAndDisplayStackUI(stackUI);
         }
-        
-        [Obsolete("Use UIRenderer")]
-        public async void DisplaySelectionModal(string mainMessage, string[] messages, Action[] actions, int focusIndex)
-        {
-            SelectionModalUI messageModalUi = await CurrentlyRenderedBy.Pool.PoolInstantiateAsync<SelectionModalUI>(_selectionModalUiReference);
-            messageModalUi.Init(mainMessage, messages, actions, focusIndex);
-            CurrentlyRenderedBy.DisplayModalUI(messageModalUi);
-        }
 
-        [Obsolete("Use UIRenderer")]
-        public async void DisplayModal(string message, Action action = null)
-        {
-            MessageModalUI messageModalUi = await CurrentlyRenderedBy.Pool.PoolInstantiateAsync<MessageModalUI>(_messageModalUiReference);
-            messageModalUi.Init(message, action);
-            CurrentlyRenderedBy.DisplayModalUI(messageModalUi);
-        }
-        
         protected void OnBackClicked()
         {
             CurrentlyRenderedBy.GoBack();

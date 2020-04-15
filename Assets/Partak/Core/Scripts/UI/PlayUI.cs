@@ -37,11 +37,11 @@ namespace GeoTetra.Partak
 
             if (activeCount < 2)
             {
-                DisplayModal("Enable at least two players.");
+                CurrentlyRenderedBy.DisplayMessageModal("Enable at least two players.");
             }
             else if (string.IsNullOrEmpty(levelId))
             {
-                DisplayModal("No Level Selected. Download or Create a new Level in the Level Editor UI.");
+                CurrentlyRenderedBy.DisplayMessageModal("No Level Selected. Download or Create a new Level in the Level Editor UI.");
             }
             else
             {
