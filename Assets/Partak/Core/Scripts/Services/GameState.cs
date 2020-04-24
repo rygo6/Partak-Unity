@@ -102,8 +102,8 @@ namespace GeoTetra.Partak
         private void OnEnable()
         {
             _levelIndex = PlayerPrefs.GetInt("LevelIndex", -1);
-            
-            if (PlayerPrefs.HasKey(FullVersioNKey))  _fullVersion = true;
+
+            _fullVersion = PlayerPrefs.HasKey(FullVersioNKey);
 
             _sessionCount = PlayerPrefs.GetInt("SessionCount");
             PlayerPrefs.SetInt("SessionCount", ++_sessionCount);

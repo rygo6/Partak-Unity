@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 using Amazon;
 using Amazon.CognitoIdentity;
 using Amazon.DynamoDBv2;
-using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
-using Amazon.DynamoDBv2.Model;
 using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
@@ -20,8 +14,6 @@ using Amazon.S3.Transfer;
 using Amazon.Util;
 using GeoTetra.Partak;
 using UnityEngine;
-using UnityEngine.UI;
-using Random = System.Random;
 
 namespace GeoTetra.GTBackend
 {
@@ -154,7 +146,7 @@ namespace GeoTetra.GTBackend
         
         private async Task<byte[]> GetImageBytesFromS3(string key)
         {
-            return await Task.Run( () =>
+            return await Task.Run( async () =>
             {
                 GetObjectRequest request = new GetObjectRequest
                 {
@@ -162,7 +154,7 @@ namespace GeoTetra.GTBackend
                     Key = key
                 };
 
-                using (GetObjectResponse response = _s3Client.GetObject(request))
+                using (GetObjectResponse response = await _s3Client.GetObjectAsync(request))
                 {
                     MemoryStream memoryStream = new MemoryStream();
                     using (Stream responseStream = response.ResponseStream)
@@ -177,7 +169,7 @@ namespace GeoTetra.GTBackend
 
         private async Task<byte[]> GetImageBytesFromS3(string key, CancellationToken cancellationToken)
         {
-            return await Task.Run( () =>
+            return await Task.Run( async () =>
             {
                 GetObjectRequest request = new GetObjectRequest
                 {
@@ -185,7 +177,7 @@ namespace GeoTetra.GTBackend
                     Key = key
                 };
 
-                using (GetObjectResponse response = _s3Client.GetObject(request))
+                using (GetObjectResponse response = await _s3Client.GetObjectAsync(request, cancellationToken))
                 {
                     if (cancellationToken.IsCancellationRequested) return null;
                     
