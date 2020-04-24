@@ -101,16 +101,13 @@ namespace GeoTetra.Partak
 
         private void OnEnable()
         {
-            _levelIndex = PlayerPrefs.GetInt("LevelIndex", 0);
+            _levelIndex = PlayerPrefs.GetInt("LevelIndex", -1);
             
-            if (PlayerPrefs.HasKey(FullVersioNKey))
-            {
-                _fullVersion = true;
-            }
+            if (PlayerPrefs.HasKey(FullVersioNKey))  _fullVersion = true;
 
             _sessionCount = PlayerPrefs.GetInt("SessionCount");
             PlayerPrefs.SetInt("SessionCount", ++_sessionCount);
-
+            
             switch (PlayerPrefs.GetInt("muted"))
             {
                 case 1:

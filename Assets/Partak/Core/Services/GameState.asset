@@ -23,7 +23,7 @@ MonoBehaviour:
   - _playerColor: {r: 0.6985622, g: 0.8517648, b: 0.011764706, a: 1}
     _playerMode: 1
   _timeLimitMinutes: 3
-  _levelIndex: 0
+  _levelIndex: 5
   _editingLevelIndex: 5
   _levelCatalogDatum:
     _levelIDs:
@@ -32,5 +32,6 @@ MonoBehaviour:
     - a8d63a36-c1ee-4994-8ac1-b0c03a477676
     - db0f5064-8948-4206-abe3-ff858188a122
     - 2083ac49-67c1-41fd-9dd7-c8bae9e11a6f
+    - fbb524c9-8d1a-41f4-abdb-4056451e4df2
   _fullVersion: 1
-  _sessionCount: 1956
+  _sessionCount: 2097
