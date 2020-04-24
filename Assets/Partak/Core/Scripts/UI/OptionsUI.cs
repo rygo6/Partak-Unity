@@ -2,15 +2,17 @@
 using UnityEngine.UI;
 using System.Collections;
 using GeoTetra.GTUI;
+using UnityEngine.Purchasing;
 
 namespace GeoTetra.Partak
 {
     public class OptionsUI : StackUI
     {
+        [SerializeField] private GameStateReference _gameState;
         [SerializeField] private Button _toggleSoundButton;
         [SerializeField] private Button _facebookButton;
         [SerializeField] private Button _privacyPolicyButton;
-        [SerializeField] private Button _restorePurchasesButton;
+        [SerializeField] private IAPButton _restoreButton;
 
         protected override void Awake()
         {
@@ -18,12 +20,13 @@ namespace GeoTetra.Partak
             _toggleSoundButton.onClick.AddListener(Mute);
             _facebookButton.onClick.AddListener(Facebook);
             _privacyPolicyButton.onClick.AddListener(PrivacyPolicy);
-            _restorePurchasesButton.onClick.AddListener(RestorePurchases);
+            
+            _restoreButton.onPurchaseComplete.AddListener(RestorePurchasesComplete);
         }
 
-        private void RestorePurchases()
+        private void RestorePurchasesComplete(Product product)
         {
-//		Persistent.Get<Store>().RestorePurchases();
+            _gameState.Service.EnableFullVersion();
         }
 
         private void Mute()
