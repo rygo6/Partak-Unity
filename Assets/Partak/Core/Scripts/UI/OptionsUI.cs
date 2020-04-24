@@ -8,11 +8,9 @@ namespace GeoTetra.Partak
 {
     public class OptionsUI : StackUI
     {
-        [SerializeField] private GameStateReference _gameState;
         [SerializeField] private Button _toggleSoundButton;
         [SerializeField] private Button _facebookButton;
         [SerializeField] private Button _privacyPolicyButton;
-        [SerializeField] private IAPButton _restoreButton;
 
         protected override void Awake()
         {
@@ -20,15 +18,8 @@ namespace GeoTetra.Partak
             _toggleSoundButton.onClick.AddListener(Mute);
             _facebookButton.onClick.AddListener(Facebook);
             _privacyPolicyButton.onClick.AddListener(PrivacyPolicy);
-            
-            _restoreButton.onPurchaseComplete.AddListener(RestorePurchasesComplete);
         }
-
-        private void RestorePurchasesComplete(Product product)
-        {
-            _gameState.Service.EnableFullVersion();
-        }
-
+        
         private void Mute()
         {
             switch (PlayerPrefs.GetInt("muted"))

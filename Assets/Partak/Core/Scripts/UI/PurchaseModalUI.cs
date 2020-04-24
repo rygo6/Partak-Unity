@@ -31,7 +31,6 @@ namespace GeoTetra.Partak
 
         private void PurchaseComplete(Product product)
         {
-	        _gameState.Service.EnableFullVersion();
 	        base.Close();
         }
 
