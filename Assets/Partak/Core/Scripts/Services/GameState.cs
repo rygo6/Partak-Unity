@@ -129,7 +129,8 @@ namespace GeoTetra.Partak
 
         public string GetSelectedLevelId()
         {
-            return _levelIndex < _levelCatalogDatum.LevelIDs.Count && _levelCatalogDatum.LevelIDs.Count > 0 ? LevelCatalogDatum.LevelIDs[_levelIndex] : "";
+            if (_levelIndex == -1 && _levelCatalogDatum.LevelIDs.Count > 0) _levelIndex = 0;
+            return _levelIndex > -1 && _levelIndex < _levelCatalogDatum.LevelIDs.Count && _levelCatalogDatum.LevelIDs.Count > 0 ? LevelCatalogDatum.LevelIDs[_levelIndex] : "";
         }
         
         public string GetEditingLevelId()
