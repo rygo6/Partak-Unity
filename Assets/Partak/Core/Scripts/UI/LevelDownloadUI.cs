@@ -158,6 +158,7 @@ namespace GeoTetra.Partak
 
             if (_gameState.Service.FullVersion)
             {
+                CurrentlyRenderedBy.DisplayLoadModal();
                 DownloadLevel();
             }
             else
@@ -176,13 +177,13 @@ namespace GeoTetra.Partak
         
         private async void PlayAd()
         {
+            CurrentlyRenderedBy.DisplayLoadModal();
             await _advertisementDispatch.Service.ShowRewardedAd();
             DownloadLevel();
         }
 
         private async void DownloadLevel()
         {
-            CurrentlyRenderedBy.DisplayLoadModal();
             await _partakDatabase.DownloadLevel(_selectedLevelButton.LevelDatum.LevelID);
             _gameState.Service.AddLevelId(_selectedLevelButton.LevelDatum.LevelID);
             CurrentlyRenderedBy.CloseModal();

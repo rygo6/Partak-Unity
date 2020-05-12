@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using UnityEngine;
@@ -7,30 +8,45 @@ namespace GeoTetra.Partak
 {
     public class PatternTexture : MonoBehaviour
     {
-        [SerializeField] private ServiceReference _gameState;
+        [SerializeField] private GameStateReference _gameState;
         [SerializeField] private Material _applyMaterial;
         private const int TextureSize = 256;
         private const int Divisions = 8;
         private const int SquareSize = TextureSize / Divisions;
         private readonly Color[] PixelColors = new Color[SquareSize * SquareSize];
-        private Color _testColor = Color.black;
         private Texture2D _texture2D;
+        private Coroutine _updateCoroutine;
 
         private void Start()
         {
             _texture2D = new Texture2D(TextureSize, TextureSize, TextureFormat.RGBA32, false, false);
             _applyMaterial.mainTexture = _texture2D;
-            _gameState.Service<GameState>().PlayerStates[0].ColorChanged += SetTexture;
-            SetTexture(Color.white);
+            foreach (GameState.PlayerState playerState in _gameState.Service.PlayerStates)
+            {
+                playerState.ColorChanged += UpdateTexture;
+            }
+            StartCoroutine(SetTexture());
         }
 
         private void OnDestroy()
         {
-            _gameState.Service<GameState>().PlayerStates[0].ColorChanged -= SetTexture;
+            foreach (GameState.PlayerState playerState in _gameState.Service.PlayerStates)
+            {
+                playerState.ColorChanged -= UpdateTexture;
+            }
         }
 
-        private void SetTexture(Color color)
+        private void UpdateTexture(Color color)
         {
+            if (_updateCoroutine == null)
+            {
+                _updateCoroutine = StartCoroutine(SetTexture());
+            }
+        }
+
+        private IEnumerator SetTexture()
+        {
+            yield return null;
             bool xblack = false;
             bool yBlack = false;
             int playerIndex = 0;
@@ -49,9 +65,9 @@ namespace GeoTetra.Partak
                     }
                     else
                     {
-                        SetPixelColors(_gameState.Service<GameState>().PlayerStates[playerIndex].PlayerColor);
+                        SetPixelColors(_gameState.Service.PlayerStates[playerIndex].PlayerColor);
                         playerIndex++;
-                        if (playerIndex == _gameState.Service<GameState>().PlayerCount())
+                        if (playerIndex == _gameState.Service.PlayerCount())
                             playerIndex = 0;
                         xblack = true;
                     }
@@ -74,6 +90,8 @@ namespace GeoTetra.Partak
             }
 
             _texture2D.Apply();
+
+            _updateCoroutine = null;
         }
 
         private void SetPixelColors(Color color)

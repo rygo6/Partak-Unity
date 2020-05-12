@@ -28,9 +28,11 @@ namespace GeoTetra.Partak
         [SerializeField] private LevelCatalogDatum _levelCatalogDatum;
         [SerializeField] private bool _fullVersion;
         [SerializeField] private int _sessionCount;
+        [SerializeField] private Texture2D _playerColorTexture;
 
+        public const string ColorScrollKey = "ColorScrollX";
         private const string LevelIndexPrefKey = "LevelIndex";
-        private const string FullVersioNKey = "isFullVersion";
+        private const string FullVersionKey = "isFullVersion";
         
         public LevelCatalogDatum LevelCatalogDatum => _levelCatalogDatum;
         public bool FullVersion => _fullVersion;
@@ -101,9 +103,9 @@ namespace GeoTetra.Partak
 
         private void OnEnable()
         {
-            _levelIndex = PlayerPrefs.GetInt("LevelIndex", -1);
+            _levelIndex = PlayerPrefs.GetInt("LevelIndex", 0);
 
-            _fullVersion = PlayerPrefs.HasKey(FullVersioNKey);
+            _fullVersion = PlayerPrefs.HasKey(FullVersionKey);
 
             _sessionCount = PlayerPrefs.GetInt("SessionCount");
             PlayerPrefs.SetInt("SessionCount", ++_sessionCount);
@@ -119,11 +121,13 @@ namespace GeoTetra.Partak
             }
 
             _levelCatalogDatum = LevelCatalogDatum.LoadLevelCatalogDatum();
+
+            SetColors(PlayerPrefs.GetFloat(ColorScrollKey, -.125f));
         }
 
         public void EnableFullVersion()
         {
-            PlayerPrefs.SetInt(FullVersioNKey, 1);
+            PlayerPrefs.SetInt(FullVersionKey, 1);
             _fullVersion = true;
         }
 
@@ -211,6 +215,16 @@ namespace GeoTetra.Partak
             }
 
             return count;
+        }
+        
+        public void SetColors(float x)
+        {
+            float u = 0.125f + x;
+            for (int i = 0; i < PlayerCount(); ++i)
+            {
+                PlayerStates[i].PlayerColor = _playerColorTexture.GetPixelBilinear(u, .5f);
+                u += .25f;
+            }
         }
     }
 }
