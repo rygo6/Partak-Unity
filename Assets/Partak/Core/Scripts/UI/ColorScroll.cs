@@ -8,8 +8,7 @@ namespace GeoTetra.Partak
 {
     public class ColorScroll : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
-        [SerializeField] private ServiceReference _gameState;
-        [SerializeField] private Material[] setMaterialColors;
+        [SerializeField] private GameStateReference _gameState;
 
         private RawImage _rawImage;
         private Texture2D _texture;
@@ -25,7 +24,7 @@ namespace GeoTetra.Partak
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            PlayerPrefs.SetFloat("ColorScrollX", _rawImage.uvRect.x);
+            PlayerPrefs.SetFloat(GameState.ColorScrollKey, _rawImage.uvRect.x);
         }
 
         private void Start()
@@ -33,9 +32,8 @@ namespace GeoTetra.Partak
             _rawImage = GetComponent<RawImage>();
             _texture = (Texture2D) _rawImage.texture;
             var newRect = _rawImage.uvRect;
-            newRect.x = PlayerPrefs.GetFloat("ColorScrollX", -.125f);
+            newRect.x = PlayerPrefs.GetFloat(GameState.ColorScrollKey, -.125f);
             _rawImage.uvRect = newRect;
-            SetColors();
         }
 
         public void StartScrollRight()
@@ -69,18 +67,7 @@ namespace GeoTetra.Partak
             var newRect = _rawImage.uvRect;
             newRect.x += amount;
             _rawImage.uvRect = newRect;
-            SetColors();
-        }
-
-        private void SetColors()
-        {
-            var u = 0.125f + _rawImage.uvRect.x;
-            for (var i = 0; i < _gameState.Service<GameState>().PlayerCount(); ++i)
-            {
-                _gameState.Service<GameState>().PlayerStates[i].PlayerColor = _texture.GetPixelBilinear(u, .5f);
-                setMaterialColors[i].color = _gameState.Service<GameState>().PlayerStates[i].PlayerColor;
-                u += .25f;
-            }
+            _gameState.Service.SetColors(_rawImage.uvRect.x);
         }
     }
 }
