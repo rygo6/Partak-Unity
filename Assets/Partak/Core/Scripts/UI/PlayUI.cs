@@ -12,8 +12,8 @@ namespace GeoTetra.Partak
 {
     public class PlayUI : StackUI
     {
-        [SerializeField] private ServiceReference _loadSystem;
-        [SerializeField] private ServiceReference _gameState;
+        [SerializeField] private SceneLoadSystemReference _loadSystem;
+        [SerializeField] private GameStateReference _gameState;
         [SerializeField] private AssetReference _gameSessionScene;
         [SerializeField] private AssetReference _mainMenuScene;
         [SerializeField] private Button _startButton;
@@ -27,13 +27,13 @@ namespace GeoTetra.Partak
         private void OnStartClick()
         {
             int activeCount = 0;
-            for (int i = 0; i < _gameState.Service<GameState>().PlayerCount(); ++i)
+            for (int i = 0; i < _gameState.Service.PlayerCount(); ++i)
             {
-                if (_gameState.Service<GameState>().PlayerStates[i].PlayerMode != PlayerMode.None)
+                if (_gameState.Service.PlayerStates[i].PlayerMode != PlayerMode.None)
                     activeCount++;
             }
 
-            string levelId = _gameState.Service<GameState>().GetSelectedLevelId();
+            string levelId = _gameState.Service.GetSelectedLevelId();
 
             if (activeCount < 2)
             {
@@ -51,7 +51,7 @@ namespace GeoTetra.Partak
 
         private void Load()
         {
-            _loadSystem.Service<SceneLoadSystem>().Load(_mainMenuScene, _gameSessionScene);
+            _loadSystem.Service.Load(_mainMenuScene, _gameSessionScene);
         }
     }
 }

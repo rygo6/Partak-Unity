@@ -13,7 +13,7 @@ namespace GeoTetra.GTSnapper
 {
     public class ItemRoot : SubscribableBehaviour
     {
-        [SerializeField] private ServiceReference _componentContainer;
+        [SerializeField] private ComponentContainerReference _componentContainer;
         [SerializeField] private InputCatcher _inputCatcher;
         [SerializeField] private ItemSettings _itemSettings;
         [SerializeField] private List<Item> _rootItems;
@@ -40,7 +40,7 @@ namespace GeoTetra.GTSnapper
 
         private void Awake()
         {
-            _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
+            _componentContainer.Service.RegisterComponent(this);
             IgnoreLayer = LayerMask.NameToLayer("Ignore Raycast");
             ItemLayer = LayerMask.NameToLayer("Item");
             for (int i = 0; i < _rootItems.Count; ++i)

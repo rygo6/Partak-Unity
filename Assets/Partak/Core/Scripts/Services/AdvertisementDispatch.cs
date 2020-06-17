@@ -13,8 +13,7 @@ namespace GeoTetra.Partak
         { }
     }
     
-    [CreateAssetMenu(menuName = "GeoTetra/Partak/Services/AdvertisementDispatch")]
-    public class AdvertisementDispatch : ScriptableObject, IUnityAdsListener 
+    public class AdvertisementDispatch : ServiceBehaviour, IUnityAdsListener 
     {
         [SerializeField] private string _appleAppStoreId = "1018927";
         [SerializeField] private string _googlePlayStoreId = "1018926";
@@ -22,52 +21,26 @@ namespace GeoTetra.Partak
         [SerializeField] private string _rewardedVideoId = "rewardedVideo";
         
         private int _gameCount;
-        private bool _showOnReady;
         private TaskCompletionSource<bool> _rewardedAdTask;
-        
-//        private void OnDisable()
-//        {
-//            if (Advertisement.isInitialized)
-//            {
-//                Advertisement.RemoveListener(this);
-//            }
-//
-//            Debug.Log("AdvertisementDispatch OnDisable");
-//        }
+
+        private void Awake()
+        {
+            Advertisement.AddListener(this);
+            Advertisement.Initialize(Application.platform == RuntimePlatform.Android ? _googlePlayStoreId : _appleAppStoreId, _testMode);
+        }
 
         [ContextMenu("ShowRewardedAd")]
         public Task<bool> ShowRewardedAd()
         {
-            _showOnReady = false;
             _rewardedAdTask = new TaskCompletionSource<bool>();
-
-            if (!Advertisement.isInitialized)
-            {
-                Advertisement.AddListener(this);
-                Advertisement.Initialize(
-                    Application.platform == RuntimePlatform.Android ? _googlePlayStoreId : _appleAppStoreId, _testMode);
-            }
-
-            if (Advertisement.IsReady())
-            {
-                Advertisement.Show(_rewardedVideoId);
-            }
-            else
-            {
-                _showOnReady = true;
-            }
-
+            Advertisement.Show(_rewardedVideoId);
             return _rewardedAdTask.Task;
         }
 
         public void OnUnityAdsReady(string placementId)
         {
             Debug.Log("OnUnityAdsReady " + placementId);
-            if (_showOnReady && _rewardedVideoId == placementId)
-            {
-                _showOnReady = false;
-                Advertisement.Show(_rewardedVideoId);
-            }
+            OnLoadComplete();
         }
 
         public void OnUnityAdsDidError(string message)

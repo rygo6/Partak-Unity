@@ -15,10 +15,16 @@ namespace GeoTetra.Partak
         { }
     }
     
-    [CreateAssetMenu(menuName = "GeoTetra/Partak/Services/AnalyticsRelay")]
-    public class AnalyticsRelay : ScriptableObject
+    public class AnalyticsRelay : ServiceBehaviour
     {
-        [SerializeField] private GameStateReference _gameState;
+        [SerializeField] 
+        [AssetReferenceComponentRestriction(typeof(GameState))]
+        private GameStateReference _gameState;
+
+        private void Awake()
+        {
+            OnLoadComplete();
+        }
 
         public void LevelDownloaded()
         {

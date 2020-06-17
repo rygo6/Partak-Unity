@@ -12,13 +12,20 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using Amazon.Util;
+using GeoTetra.GTPooling;
 using GeoTetra.Partak;
 using UnityEngine;
 
 namespace GeoTetra.GTBackend
 {
-    [CreateAssetMenu(menuName = "GeoTetra/Partak/Services/PartakDatabase")]
-    public class PartakDatabase : ScriptableObject
+    [Serializable]
+    public class PartakDatabaseReference : ServiceReferenceT<PartakDatabase>
+    {
+        public PartakDatabaseReference(string guid) : base(guid)
+        { }
+    }
+    
+    public class PartakDatabase : ServiceBehaviour
     {
         [SerializeField] private string _identityPoolId = "us-west-2:1c228a7e-eb85-433f-a708-d46b063a488f";
         [SerializeField] private string _regionEndpoint  = "us-west-2";

@@ -9,24 +9,18 @@ namespace GeoTetra.Partak
 {
     public class CellParticleSpawn : SubscribableBehaviour
     {
-        [SerializeField] private ServiceReference _gameStateReference;
+        [SerializeField] private GameStateReference _gameState;
         [SerializeField] private CellHiearchy _cellHiearchy;
         [SerializeField] private CellParticleEngine _cellParticleMover;
         [SerializeField] private CellParticleStore _cellParticleStore;
         [SerializeField] private CursorStore _cursorStore;
         [SerializeField] private LevelConfig _levelConfig;
-        private GameState _gameState;
 
         public bool SpawnSuccessful { get; private set; }
 
-        private void Awake()
-        {
-            _gameState = _gameStateReference.Service<GameState>();
-        }
-
         public IEnumerator Initialize()
         {
-            yield return StartCoroutine(Initialize(_levelConfig.Datum.ParticleCount, _gameState.PlayerStates));
+            yield return StartCoroutine(Initialize(_levelConfig.Datum.ParticleCount, _gameState.Service.PlayerStates));
         }
 
         public IEnumerator Initialize(int particleCount, GameState.PlayerState[] PlayerStates)

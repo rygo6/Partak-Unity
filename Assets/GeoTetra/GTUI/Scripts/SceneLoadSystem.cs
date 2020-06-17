@@ -9,20 +9,28 @@ using UnityEngine.SceneManagement;
 
 namespace GeoTetra.GTUI
 {
-    [CreateAssetMenu(menuName = "GeoTetra/Services/SceneLoadSystem")]
-    public class SceneLoadSystem : ScriptableObject
+    [System.Serializable]
+    public class SceneLoadSystemReference : ServiceReferenceT<SceneLoadSystem>
     {
-        [SerializeField] private ServiceReference _componentContainer;
-        [SerializeField] private AssetReference _loadModalUI;
+        public SceneLoadSystemReference(string guid) : base(guid)
+        { }
+    }
+    
+    public class SceneLoadSystem : ServiceBehaviour
+    {
+        [SerializeField]
+        [AssetReferenceComponentRestriction(typeof(UIRenderer))]
+        private UIRendererReference _uiRenderer;
+        
+        [SerializeField] 
+        private AssetReference _loadModalUI;
+        
         
         private readonly Dictionary<string, AsyncOperationHandle<SceneInstance>> _loadedSceneInstances = new Dictionary<string,  AsyncOperationHandle<SceneInstance>>();
-        private UIRenderer _uiRenderer;
-
-        private UIRenderer UIRenderer => _uiRenderer != null ? _uiRenderer : _uiRenderer = _componentContainer.Service<ComponentContainer>().Get<UIRenderer>();
-
+        
         public void Load(AssetReference unloadScene, AssetReference loadScene)
         {
-            UIRenderer.InstantiateAndDisplayModalUI(_loadModalUI, () => {
+            _uiRenderer.Service.InstantiateAndDisplayModalUI(_loadModalUI, () => {
                 LoadCoroutine(unloadScene, loadScene);
             });
         }
@@ -48,7 +56,7 @@ namespace GeoTetra.GTUI
             await handle.Task;
             if (loadLocation == null) Debug.LogWarning($"Can't find location of {handle.Result.Scene.name}'");
             else _loadedSceneInstances.Add(loadLocation.PrimaryKey, handle);
-            UIRenderer.CloseModal();
+            _uiRenderer.Service.CloseModal();
         }
         
         //below should be moved to UTIL class? Or could this whole thing be put in Pooling?

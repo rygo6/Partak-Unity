@@ -8,7 +8,7 @@ namespace GeoTetra.Partak.UI
     public class InputPad : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler,
         IEndDragHandler, IInitializePotentialDragHandler
     {
-        [SerializeField] private ServiceReference _componentContainer;
+        [SerializeField] private ComponentContainerReference _componentContainer;
         [SerializeField] private LineRenderer _lineRenderer;
         [SerializeField] private CanvasGroup _overlayCanvasGroup;
         [SerializeField] private int _playerIndex;
@@ -39,7 +39,7 @@ namespace GeoTetra.Partak.UI
             _overlayCanvasGroup.alpha = 1;
             _lineRenderer.SetPosition(0, Vector3.zero);
             _lineRenderer.SetPosition(1, Vector3.zero);
-            _cursorStore = _componentContainer.Service<ComponentContainer>().Get<CursorStore>();
+            _cursorStore = _componentContainer.Service.Get<CursorStore>();
         }
 
         public void Visibility(bool state)

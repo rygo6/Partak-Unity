@@ -11,8 +11,8 @@ namespace GeoTetra.Partak
     /// </summary>
     public class CellParticleStore : SubscribableBehaviour
     {
-        [SerializeField] private ServiceReference _componentContainer;
-        [SerializeField] private ServiceReference _gameStateReference;
+        [SerializeField] private ComponentContainerReference _componentContainer;
+        [SerializeField] private GameStateReference _gameState;
         [SerializeField] private CursorStore _cursorStore;
         [SerializeField] private LevelConfig _levelConfig;
         public event Action WinEvent;
@@ -22,22 +22,20 @@ namespace GeoTetra.Partak
         private Coroutine _calcualtePercentagesCoroutine;
         private int _startParticleCount;
         private bool _winEventFired;
-        private GameState _gameState;
-        
+
         public CellParticle[] CellParticleArray { get; private set; }
 
         private void Awake()
         {
-            _gameState = _gameStateReference.Service<GameState>();
-            _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
+            _componentContainer.Service.RegisterComponent(this);
         }
 
         public void Initialize()
         {
-            PlayerLost = new bool[_gameState.PlayerCount()];
-            PlayerParticleCount = new int[_gameState.PlayerCount()];
+            PlayerLost = new bool[_gameState.Service.PlayerCount()];
+            PlayerParticleCount = new int[_gameState.Service.PlayerCount()];
             CellParticleArray = new CellParticle[_levelConfig.Datum.ParticleCount];
-            _startParticleCount = _levelConfig.Datum.ParticleCount / _gameState.ActivePlayerCount();
+            _startParticleCount = _levelConfig.Datum.ParticleCount / _gameState.Service.ActivePlayerCount();
             
             if (_calcualtePercentagesCoroutine != null) {StopCoroutine(_calcualtePercentagesCoroutine);}
             _calcualtePercentagesCoroutine = StartCoroutine(CalculatePercentages());

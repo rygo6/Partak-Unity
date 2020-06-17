@@ -17,58 +17,59 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: a7f3b886ddecc8641a6b6f58dfac5222
   m_SerializeEntries:
-  - m_GUID: 17010a8528f4c0b43a5469286e4a9730
-    m_Address: AnalyticsRelay
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Service
-    m_mainAssetType: GeoTetra.Partak.AnalyticsRelay, Assembly-CSharp, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: 276f5bb3082e1654f93a49fb34fe90b4
+  - m_GUID: 00b19c5ddf295004aafaf7a05cc500a4
     m_Address: PartakDatabase
     m_ReadOnly: 0
     m_SerializedLabels:
     - Service
-    m_mainAssetType: GeoTetra.GTBackend.PartakDatabase, Assembly-CSharp, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: 70ed16389ca75d64f9255160eec5ad47
-    m_Address: AdvertisementDispatch
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Service
-    m_mainAssetType: GeoTetra.Partak.AdvertisementDispatch, Assembly-CSharp, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: 7c6ed4b39d69fd245b4d46e08295a60d
-    m_Address: GameState
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Service
-    m_mainAssetType: GeoTetra.Partak.GameState, Assembly-CSharp, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: b30141a42589e924e97c08dbbe68ad23
-    m_Address: SceneLoadSystem
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Service
-    m_mainAssetType: GeoTetra.GTUI.SceneLoadSystem, GTUI, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: ed956f91a7b883142bf9b588e32e0f1a
+    m_MainAsset: {fileID: 8525929366771200851, guid: 00b19c5ddf295004aafaf7a05cc500a4,
+      type: 3}
+    m_TargetAsset: {fileID: 8525929366771200851, guid: 00b19c5ddf295004aafaf7a05cc500a4,
+      type: 3}
+  - m_GUID: 54735e5a6ecfe0f4f8a088d0ed1c0234
     m_Address: ComponentContainer
     m_ReadOnly: 0
     m_SerializedLabels:
     - Service
-    m_mainAssetType: GeoTetra.GTPooling.ComponentContainer, GTPooling, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 6d44730f364928b48b8810b26eaf3e43
+    m_Address: GameState
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Service
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 8188afb85fdf8d54cae8e7d69d367d5e
+    m_Address: AdvertisementDispatch
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Service
+    m_MainAsset: {fileID: 7945759687711405111, guid: 8188afb85fdf8d54cae8e7d69d367d5e,
+      type: 3}
+    m_TargetAsset: {fileID: 7945759687711405111, guid: 8188afb85fdf8d54cae8e7d69d367d5e,
+      type: 3}
+  - m_GUID: e7493b24c6eeb9c4f9473b3eb0a29207
+    m_Address: SceneLoadSystem
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Service
+    m_MainAsset: {fileID: 2642140588870235080, guid: e7493b24c6eeb9c4f9473b3eb0a29207,
+      type: 3}
+    m_TargetAsset: {fileID: 2642140588870235080, guid: e7493b24c6eeb9c4f9473b3eb0a29207,
+      type: 3}
+  - m_GUID: ee4750cb362a0e84ca03a025a3bb2107
+    m_Address: UIRenderer
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Service
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f20d2729430a81e4396945f2ba552f34
+    m_Address: AnalyticsRelay
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Service
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0

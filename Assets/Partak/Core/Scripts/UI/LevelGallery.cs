@@ -9,7 +9,7 @@ namespace GeoTetra.Partak.UI
 {
     public class LevelGallery : MonoBehaviour
     {
-        [SerializeField] private ServiceReference _gameState;
+        [SerializeField] private GameStateReference _gameState;
         [SerializeField] public Button _leftButton;
         [SerializeField] public Button _rightButton;
         [SerializeField] private float _transitionSpeed = 4f;
@@ -22,7 +22,7 @@ namespace GeoTetra.Partak.UI
             _rightButton.onClick.AddListener(GalleryRight);
             _material = GetComponent<RawImage>().material;
 
-            string levelId = _gameState.Service<GameState>().GetSelectedLevelId();
+            string levelId = _gameState.Service.GetSelectedLevelId();
             if (!string.IsNullOrEmpty(levelId))
             {
                 string imagePath = LevelUtility.LevelImagePath(levelId);
@@ -48,9 +48,9 @@ namespace GeoTetra.Partak.UI
         {
             _rightButton.interactable = false;
             _leftButton.interactable = false;
-            _gameState.Service<GameState>().LevelIndex += direction;
+            _gameState.Service.LevelIndex += direction;
 
-            string levelId = _gameState.Service<GameState>().GetSelectedLevelId();
+            string levelId = _gameState.Service.GetSelectedLevelId();
             if (string.IsNullOrEmpty(levelId)) yield break;
             string imagePath = LevelUtility.LevelImagePath(levelId);
             
@@ -58,7 +58,7 @@ namespace GeoTetra.Partak.UI
             Texture2D image = new Texture2D(0,0);
             image.LoadImage(imageBytes);
 
-            PlayerPrefs.SetInt("LevelIndex", _gameState.Service<GameState>().LevelIndex);
+            PlayerPrefs.SetInt("LevelIndex", _gameState.Service.LevelIndex);
             _material.SetTexture("_Texture2", image);
             yield return null;
             yield return null;
@@ -97,7 +97,7 @@ namespace GeoTetra.Partak.UI
 
         private int GetMaxLevelIndex()
         {
-            return _gameState.Service<GameState>().LevelCatalogDatum.LevelIDs.Count;
+            return _gameState.Service.LevelCatalogDatum.LevelIDs.Count;
         }
 
         private void OnDestroy()

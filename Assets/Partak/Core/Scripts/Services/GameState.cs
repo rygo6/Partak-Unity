@@ -16,9 +16,8 @@ namespace GeoTetra.Partak
         public GameStateReference(string guid) : base(guid)
         { }
     }
-
-    [CreateAssetMenu(menuName = "GeoTetra/Partak/Services/GameState")]
-    public class GameState : ScriptableObject
+    
+    public class GameState : ServiceBehaviour
     {
         [SerializeField] private string _version = "2.0.5";
         [SerializeField] private PlayerState[] _playerStates;
@@ -28,7 +27,7 @@ namespace GeoTetra.Partak
         [SerializeField] private LevelCatalogDatum _levelCatalogDatum;
         [SerializeField] private bool _fullVersion;
         [SerializeField] private int _sessionCount;
-        [SerializeField] private Texture2D _playerColorTexture;
+        [SerializeField] private Texture2D _playerColorScrollTexture;
 
         public const string ColorScrollKey = "ColorScrollX";
         private const string LevelIndexPrefKey = "LevelIndex";
@@ -101,7 +100,7 @@ namespace GeoTetra.Partak
             }
         }
 
-        private void OnEnable()
+        private void Awake()
         {
             _levelIndex = PlayerPrefs.GetInt("LevelIndex", 0);
 
@@ -123,6 +122,8 @@ namespace GeoTetra.Partak
             _levelCatalogDatum = LevelCatalogDatum.LoadLevelCatalogDatum();
 
             SetColors(PlayerPrefs.GetFloat(ColorScrollKey, -.125f));
+            
+            OnLoadComplete();
         }
 
         public void EnableFullVersion()
@@ -222,7 +223,7 @@ namespace GeoTetra.Partak
             float u = 0.125f + x;
             for (int i = 0; i < PlayerCount(); ++i)
             {
-                PlayerStates[i].PlayerColor = _playerColorTexture.GetPixelBilinear(u, .5f);
+                PlayerStates[i].PlayerColor = _playerColorScrollTexture.GetPixelBilinear(u, .5f);
                 u += .25f;
             }
         }

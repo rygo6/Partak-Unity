@@ -7,7 +7,7 @@ namespace GeoTetra.Partak
 {
     public class CellAI : MonoBehaviour
     {
-        [SerializeField] private ServiceReference _gameStateReference;
+        [SerializeField] private GameStateReference _gameState;
         [SerializeField] private CursorStore _cursorStore;
         [SerializeField] private CellParticleStore _cellParticleStore;
         [SerializeField] private CellParticleSpawn _cellParticleSpawn;
@@ -22,29 +22,23 @@ namespace GeoTetra.Partak
         private int[] _randomPullCycle;
 
         private LoopThread _loopThread;
-        private GameState _gameState;
-        
+
         public bool Initialized { get; private set; }
-        
-        private void Awake()
-        {
-            _gameState = _gameStateReference.Service<GameState>();
-        }
 
         /// <summary>
         /// Start after particles spawn
         /// </summary>
         public void Initialize()
         {
-            _aiCellParticleIndex = new int[_gameState.PlayerCount()];
-            _aiCursorTarget = new Vector3[_gameState.PlayerCount()];
-            _aiCursorVelocity = new Vector3[_gameState.PlayerCount()];
-            _randomPullCycle = new int[_gameState.PlayerCount()];
+            _aiCellParticleIndex = new int[_gameState.Service.PlayerCount()];
+            _aiCursorTarget = new Vector3[_gameState.Service.PlayerCount()];
+            _aiCursorVelocity = new Vector3[_gameState.Service.PlayerCount()];
+            _randomPullCycle = new int[_gameState.Service.PlayerCount()];
 
-            for (int i = 0; i < _gameState.PlayerCount(); ++i)
+            for (int i = 0; i < _gameState.Service.PlayerCount(); ++i)
             {
                 _aiCellParticleIndex[i] = i * 10;
-                _randomPullCycle[i] = i * (_randomCycleRate / _gameState.PlayerCount());
+                _randomPullCycle[i] = i * (_randomCycleRate / _gameState.Service.PlayerCount());
             }
             
             _loopThread = LoopThread.Create(UpdateAICursor, "CellAI", Priority.Low);
@@ -66,8 +60,8 @@ namespace GeoTetra.Partak
 
         public void MoveAICursorUpdate()
         {
-            for (int playerIndex = 0; playerIndex < _gameState.PlayerCount(); ++playerIndex)
-                if (_gameState.PlayerStates[playerIndex].PlayerMode == PlayerMode.Comp &&
+            for (int playerIndex = 0; playerIndex < _gameState.Service.PlayerCount(); ++playerIndex)
+                if (_gameState.Service.PlayerStates[playerIndex].PlayerMode == PlayerMode.Comp &&
                     !_cellParticleStore.PlayerLost[playerIndex])
                     _cursorStore.SetCursorPositionClamp(playerIndex,
                         Vector3.SmoothDamp(
@@ -83,9 +77,9 @@ namespace GeoTetra.Partak
             int losingPlayerIndex = _cellParticleStore.LosingPlayer();
             int targetPlayerIndex, playerIndex, newIndex;
             int particleLimit = _cellParticleStore.CellParticleArray.Length;
-            int playerLimit = _gameState.PlayerCount();
+            int playerLimit = _gameState.Service.PlayerCount();
             for (playerIndex = 0; playerIndex < playerLimit; ++playerIndex)
-                if (_gameState.PlayerStates[playerIndex].PlayerMode == PlayerMode.Comp &&
+                if (_gameState.Service.PlayerStates[playerIndex].PlayerMode == PlayerMode.Comp &&
                     !_cellParticleStore.PlayerLost[playerIndex])
                 {
                     targetPlayerIndex = 0;

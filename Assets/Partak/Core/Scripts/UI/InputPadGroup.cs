@@ -5,8 +5,8 @@ namespace GeoTetra.Partak.UI
 {
     public class InputPadGroup : MonoBehaviour
     {
-        [SerializeField] private ServiceReference _componentContainer;
-        [SerializeField] private ServiceReference _gameState;
+        [SerializeField] private ComponentContainerReference _componentContainer;
+        [SerializeField] private GameStateReference _gameState;
         [SerializeField] private InputPad[] _inputPads;
         [SerializeField] private GameObject _horizontalTop;
         [SerializeField] private GameObject _horizontalBottom ;
@@ -20,7 +20,7 @@ namespace GeoTetra.Partak.UI
             
             for (int i = 0; i < _inputPads.Length; ++i)
             {
-                if (_gameState.Service<GameState>().PlayerStates[i].PlayerMode != PlayerMode.Human)
+                if (_gameState.Service.PlayerStates[i].PlayerMode != PlayerMode.Human)
                 {
                     _inputPads[i].gameObject.SetActive(false);
                 }
@@ -49,14 +49,14 @@ namespace GeoTetra.Partak.UI
                 _horizontalBottom.SetActive(true);
             }
 
-            _componentContainer.Service<ComponentContainer>().Get<CellParticleStore>().LoseEvent += DisablePad;
-            _componentContainer.Service<ComponentContainer>().Get<CellParticleStore>().WinEvent += DisableAllPads;
+            _componentContainer.Service.Get<CellParticleStore>().LoseEvent += DisablePad;
+            _componentContainer.Service.Get<CellParticleStore>().WinEvent += DisableAllPads;
         }
 
         public void Deinitialize()
         {
-            _componentContainer.Service<ComponentContainer>().Get<CellParticleStore>().LoseEvent -= DisablePad;
-            _componentContainer.Service<ComponentContainer>().Get<CellParticleStore>().WinEvent -= DisableAllPads;
+            _componentContainer.Service.Get<CellParticleStore>().LoseEvent -= DisablePad;
+            _componentContainer.Service.Get<CellParticleStore>().WinEvent -= DisableAllPads;
         }
 
         private void DisableAllPads()

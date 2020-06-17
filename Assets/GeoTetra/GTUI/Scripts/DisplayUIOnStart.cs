@@ -8,30 +8,32 @@ namespace GeoTetra.GTUI
 {
     public class DisplayUIOnStart : MonoBehaviour
     {
+        [SerializeField] 
+        [AssetReferenceComponentRestriction(typeof(UIRenderer))]
+        private UIRendererReference _uiRenderer;
+        
         [SerializeField] private bool _onlyDisplayIfEmpty;
         [SerializeField] private UIRenderer.TransitionType _transitionType = UIRenderer.TransitionType.Vertical;
-        [SerializeField] private ServiceReference _componentContainer;
         [SerializeField] private AssetReference _stackUIReference;
         [SerializeField] private float _delay = .5f;
-        [SerializeField] UnityEvent TransitionFinished = new UnityEvent();
+        [SerializeField] UnityEvent _transitionFinished = new UnityEvent();
 
         private IEnumerator Start()
         {
             yield return new WaitForSeconds(_delay);
-            UIRenderer uiRenderer = _componentContainer.Service<ComponentContainer>().Get<UIRenderer>();
             if (_onlyDisplayIfEmpty)
             {
-                if (uiRenderer.CurrentStackUI == null) uiRenderer.InstantiateAndDisplayStackUI(_stackUIReference, _transitionType, OnTransitionFinish);
+                if (_uiRenderer.Service.CurrentStackUI == null) _uiRenderer.Service.InstantiateAndDisplayStackUI(_stackUIReference, _transitionType, OnTransitionFinish);
             }
             else
             {
-                uiRenderer.InstantiateAndDisplayStackUI(_stackUIReference, _transitionType, OnTransitionFinish);
+                _uiRenderer.Service.InstantiateAndDisplayStackUI(_stackUIReference, _transitionType, OnTransitionFinish);
             }
         }
 
         private void OnTransitionFinish()
         {
-            TransitionFinished.Invoke();
+            _transitionFinished.Invoke();
         }
     }
 }

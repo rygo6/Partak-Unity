@@ -7,8 +7,8 @@ namespace GeoTetra.Partak
 {
     public class CursorStore : SubscribableBehaviour
     {
-        [SerializeField] private ServiceReference _componentContainer;
-        [SerializeField] private ServiceReference _gameState;
+        [SerializeField] private ComponentContainerReference _componentContainer;
+        [SerializeField] private GameStateReference _gameState;
         [SerializeField] private LevelConfig _levelConfig;
         [SerializeField] private Transform[] _cursorTranforms;
         [SerializeField] private float _offset = .8f;
@@ -20,9 +20,9 @@ namespace GeoTetra.Partak
 
         private void Awake()
         {
-            _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
+            _componentContainer.Service.RegisterComponent(this);
             
-            CursorPositions = new Vector3[_gameState.Service<GameState>().PlayerCount()];
+            CursorPositions = new Vector3[_gameState.Service.PlayerCount()];
             _skinnedMeshRenderers = new SkinnedMeshRenderer[_cursorTranforms.Length];
             for (int i = 0; i < CursorPositions.Length; ++i)
             {
