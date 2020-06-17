@@ -11,8 +11,10 @@ namespace GeoTetra.Partak.UI
 {
     public class PlayerModeButton : MonoBehaviour, IPointerClickHandler, ISubmitHandler
     {
+        [SerializeField] 
+        private GameStateReference _gameState;
+        
         [SerializeField] private StackUI _parentStackUI;
-        [SerializeField] private ServiceReference _gameState;
         [SerializeField] private SelectionModalUI _selectionModalUi;
         [SerializeField] private int _playerIndex;
         [SerializeField] private Text _text;
@@ -31,7 +33,7 @@ namespace GeoTetra.Partak.UI
         {
             PlayerMode mode = (PlayerMode) PlayerPrefs.GetInt("PlayerMode" + _playerIndex);
             _text.text = mode.ToString();
-            _gameState.Service<GameState>().PlayerStates[_playerIndex].PlayerMode = mode;
+            _gameState.Service.PlayerStates[_playerIndex].PlayerMode = mode;
         }
         
         private void OnValidate()
@@ -53,13 +55,13 @@ namespace GeoTetra.Partak.UI
                 () => { SetPlayerMode(PlayerMode.Comp); },
                 () => { SetPlayerMode(PlayerMode.None); }
             };
-            _parentStackUI.CurrentlyRenderedBy.DisplaySelectionModal("Player Type:", messages, actions, (int)  _gameState.Service<GameState>().PlayerStates[_playerIndex].PlayerMode);
+            _parentStackUI.CurrentlyRenderedBy.DisplaySelectionModal("Player Type:", messages, actions, (int)  _gameState.Service.PlayerStates[_playerIndex].PlayerMode);
         }
 
         private void SetPlayerMode(PlayerMode mode)
         {
             GetComponent<Button>().GetComponentInChildren<Text>().text = mode.ToString();
-            _gameState.Service<GameState>().PlayerStates[_playerIndex].PlayerMode = mode;
+            _gameState.Service.PlayerStates[_playerIndex].PlayerMode = mode;
             PlayerPrefs.SetInt("PlayerMode" + _playerIndex, (int) mode);
         }
     }

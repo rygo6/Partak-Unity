@@ -7,8 +7,8 @@ namespace GeoTetra.Partak
 {
     public class GameClock : MonoBehaviour
     {
-        [SerializeField] private ServiceReference _analyticsRelay;
-        [SerializeField] private ServiceReference _gameStateReference;
+        [SerializeField] private AnalyticsRelayReference _analyticsRelay;
+        [SerializeField] private GameStateReference _gameState;
         [SerializeField] private Material _surroundMaterial;
         [SerializeField] private CellParticleEngine _cellParticleMover;
         [SerializeField] private CellParticleStore _cellParticleStore;
@@ -21,13 +21,13 @@ namespace GeoTetra.Partak
 
         private void Start()
         {
-            _initialColors = new Color[_gameStateReference.Service<GameState>().PlayerCount()];
+            _initialColors = new Color[_gameState.Service.PlayerCount()];
             for (int i = 0; i < _initialColors.Length; ++i)
             {
-                _initialColors[i] = _gameStateReference.Service<GameState>().PlayerStates[i].PlayerColor;
+                _initialColors[i] = _gameState.Service.PlayerStates[i].PlayerColor;
             }
             
-            SetTimeLimit(_gameStateReference.Service<GameState>().TimeLimitMinutes);
+            SetTimeLimit(_gameState.Service.TimeLimitMinutes);
             _cellParticleStore.WinEvent += Win;
             Invoke("FastKillTimeOut", _fastKillTimeLimit);
             Invoke("TimeOut", _timeLimit);
@@ -43,8 +43,8 @@ namespace GeoTetra.Partak
             if (_cellParticleStore != null) _cellParticleStore.WinEvent -= Win;
             _surroundMaterial.SetFloat("_Blend", 0f);
             _surroundMaterial.SetTexture("_Texture2", null);
-            for (int i = 0; i < _gameStateReference.Service<GameState>().PlayerCount(); ++i)
-                _gameStateReference.Service<GameState>().PlayerStates[i].PlayerColor = _initialColors[i];
+            for (int i = 0; i < _gameState.Service.PlayerCount(); ++i)
+                _gameState.Service.PlayerStates[i].PlayerColor = _initialColors[i];
         }
 
         public void SetTimeLimit(int minutes)
@@ -59,7 +59,7 @@ namespace GeoTetra.Partak
         private void Win()
         {
             CancelInvoke();
-             _analyticsRelay.Service<AnalyticsRelay>().GameTime(GameTime);
+             _analyticsRelay.Service.GameTime(GameTime);
         }
 
         private void TimeOut()
@@ -79,10 +79,10 @@ namespace GeoTetra.Partak
             while (true)
             {
                 winningPlayer = _cellParticleStore.WinningPlayer();
-                _gameStateReference.Service<GameState>().PlayerStates[winningPlayer].PlayerColor += new Color(.3f, .3f, .3f, .3f);
+                _gameState.Service.PlayerStates[winningPlayer].PlayerColor += new Color(.3f, .3f, .3f, .3f);
                 yield return null;
                 yield return null;
-                _gameStateReference.Service<GameState>().PlayerStates[winningPlayer].PlayerColor = _initialColors[winningPlayer];
+                _gameState.Service.PlayerStates[winningPlayer].PlayerColor = _initialColors[winningPlayer];
                 yield return new WaitForSeconds(0.4f);
             }
         }

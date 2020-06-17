@@ -96,6 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 0
 --- !u!196 &4
@@ -181,6 +182,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -289,7 +291,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_AssetGUID: 6d44730f364928b48b8810b26eaf3e43
     m_SubObjectName: 
   _applyMaterial: {fileID: 2100000, guid: 784e093befc1a4b479ba35af5ca7655a, type: 2}
 --- !u!1 &171365007
@@ -481,6 +483,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -538,8 +541,9 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 521207063}
   m_Enabled: 1
-  serializedVersion: 9
+  serializedVersion: 10
   m_Type: 2
+  m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 8
   m_Range: 799.37274
@@ -665,6 +669,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -758,6 +763,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -837,6 +843,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -944,6 +951,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1005,16 +1013,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ede0da90428b4528bf29b83729b7406, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _levelBounds:
-    m_Center: {x: 9.6, y: 0, z: 9.6}
-    m_Extent: {x: 9.6, y: 0, z: 9.6}
-  _rootDimension: {x: 192, y: 192}
-  _fps: 60
-  _particleCount: 5000
-  _moveCycleTime: 16
   _componentContainer:
-    m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
+    m_AssetGUID: 54735e5a6ecfe0f4f8a088d0ed1c0234
     m_SubObjectName: 
+  _gameState:
+    m_AssetGUID: 6d44730f364928b48b8810b26eaf3e43
+    m_SubObjectName: 
+  _fps: 60
+  _deserializeLevelOnStart: 0
+  _itemRoot: {fileID: 0}
+  _cameraCapture: {fileID: 0}
+  _camera: {fileID: 0}
+  _backgrounds: []
+  _dropItem: {fileID: 0}
 --- !u!4 &1069250574
 Transform:
   m_ObjectHideFlags: 0
@@ -1090,6 +1101,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1296,6 +1308,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1517,6 +1530,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1578,29 +1592,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16c9e83f2d8d4bc4eb6911aaa93d8d8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _uiRenderer:
+    m_AssetGUID: ee4750cb362a0e84ca03a025a3bb2107
+    m_SubObjectName: 
   _onlyDisplayIfEmpty: 1
   _transitionType: 1
-  _componentContainer:
-    m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
-    m_SubObjectName: 
   _stackUIReference:
     m_AssetGUID: 1e03f451607b1c34d84d827613838bd0
     m_SubObjectName: 
   _delay: 0.5
-  TransitionFinished:
+  _transitionFinished:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1580461695389549546}
-        m_MethodName: AddTransitionListener
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!4 &1863464794
 Transform:
   m_ObjectHideFlags: 0
@@ -1627,8 +1630,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb84193d17d30aa4b9176cb227371c50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentContainer:
-    m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
+  _uiRenderer:
+    m_AssetGUID: ee4750cb362a0e84ca03a025a3bb2107
     m_SubObjectName: 
   _fadeInState: FadeIn
   _straightToPerspectiveState: StraightToPerspective

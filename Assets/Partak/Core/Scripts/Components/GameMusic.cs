@@ -7,8 +7,8 @@ namespace GeoTetra.Partak
 {
     public class GameMusic : MonoBehaviour
     {
+        [SerializeField] private GameStateReference _gameState;
         [SerializeField] private AudioMixerGroup _audioMixerGroup;
-        [SerializeField] private ServiceReference _gameState;
         [SerializeField] private AudioSource _winAudioSource;
         [SerializeField] private LevelConfig _levelConfig;
         [SerializeField] private CellParticleStore _cellParticleStore;
@@ -20,11 +20,11 @@ namespace GeoTetra.Partak
         
         public void Initialize()
         {
-            _music = new AudioClip[_gameState.Service<GameState>().PlayerCount(), 3];
-            _audioSource = new AudioSource[_gameState.Service<GameState>().PlayerCount(), 3];
-            _playingClip = new int[_gameState.Service<GameState>().PlayerCount()];
+            _music = new AudioClip[_gameState.Service.PlayerCount(), 3];
+            _audioSource = new AudioSource[_gameState.Service.PlayerCount(), 3];
+            _playingClip = new int[_gameState.Service.PlayerCount()];
             int rand;
-            for (int i = 0; i < _gameState.Service<GameState>().PlayerCount(); i++)
+            for (int i = 0; i < _gameState.Service.PlayerCount(); i++)
             {
                 rand = Random.Range(0, 4);
                 for (int o = 0; o < 3; o++)
@@ -59,7 +59,7 @@ namespace GeoTetra.Partak
         {
             if (_playMusic)
             {
-                for (int i = 0; i < _gameState.Service<GameState>().PlayerCount(); i++)
+                for (int i = 0; i < _gameState.Service.PlayerCount(); i++)
                     if (_cellParticleStore.PlayerParticleCount[i] == -100)
                     {
                         _audioSource[i, 0].mute = true;
@@ -104,7 +104,7 @@ namespace GeoTetra.Partak
             _playMusic = false;
             while (true)
             {
-                for (int i = 0; i < _gameState.Service<GameState>().PlayerCount(); i++)
+                for (int i = 0; i < _gameState.Service.PlayerCount(); i++)
                 for (int o = 0; o < 3; o++)
                     _audioSource[i, o].volume -= Time.deltaTime / 4f;
 

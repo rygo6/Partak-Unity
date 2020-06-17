@@ -6,21 +6,15 @@ namespace GeoTetra.Partak
 {
     public class CellParticleDisplay : MonoBehaviour
     {
-        [SerializeField] private ServiceReference _gameStateReference;
+        [SerializeField] private GameStateReference _gameState;
         [SerializeField] private CellHiearchy _cellHiearchy;
         [SerializeField] private CellParticleSystem _cellParticleSystemPrefab;
         [SerializeField] private LevelConfig _levelConfig;
         
         private CellParticleSystem[] _cellParticleSystems;
         private int[] _levelCount;
-        private GameState _gameState;
-        
-        public bool Initialized { get; private set; }
 
-        private void Start()
-        {
-            _gameState = _gameStateReference.Service<GameState>();
-        }
+        public bool Initialized { get; private set; }
 
         public void Initialize()
         {
@@ -61,14 +55,14 @@ namespace GeoTetra.Partak
             int parentLevel = cellGroup.CellGroupGrid.ParentLevel;
             int levelCount = _levelCount[parentLevel];
             int playerIndex;
-            int playerLimit = _gameState.PlayerCount();
+            int playerLimit = _gameState.Service.PlayerCount();
             for (playerIndex = 0; playerIndex < playerLimit; ++playerIndex)
             {
                 if (cellGroup.PlayerParticleCount[playerIndex] > levelCount)
                 {
                     _cellParticleSystems[parentLevel].SetNextParticle(
                         cellGroup.WorldPosition,
-                        _gameState.PlayerStates[playerIndex].PlayerColor);
+                        _gameState.Service.PlayerStates[playerIndex].PlayerColor);
                     return;
                 }
             }

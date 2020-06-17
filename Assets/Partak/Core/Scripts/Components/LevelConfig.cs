@@ -8,8 +8,14 @@ namespace GeoTetra.Partak
 {
     public class LevelConfig : SubscribableBehaviour
     {
-        [SerializeField] private ServiceReference _componentContainer;
-        [SerializeField] private ServiceReference _gameState;
+        [SerializeField] 
+        [AssetReferenceComponentRestriction(typeof(ComponentContainer))]
+        private ComponentContainerReference _componentContainer;
+        
+        [SerializeField] 
+        [AssetReferenceComponentRestriction(typeof(GameState))]
+        private GameStateReference _gameState;
+        
         [SerializeField] private int _fps = 60;
         [SerializeField] private bool _deserializeLevelOnStart;
         [SerializeField] private ItemRoot _itemRoot;
@@ -50,7 +56,7 @@ namespace GeoTetra.Partak
 
         private void Awake()
         {
-            _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
+            _componentContainer.Service.RegisterComponent(this);
             Application.targetFrameRate = _fps;
             if (_itemRoot != null)
             {
@@ -65,7 +71,7 @@ namespace GeoTetra.Partak
         {
             if (_deserializeLevelOnStart)
             {
-                string levelId = _gameState.Service<GameState>().GetSelectedLevelId();
+                string levelId = _gameState.Service.GetSelectedLevelId();
                 Deserialize(levelId, false);
             }
         }

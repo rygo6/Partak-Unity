@@ -6,7 +6,7 @@ namespace GeoTetra.Partak
 {
     public class ImagePlayerColor : MonoBehaviour
     {
-        [SerializeField] private ServiceReference _gameState;
+        [SerializeField] private GameStateReference _gameState;
         [SerializeField] private int _playerIndex;
         [SerializeField] private bool _constantUpdate;
 
@@ -15,16 +15,16 @@ namespace GeoTetra.Partak
         private void Start()
         {
             _image = GetComponent<Image>();
-            _image.color = _image.color.SetRGB(_gameState.Service<GameState>().PlayerStates[_playerIndex].PlayerColor);
+            _image.color = _image.color.SetRGB(_gameState.Service.PlayerStates[_playerIndex].PlayerColor);
             if (_constantUpdate)
             {
-                _gameState.Service<GameState>().PlayerStates[_playerIndex].ColorChanged += UpdateColor;
+                _gameState.Service.PlayerStates[_playerIndex].ColorChanged += UpdateColor;
             }
         }
 
         private void OnDestroy()
         {
-            _gameState.Service<GameState>().PlayerStates[_playerIndex].ColorChanged -= UpdateColor;
+            _gameState.Service.PlayerStates[_playerIndex].ColorChanged -= UpdateColor;
         }
 
         private void UpdateColor(Color color)

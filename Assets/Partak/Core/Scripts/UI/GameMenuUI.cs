@@ -10,10 +10,10 @@ namespace GeoTetra.Partak.UI
 {
     public class GameMenuUI : StackUI
     {
-        [SerializeField] private ServiceReference _componentContainer;
-        [SerializeField] private ServiceReference _sceneLoadSystem;
-        [SerializeField] private ServiceReference _analyticsRelay;
-        [SerializeField] private ServiceReference _gameState;
+        [SerializeField] private ComponentContainerReference _componentContainer;
+        [SerializeField] private SceneLoadSystemReference _sceneLoadSystem;
+        [SerializeField] private AnalyticsRelayReference _analyticsRelay;
+        [SerializeField] private GameStateReference _gameState;
         [SerializeField] private AssetReference _mainMenuScene;
         [SerializeField] private AssetReference _gameSessionScene;
         [SerializeField] private InputPadGroup _inputPadGroup;
@@ -47,7 +47,7 @@ namespace GeoTetra.Partak.UI
         public override void OnTransitionOutStart()
         {
             base.OnTransitionOutStart();
-            _componentContainer.Service<ComponentContainer>().Get<CellParticleStore>().WinEvent -= ShowWinMenu;
+            _componentContainer.Service.Get<CellParticleStore>().WinEvent -= ShowWinMenu;
             _inputPadGroup.Deinitialize();
         }
 
@@ -55,7 +55,7 @@ namespace GeoTetra.Partak.UI
         {
             base.OnTransitionInStart(uiRenderer);
             _inputPadGroup.Initialize();
-            _componentContainer.Service<ComponentContainer>().Get<CellParticleStore>().WinEvent += ShowWinMenu;
+            _componentContainer.Service.Get<CellParticleStore>().WinEvent += ShowWinMenu;
             StartCoroutine(InitializeDelay());
             _mainMenuButton.gameObject.SetActive(false);
             _replayButton.gameObject.SetActive(false);
@@ -72,7 +72,7 @@ namespace GeoTetra.Partak.UI
         private void ShowPauseMenu()
         {
             CurrentlyRenderedBy.DisplaySelectionModal("", _pauseMessages, _pauseActions, 0);
-            _componentContainer.Service<ComponentContainer>().Get<CellParticleEngine>().Pause = true;
+            _componentContainer.Service.Get<CellParticleEngine>().Pause = true;
         }
 
         private void ShowWinMenu()
@@ -84,45 +84,45 @@ namespace GeoTetra.Partak.UI
 
         private void Resume()
         {
-            _componentContainer.Service<ComponentContainer>().Get<CellParticleEngine>().Pause = false;
+            _componentContainer.Service.Get<CellParticleEngine>().Pause = false;
         }
 
         private void MainMenu()
         {
             CurrentlyRenderedBy.Flush(() =>
             {
-                _sceneLoadSystem.Service<SceneLoadSystem>().Load(_gameSessionScene, _mainMenuScene);
+                _sceneLoadSystem.Service.Load(_gameSessionScene, _mainMenuScene);
             }, UIRenderer.TransitionType.Fade);
         }
 
         private void Replay()
         {
-            _analyticsRelay.Service<AnalyticsRelay>().GamePlayerCount();
+            _analyticsRelay.Service.GamePlayerCount();
             CurrentlyRenderedBy.Flush(() =>
             {
-                _sceneLoadSystem.Service<SceneLoadSystem>().Load(_gameSessionScene, _gameSessionScene);
+                _sceneLoadSystem.Service.Load(_gameSessionScene, _gameSessionScene);
             }, UIRenderer.TransitionType.Fade);
         }
 
         private void Skip()
         {
-            _gameState.Service<GameState>().LevelIndex++;
-            _analyticsRelay.Service<AnalyticsRelay>().GamePlayerCount();
+            _gameState.Service.LevelIndex++;
+            _analyticsRelay.Service.GamePlayerCount();
             
             CurrentlyRenderedBy.Flush(() =>
             {
-                _sceneLoadSystem.Service<SceneLoadSystem>().Load(_gameSessionScene, _gameSessionScene);
+                _sceneLoadSystem.Service.Load(_gameSessionScene, _gameSessionScene);
             }, UIRenderer.TransitionType.Fade);
         }
 
         private void Next()
         {
-            _gameState.Service<GameState>().LevelIndex++;
-            _analyticsRelay.Service<AnalyticsRelay>().GamePlayerCount();
+            _gameState.Service.LevelIndex++;
+            _analyticsRelay.Service.GamePlayerCount();
             
             CurrentlyRenderedBy.Flush(() =>
             {
-                _sceneLoadSystem.Service<SceneLoadSystem>().Load(_gameSessionScene, _gameSessionScene);
+                _sceneLoadSystem.Service.Load(_gameSessionScene, _gameSessionScene);
             }, UIRenderer.TransitionType.Fade);
         }
     }

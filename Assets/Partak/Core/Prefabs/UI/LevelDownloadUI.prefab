@@ -1259,17 +1259,17 @@ MonoBehaviour:
     m_AssetGUID: c01e8933723a2b541b05ddefbf07b07c
     m_SubObjectName: 
   _backButton: {fileID: 8954500893047510831}
-  _advertisementDispatch:
-    m_AssetGUID: 70ed16389ca75d64f9255160eec5ad47
-    m_SubObjectName: 
-  _analyticsRelay:
-    m_AssetGUID: 17010a8528f4c0b43a5469286e4a9730
+  _partakDatabase:
+    m_AssetGUID: 00b19c5ddf295004aafaf7a05cc500a4
     m_SubObjectName: 
   _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_AssetGUID: 
     m_SubObjectName: 
-  _databaseService:
-    m_AssetGUID: 276f5bb3082e1654f93a49fb34fe90b4
+  _advertisementDispatch:
+    m_AssetGUID: 
+    m_SubObjectName: 
+  _analyticsRelay:
+    m_AssetGUID: 
     m_SubObjectName: 
   _fullPurchaseUI:
     m_AssetGUID: 635348307595b604895147a91a29acd1

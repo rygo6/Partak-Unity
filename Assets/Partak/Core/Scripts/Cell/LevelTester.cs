@@ -11,8 +11,8 @@ namespace GeoTetra.Partak
     /// </summary>
     public class LevelTester : SubscribableBehaviour
     {
-        [SerializeField] private ServiceReference _componentContainer;
-        [SerializeField] private ServiceReference _gameSate;
+        [SerializeField] private ComponentContainerReference _componentContainer;
+        [SerializeField] private GameStateReference _gameSate;
         [SerializeField] private LevelConfig _levelConfig;
         
         [SerializeField] private CellHiearchy _cellHiearchy;
@@ -46,11 +46,11 @@ namespace GeoTetra.Partak
             {
                 _playerStates[i] = new GameState.PlayerState
                 {
-                    PlayerColor = _gameSate.Service<GameState>().PlayerStates[i].PlayerColor
+                    PlayerColor = _gameSate.Service.PlayerStates[i].PlayerColor
                 };
             }
             
-            _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
+            _componentContainer.Service.RegisterComponent(this);
             _levelConfig.LevelDeserialized += Initialize;
             _levelConfig.SizeChanged += Initialize;
         }

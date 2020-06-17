@@ -12,8 +12,11 @@ namespace GeoTetra.GTUI
 {
     public class LoadScene : MonoBehaviour
     {
+        [SerializeField] 
+        [AssetReferenceComponentRestriction(typeof(SceneLoadSystem))]
+        private SceneLoadSystemReference _sceneLoadSystem;
+        
         [SerializeField] private bool _onStart;
-        [SerializeField] private ServiceReference _sceneLoadSystem;
         [SerializeField] private AssetReference _sceneReference;
 
         private void Start()
@@ -23,7 +26,7 @@ namespace GeoTetra.GTUI
 
         public void Load()
         {
-            _sceneLoadSystem.Service<SceneLoadSystem>().Load(null, _sceneReference);
+            _sceneLoadSystem.Service.Load(null, _sceneReference);
         }
     }
 }

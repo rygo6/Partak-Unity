@@ -11,10 +11,16 @@ using UnityEngine.Events;
 
 namespace GeoTetra.GTUI
 {
-    [RequireComponent(typeof(AudioSource))]
-    public class UIRenderer : SubscribableBehaviour
+    [Serializable]
+    public class UIRendererReference : ServiceReferenceT<UIRenderer>
     {
-        [SerializeField] internal ServiceReference _componentContainer;
+        public UIRendererReference(string guid) : base(guid)
+        { }
+    }
+    
+    [RequireComponent(typeof(AudioSource))]
+    public class UIRenderer : ServiceBehaviour
+    {
         [SerializeField] private AddressablesPool _addressablesPool;
         [SerializeField] private Camera _uiCamera;
         [SerializeField] private AnimationCurveReference _transitionCurve;
@@ -44,8 +50,8 @@ namespace GeoTetra.GTUI
         public StackUI CurrentStackUI => _currentStackUI;
 
         private void Awake()
-        {
-            _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
+        {    
+            OnLoadComplete();
         }
 
         private void Reset()

@@ -25,7 +25,7 @@ namespace GeoTetra.Partak
     {
         [SerializeField] private AnalyticsRelayReference _analyticsRelay;
         [SerializeField] private GameStateReference _gameState;
-        [SerializeField] private ServiceReference _sceneLoadSystem;
+        [SerializeField] private SceneLoadSystemReference _sceneLoadSystem;
         [SerializeField] private AssetReference _newLevelScene;
         [SerializeField] private AssetReference _mainMenuScene;
         [SerializeField] private AssetReference _levelDownloadUI;
@@ -169,7 +169,7 @@ namespace GeoTetra.Partak
         private void EditLevel()
         {
             _gameState.Service.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
-            _sceneLoadSystem.Service<SceneLoadSystem>().Load(_mainMenuScene, _newLevelScene);
+            _sceneLoadSystem.Service.Load(_mainMenuScene, _newLevelScene);
         }
         
         private void DownloadExistingLevel()
@@ -182,7 +182,7 @@ namespace GeoTetra.Partak
         private void CreateNewLevel()
         {
             _gameState.Service.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
-            _sceneLoadSystem.Service<SceneLoadSystem>().Load(_mainMenuScene, _newLevelScene);
+            _sceneLoadSystem.Service.Load(_mainMenuScene, _newLevelScene);
             _analyticsRelay.Service.CreateLevelOpened();
         }
     }

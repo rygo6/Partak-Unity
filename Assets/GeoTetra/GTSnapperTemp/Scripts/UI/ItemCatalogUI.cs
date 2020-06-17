@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using GeoTetra.GTPooling;
 using GeoTetra.GTSnapper.ScriptableObjects;
+using GeoTetra.Partak;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
@@ -13,8 +14,8 @@ namespace GeoTetra.GTSnapper
     public class ItemCatalogUI : MonoBehaviour
     {
         [SerializeField] private Canvas _canvas;
-        [SerializeField] private ServiceReference _gameState;
-        [SerializeField] private ServiceReference _componentContainer;
+        [SerializeField] private GameStateReference _gameState;
+        [SerializeField] private ComponentContainerReference _componentContainer;
         [SerializeField] private RectTransform _scrollbarContent;
         [SerializeField] private ScrollItem _scrollItemPrefab;
         [SerializeField] private Canvas _scrollItemHighlight;
@@ -36,7 +37,7 @@ namespace GeoTetra.GTSnapper
 
         public void Initialize()
         {
-            _itemRoot = _componentContainer.Service<ComponentContainer>().Get<ItemRoot>();
+            _itemRoot = _componentContainer.Service.Get<ItemRoot>();
             LoadItemReferencesFromAssets("ItemReference");
         }
         

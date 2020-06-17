@@ -63,6 +63,9 @@ MonoBehaviour:
     m_AssetGUID: c01e8933723a2b541b05ddefbf07b07c
     m_SubObjectName: 
   _backButton: {fileID: 0}
+  _gameState:
+    m_AssetGUID: 
+    m_SubObjectName: 
   _playButton: {fileID: 7211395504049849691}
   _playUI:
     m_AssetGUID: decd7486ac5492442882f300edeac3a8

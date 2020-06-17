@@ -13,10 +13,10 @@ namespace GeoTetra.Partak
     public class LevelCreateUI : StackUI
     {
         [SerializeField] private AnalyticsRelayReference _analyticsRelay;
-        [SerializeField] private ServiceReference _gameState;
-        [SerializeField] private ServiceReference _sceneLoadSystem;
-        [SerializeField] private ServiceReference _componentContainer;
-        [SerializeField] private ServiceReference _database;
+        [SerializeField] private GameStateReference _gameState;
+        [SerializeField] private SceneLoadSystemReference _sceneLoadSystem;
+        [SerializeField] private ComponentContainerReference _componentContainer;
+        [SerializeField] private PartakDatabaseReference _database;
         [SerializeField] private AssetReference _mainMenuScene;
         [SerializeField] private AssetReference _newLevelScene;
         [SerializeField] private AssetReference _loadModalUI;
@@ -63,11 +63,11 @@ namespace GeoTetra.Partak
         public override void OnTransitionInFinish()
         {
             base.OnTransitionInFinish();
-            _levelConfig = _componentContainer.Service<ComponentContainer>().Get<LevelConfig>();
-            _levelTester = _componentContainer.Service<ComponentContainer>().Get<LevelTester>();
+            _levelConfig = _componentContainer.Service.Get<LevelConfig>();
+            _levelTester = _componentContainer.Service.Get<LevelTester>();
             _itemCatalogUI.Initialize();
 
-            _editingLevelId = _gameState.Service<GameState>().GetEditingLevelId();
+            _editingLevelId = _gameState.Service.GetEditingLevelId();
             string levelPath = LevelUtility.LevelPath(_editingLevelId);
             
             if (!System.IO.File.Exists(levelPath))
@@ -76,7 +76,7 @@ namespace GeoTetra.Partak
             }
             else
             {
-                _componentContainer.Service<ComponentContainer>().Get<LevelConfig>().Deserialize(_editingLevelId, true);   
+                _componentContainer.Service.Get<LevelConfig>().Deserialize(_editingLevelId, true);   
             }
         }
 
@@ -116,14 +116,14 @@ namespace GeoTetra.Partak
         private void OnCloseClick()
         {
             OnBackClicked();
-            _sceneLoadSystem.Service<SceneLoadSystem>().Load(_newLevelScene, _mainMenuScene);
+            _sceneLoadSystem.Service.Load(_newLevelScene, _mainMenuScene);
             _analyticsRelay.Service.CreateLevelCancelled();
         }
 
         private void SerializeLevel()
         {
             _levelConfig.Serialize(_editingLevelId);
-            _gameState.Service<GameState>().AddLevelId(_editingLevelId);
+            _gameState.Service.AddLevelId(_editingLevelId);
         }
 
         private void SaveLevel()
@@ -137,7 +137,7 @@ namespace GeoTetra.Partak
         {
             _levelConfig.Datum.Shared = true;
             SerializeLevel();
-            await _database.Service<PartakDatabase>().SaveLevel(_editingLevelId);
+            await _database.Service.SaveLevel(_editingLevelId);
             OnCloseClick();
             _analyticsRelay.Service.CreateLevelUploaded();
         }
@@ -185,7 +185,7 @@ namespace GeoTetra.Partak
 
         private void SizeChanged(Vector2Int newSize)
         {
-            _componentContainer.Service<ComponentContainer>().Get<LevelConfig>().SetLevelSize(newSize, true);
+            _componentContainer.Service.Get<LevelConfig>().SetLevelSize(newSize, true);
         }
     }
 }

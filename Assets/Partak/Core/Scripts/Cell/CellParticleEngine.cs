@@ -8,7 +8,9 @@ namespace GeoTetra.Partak
 {
     public class CellParticleEngine : SubscribableBehaviour
     {
-        [SerializeField] private ServiceReference _componentContainer;
+        [SerializeField] 
+        private ComponentContainerReference _componentContainer;
+        
         [SerializeField] private int _attackMultiplier = 3;
         [SerializeField] private CellParticleStore _cellParticleStore;
         [SerializeField] private CellParticleSpawn _cellParticleSpawn;
@@ -24,7 +26,7 @@ namespace GeoTetra.Partak
 
         private void Awake()
         {
-            _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
+            _componentContainer.Service.RegisterComponent(this);
         }
 
         public void Initialize(bool startThread)

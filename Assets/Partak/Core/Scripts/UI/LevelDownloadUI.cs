@@ -18,17 +18,29 @@ namespace GeoTetra.Partak
 {
     public class LevelDownloadUI : StackUI
     {
-        [SerializeField] private AdvertisementDispatchReference _advertisementDispatch;
-        [SerializeField] private AnalyticsRelayReference _analyticsRelay;
-        [SerializeField] private GameStateReference _gameState;
-        [SerializeField] private ServiceReference _databaseService;
+        [SerializeField] 
+        [AssetReferenceComponentRestriction(typeof(PartakDatabase))]
+        private PartakDatabaseReference _partakDatabase;
+        
+        [SerializeField] 
+        [AssetReferenceComponentRestriction(typeof(GameState))]
+        private GameStateReference _gameState;
+        
+        [SerializeField] 
+        [AssetReferenceComponentRestriction(typeof(AdvertisementDispatch))]
+        private AdvertisementDispatchReference _advertisementDispatch;
+        
+        [SerializeField] 
+        [AssetReferenceComponentRestriction(typeof(AnalyticsRelay))]
+        private AnalyticsRelayReference _analyticsRelay;
+
         [SerializeField] private AssetReference _fullPurchaseUI;
         [SerializeField] private Button _mostPopularButton;
         [SerializeField] private Button _mostRecentButton;
         [SerializeField] private LevelButtonScrollRect _levelButtonScrollRect;
 
         private const int maxCache = 100;
-        private PartakDatabase _partakDatabase;
+
         private Search _search;
         private OrderedDictionary _textureCache = new OrderedDictionary();
         private LevelButton _selectedLevelButton;
@@ -40,7 +52,6 @@ namespace GeoTetra.Partak
         protected override void Awake()
         {
             base.Awake();
-            _partakDatabase = _databaseService.Service<PartakDatabase>();
             _mostPopularButton.onClick.AddListener(OnMostPopularClicked);
             _mostRecentButton.onClick.AddListener(OnMostRecentClicked);
             _levelButtonScrollRect.LevelButtonClicked += OnLevelButtonClicked;
@@ -52,7 +63,7 @@ namespace GeoTetra.Partak
         public override void OnTransitionInFinish()
         {
             base.OnTransitionInFinish();
-            _search = _partakDatabase.QueryLevelsThumbsUp(_levelButtonScrollRect.ColumnCount);
+            _search = _partakDatabase.Service.QueryLevelsThumbsUp(_levelButtonScrollRect.ColumnCount);
             _levelButtonScrollRect.Initialize(DownloadNextSet, PopulateLevelButton, null);
         }
 
@@ -67,7 +78,7 @@ namespace GeoTetra.Partak
 
         private void OnMostPopularClicked()
         {
-            _search = _partakDatabase.QueryLevelsThumbsUp(_levelButtonScrollRect.ColumnCount);
+            _search = _partakDatabase.Service.QueryLevelsThumbsUp(_levelButtonScrollRect.ColumnCount);
             _levelButtonScrollRect.Clear();
             _levelButtonScrollRect.Initialize(DownloadNextSet, PopulateLevelButton, null);
         }
@@ -75,7 +86,7 @@ namespace GeoTetra.Partak
 
         private void OnMostRecentClicked()
         {
-            _search = _partakDatabase.QueryLevelsCreatedAt(_levelButtonScrollRect.ColumnCount);
+            _search = _partakDatabase.Service.QueryLevelsCreatedAt(_levelButtonScrollRect.ColumnCount);
             _levelButtonScrollRect.Clear();
             _levelButtonScrollRect.Initialize(DownloadNextSet, PopulateLevelButton, null);
         }
@@ -93,7 +104,7 @@ namespace GeoTetra.Partak
                 _textureCache.Add(levelButton.LevelDatum.LevelID, texture2D);
                 if (_textureCache.Count > maxCache) _textureCache.RemoveAt(0);
                 LocalLevelDatum datum = levelButton.LevelDatum;
-                await _partakDatabase.DownloadLevelPreview(levelButton.LevelDatum.LevelID, texture2D);
+                await _partakDatabase.Service.DownloadLevelPreview(levelButton.LevelDatum.LevelID, texture2D);
                 if (datum != levelButton.LevelDatum) return;
                 levelButton.Image.texture = texture2D;
             }
@@ -184,7 +195,7 @@ namespace GeoTetra.Partak
 
         private async void DownloadLevel()
         {
-            await _partakDatabase.DownloadLevel(_selectedLevelButton.LevelDatum.LevelID);
+            await _partakDatabase.Service.DownloadLevel(_selectedLevelButton.LevelDatum.LevelID);
             _gameState.Service.AddLevelId(_selectedLevelButton.LevelDatum.LevelID);
             CurrentlyRenderedBy.CloseModal();
             OnBackClicked();
