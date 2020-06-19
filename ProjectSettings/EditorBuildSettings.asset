@@ -8,6 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Partak/Core/Scenes/Main.unity
     guid: 577a818291702044f97cea19734e6a9d
+  - enabled: 1
+    path: Assets/Partak/Core/Scenes/EngineStripping.unity
+    guid: c7cd5982c75e013419c049bcdb0866b0
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: ecb6b4af33d62ee449eff25b2b877bfa,
       type: 2}

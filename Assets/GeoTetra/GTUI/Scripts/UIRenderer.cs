@@ -54,9 +54,9 @@ namespace GeoTetra.GTUI
             OnLoadComplete();
         }
 
-        private void Reset()
+        private void OnValidate()
         {
-            _audioSource = GetComponent<AudioSource>();
+            if (_audioSource == null) _audioSource = GetComponent<AudioSource>();
         }
 
         public async void InstantiateAndDisplayStackUI(AssetReference ui, TransitionType transitionType = TransitionType.Vertical, Action onFinish = null)
