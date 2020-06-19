@@ -234,10 +234,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d94e6a6ab6a094408ac844c5fa3f50e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _onStart: 0
   _sceneLoadSystem:
     m_AssetGUID: e7493b24c6eeb9c4f9473b3eb0a29207
     m_SubObjectName: 
+  _onStart: 0
   _sceneReference:
     m_AssetGUID: efa1e429e9b9149c0ace66aa5e10b21d
     m_SubObjectName: 
@@ -425,10 +425,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3593c3646b2f408499fde2b35ab1831c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _iapListener: {fileID: 1885413436}
   _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_AssetGUID: 6d44730f364928b48b8810b26eaf3e43
     m_SubObjectName: 
+  _iapListener: {fileID: 1885413436}
 --- !u!114 &1885413436
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -128,6 +128,7 @@ namespace GeoTetra.Partak
 
         public void EnableFullVersion()
         {
+            Debug.Log("Enabling Full Version");
             PlayerPrefs.SetInt(FullVersionKey, 1);
             _fullVersion = true;
         }
