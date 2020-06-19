@@ -37,6 +37,7 @@ namespace GeoTetra.Partak
         private void PurchaseFail(Product product, PurchaseFailureReason reason)
         {
 	        base.Close();
+	        CurrentlyRenderedBy.DisplayMessageModal("Failure: " + reason.ToString());
         }
     }
  }
