@@ -173,7 +173,7 @@ PlayerSettings:
     iPhone: com.technologicalmages.enrgy
     tvOS: com.technologicalmages.enrgy
   buildNumber:
-    iPhone: 7
+    iPhone: 8
   AndroidBundleVersionCode: 5
   AndroidMinSdkVersion: 19
   AndroidTargetSdkVersion: 0
@@ -382,8 +382,8 @@ PlayerSettings:
       m_SubKind: 
   m_BuildTargetBatching:
   - m_BuildTarget: iPhone
-    m_StaticBatching: 1
-    m_DynamicBatching: 1
+    m_StaticBatching: 0
+    m_DynamicBatching: 0
   - m_BuildTarget: Android
     m_StaticBatching: 0
     m_DynamicBatching: 0
@@ -711,6 +711,7 @@ PlayerSettings:
   gcWBarrierValidation: 0
   apiCompatibilityLevelPerPlatform:
     Android: 3
+    iPhone: 3
   m_RenderingPath: 3
   m_MobileRenderingPath: 1
   metroPackageName: partak
