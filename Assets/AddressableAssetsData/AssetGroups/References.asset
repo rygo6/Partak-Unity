@@ -22,36 +22,85 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - ItemReference
-    m_mainAssetType: GeoTetra.GTSnapper.ScriptableObjects.ItemReference, Assembly-CSharp,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 370f6ec3c6af3fa4aae6eb9460cd0169
     m_Address: QuarterCircleReference
     m_ReadOnly: 0
     m_SerializedLabels:
     - ItemReference
-    m_mainAssetType: GeoTetra.GTSnapper.ScriptableObjects.ItemReference, Assembly-CSharp,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 58b2635dd8b280946bb00aa52cf9731e
     m_Address: ArcReference
     m_ReadOnly: 0
     m_SerializedLabels:
     - ItemReference
-    m_mainAssetType: GeoTetra.GTSnapper.ScriptableObjects.ItemReference, Assembly-CSharp,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: a98829e85f6b295439ffd58a7fc09aa6
     m_Address: LTriOddReference
     m_ReadOnly: 0
     m_SerializedLabels:
     - ItemReference
-    m_mainAssetType: GeoTetra.GTSnapper.ScriptableObjects.ItemReference, Assembly-CSharp,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: ebc9b2720c0e46f488387153f3a944ca
     m_Address: CubamidReference
     m_ReadOnly: 0
     m_SerializedLabels:
     - ItemReference
-    m_mainAssetType: GeoTetra.GTSnapper.ScriptableObjects.ItemReference, Assembly-CSharp,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: b8c401b9ac492144cbd69ee72a2a8415
+    m_Address: DomeReference
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ItemReference
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: d5bf39fa5bd589f489dd40563ef5e6a1
+    m_Address: EquarrayReference
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ItemReference
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 05529f91b25ac124da777cd1c19a73cc
+    m_Address: LbarReference
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ItemReference
+    m_MainAsset: {fileID: 11400000, guid: 05529f91b25ac124da777cd1c19a73cc, type: 2}
+    m_TargetAsset: {fileID: 11400000, guid: 05529f91b25ac124da777cd1c19a73cc, type: 2}
+  - m_GUID: f8380354a3238734b960cad7adfe11b6
+    m_Address: LongBarReference
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ItemReference
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 6430a0409118706438158da405106562
+    m_Address: LongTriReference
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ItemReference
+    m_MainAsset: {fileID: 11400000, guid: 6430a0409118706438158da405106562, type: 2}
+    m_TargetAsset: {fileID: 11400000, guid: 6430a0409118706438158da405106562, type: 2}
+  - m_GUID: 611d88f9119354647b1afa6206f7e2a1
+    m_Address: MidbarReference
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ItemReference
+    m_MainAsset: {fileID: 11400000, guid: 611d88f9119354647b1afa6206f7e2a1, type: 2}
+    m_TargetAsset: {fileID: 11400000, guid: 611d88f9119354647b1afa6206f7e2a1, type: 2}
+  - m_GUID: 0c5ecad3547e26149a66f5aa41510208
+    m_Address: PyrrayReference
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ItemReference
+    m_MainAsset: {fileID: 11400000, guid: 0c5ecad3547e26149a66f5aa41510208, type: 2}
+    m_TargetAsset: {fileID: 11400000, guid: 0c5ecad3547e26149a66f5aa41510208, type: 2}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8897a9da1308dad4cb94657883af64f0, type: 2}
   m_SchemaSet:

@@ -76,7 +76,13 @@ namespace GeoTetra.GTSnapper
 					}
 				}
 			}
-			return new Rect(left, bottom, right - left, top - bottom);
+
+			if (right - left <= top - bottom)
+			{
+				return new Rect(left, bottom, right - left, top - bottom);			
+			}
+
+			return new Rect(left, left, right - left, right - left);
 		}
 
 		public void SaveScreenshotToFile(string fileName)

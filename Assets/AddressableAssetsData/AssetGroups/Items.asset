@@ -22,36 +22,95 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Item
-    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 11d595023d3ea3346a6f99d1967fa760
     m_Address: LTriOdd
     m_ReadOnly: 0
     m_SerializedLabels:
     - Item
-    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 32d0953b86f9d5f4387d5c3bbeb909b7
     m_Address: QuarterCircle
     m_ReadOnly: 0
     m_SerializedLabels:
     - Item
-    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 4999d74fe66b3f04d9904cbed0371e5f
     m_Address: 4Odd
     m_ReadOnly: 0
     m_SerializedLabels:
     - Item
-    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: e250a1202be37a54194aa5aec83217bd
     m_Address: Cubamid
     m_ReadOnly: 0
     m_SerializedLabels:
     - Item
-    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f162b91744745e14a955d76ed8e8a323
+    m_Address: Dome
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: e5f1080822893aa4aa17ece52edc5dfa
+    m_Address: Equarray
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+    m_MainAsset: {fileID: 1973825290451193979, guid: e5f1080822893aa4aa17ece52edc5dfa,
+      type: 3}
+    m_TargetAsset: {fileID: 1973825290451193979, guid: e5f1080822893aa4aa17ece52edc5dfa,
+      type: 3}
+  - m_GUID: 9e7d2e69673da2f4aba2a5664a86299f
+    m_Address: Lbar
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+    m_MainAsset: {fileID: 1973825290451193979, guid: 9e7d2e69673da2f4aba2a5664a86299f,
+      type: 3}
+    m_TargetAsset: {fileID: 1973825290451193979, guid: 9e7d2e69673da2f4aba2a5664a86299f,
+      type: 3}
+  - m_GUID: 7ab1fece307cfdb4d8aff6e3cb250cac
+    m_Address: LongBar
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+    m_MainAsset: {fileID: 1973825290451193979, guid: 7ab1fece307cfdb4d8aff6e3cb250cac,
+      type: 3}
+    m_TargetAsset: {fileID: 1973825290451193979, guid: 7ab1fece307cfdb4d8aff6e3cb250cac,
+      type: 3}
+  - m_GUID: b77ff62fbc1234e40b377897978de137
+    m_Address: LongTri
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 1897af59407391d4c856cfa6669637aa
+    m_Address: Midbar
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+    m_MainAsset: {fileID: 1973825290451193979, guid: 1897af59407391d4c856cfa6669637aa,
+      type: 3}
+    m_TargetAsset: {fileID: 1973825290451193979, guid: 1897af59407391d4c856cfa6669637aa,
+      type: 3}
+  - m_GUID: 60605111f67dda74f908a59e822ffaab
+    m_Address: Pyrray
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+    m_MainAsset: {fileID: 1973825290451193979, guid: 60605111f67dda74f908a59e822ffaab,
+      type: 3}
+    m_TargetAsset: {fileID: 1973825290451193979, guid: 60605111f67dda74f908a59e822ffaab,
+      type: 3}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8897a9da1308dad4cb94657883af64f0, type: 2}
   m_SchemaSet:
