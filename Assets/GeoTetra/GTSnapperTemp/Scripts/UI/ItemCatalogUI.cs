@@ -16,7 +16,7 @@ namespace GeoTetra.GTSnapper
         [SerializeField] private Canvas _canvas;
         [SerializeField] private GameStateReference _gameState;
         [SerializeField] private ComponentContainerReference _componentContainer;
-        [SerializeField] private RectTransform _scrollbarContent;
+        [SerializeField] private ScrollRect _scrollRect;
         [SerializeField] private ScrollItem _scrollItemPrefab;
         [SerializeField] private Canvas _scrollItemHighlight;
         [SerializeField] private ItemSettings _itemSettings;
@@ -186,11 +186,11 @@ namespace GeoTetra.GTSnapper
                 else
                 {
                     scrollItem = Instantiate(_scrollItemPrefab);
-                    scrollItem.transform.SetParent(_scrollbarContent.GetComponent<RectTransform>(), false);
+                    scrollItem.transform.SetParent(_scrollRect.content.transform, false);
                     _scrollItemPool.Add(scrollItem);
                 }
                 
-                scrollItem.Initialize(this, itemReferences[i]);;
+                scrollItem.Initialize(this, itemReferences[i], _scrollRect);
 
                 //load preview images
                 RawImage image = scrollItem.GetComponent<RawImage>();
@@ -202,7 +202,7 @@ namespace GeoTetra.GTSnapper
                 totalHeight += scrollItem.RectTransform.rect.height;
             }
 
-            _scrollbarContent.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, totalHeight);
+            ((RectTransform)_scrollRect.content.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, totalHeight);
 
             //disable additional Items
             for (int i = itemReferences.Count; i < _scrollItemPool.Count; ++i)

@@ -14,13 +14,15 @@ namespace GeoTetra.GTSnapper
 		private ItemCatalogUI _parentUI;
 		private Vector2 _inputMoved;
 		private bool spawnItem;
+		private ScrollRect _parentScrollRect;
 		
 		public ItemReference ItemReference { get; private set; }
 		
 		public RectTransform RectTransform => (RectTransform) transform;
 
-		public void Initialize(ItemCatalogUI parentUI, ItemReference itemReference)
+		public void Initialize(ItemCatalogUI parentUI, ItemReference itemReference, ScrollRect parentScrollRect)
 		{
+			_parentScrollRect = parentScrollRect;
 			_parentUI = parentUI;
 			ItemReference = itemReference;
 		}
@@ -48,7 +50,7 @@ namespace GeoTetra.GTSnapper
 		
 		public void OnBeginDrag(PointerEventData data)
 		{	
-
+			_parentScrollRect.OnBeginDrag(data);
 		}
 
 		public void OnDrag(PointerEventData data)
@@ -62,10 +64,13 @@ namespace GeoTetra.GTSnapper
 				spawnItem = true;
 				_parentUI.SpawnItemFromMenuDrag(data, this);
 			}
+			
+			if (!spawnItem) _parentScrollRect.OnDrag(data);
 		}
 
-		public void OnEndDrag(PointerEventData eventData)
+		public void OnEndDrag(PointerEventData data)
 		{
+			_parentScrollRect.OnEndDrag(data);
 			Debug.Log("ScrollItem OnEndDrag");
 		}
 	}
