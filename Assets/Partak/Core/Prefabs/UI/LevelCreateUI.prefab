@@ -65,6 +65,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.066037714, g: 0.066037714, b: 0.066037714, a: 0.8627451}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -294,6 +295,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -387,6 +389,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -524,6 +527,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -595,6 +599,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -690,6 +695,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.066037714, g: 0.066037714, b: 0.066037714, a: 0.8627451}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -854,6 +860,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1099,6 +1106,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1184,6 +1192,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.78431374}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1419,6 +1428,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1505,6 +1515,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1742,8 +1753,11 @@ MonoBehaviour:
     m_AssetGUID: c01e8933723a2b541b05ddefbf07b07c
     m_SubObjectName: 
   _backButton: {fileID: 0}
+  _analyticsRelay:
+    m_AssetGUID: 
+    m_SubObjectName: 
   _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_AssetGUID: 6d44730f364928b48b8810b26eaf3e43
     m_SubObjectName: 
   _sceneLoadSystem:
     m_AssetGUID: b30141a42589e924e97c08dbbe68ad23
@@ -1781,12 +1795,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _canvas: {fileID: 7343701488105535541}
   _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_AssetGUID: 6d44730f364928b48b8810b26eaf3e43
     m_SubObjectName: 
   _componentContainer:
-    m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
+    m_AssetGUID: 54735e5a6ecfe0f4f8a088d0ed1c0234
     m_SubObjectName: 
-  _scrollbarContent: {fileID: 143578183832626837}
+  _scrollRect: {fileID: 143578182931713571}
   _scrollItemPrefab: {fileID: 263207019947684764, guid: d31dc16f4038f0044892a65209089c40,
     type: 3}
   _scrollItemHighlight: {fileID: 7770804498999463845}
