@@ -87,6 +87,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc344b4a2cd95094cbffbd8d2b748f61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _crop: 1
+  _square: 1
   _componentContainer:
     m_AssetGUID: 
     m_SubObjectName: 
