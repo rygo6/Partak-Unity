@@ -164,12 +164,18 @@ namespace GeoTetra.Partak
             _levelButtonScrollRect.Clear();
             _levelButtonScrollRect.Initialize(DownloadNextSet, PopulateLevelButton, FinalButton);
             _analyticsRelay.Service.LevelDeleted();
+            
+            //Reset level index so play menu doesn't load on empty level.
+            _gameState.Service.LevelIndex = 0;
         }
         
         private void EditLevel()
         {
             _gameState.Service.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
             _sceneLoadSystem.Service.Load(_mainMenuScene, _newLevelScene);
+            
+            //Reset level index so play menu doesn't load on empty level.
+            _gameState.Service.LevelIndex = 0;
         }
         
         private void DownloadExistingLevel()
@@ -184,6 +190,9 @@ namespace GeoTetra.Partak
             _gameState.Service.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
             _sceneLoadSystem.Service.Load(_mainMenuScene, _newLevelScene);
             _analyticsRelay.Service.CreateLevelOpened();
+            
+            //Reset level index so play menu doesn't load on empty level.
+            _gameState.Service.LevelIndex = 0;
         }
     }
 }

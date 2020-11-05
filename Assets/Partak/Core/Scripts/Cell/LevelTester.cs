@@ -11,8 +11,14 @@ namespace GeoTetra.Partak
     /// </summary>
     public class LevelTester : SubscribableBehaviour
     {
-        [SerializeField] private ComponentContainerReference _componentContainer;
-        [SerializeField] private GameStateReference _gameSate;
+        [SerializeField] 
+        [AssetReferenceComponentRestriction(typeof(ComponentContainer))]
+        private ComponentContainerReference _componentContainer;
+        
+        [SerializeField] 
+        [AssetReferenceComponentRestriction(typeof(GameState))]
+        private GameStateReference _gameSate;
+        
         [SerializeField] private LevelConfig _levelConfig;
         
         [SerializeField] private CellHiearchy _cellHiearchy;
@@ -24,7 +30,8 @@ namespace GeoTetra.Partak
         [SerializeField] private CursorStore _cursorStore;
         [SerializeField] private ItemDrop _itemDrop;
         [SerializeField] private InputCatcher _inputCatcher;
-
+        [SerializeField] private ItemRoot _itemRoot;
+        
         private const float MaxTestWaitTime = 5;
         private const int TestPlayerCount = 4;
         private GameState.PlayerState[] _playerStates;
@@ -71,6 +78,7 @@ namespace GeoTetra.Partak
             _inputCatcher.gameObject.SetActive(false);
             _cellParticleDisplay.gameObject.SetActive(true);
             _cursorStore.SetCursorsToStartPosition();
+            _itemRoot.UnHighlightAll();
             
             //reconstruct hiearchy
             _cellHiearchy.Initialize();

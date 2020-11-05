@@ -83,7 +83,10 @@ namespace GeoTetra.Partak
             _itemRoot.Deserialize(_levelDatum.ItemRootDatumJSON);
         }
         
-        public void Serialize(string levelId)
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Serialize(string levelId, bool saveScreenshot)
         {
             string levelPath = LevelUtility.LevelPath(levelId);
 
@@ -91,9 +94,12 @@ namespace GeoTetra.Partak
             Datum.LevelID = levelId;
             string json = JsonUtility.ToJson(Datum);
             System.IO.File.WriteAllText(levelPath, json);
-            
-            string imagePath = LevelUtility.LevelImagePath(levelId);
-            _cameraCapture.SaveScreenshotToFile(imagePath);
+
+            if (saveScreenshot)
+            {
+                string imagePath = LevelUtility.LevelImagePath(levelId);
+                _cameraCapture.SaveScreenshotToFile(imagePath);
+            }
         }
 
         public void SetLevelSize(Vector2Int newSize, bool editing)

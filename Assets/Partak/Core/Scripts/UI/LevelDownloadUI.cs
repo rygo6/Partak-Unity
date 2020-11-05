@@ -103,9 +103,15 @@ namespace GeoTetra.Partak
                 Texture2D texture2D = new Texture2D(0,0, TextureFormat.RGBA32, 0, false);
                 _textureCache.Add(levelButton.LevelDatum.LevelID, texture2D);
                 if (_textureCache.Count > maxCache) _textureCache.RemoveAt(0);
+                
+                //Store datum before downloading and ensure it is the same afterwards in case the user scrolled fast
+                // enough as to make the download operation irrelevant.
                 LocalLevelDatum datum = levelButton.LevelDatum;
+                
+                //Don't cancel downloads so they are available on scroll back.
                 await _partakDatabase.Service.DownloadLevelPreview(levelButton.LevelDatum.LevelID, texture2D);
                 if (datum != levelButton.LevelDatum) return;
+                
                 levelButton.Image.texture = texture2D;
             }
 
@@ -122,6 +128,7 @@ namespace GeoTetra.Partak
                 levelButton.Button.interactable = true;
             }
             levelButton.ShowRating(true);
+            levelButton.ThumbsDownText.text = levelButton.LevelDatum.ThumbsDown.ToString();
             levelButton.ThumbsUpText.text = levelButton.LevelDatum.ThumbsUp.ToString();
         }
 
@@ -150,10 +157,15 @@ namespace GeoTetra.Partak
             List<LocalLevelDatum> levelDatumList = new List<LocalLevelDatum>();
             for (int i = 0; i < documentList.Count; ++i)
             {
+                documentList[i].TryGetValue(PartakDatabase.LevelFields.IdKey, out DynamoDBEntry levelId);
+                documentList[i].TryGetValue(PartakDatabase.LevelFields.ThumbsUpKey, out DynamoDBEntry thumbsUp);
+                documentList[i].TryGetValue(PartakDatabase.LevelFields.ThumbsDownKey, out DynamoDBEntry thumbsDown);
+                
                 LocalLevelDatum levelDatum = new LocalLevelDatum
                 {
-                    LevelID = documentList[i][PartakDatabase.LevelFields.IdKey].AsString(),
-                    ThumbsUp = documentList[i][PartakDatabase.LevelFields.ThumbsUpKey].AsInt()
+                    LevelID = levelId ?? string.Empty,
+                    ThumbsUp = thumbsUp?.AsInt() ?? 0,
+                    ThumbsDown = thumbsDown?.AsInt() ?? 0
                 };
                 levelDatumList.Add(levelDatum);
             }
@@ -196,6 +208,10 @@ namespace GeoTetra.Partak
         private async void DownloadLevel()
         {
             await _partakDatabase.Service.DownloadLevel(_selectedLevelButton.LevelDatum.LevelID);
+            
+            //Reset level index so play menu doesn't load on empty level.
+            _gameState.Service.LevelIndex = 0;
+            
             _gameState.Service.AddLevelId(_selectedLevelButton.LevelDatum.LevelID);
             CurrentlyRenderedBy.CloseModal();
             OnBackClicked();

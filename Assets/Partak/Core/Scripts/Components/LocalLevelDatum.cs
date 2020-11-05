@@ -13,6 +13,7 @@ namespace GeoTetra.Partak
     {
         public bool Shared;
         public bool Downloaded;
+        public bool Rated;
         
         /// <summary>
         /// id key in dynamo
@@ -22,6 +23,7 @@ namespace GeoTetra.Partak
         public int ParticleCount;
         public int MoveCycleTime;
         public int ThumbsUp;
+        public int ThumbsDown;
         public string ItemRootDatumJSON;
     }
 }

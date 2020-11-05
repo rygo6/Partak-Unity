@@ -20,6 +20,9 @@ namespace GeoTetra.Partak
 
         [SerializeField] private Image _thumbsUpIcon;
         [SerializeField] private Text _thumbsUpText;
+        
+        [SerializeField] private Image _thumbsDownIcon;
+        [SerializeField] private Text _thumbsDownText;
 
         public event Action<LevelButton> ButtonClicked;
 
@@ -33,6 +36,7 @@ namespace GeoTetra.Partak
         public Text Text => _text;
         public RawImage Image => _image;
         public Text ThumbsUpText => _thumbsUpText;
+        public Text ThumbsDownText => _thumbsDownText;
 
         private void Awake()
         {
@@ -62,6 +66,8 @@ namespace GeoTetra.Partak
         {
             _thumbsUpIcon.gameObject.SetActive(state);
             _thumbsUpText.gameObject.SetActive(state);
+            _thumbsDownIcon.gameObject.SetActive(state);
+            _thumbsDownText.gameObject.SetActive(state);
         }
 
         public void SetEmpty()

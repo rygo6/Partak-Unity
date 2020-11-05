@@ -12,8 +12,14 @@ namespace GeoTetra.Partak
 {
     public class PlayUI : StackUI
     {
-        [SerializeField] private SceneLoadSystemReference _loadSystem;
-        [SerializeField] private GameStateReference _gameState;
+        [SerializeField] 
+        [AssetReferenceComponentRestriction(typeof(SceneLoadSystem))]
+        private SceneLoadSystemReference _loadSystem;
+        
+        [SerializeField]
+        [AssetReferenceComponentRestriction(typeof(GameState))]
+        private GameStateReference _gameState;
+        
         [SerializeField] private AssetReference _gameSessionScene;
         [SerializeField] private AssetReference _mainMenuScene;
         [SerializeField] private Button _startButton;

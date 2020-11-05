@@ -43,8 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d36438550d341408587a8356dd0e1841, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameStateReference:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _gameState:
+    m_AssetGUID: 
     m_SubObjectName: 
   _levelConfig: {fileID: 0}
 --- !u!1 &2477013746912162013
@@ -143,8 +143,8 @@ MonoBehaviour:
   _componentContainer:
     m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
     m_SubObjectName: 
-  _gameStateReference:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _gameState:
+    m_AssetGUID: 
     m_SubObjectName: 
   _cursorStore: {fileID: 0}
   _levelConfig: {fileID: 0}
@@ -193,8 +193,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4568bc849d794a6f87813ce2a5c034d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameStateReference:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _gameState:
+    m_AssetGUID: 
     m_SubObjectName: 
   _cellHiearchy: {fileID: 2477013746918670037}
   _cellParticleSystemPrefab: {fileID: 11428694, guid: 0fbca4a86790a4abdb803558fb304c55,
@@ -300,10 +300,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _componentContainer:
-    m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
+    m_AssetGUID: 54735e5a6ecfe0f4f8a088d0ed1c0234
     m_SubObjectName: 
   _gameSate:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_AssetGUID: 6d44730f364928b48b8810b26eaf3e43
     m_SubObjectName: 
   _levelConfig: {fileID: 0}
   _cellHiearchy: {fileID: 2477013746918670037}
@@ -312,6 +312,10 @@ MonoBehaviour:
   _cellParticleEngine: {fileID: 2477013746918744341}
   _cellParticleSpawn: {fileID: 2477013746918750667}
   _cellParticleStore: {fileID: 2477013746918749703}
+  _cursorStore: {fileID: 0}
+  _itemDrop: {fileID: 0}
+  _inputCatcher: {fileID: 0}
+  _itemRoot: {fileID: 0}
 --- !u!1 &2477013746912221369
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,8 +359,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 690e140f5bea045469bfe666ee26d024, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameStateReference:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _gameState:
+    m_AssetGUID: 
     m_SubObjectName: 
   _cellHiearchy: {fileID: 2477013746918670037}
   _cellParticleMover: {fileID: 2477013746918744341}

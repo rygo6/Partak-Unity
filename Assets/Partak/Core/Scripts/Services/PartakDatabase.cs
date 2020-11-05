@@ -7,6 +7,7 @@ using Amazon;
 using Amazon.CognitoIdentity;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DocumentModel;
+using Amazon.DynamoDBv2.Model;
 using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
@@ -42,6 +43,7 @@ namespace GeoTetra.GTBackend
             public const string AuthorKey = "author";
             public const string LevelDataKey = "level_data";
             public const string ThumbsUpKey = "thumbs_up";
+            public const string ThumbsDownKey = "thumbs_down";
             public const string CreatedAtKey = "created_at";
             public const string DownloadedCountKey = "download_count";
             public const string DeleteCountKey = "delete_count";
@@ -52,6 +54,7 @@ namespace GeoTetra.GTBackend
         
         private Table _table;
         private AmazonS3Client _s3Client;
+        private AmazonDynamoDBClient _dbClient;
         private TransferUtility _transferUtility;
 
         private void OnEnable()
@@ -80,9 +83,9 @@ namespace GeoTetra.GTBackend
                     CognitoAWSCredentials credentials = new CognitoAWSCredentials(_identityPoolId, endpoint);
                     ImmutableCredentials credentialsResult = await credentials.GetCredentialsAsync();
                     Debug.Log($"Credential Success: {credentialsResult.Token}");
-                    AmazonDynamoDBClient client = new AmazonDynamoDBClient(credentials, endpoint);
+                    _dbClient = new AmazonDynamoDBClient(credentials, endpoint);
                     Debug.Log($"AmazonDynamoDBClient Success");
-                    _table = Table.LoadTable(client, _tableName);
+                    _table = Table.LoadTable(_dbClient, _tableName);
                     Debug.Log($"{_tableName} Table Success");
                     _s3Client = new AmazonS3Client(credentials, endpoint);
                     _transferUtility = new TransferUtility(_s3Client);
@@ -105,9 +108,10 @@ namespace GeoTetra.GTBackend
             Document result = await _table.GetItemAsync(LevelFields.PkLevelValue, levelId, config);
 
             LocalLevelDatum levelDatum = JsonUtility.FromJson<LocalLevelDatum>(result[LevelFields.LevelDataKey]);
+            // Set shared and downloaded to true, because it was downloaded, and obviously was shared.
             levelDatum.Shared = true;
             levelDatum.Downloaded = true;
-            levelDatum.LevelID = levelId; //still needed?
+            levelDatum.LevelID = levelId;
             string json = JsonUtility.ToJson(levelDatum);
 
             File.WriteAllText(levelPath, json);
@@ -212,6 +216,7 @@ namespace GeoTetra.GTBackend
             level[LevelFields.AuthorKey] = SystemInfo.deviceUniqueIdentifier;
             level[LevelFields.LevelDataKey] = json;
             level[LevelFields.ThumbsUpKey] = 0;
+            level[LevelFields.ThumbsDownKey] = 0;
             level[LevelFields.CreatedAtKey] = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             level[LevelFields.DownloadedCountKey] = 0;
             level[LevelFields.DeleteCountKey] = 0;
@@ -238,6 +243,50 @@ namespace GeoTetra.GTBackend
             catch (Exception e)
             {
                 Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
+            }
+        }
+
+        public void IncrementThumbsUp(string levelID, bool positive)
+        {
+            AtomicIncrement(levelID, LevelFields.ThumbsUpKey, positive);
+        }
+        
+        public void IncrementThumbsDown(string levelID, bool positive)
+        {
+            AtomicIncrement(levelID, LevelFields.ThumbsDownKey, positive);
+        }
+
+        private async void AtomicIncrement(string levelId, string field, bool positive)
+        {
+            Debug.Log($"Atomically Incrementing {levelId} {field} {positive}");
+            
+            var request = new UpdateItemRequest
+            {
+                Key = new Dictionary<string, AttributeValue>()
+                {
+                    { "pk", new AttributeValue { S = LevelFields.PkLevelValue } },
+                    { "id", new AttributeValue { S = levelId } },
+                },
+                ExpressionAttributeNames = new Dictionary<string, string>()
+                {
+                    {"#F", field}
+                },
+                ExpressionAttributeValues = new Dictionary<string, AttributeValue>()
+                {
+                    {":incr",new AttributeValue {N = "1" }}
+                },
+                UpdateExpression = positive ? "SET #F = #F + :incr" : "SET #F = #F - :incr",
+                TableName = _tableName
+            };
+
+            try
+            {
+                UpdateItemResponse response = await _dbClient.UpdateItemAsync(request);
+                Debug.Log($"AtomicIncrement Response: {response}");
+            }
+            catch (Exception ex)
+            {
+                Debug.Log(ex);
             }
         }
 

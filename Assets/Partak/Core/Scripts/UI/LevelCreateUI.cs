@@ -122,7 +122,7 @@ namespace GeoTetra.Partak
 
         private void SerializeLevel()
         {
-            _levelConfig.Serialize(_editingLevelId);
+            _levelConfig.Serialize(_editingLevelId, true);
             _gameState.Service.AddLevelId(_editingLevelId);
         }
 
