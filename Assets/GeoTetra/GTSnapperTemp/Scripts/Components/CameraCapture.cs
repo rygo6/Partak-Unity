@@ -14,8 +14,14 @@ namespace GeoTetra.GTSnapper
 		[AssetReferenceComponentRestriction(typeof(ComponentContainer))]
 		private ServiceReference _componentContainer;
 		
-		[SerializeField] private bool _crop;
-		[SerializeField] private bool _square;
+		[Header("Crop to content.")]
+		[SerializeField] 
+		private bool _crop;
+
+		[Header("Make height no less than width.")]
+		[SerializeField] 
+		private bool _heightLimitedByWidth;
+		
 		[SerializeField] private Camera _camera;
 		[SerializeField] private int _resWidth = 256;
 		[SerializeField] private int _resHeight = 256;
@@ -82,7 +88,7 @@ namespace GeoTetra.GTSnapper
 				}
 			}
 
-			if (_square)
+			if (_heightLimitedByWidth)
 			{
 				if (right - left <= top - bottom)
 				{

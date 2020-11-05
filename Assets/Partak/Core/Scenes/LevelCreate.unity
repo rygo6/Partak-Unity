@@ -702,8 +702,8 @@ MonoBehaviour:
   _componentContainer:
     m_AssetGUID: 54735e5a6ecfe0f4f8a088d0ed1c0234
     m_SubObjectName: 
-  _crop: 0
-  _square: 0
+  _crop: 1
+  _heightLimitedByWidth: 0
   _camera: {fileID: 870877641}
   _resWidth: 512
   _resHeight: 375
@@ -1257,19 +1257,24 @@ PrefabInstance:
       objectReference: {fileID: 106529235}
     - target: {fileID: 6595894874887153957, guid: 2866778916b6ff54a863e9c85e73ce85,
         type: 3}
-      propertyPath: _itemDrop
-      value: 
-      objectReference: {fileID: 1329045292}
-    - target: {fileID: 6595894874887153957, guid: 2866778916b6ff54a863e9c85e73ce85,
-        type: 3}
       propertyPath: _cursorStore
       value: 
       objectReference: {fileID: 591343173}
     - target: {fileID: 6595894874887153957, guid: 2866778916b6ff54a863e9c85e73ce85,
         type: 3}
+      propertyPath: _itemDrop
+      value: 
+      objectReference: {fileID: 1329045292}
+    - target: {fileID: 6595894874887153957, guid: 2866778916b6ff54a863e9c85e73ce85,
+        type: 3}
       propertyPath: _inputCatcher
       value: 
       objectReference: {fileID: 140253005}
+    - target: {fileID: 6595894874887153957, guid: 2866778916b6ff54a863e9c85e73ce85,
+        type: 3}
+      propertyPath: _itemRoot
+      value: 
+      objectReference: {fileID: 1286567769}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2866778916b6ff54a863e9c85e73ce85, type: 3}
 --- !u!1001 &8503495098352223310

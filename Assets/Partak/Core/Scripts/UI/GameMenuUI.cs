@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using GeoTetra.GTBackend;
 using GeoTetra.GTPooling;
 using GeoTetra.GTUI;
 using UnityEngine;
@@ -10,22 +11,44 @@ namespace GeoTetra.Partak.UI
 {
     public class GameMenuUI : StackUI
     {
-        [SerializeField] private ComponentContainerReference _componentContainer;
-        [SerializeField] private SceneLoadSystemReference _sceneLoadSystem;
-        [SerializeField] private AnalyticsRelayReference _analyticsRelay;
-        [SerializeField] private GameStateReference _gameState;
+        [SerializeField] 
+        [AssetReferenceComponentRestriction(typeof(ComponentContainer))]
+        private ComponentContainerReference _componentContainer;
+        
+        [SerializeField] 
+        [AssetReferenceComponentRestriction(typeof(SceneLoadSystem))]
+        private SceneLoadSystemReference _sceneLoadSystem;
+        
+        [SerializeField] 
+        [AssetReferenceComponentRestriction(typeof(AnalyticsRelay))]
+        private AnalyticsRelayReference _analyticsRelay;
+        
+        [SerializeField] 
+        [AssetReferenceComponentRestriction(typeof(GameState))]
+        private GameStateReference _gameState;
+        
+        [SerializeField] 
+        [AssetReferenceComponentRestriction(typeof(PartakDatabase))]
+        private PartakDatabaseReference _partakDatabase;
+        
         [SerializeField] private AssetReference _mainMenuScene;
         [SerializeField] private AssetReference _gameSessionScene;
         [SerializeField] private InputPadGroup _inputPadGroup;
         [SerializeField] private DisableIn _disableIn;
         [SerializeField] private Button[] _pauseButtons;
+        [SerializeField] private GameObject _winMenu;
         [SerializeField] private Button _mainMenuButton;
         [SerializeField] private Button _replayButton;
         [SerializeField] private Button _nextButton;
-        
+        [SerializeField] private GameObject _rateMenu;
+        [SerializeField] private Button _thumbsUp;
+        [SerializeField] private Button _thumbsDown;
+
         private string[] _pauseMessages;
         private Action[] _pauseActions;
 
+        private LevelConfig _levelConfig;
+        
         protected override void Awake()
         {
             base.Awake();
@@ -35,13 +58,34 @@ namespace GeoTetra.Partak.UI
             _pauseMessages = new[] {"Main Menu", "Skip Level", "Resume"};
             _pauseActions = new Action[] {MainMenu, Skip, Resume};
             
-            _mainMenuButton.gameObject.SetActive(false);
-            _replayButton.gameObject.SetActive(false);
-            _nextButton.gameObject.SetActive(false);
+            _winMenu.gameObject.SetActive(false);
+            _rateMenu.gameObject.SetActive(false);
+            // _mainMenuButton.gameObject.SetActive(false);
+            // _replayButton.gameObject.SetActive(false);
+            // _nextButton.gameObject.SetActive(false);
             
             _mainMenuButton.onClick.AddListener(MainMenu);
             _replayButton.onClick.AddListener(Replay);
             _nextButton.onClick.AddListener(Next);
+            
+            _thumbsUp.onClick.AddListener(ThumbsUp);
+            _thumbsDown.onClick.AddListener(ThumbsDown);
+        }
+
+        private void Start()
+        {
+
+        }
+
+        public override void OnTransitionInStart(UIRenderer uiRenderer)
+        {
+            base.OnTransitionInStart(uiRenderer);
+            _levelConfig = _componentContainer.Service.Get<LevelConfig>();
+            _inputPadGroup.Initialize();
+            _componentContainer.Service.Get<CellParticleStore>().WinEvent += ShowWinMenu;
+            StartCoroutine(InitializeDelay());
+            _winMenu.gameObject.SetActive(false);
+            _rateMenu.gameObject.SetActive(false);
         }
         
         public override void OnTransitionOutStart()
@@ -51,17 +95,6 @@ namespace GeoTetra.Partak.UI
             _inputPadGroup.Deinitialize();
         }
 
-        public override void OnTransitionInStart(UIRenderer uiRenderer)
-        {
-            base.OnTransitionInStart(uiRenderer);
-            _inputPadGroup.Initialize();
-            _componentContainer.Service.Get<CellParticleStore>().WinEvent += ShowWinMenu;
-            StartCoroutine(InitializeDelay());
-            _mainMenuButton.gameObject.SetActive(false);
-            _replayButton.gameObject.SetActive(false);
-            _nextButton.gameObject.SetActive(false);
-        }
-
         private IEnumerator InitializeDelay()
         {
             yield return null;
@@ -69,6 +102,22 @@ namespace GeoTetra.Partak.UI
             _disableIn.Initialize();
         }
 
+        private void ThumbsUp()
+        {
+            _partakDatabase.Service.IncrementThumbsUp(_levelConfig.Datum.LevelID, true);
+            _levelConfig.Datum.Rated = true;
+            _levelConfig.Serialize(_levelConfig.Datum.LevelID, false);
+            _rateMenu.gameObject.SetActive(false);
+        }
+
+        private void ThumbsDown()
+        {
+            _partakDatabase.Service.IncrementThumbsDown(_levelConfig.Datum.LevelID, true);
+            _levelConfig.Datum.Rated = true;
+            _levelConfig.Serialize(_levelConfig.Datum.LevelID, false);
+            _rateMenu.gameObject.SetActive(false);
+        }
+        
         private void ShowPauseMenu()
         {
             CurrentlyRenderedBy.DisplaySelectionModal("", _pauseMessages, _pauseActions, 0);
@@ -77,9 +126,11 @@ namespace GeoTetra.Partak.UI
 
         private void ShowWinMenu()
         {
-            _mainMenuButton.gameObject.SetActive(true);
-            _replayButton.gameObject.SetActive(true);
-            _nextButton.gameObject.SetActive(true);
+            _winMenu.gameObject.SetActive(true);
+            if (!_levelConfig.Datum.Rated)
+            {
+                _rateMenu.gameObject.SetActive(true);
+            }
         }
 
         private void Resume()
