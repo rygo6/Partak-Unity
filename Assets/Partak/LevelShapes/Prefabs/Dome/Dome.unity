@@ -360,10 +360,5 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dome
       objectReference: {fileID: 0}
-    - target: {fileID: 3198488757102489218, guid: f162b91744745e14a955d76ed8e8a323,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.3
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f162b91744745e14a955d76ed8e8a323, type: 3}

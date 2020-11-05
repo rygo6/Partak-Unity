@@ -71,8 +71,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - ItemReference
-    m_MainAsset: {fileID: 11400000, guid: 05529f91b25ac124da777cd1c19a73cc, type: 2}
-    m_TargetAsset: {fileID: 11400000, guid: 05529f91b25ac124da777cd1c19a73cc, type: 2}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: f8380354a3238734b960cad7adfe11b6
     m_Address: LongBarReference
     m_ReadOnly: 0
@@ -85,22 +85,50 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - ItemReference
-    m_MainAsset: {fileID: 11400000, guid: 6430a0409118706438158da405106562, type: 2}
-    m_TargetAsset: {fileID: 11400000, guid: 6430a0409118706438158da405106562, type: 2}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 611d88f9119354647b1afa6206f7e2a1
     m_Address: MidbarReference
     m_ReadOnly: 0
     m_SerializedLabels:
     - ItemReference
-    m_MainAsset: {fileID: 11400000, guid: 611d88f9119354647b1afa6206f7e2a1, type: 2}
-    m_TargetAsset: {fileID: 11400000, guid: 611d88f9119354647b1afa6206f7e2a1, type: 2}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 0c5ecad3547e26149a66f5aa41510208
     m_Address: PyrrayReference
     m_ReadOnly: 0
     m_SerializedLabels:
     - ItemReference
-    m_MainAsset: {fileID: 11400000, guid: 0c5ecad3547e26149a66f5aa41510208, type: 2}
-    m_TargetAsset: {fileID: 11400000, guid: 0c5ecad3547e26149a66f5aa41510208, type: 2}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: c79dc8be6e084b844a1fce4c6e0b3be4
+    m_Address: SmallDomeReference
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ItemReference
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: d5f2491c37acd1849b80de8f7167d6a9
+    m_Address: SquashTriReference
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ItemReference
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 77d4533189e35d844b30a6f35413d178
+    m_Address: TriChunkiReference
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ItemReference
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: fc9badd7b33da4d46bf2379ee11ed185
+    m_Address: WedgeReference
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ItemReference
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8897a9da1308dad4cb94657883af64f0, type: 2}
   m_SchemaSet:

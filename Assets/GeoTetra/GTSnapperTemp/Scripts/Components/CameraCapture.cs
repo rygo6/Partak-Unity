@@ -10,7 +10,12 @@ namespace GeoTetra.GTSnapper
 {
 	public class CameraCapture : SubscribableBehaviour
 	{
-		[SerializeField] private ServiceReference _componentContainer;
+		[SerializeField] 
+		[AssetReferenceComponentRestriction(typeof(ComponentContainer))]
+		private ServiceReference _componentContainer;
+		
+		[SerializeField] private bool _crop;
+		[SerializeField] private bool _square;
 		[SerializeField] private Camera _camera;
 		[SerializeField] private int _resWidth = 256;
 		[SerializeField] private int _resHeight = 256;
@@ -77,12 +82,19 @@ namespace GeoTetra.GTSnapper
 				}
 			}
 
-			if (right - left <= top - bottom)
+			if (_square)
 			{
-				return new Rect(left, bottom, right - left, top - bottom);			
-			}
+				if (right - left <= top - bottom)
+				{
+					return new Rect(left, bottom, right - left, top - bottom);
+				}
 
-			return new Rect(left, left, right - left, right - left);
+				return new Rect(left, left, right - left, right - left);
+			}
+			else
+			{
+				return new Rect(left, bottom, right - left, top - bottom);
+			}
 		}
 
 		public void SaveScreenshotToFile(string fileName)
@@ -102,14 +114,22 @@ namespace GeoTetra.GTSnapper
 			texture.ReadPixels(new Rect(0, 0, _resWidth, _resHeight), 0, 0);
 
 			_camera.targetTexture = null;
-			RenderTexture.active = null; 
-			
-			Rect cropRect = CropRect(texture);
-			Texture2D cropTexture = new Texture2D((int)cropRect.width, (int)cropRect.height, TextureFormat.ARGB32, false);
-			Color[] cropPixels = texture.GetPixels((int)cropRect.x, (int)cropRect.y, (int)cropRect.width, (int)cropRect.height);
-			cropTexture.SetPixels(cropPixels);	
+			RenderTexture.active = null;
 
-			byte[] bytes = cropTexture.EncodeToPNG();
+			byte[] bytes = null;
+			if (_crop)
+			{
+				Rect cropRect = CropRect(texture);
+				Texture2D cropTexture = new Texture2D((int)cropRect.width, (int)cropRect.height, TextureFormat.ARGB32, false);
+				Color[] cropPixels = texture.GetPixels((int)cropRect.x, (int)cropRect.y, (int)cropRect.width, (int)cropRect.height);
+				cropTexture.SetPixels(cropPixels);
+				bytes = cropTexture.EncodeToPNG();
+			}
+			else
+			{
+				bytes = texture.EncodeToPNG();
+			}
+
 			if (System.IO.File.Exists(fileName))System.IO.File.Delete(fileName);
 			System.IO.File.WriteAllBytes(fileName, bytes);
 		}

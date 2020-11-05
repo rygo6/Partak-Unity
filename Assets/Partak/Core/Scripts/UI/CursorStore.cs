@@ -7,8 +7,14 @@ namespace GeoTetra.Partak
 {
     public class CursorStore : SubscribableBehaviour
     {
-        [SerializeField] private ComponentContainerReference _componentContainer;
-        [SerializeField] private GameStateReference _gameState;
+        [SerializeField] 
+        [AssetReferenceComponentRestriction(typeof(ComponentContainer))]
+        private ComponentContainerReference _componentContainer;
+        
+        [SerializeField] 
+        [AssetReferenceComponentRestriction(typeof(GameState))]
+        private GameStateReference _gameState;
+        
         [SerializeField] private LevelConfig _levelConfig;
         [SerializeField] private Transform[] _cursorTranforms;
         [SerializeField] private float _offset = .8f;
@@ -28,6 +34,7 @@ namespace GeoTetra.Partak
             {
                 _skinnedMeshRenderers[i] = _cursorTranforms[i].GetComponent<SkinnedMeshRenderer>();
                 CursorPositions[i] = _cursorTranforms[i].position;
+                _skinnedMeshRenderers[i].materials[1].color = _gameState.Service.PlayerStates[i].PlayerColor;
             }
             
             _levelConfig.SizeChanged += LevelConfigOnLevelDeserialized;
