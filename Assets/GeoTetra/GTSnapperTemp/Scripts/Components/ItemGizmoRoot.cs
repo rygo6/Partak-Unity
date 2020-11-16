@@ -8,6 +8,7 @@ namespace GeoTetra.GTSnapper
     public class ItemGizmoRoot : MonoBehaviour
     {
         [SerializeField] private Color _highlightColor = Color.yellow;
+        [SerializeField] private List<ItemMoveGizmo> _itemMoveGizmos;
         [SerializeField] private List<ItemScaleGizmo> _itemScaleGizmos;
         [SerializeField] private List<ItemRotateGizmo> _itemRotateGizmos;
 
@@ -17,6 +18,10 @@ namespace GeoTetra.GTSnapper
 
         private void Awake()
         {
+            for (int i = 0; i < _itemMoveGizmos.Count; ++i)
+            {
+                _itemMoveGizmos[i].Initialize(this);
+            }
             for (int i = 0; i < _itemScaleGizmos.Count; ++i)
             {
                 _itemScaleGizmos[i].Initialize(this);
@@ -49,6 +54,11 @@ namespace GeoTetra.GTSnapper
         {
             TargetedItem = null;
             gameObject.SetActive(false);
+        }
+        
+        public void Translate(float deltaX, float deltaY, float deltaZ)
+        {
+            TargetedItem.Drag.TargetTransform.Translate(deltaX, deltaY, deltaZ, Space.World);
         }
 
         public void Rotate(float deltaX, float deltaY, float deltaZ)
