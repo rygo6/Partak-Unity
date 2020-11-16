@@ -1,6 +1,7 @@
 ﻿//#define DEBUG_GRADIENT
 
 using System;
+using System.Threading.Tasks;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using GT.Threading;
@@ -15,7 +16,7 @@ namespace GeoTetra.Partak
     /// </summary>
     public class CellGradient : MonoBehaviour
     {
-        [SerializeField] private GameStateReference _gameStateReference;
+        [SerializeField] private GameStateRef _gameState;
         [SerializeField] private CellParticleStore _cellParticleStore;
         [SerializeField] private CursorStore _cursorStore;
         [SerializeField] private CellHiearchy _cellHiearchy;
@@ -45,12 +46,6 @@ namespace GeoTetra.Partak
         private LoopThread _loopThread;
         private bool _reverseMovement;
         private GameState.PlayerState[] _playerStates;
-        private GameState _gameState;
-
-        private void Awake()
-        {
-            _gameState = _gameStateReference.Service;
-        }
 
         private int CurrentStepDirectionIndex
         {
@@ -66,17 +61,21 @@ namespace GeoTetra.Partak
 
         public LoopThread Thread => _loopThread;
 
-        public void Initialize(bool startThread)
+        public async Task Initialize(bool startThread)
         {
-            Initialize(startThread, _gameState.PlayerStates);
+            await _gameState.Cache();
+            await Initialize(startThread, _gameState.Service.PlayerStates);
         }
 
-        public void Initialize(bool startThread, GameState.PlayerState[] playerStates)
+        public async Task Initialize(bool startThread, GameState.PlayerState[] playerStates)
         {
+            await _gameState.Cache();
+            
             _playerStates = playerStates;
             PriorStartCell = new CellGroup[_playerStates.Length];
             _cellGroupStepArray = new CellGroup[_cellHiearchy.ParticleCellGrid.Grid.Length * 2];
             _cellParticleStore.WinEvent += () => { _reverseMovement = true; };
+
             if (startThread) StartThread();
         }
 
@@ -95,7 +94,7 @@ namespace GeoTetra.Partak
 
         private void CalculateGradient()
         {
-            for (int playerIndex = 0; playerIndex < _gameState.PlayerCount(); playerIndex++)
+            for (int playerIndex = 0; playerIndex < _gameState.Service.PlayerCount(); playerIndex++)
             {
                 if (_playerStates[playerIndex].PlayerMode != PlayerMode.None)
                 {

@@ -1,4 +1,5 @@
-﻿using GeoTetra.GTCommon.Components;
+﻿using System.Threading.Tasks;
+using GeoTetra.GTCommon.Components;
 using GeoTetra.GTPooling;
 using GT.Threading;
 using UnityEngine;
@@ -29,7 +30,7 @@ namespace GeoTetra.Partak
             _componentContainer.Service.RegisterComponent(this);
         }
 
-        public void Initialize(bool startThread)
+        public async Task Initialize(bool startThread)
         {
             _randomRotate = new int[128];
             for (int i = 0; i < _randomRotate.Length; ++i)

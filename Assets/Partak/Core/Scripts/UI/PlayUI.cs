@@ -17,29 +17,29 @@ namespace GeoTetra.Partak
         private SceneLoadSystemReference _loadSystem;
         
         [SerializeField]
-        [AssetReferenceComponentRestriction(typeof(GameState))]
-        private GameStateReference _gameState;
+        private GameStateRef _gameStateRef;
         
         [SerializeField] private AssetReference _gameSessionScene;
         [SerializeField] private AssetReference _mainMenuScene;
         [SerializeField] private Button _startButton;
 
-        protected override void Awake()
+        protected override async void Awake()
         {
             base.Awake();
+            await _gameStateRef.Cache();
             _startButton.onClick.AddListener(OnStartClick);
         }
 
         private void OnStartClick()
         {
             int activeCount = 0;
-            for (int i = 0; i < _gameState.Service.PlayerCount(); ++i)
+            for (int i = 0; i < _gameStateRef.Service.PlayerCount(); ++i)
             {
-                if (_gameState.Service.PlayerStates[i].PlayerMode != PlayerMode.None)
+                if (_gameStateRef.Service.PlayerStates[i].PlayerMode != PlayerMode.None)
                     activeCount++;
             }
 
-            string levelId = _gameState.Service.GetSelectedLevelId();
+            string levelId = _gameStateRef.Service.GetSelectedLevelId();
 
             if (activeCount < 2)
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Threading.Tasks;
 using GeoTetra.GTCommon.Components;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
@@ -9,7 +10,7 @@ namespace GeoTetra.Partak
 {
     public class CellParticleSpawn : SubscribableBehaviour
     {
-        [SerializeField] private GameStateReference _gameState;
+        [SerializeField] private GameStateRef _gameState;
         [SerializeField] private CellHiearchy _cellHiearchy;
         [SerializeField] private CellParticleEngine _cellParticleMover;
         [SerializeField] private CellParticleStore _cellParticleStore;
@@ -18,12 +19,15 @@ namespace GeoTetra.Partak
 
         public bool SpawnSuccessful { get; private set; }
 
-        public IEnumerator Initialize()
+        public async Task Initialize()
         {
-            yield return StartCoroutine(Initialize(_levelConfig.Datum.ParticleCount, _gameState.Service.PlayerStates));
+            await _gameState.Cache();
+            TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+            StartCoroutine(Initialize(_levelConfig.Datum.ParticleCount, _gameState.Service.PlayerStates, tcs));
+            await tcs.Task;
         }
 
-        public IEnumerator Initialize(int particleCount, GameState.PlayerState[] PlayerStates)
+        public IEnumerator Initialize(int particleCount, GameState.PlayerState[] PlayerStates, TaskCompletionSource<bool> tcs = null)
         {
             SpawnSuccessful = true;
             
@@ -71,6 +75,8 @@ namespace GeoTetra.Partak
                     yield return spawnYield[i];
                 }
             }
+            
+            tcs?.SetResult(true);
         }
 
         private IEnumerator SpawnPlayerParticles(ParticleCell startParticleCell, int playerIndex, int startIndex, int spawnCount)

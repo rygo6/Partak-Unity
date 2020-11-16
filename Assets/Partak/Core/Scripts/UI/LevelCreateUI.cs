@@ -13,7 +13,7 @@ namespace GeoTetra.Partak
     public class LevelCreateUI : StackUI
     {
         [SerializeField] private AnalyticsRelayReference _analyticsRelay;
-        [SerializeField] private GameStateReference _gameState;
+        [SerializeField] private GameStateRef _gameState;
         [SerializeField] private SceneLoadSystemReference _sceneLoadSystem;
         [SerializeField] private ComponentContainerReference _componentContainer;
         [SerializeField] private PartakDatabaseReference _database;
@@ -58,6 +58,11 @@ namespace GeoTetra.Partak
             _saveButton.onClick.AddListener(OnClickSave);
             _cancelButton.onClick.AddListener(OnCloseClick);
             _validateButton.onClick.AddListener(OnValidateClick);
+        }
+
+        private async void Start()
+        {
+            await _gameState.Cache();
         }
 
         public override void OnTransitionInFinish()

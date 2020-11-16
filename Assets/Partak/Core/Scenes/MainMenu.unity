@@ -291,7 +291,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameState:
-    m_AssetGUID: 6d44730f364928b48b8810b26eaf3e43
+    m_AssetGUID: 
     m_SubObjectName: 
   _applyMaterial: {fileID: 2100000, guid: 784e093befc1a4b479ba35af5ca7655a, type: 2}
 --- !u!1 &171365007
@@ -1017,7 +1017,7 @@ MonoBehaviour:
     m_AssetGUID: 54735e5a6ecfe0f4f8a088d0ed1c0234
     m_SubObjectName: 
   _gameState:
-    m_AssetGUID: 6d44730f364928b48b8810b26eaf3e43
+    m_AssetGUID: 
     m_SubObjectName: 
   _fps: 60
   _deserializeLevelOnStart: 0

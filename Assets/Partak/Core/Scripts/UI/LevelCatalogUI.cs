@@ -24,7 +24,7 @@ namespace GeoTetra.Partak
     public class LevelCatalogUI : StackUI
     {
         [SerializeField] private AnalyticsRelayReference _analyticsRelay;
-        [SerializeField] private GameStateReference _gameState;
+        [SerializeField] private GameStateRef _gameState;
         [SerializeField] private SceneLoadSystemReference _sceneLoadSystem;
         [SerializeField] private AssetReference _newLevelScene;
         [SerializeField] private AssetReference _mainMenuScene;
@@ -51,6 +51,11 @@ namespace GeoTetra.Partak
             
             _emptyLevelClickMessages = new[] {"Download Level", "Create Level", "Cancel"};
             _emptyLevelClickActions = new Action[] {DownloadExistingLevel, CreateNewLevel, Cancel};
+        }
+
+        private async void Start()
+        {
+            await _gameState.Cache();
         }
 
         public override void OnTransitionInStart(UIRenderer uiRenderer)

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Amazon.Auth.AccessControlPolicy.ActionIdentifiers;
 using GeoTetra.GTPooling;
 using UnityEngine;
@@ -10,7 +12,7 @@ namespace GeoTetra.Partak
     /// </summary>
     public class CellHiearchy : MonoBehaviour
     {
-        [SerializeField] private GameStateReference _gameState;
+        [SerializeField] private GameStateRef _gameState;
         [SerializeField] private LevelConfig _levelConfig;
 
         public int ParentCellGridLevel { get; private set; }
@@ -18,9 +20,10 @@ namespace GeoTetra.Partak
         public CellGroupGrid[] CellGroupGrids { get; private set; }
         public CellGroup[] CombinedFlatCellGroups { get; private set; }
 
-        public void Initialize()
+        public async Task Initialize()
         {
             Debug.Log("Initialize Cell Hierarchy");
+            await _gameState.Cache();
             
             int x = _levelConfig.Datum.LevelSize.x;
             int y = _levelConfig.Datum.LevelSize.y;

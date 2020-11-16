@@ -10,8 +10,7 @@ namespace GeoTetra.Partak
  {
 	 public class PurchaseModalUI : ModalUI
     {
-	    [SerializeField] private GameStateReference _gameState;
- 		[SerializeField] private Button _purchaseButton;
+	    [SerializeField] private Button _purchaseButton;
         [SerializeField] private IAPButton _iapButton;
 
         private Action _action;

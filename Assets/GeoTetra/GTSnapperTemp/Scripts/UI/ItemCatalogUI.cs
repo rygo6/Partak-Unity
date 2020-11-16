@@ -14,7 +14,6 @@ namespace GeoTetra.GTSnapper
     public class ItemCatalogUI : MonoBehaviour
     {
         [SerializeField] private Canvas _canvas;
-        [SerializeField] private GameStateReference _gameState;
         [SerializeField] private ComponentContainerReference _componentContainer;
         [SerializeField] private ScrollRect _scrollRect;
         [SerializeField] private ScrollItem _scrollItemPrefab;

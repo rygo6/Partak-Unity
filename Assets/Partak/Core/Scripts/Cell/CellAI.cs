@@ -1,4 +1,5 @@
-﻿using GeoTetra.GTPooling;
+﻿using System.Threading.Tasks;
+using GeoTetra.GTPooling;
 using GT.Threading;
 using UnityEngine;
 using Random = System.Random;
@@ -7,7 +8,7 @@ namespace GeoTetra.Partak
 {
     public class CellAI : MonoBehaviour
     {
-        [SerializeField] private GameStateReference _gameState;
+        [SerializeField] private GameStateRef _gameState;
         [SerializeField] private CursorStore _cursorStore;
         [SerializeField] private CellParticleStore _cellParticleStore;
         [SerializeField] private CellParticleSpawn _cellParticleSpawn;
@@ -28,8 +29,10 @@ namespace GeoTetra.Partak
         /// <summary>
         /// Start after particles spawn
         /// </summary>
-        public void Initialize()
+        public async Task Initialize()
         {
+            await _gameState.Cache();
+            
             _aiCellParticleIndex = new int[_gameState.Service.PlayerCount()];
             _aiCursorTarget = new Vector3[_gameState.Service.PlayerCount()];
             _aiCursorVelocity = new Vector3[_gameState.Service.PlayerCount()];

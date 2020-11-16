@@ -1,23 +1,19 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using GeoTetra.GTPooling;
-using GeoTetra.Partak;
 using UnityEngine;
-using UnityEngine.Analytics;
 
 namespace GeoTetra.Partak
 {
     [Serializable]
-    public class GameStateReference : ServiceReferenceT<GameState>
+    public class GameStateRef : ServiceObjectReferenceT<GameState>
     {
-        public GameStateReference(string guid) : base(guid)
+        public GameStateRef(string guid) : base(guid)
         { }
     }
     
-    public class GameState : ServiceBehaviour
+    [CreateAssetMenu(menuName = "GeoTetra/Partak/Services/GameState")]
+    public class GameState : ServiceObject
     {
         [SerializeField] private string _version = "2.0.5";
         [SerializeField] private PlayerState[] _playerStates;
@@ -99,8 +95,8 @@ namespace GeoTetra.Partak
                 set => _playerMode = value;
             }
         }
-
-        private void Awake()
+        
+        protected override async Task OnServiceAwake()
         {
             _levelIndex = PlayerPrefs.GetInt("LevelIndex", 0);
 
@@ -122,9 +118,13 @@ namespace GeoTetra.Partak
             _levelCatalogDatum = LevelCatalogDatum.LoadLevelCatalogDatum();
 
             SetColors(PlayerPrefs.GetFloat(ColorScrollKey, -.125f));
-            
-            OnLoadComplete();
         }
+
+        protected override void OnServiceEnd()
+        {
+
+        }
+        
 
         public void EnableFullVersion()
         {
@@ -179,17 +179,6 @@ namespace GeoTetra.Partak
         {
             return PlayerStates[playerIndex].PlayerMode != PlayerMode.None;
         }
-        
-//        public bool[] ActivePlayers()
-//        {
-//            bool[] activePlayers = new bool[PlayerStates.Length];
-//            for (int i = 0; i < PlayerStates.Length; ++i)
-//            {
-//                activePlayers
-//            }
-//
-//            return count;
-//        }
 
         public int ActivePlayerCount()
         {

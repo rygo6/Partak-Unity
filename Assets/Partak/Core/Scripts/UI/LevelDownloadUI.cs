@@ -22,9 +22,8 @@ namespace GeoTetra.Partak
         [AssetReferenceComponentRestriction(typeof(PartakDatabase))]
         private PartakDatabaseReference _partakDatabase;
         
-        [SerializeField] 
-        [AssetReferenceComponentRestriction(typeof(GameState))]
-        private GameStateReference _gameState;
+        [SerializeField]
+        private GameStateRef _gameState;
         
         [SerializeField] 
         [AssetReferenceComponentRestriction(typeof(AdvertisementDispatch))]
@@ -58,6 +57,11 @@ namespace GeoTetra.Partak
             
             _fullVersionDialogLabels = new[] {"Disable All Ads", "Download Level and Watch Ad", "Cancel"};
             _fullVersionDialogActions = new Action[] {PurchaseFullVersion, PlayAd, Cancel};
+        }
+        
+        private async void Start()
+        {
+            await _gameState.Cache();
         }
 
         public override void OnTransitionInFinish()

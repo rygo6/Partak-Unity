@@ -152,7 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isGlobalPool: 1
   _prePoolReferences:
-  - m_AssetGUID: 6d44730f364928b48b8810b26eaf3e43
+  - m_AssetGUID: 8188afb85fdf8d54cae8e7d69d367d5e
     m_SubObjectName: 
   - m_AssetGUID: ee4750cb362a0e84ca03a025a3bb2107
     m_SubObjectName: 
@@ -163,8 +163,6 @@ MonoBehaviour:
   - m_AssetGUID: 54735e5a6ecfe0f4f8a088d0ed1c0234
     m_SubObjectName: 
   - m_AssetGUID: 00b19c5ddf295004aafaf7a05cc500a4
-    m_SubObjectName: 
-  - m_AssetGUID: 8188afb85fdf8d54cae8e7d69d367d5e
     m_SubObjectName: 
   _prePoolingComplete:
     m_PersistentCalls:

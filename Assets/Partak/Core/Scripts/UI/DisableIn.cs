@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Disables specified RectTransforms if they are inside this RectTransform.
+/// </summary>
 public class DisableIn : MonoBehaviour 
 {
 	[SerializeField]

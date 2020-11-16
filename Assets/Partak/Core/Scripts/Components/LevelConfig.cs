@@ -12,9 +12,8 @@ namespace GeoTetra.Partak
         [AssetReferenceComponentRestriction(typeof(ComponentContainer))]
         private ComponentContainerReference _componentContainer;
         
-        [SerializeField] 
-        [AssetReferenceComponentRestriction(typeof(GameState))]
-        private GameStateReference _gameState;
+        [SerializeField]
+        private GameStateRef _gameState;
         
         [SerializeField] private int _fps = 60;
         [SerializeField] private bool _deserializeLevelOnStart;
@@ -67,8 +66,10 @@ namespace GeoTetra.Partak
             }
         }
 
-        private void Start()
+        private async void Start()
         {
+            await _gameState.Cache();
+            
             if (_deserializeLevelOnStart)
             {
                 string levelId = _gameState.Service.GetSelectedLevelId();
