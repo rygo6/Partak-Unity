@@ -1,3 +1,35 @@
+## [2.2.0] - 2020-11-06
+
+### Changed
+- GooglePlay - Upgrades to Google Play Billing Library v3.0.1. This replaces the Google Play AIDL implementation.
+   - The transaction identifier is always purchaseToken. This replaces the v2.1.0 orderId behavior. See `IGooglePlayConfiguration` changes below.
+   - Adds new and deprecates `IGooglePlayStoreExtensions` APIs
+      - Deprecated - disabled.
+         - `IGooglePlayStoreExtensions.IsOwned`
+         - `IGooglePlayStoreExtensions.SetLogLevel`
+         - `IGooglePlayStoreExtensions.GetProductJSONDictionary` - use the `ProductMetadata` of `product.metadata` from `IStoreController.products`
+      - Deprecated - will be removed in future release.
+         - `IGooglePlayStoreExtensions.FinishAdditionalTransaction`
+      - New variant (signature)
+         - `IGooglePlayStoreExtensions.UpgradeDowngradeSubscription(string oldSku, string newSku, int desiredProrationMode)` - allow refined proration mode for subscription upgrade or downgrade as described in the [Google ProrationMode documentation](https://developer.android.com/reference/com/android/billingclient/api/BillingFlowParams.ProrationMode)
+      - New methods
+         - `IGooglePlayStoreExtensions.ConfirmSubscriptionPriceChange(string productId, Action<bool> callback)` - prompt users to confirm a price change for their subscription
+         - `IGooglePlayStoreExtensions.SetDeferredPurchaseListener(Action<Product> action)` - listen for new pending out-of-app purchases, consider notifying users here
+         - `IGooglePlayStoreExtensions.SetObfuscatedAccountId(string accountId)` - to help Google detect and reduce irregular activities when making a purchase
+         - `IGooglePlayStoreExtensions.SetObfuscatedProfileId(string profileId)` - to help Google detect and reduce irregular activities when making a purchase
+   - deprecates `IGooglePlayConfiguration` APIs
+      - Deprecated - disabled.
+         - `IGooglePlayConfiguration.SetPublicKey`
+         - `IGooglePlayConfiguration.aggressivelyRecoverLostPurchases`
+         - `IGooglePlayConfiguration.UsePurchaseTokenForTransactionId`
+
+### Fixed
+- IAP Catalog - GooglePlay - pricing template when exporting to CSV, now sets autofill pricing to `false` instead of `true`
+- GooglePlay - Subscription receipts will update, e.g. after an upgrade or downgrade, whenever the player pauses or resumes their app. See this change reflected in the `product.receipt` of `IStoreController.products`.
+
+### Added 
+- Apple Macos - Support for building IL2CPP on MacOS
+
 ## [2.1.1] - 2020-10-23
 
 ### Fixed
