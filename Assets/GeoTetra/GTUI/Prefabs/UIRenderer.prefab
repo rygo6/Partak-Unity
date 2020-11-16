@@ -120,6 +120,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646619b52291baa4ea2addf83fa8f85c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameState2:
+    m_AssetGUID: 4a300dd4c83e8bf4c94c042245ae5911
+    m_SubObjectName: 
   _addressablesPool: {fileID: 6955619709994758185}
   _uiCamera: {fileID: 1089048853664099211}
   _transitionCurve:

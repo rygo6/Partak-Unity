@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Threading.Tasks;
 using GeoTetra.GTCommon.Components;
 using GeoTetra.GTPooling;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace GeoTetra.Partak
     public class CellParticleStore : SubscribableBehaviour
     {
         [SerializeField] private ComponentContainerReference _componentContainer;
-        [SerializeField] private GameStateReference _gameState;
+        [SerializeField] private GameStateRef _gameState;
         [SerializeField] private CursorStore _cursorStore;
         [SerializeField] private LevelConfig _levelConfig;
         public event Action WinEvent;
@@ -30,8 +31,10 @@ namespace GeoTetra.Partak
             _componentContainer.Service.RegisterComponent(this);
         }
 
-        public void Initialize()
+        public async Task Initialize()
         {
+           await _gameState.Cache();
+            
             PlayerLost = new bool[_gameState.Service.PlayerCount()];
             PlayerParticleCount = new int[_gameState.Service.PlayerCount()];
             CellParticleArray = new CellParticle[_levelConfig.Datum.ParticleCount];

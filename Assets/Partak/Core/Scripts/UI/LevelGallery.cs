@@ -9,20 +9,22 @@ namespace GeoTetra.Partak.UI
 {
     public class LevelGallery : MonoBehaviour
     {
-        [SerializeField] private GameStateReference _gameState;
+        [SerializeField] private GameStateRef _gameStateRef;
         [SerializeField] public Button _leftButton;
         [SerializeField] public Button _rightButton;
         [SerializeField] private float _transitionSpeed = 4f;
         
         private Material _material;
 
-        private void Start()
+        private async void Awake()
         {
+            await _gameStateRef.Cache();
+            
             _leftButton.onClick.AddListener(GalleryLeft);
             _rightButton.onClick.AddListener(GalleryRight);
             _material = GetComponent<RawImage>().material;
 
-            string levelId = _gameState.Service.GetSelectedLevelId();
+            string levelId = _gameStateRef.Service.GetSelectedLevelId();
             if (!string.IsNullOrEmpty(levelId))
             {
                 string imagePath = LevelUtility.LevelImagePath(levelId);
@@ -48,9 +50,9 @@ namespace GeoTetra.Partak.UI
         {
             _rightButton.interactable = false;
             _leftButton.interactable = false;
-            _gameState.Service.LevelIndex += direction;
+            _gameStateRef.Service.LevelIndex += direction;
 
-            string levelId = _gameState.Service.GetSelectedLevelId();
+            string levelId = _gameStateRef.Service.GetSelectedLevelId();
             if (string.IsNullOrEmpty(levelId)) yield break;
             string imagePath = LevelUtility.LevelImagePath(levelId);
             
@@ -58,7 +60,7 @@ namespace GeoTetra.Partak.UI
             Texture2D image = new Texture2D(0,0);
             image.LoadImage(imageBytes);
 
-            PlayerPrefs.SetInt("LevelIndex", _gameState.Service.LevelIndex);
+            PlayerPrefs.SetInt("LevelIndex", _gameStateRef.Service.LevelIndex);
             _material.SetTexture("_Texture2", image);
             yield return null;
             yield return null;
@@ -97,7 +99,7 @@ namespace GeoTetra.Partak.UI
 
         private int GetMaxLevelIndex()
         {
-            return _gameState.Service.LevelCatalogDatum.LevelIDs.Count;
+            return _gameStateRef.Service.LevelCatalogDatum.LevelIDs.Count;
         }
 
         private void OnDestroy()

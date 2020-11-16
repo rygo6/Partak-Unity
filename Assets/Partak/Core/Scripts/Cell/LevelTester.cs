@@ -15,9 +15,8 @@ namespace GeoTetra.Partak
         [AssetReferenceComponentRestriction(typeof(ComponentContainer))]
         private ComponentContainerReference _componentContainer;
         
-        [SerializeField] 
-        [AssetReferenceComponentRestriction(typeof(GameState))]
-        private GameStateReference _gameSate;
+        [SerializeField]
+        private GameStateRef _gameSate;
         
         [SerializeField] private LevelConfig _levelConfig;
         
@@ -48,6 +47,15 @@ namespace GeoTetra.Partak
         
         private void Awake()
         {
+            _componentContainer.Service.RegisterComponent(this);
+            _levelConfig.LevelDeserialized += Initialize;
+            _levelConfig.SizeChanged += Initialize;
+        }
+
+        private async void Initialize()
+        {
+            await _gameSate.Cache();
+            
             _playerStates = new GameState.PlayerState[TestPlayerCount];
             for (int i = 0; i < _playerStates.Length; ++i)
             {
@@ -57,18 +65,11 @@ namespace GeoTetra.Partak
                 };
             }
             
-            _componentContainer.Service.RegisterComponent(this);
-            _levelConfig.LevelDeserialized += Initialize;
-            _levelConfig.SizeChanged += Initialize;
-        }
-
-        private void Initialize()
-        {
-            _cellHiearchy.Initialize();
-            _cellGradient.Initialize(false, _playerStates);
-            _cellParticleDisplay.Initialize();
+            await _cellHiearchy.Initialize();
+            await _cellGradient.Initialize(false, _playerStates);
+            await _cellParticleDisplay.Initialize();
             _cellParticleDisplay.gameObject.SetActive(false);
-            _cellParticleEngine.Initialize(false);
+            await _cellParticleEngine.Initialize(false);
         }
 
         public IEnumerator RunTest()
@@ -81,7 +82,7 @@ namespace GeoTetra.Partak
             _itemRoot.UnHighlightAll();
             
             //reconstruct hiearchy
-            _cellHiearchy.Initialize();
+            yield return new WaitUntil(() => _cellHiearchy.Initialize().IsCompleted);
             if (AnyCursorPositionBlocked())
             {
                 _itemDrop.gameObject.SetActive(true);
@@ -91,7 +92,7 @@ namespace GeoTetra.Partak
             }
 
             _cellGradient.StartThread();
-            _cellParticleStore.Initialize();
+            yield return new WaitUntil(() => _cellParticleStore.Initialize().IsCompleted);
             yield return StartCoroutine(_cellParticleSpawn.Initialize(_levelConfig.Datum.ParticleCount, _playerStates));
             if (!_cellParticleSpawn.SpawnSuccessful)
             {
@@ -136,11 +137,11 @@ namespace GeoTetra.Partak
             return false;
         }
 
-        private void ClearTest()
+        private async void ClearTest()
         {
              _cellParticleEngine.Thread?.Stop();
             _cellGradient.Thread?.Stop();
-            _cellHiearchy.Initialize();
+            await _cellHiearchy.Initialize();
             _itemDrop.gameObject.SetActive(true);
             _inputCatcher.gameObject.SetActive(true);
             _cursorStore.SetCursorsToStartPosition();

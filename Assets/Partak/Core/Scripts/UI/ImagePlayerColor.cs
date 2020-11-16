@@ -1,30 +1,31 @@
-﻿using GeoTetra.GTPooling;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace GeoTetra.Partak
 {
     public class ImagePlayerColor : MonoBehaviour
     {
-        [SerializeField] private GameStateReference _gameState;
+        [SerializeField] private GameStateRef _gameStateRef;
         [SerializeField] private int _playerIndex;
         [SerializeField] private bool _constantUpdate;
 
         private Image _image;
 
-        private void Start()
+        private async void Start()
         {
+            await _gameStateRef.Cache();
+            
             _image = GetComponent<Image>();
-            _image.color = _image.color.SetRGB(_gameState.Service.PlayerStates[_playerIndex].PlayerColor);
+            _image.color = _image.color.SetRGB(_gameStateRef.Service.PlayerStates[_playerIndex].PlayerColor);
             if (_constantUpdate)
             {
-                _gameState.Service.PlayerStates[_playerIndex].ColorChanged += UpdateColor;
+                _gameStateRef.Service.PlayerStates[_playerIndex].ColorChanged += UpdateColor;
             }
         }
 
         private void OnDestroy()
         {
-            _gameState.Service.PlayerStates[_playerIndex].ColorChanged -= UpdateColor;
+            _gameStateRef.Service.PlayerStates[_playerIndex].ColorChanged -= UpdateColor;
         }
 
         private void UpdateColor(Color color)

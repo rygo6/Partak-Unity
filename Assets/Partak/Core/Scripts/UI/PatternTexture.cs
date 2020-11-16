@@ -8,7 +8,7 @@ namespace GeoTetra.Partak
 {
     public class PatternTexture : MonoBehaviour
     {
-        [SerializeField] private GameStateReference _gameState;
+        [SerializeField] private GameStateRef _gameState;
         [SerializeField] private Material _applyMaterial;
         private const int TextureSize = 256;
         private const int Divisions = 8;
@@ -17,10 +17,13 @@ namespace GeoTetra.Partak
         private Texture2D _texture2D;
         private Coroutine _updateCoroutine;
 
-        private void Start()
+        private async void Awake()
         {
             _texture2D = new Texture2D(TextureSize, TextureSize, TextureFormat.RGBA32, false, false);
             _applyMaterial.mainTexture = _texture2D;
+            
+            await _gameState.Cache();
+            
             foreach (GameState.PlayerState playerState in _gameState.Service.PlayerStates)
             {
                 playerState.ColorChanged += UpdateTexture;

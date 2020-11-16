@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading.Tasks;
 using GeoTetra.GTPooling;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -7,7 +8,7 @@ namespace GeoTetra.Partak
 {
     public class GameMusic : MonoBehaviour
     {
-        [SerializeField] private GameStateReference _gameState;
+        [SerializeField] private GameStateRef _gameState;
         [SerializeField] private AudioMixerGroup _audioMixerGroup;
         [SerializeField] private AudioSource _winAudioSource;
         [SerializeField] private LevelConfig _levelConfig;
@@ -18,8 +19,10 @@ namespace GeoTetra.Partak
         private int[] _playingClip;
         private bool _playMusic;
         
-        public void Initialize()
+        public async Task Initialize()
         {
+            await _gameState.Cache();
+            
             _music = new AudioClip[_gameState.Service.PlayerCount(), 3];
             _audioSource = new AudioSource[_gameState.Service.PlayerCount(), 3];
             _playingClip = new int[_gameState.Service.PlayerCount()];

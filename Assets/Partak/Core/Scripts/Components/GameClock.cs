@@ -8,19 +8,24 @@ namespace GeoTetra.Partak
     public class GameClock : MonoBehaviour
     {
         [SerializeField] private AnalyticsRelayReference _analyticsRelay;
-        [SerializeField] private GameStateReference _gameState;
+        [SerializeField] private GameStateRef _gameState;
         [SerializeField] private Material _surroundMaterial;
         [SerializeField] private CellParticleEngine _cellParticleMover;
         [SerializeField] private CellParticleStore _cellParticleStore;
 
+        private static readonly int BlendProperty = Shader.PropertyToID("_Blend");
+        private static readonly int Texture2Property = Shader.PropertyToID("_Texture2");
         private float _fastKillTimeLimit = 70f;
         private Color[] _initialColors;
         private bool _limitReached;
         private float _timeLimit = 80f;
+        
         public float GameTime { get; private set; }
 
-        private void Start()
+        private async void Start()
         {
+            await _gameState.Cache();
+            
             _initialColors = new Color[_gameState.Service.PlayerCount()];
             for (int i = 0; i < _initialColors.Length; ++i)
             {
@@ -29,8 +34,8 @@ namespace GeoTetra.Partak
             
             SetTimeLimit(_gameState.Service.TimeLimitMinutes);
             _cellParticleStore.WinEvent += Win;
-            Invoke("FastKillTimeOut", _fastKillTimeLimit);
-            Invoke("TimeOut", _timeLimit);
+            Invoke(nameof(FastKillTimeOut), _fastKillTimeLimit);
+            Invoke(nameof(TimeOut), _timeLimit);
         }
 
         private void Update()
@@ -41,10 +46,12 @@ namespace GeoTetra.Partak
         private void OnDestroy()
         {
             if (_cellParticleStore != null) _cellParticleStore.WinEvent -= Win;
-            _surroundMaterial.SetFloat("_Blend", 0f);
-            _surroundMaterial.SetTexture("_Texture2", null);
+            _surroundMaterial.SetFloat(BlendProperty, 0f);
+            _surroundMaterial.SetTexture(Texture2Property, null);
             for (int i = 0; i < _gameState.Service.PlayerCount(); ++i)
+            {
                 _gameState.Service.PlayerStates[i].PlayerColor = _initialColors[i];
+            }
         }
 
         public void SetTimeLimit(int minutes)
@@ -73,6 +80,7 @@ namespace GeoTetra.Partak
             StartCoroutine(FastKillTimeoutCoroutine());
         }
 
+        // After a certain amount of time, the winning player becomes stronger to kill faster.
         private IEnumerator FastKillTimeoutCoroutine()
         {
             int winningPlayer = 0;

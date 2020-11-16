@@ -6,13 +6,15 @@ namespace GeoTetra.Partak.UI
     public class InputPadGroup : MonoBehaviour
     {
         [SerializeField] private ComponentContainerReference _componentContainer;
-        [SerializeField] private GameStateReference _gameState;
+        [SerializeField] private GameStateRef _gameState;
         [SerializeField] private InputPad[] _inputPads;
         [SerializeField] private GameObject _horizontalTop;
         [SerializeField] private GameObject _horizontalBottom ;
         
-        public void Initialize()
+        public async void Initialize()
         {
+            await _gameState.Cache();
+            
             for (int i = 0; i < _inputPads.Length; ++i)
             {
                 _inputPads[i].Visibility(true);

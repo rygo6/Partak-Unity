@@ -23,9 +23,8 @@ namespace GeoTetra.Partak.UI
         [AssetReferenceComponentRestriction(typeof(AnalyticsRelay))]
         private AnalyticsRelayReference _analyticsRelay;
         
-        [SerializeField] 
-        [AssetReferenceComponentRestriction(typeof(GameState))]
-        private GameStateReference _gameState;
+        [SerializeField]
+        private GameStateRef _gameState;
         
         [SerializeField] 
         [AssetReferenceComponentRestriction(typeof(PartakDatabase))]
@@ -54,9 +53,6 @@ namespace GeoTetra.Partak.UI
             base.Awake();
             _pauseButtons[0].onClick.AddListener(ShowPauseMenu);
             _pauseButtons[1].onClick.AddListener(ShowPauseMenu);
-
-            _pauseMessages = new[] {"Main Menu", "Skip Level", "Resume"};
-            _pauseActions = new Action[] {MainMenu, Skip, Resume};
             
             _winMenu.gameObject.SetActive(false);
             _rateMenu.gameObject.SetActive(false);
@@ -72,9 +68,12 @@ namespace GeoTetra.Partak.UI
             _thumbsDown.onClick.AddListener(ThumbsDown);
         }
 
-        private void Start()
+        private async void Start()
         {
-
+            await _gameState.Cache();
+            
+            _pauseMessages = new[] {"Main Menu", "Skip Level", "Resume"};
+            _pauseActions = new Action[] {MainMenu, Skip, Resume};
         }
 
         public override void OnTransitionInStart(UIRenderer uiRenderer)

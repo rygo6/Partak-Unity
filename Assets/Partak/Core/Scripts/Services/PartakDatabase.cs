@@ -16,6 +16,7 @@ using Amazon.Util;
 using GeoTetra.GTPooling;
 using GeoTetra.Partak;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace GeoTetra.GTBackend
 {

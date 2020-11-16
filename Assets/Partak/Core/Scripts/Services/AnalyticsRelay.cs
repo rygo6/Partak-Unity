@@ -17,9 +17,8 @@ namespace GeoTetra.Partak
     
     public class AnalyticsRelay : ServiceBehaviour
     {
-        [SerializeField] 
-        [AssetReferenceComponentRestriction(typeof(GameState))]
-        private GameStateReference _gameState;
+        [SerializeField]
+        private GameStateRef _gameState;
 
         private void Awake()
         {
@@ -69,8 +68,10 @@ namespace GeoTetra.Partak
             });
         }
 
-        public void GamePlayerCount()
+        public async void GamePlayerCount()
         {
+            await _gameState.Cache();
+            
             Analytics.CustomEvent("GamePlayerCount", new Dictionary<string, object>
             {
                 {"PlayerCount", _gameState.Service.ActivePlayerCount()}

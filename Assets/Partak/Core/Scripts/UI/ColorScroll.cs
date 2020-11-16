@@ -8,7 +8,7 @@ namespace GeoTetra.Partak
 {
     public class ColorScroll : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
-        [SerializeField] private GameStateReference _gameState;
+        [SerializeField] private GameStateRef _gameStateRef;
 
         private RawImage _rawImage;
         private Texture2D _texture;
@@ -62,12 +62,13 @@ namespace GeoTetra.Partak
             Scroll(0.002f);
         }
 
-        private void Scroll(float amount)
+        private async void Scroll(float amount)
         {
             var newRect = _rawImage.uvRect;
             newRect.x += amount;
             _rawImage.uvRect = newRect;
-            _gameState.Service.SetColors(_rawImage.uvRect.x);
+            await _gameStateRef.Cache();
+            _gameStateRef.Service.SetColors(_rawImage.uvRect.x);
         }
     }
 }

@@ -1,16 +1,13 @@
-﻿using System.Collections;
-using GeoTetra.GTPooling;
-using GeoTetra.GTUI;
+﻿using GeoTetra.GTUI;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 
 namespace GeoTetra.Partak
 {
     public class MainUI : StackUI
     {
-        [SerializeField] private GameStateReference _gameState;
+        [SerializeField] private GameStateRef _gameState;
         [SerializeField] private Button _playButton;
         [SerializeField] private AssetReference _playUI;
         [SerializeField] private Button _levelButton;
@@ -18,9 +15,10 @@ namespace GeoTetra.Partak
         [SerializeField] private Button _optionButton;
         [SerializeField] private AssetReference _optionsUI;
 
-        protected override void Awake()
+        protected override async void Awake()
         {
-            base.Awake();
+            await _gameState.Cache();
+            
             _playButton.onClick.AddListener(() =>
             {
                 if (_gameState.Service.LevelCatalogDatum.LevelIDs.Count == 0)

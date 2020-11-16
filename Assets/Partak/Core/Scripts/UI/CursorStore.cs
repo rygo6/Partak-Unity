@@ -11,9 +11,8 @@ namespace GeoTetra.Partak
         [AssetReferenceComponentRestriction(typeof(ComponentContainer))]
         private ComponentContainerReference _componentContainer;
         
-        [SerializeField] 
-        [AssetReferenceComponentRestriction(typeof(GameState))]
-        private GameStateReference _gameState;
+        [SerializeField]
+        private GameStateRef _gameState;
         
         [SerializeField] private LevelConfig _levelConfig;
         [SerializeField] private Transform[] _cursorTranforms;
@@ -27,6 +26,11 @@ namespace GeoTetra.Partak
         private void Awake()
         {
             _componentContainer.Service.RegisterComponent(this);
+        }
+
+        private async void Start()
+        {
+            await _gameState.Cache();
             
             CursorPositions = new Vector3[_gameState.Service.PlayerCount()];
             _skinnedMeshRenderers = new SkinnedMeshRenderer[_cursorTranforms.Length];

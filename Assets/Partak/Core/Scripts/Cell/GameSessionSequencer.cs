@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using GeoTetra.Partak;
 using UnityEngine;
 
@@ -28,27 +29,26 @@ namespace GeoTetra.Partak
             _levelConfig.LevelDeserialized += () =>
             {
                 Debug.Log("Starting GameSessionSequencer");
-                StartCoroutine(Initialize());
+                Initialize();
             };
         }
 
-        public IEnumerator Initialize()
+        public async Task Initialize()
         {
-            yield return null;
-            _cellHiearchy.Initialize();
-            _cellGradient.Initialize(true);
-            _cellParticleDisplay.Initialize();
-            _cellParticleStore.Initialize();
-            yield return StartCoroutine(_cellParticleSpawn.Initialize());
-            _cellParticleEngine.Initialize(true);
-            _cellAI.Initialize();
-            _gameMusic.Initialize();
+            await _cellHiearchy.Initialize();
+            await _cellGradient.Initialize(true);
+            await _cellParticleDisplay.Initialize();
+            await _cellParticleStore.Initialize();
+            await _cellParticleSpawn.Initialize();
+            await _cellParticleEngine.Initialize(true);
+            await _cellAI.Initialize();
+            await _gameMusic.Initialize();
         }
 
         [ContextMenu("DebugInitialize")]
         public void DebugInitialize()
         {
-            StartCoroutine(Initialize());
+            // StartCoroutine(Initialize());
         }
     }
 }

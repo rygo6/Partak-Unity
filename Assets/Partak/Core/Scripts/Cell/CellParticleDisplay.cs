@@ -1,4 +1,5 @@
-﻿using GeoTetra.GTCommon.ScriptableObjects;
+﻿using System.Threading.Tasks;
+using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace GeoTetra.Partak
 {
     public class CellParticleDisplay : MonoBehaviour
     {
-        [SerializeField] private GameStateReference _gameState;
+        [SerializeField] private GameStateRef _gameState;
         [SerializeField] private CellHiearchy _cellHiearchy;
         [SerializeField] private CellParticleSystem _cellParticleSystemPrefab;
         [SerializeField] private LevelConfig _levelConfig;
@@ -16,8 +17,10 @@ namespace GeoTetra.Partak
 
         public bool Initialized { get; private set; }
 
-        public void Initialize()
+        public async Task Initialize()
         {
+            await _gameState.Cache();
+            
             int systemCount = _cellHiearchy.CellGroupGrids.Length;
 
             //you add additional positions onto the particle count as a buffer in case when it is reading in
