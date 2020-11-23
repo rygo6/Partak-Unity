@@ -10,7 +10,7 @@ namespace GeoTetra.Partak
     public class TimeSelect : MonoBehaviour, IPointerClickHandler
     {
         [SerializeField] 
-        private GameStateRef _gameStateRef;
+        private PartakStateRef _partakStateRef;
         
         [SerializeField] private Text _minutesText;
 
@@ -18,10 +18,10 @@ namespace GeoTetra.Partak
 
         private async void Awake()
         {
-            await _gameStateRef.Cache();
+            await _partakStateRef.Cache();
             _minutes = PlayerPrefs.GetInt("GameTime", 3);
             _minutesText.text = _minutes.ToString();
-            _gameStateRef.Service.TimeLimitMinutes = _minutes;
+            _partakStateRef.Service.TimeLimitMinutes = _minutes;
         }
 
         public void OnPointerClick(PointerEventData eventData)
@@ -39,7 +39,7 @@ namespace GeoTetra.Partak
                     break;
             }
 
-            _gameStateRef.Service.TimeLimitMinutes = _minutes;
+            _partakStateRef.Service.TimeLimitMinutes = _minutes;
             _minutesText.text = _minutes.ToString();
             PlayerPrefs.SetInt("GameTime", _minutes);
         }

@@ -16,7 +16,7 @@ namespace GeoTetra.Partak
     /// </summary>
     public class CellGradient : MonoBehaviour
     {
-        [SerializeField] private GameStateRef _gameState;
+        [SerializeField] private PartakStateRef _partakState;
         [SerializeField] private CellParticleStore _cellParticleStore;
         [SerializeField] private CursorStore _cursorStore;
         [SerializeField] private CellHiearchy _cellHiearchy;
@@ -45,7 +45,7 @@ namespace GeoTetra.Partak
         private int _lastAddedGroupStepArrayIndex;
         private LoopThread _loopThread;
         private bool _reverseMovement;
-        private GameState.PlayerState[] _playerStates;
+        private PartakState.PlayerState[] _playerStates;
 
         private int CurrentStepDirectionIndex
         {
@@ -63,13 +63,13 @@ namespace GeoTetra.Partak
 
         public async Task Initialize(bool startThread)
         {
-            await _gameState.Cache();
-            await Initialize(startThread, _gameState.Service.PlayerStates);
+            await _partakState.Cache();
+            await Initialize(startThread, _partakState.Service.PlayerStates);
         }
 
-        public async Task Initialize(bool startThread, GameState.PlayerState[] playerStates)
+        public async Task Initialize(bool startThread, PartakState.PlayerState[] playerStates)
         {
-            await _gameState.Cache();
+            await _partakState.Cache();
             
             _playerStates = playerStates;
             PriorStartCell = new CellGroup[_playerStates.Length];
@@ -94,7 +94,7 @@ namespace GeoTetra.Partak
 
         private void CalculateGradient()
         {
-            for (int playerIndex = 0; playerIndex < _gameState.Service.PlayerCount(); playerIndex++)
+            for (int playerIndex = 0; playerIndex < _partakState.Service.PlayerCount(); playerIndex++)
             {
                 if (_playerStates[playerIndex].PlayerMode != PlayerMode.None)
                 {

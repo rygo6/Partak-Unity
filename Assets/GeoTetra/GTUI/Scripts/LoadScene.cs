@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Amazon.Util;
 using GeoTetra.GTCommon.Attributes;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
@@ -12,10 +13,7 @@ namespace GeoTetra.GTUI
 {
     public class LoadScene : MonoBehaviour
     {
-        [SerializeField] 
-        [AssetReferenceComponentRestriction(typeof(SceneLoadSystem))]
-        private SceneLoadSystemReference _sceneLoadSystem;
-        
+        [SerializeField] private SceneTransitRef _sceneTransit;
         [SerializeField] private bool _onStart;
         [SerializeField] private AssetReference _sceneReference;
 
@@ -24,9 +22,10 @@ namespace GeoTetra.GTUI
             if (_onStart) Load();
         }
 
-        public void Load()
+        public async void Load()
         {
-            _sceneLoadSystem.Service.Load(null, _sceneReference);
+            await _sceneTransit.Cache();
+            _sceneTransit.Service.Load(null, _sceneReference);
         }
     }
 }

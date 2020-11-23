@@ -8,7 +8,7 @@ namespace GeoTetra.Partak
 {
     public class PatternTexture : MonoBehaviour
     {
-        [SerializeField] private GameStateRef _gameState;
+        [SerializeField] private PartakStateRef _partakState;
         [SerializeField] private Material _applyMaterial;
         private const int TextureSize = 256;
         private const int Divisions = 8;
@@ -22,9 +22,9 @@ namespace GeoTetra.Partak
             _texture2D = new Texture2D(TextureSize, TextureSize, TextureFormat.RGBA32, false, false);
             _applyMaterial.mainTexture = _texture2D;
             
-            await _gameState.Cache();
+            await _partakState.Cache();
             
-            foreach (GameState.PlayerState playerState in _gameState.Service.PlayerStates)
+            foreach (PartakState.PlayerState playerState in _partakState.Service.PlayerStates)
             {
                 playerState.ColorChanged += UpdateTexture;
             }
@@ -33,7 +33,7 @@ namespace GeoTetra.Partak
 
         private void OnDestroy()
         {
-            foreach (GameState.PlayerState playerState in _gameState.Service.PlayerStates)
+            foreach (PartakState.PlayerState playerState in _partakState.Service.PlayerStates)
             {
                 playerState.ColorChanged -= UpdateTexture;
             }
@@ -68,9 +68,9 @@ namespace GeoTetra.Partak
                     }
                     else
                     {
-                        SetPixelColors(_gameState.Service.PlayerStates[playerIndex].PlayerColor);
+                        SetPixelColors(_partakState.Service.PlayerStates[playerIndex].PlayerColor);
                         playerIndex++;
-                        if (playerIndex == _gameState.Service.PlayerCount())
+                        if (playerIndex == _partakState.Service.PlayerCount())
                             playerIndex = 0;
                         xblack = true;
                     }

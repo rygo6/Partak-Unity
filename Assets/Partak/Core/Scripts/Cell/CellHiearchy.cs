@@ -12,7 +12,7 @@ namespace GeoTetra.Partak
     /// </summary>
     public class CellHiearchy : MonoBehaviour
     {
-        [SerializeField] private GameStateRef _gameState;
+        [SerializeField] private PartakStateRef _partakState;
         [SerializeField] private LevelConfig _levelConfig;
 
         public int ParentCellGridLevel { get; private set; }
@@ -23,7 +23,7 @@ namespace GeoTetra.Partak
         public async Task Initialize()
         {
             Debug.Log("Initialize Cell Hierarchy");
-            await _gameState.Cache();
+            await _partakState.Cache();
             
             int x = _levelConfig.Datum.LevelSize.x;
             int y = _levelConfig.Datum.LevelSize.y;
@@ -46,9 +46,9 @@ namespace GeoTetra.Partak
             Vector2Int rootDimension = _levelConfig.Datum.LevelSize;
             ParticleCellGrid = new ParticleCellGrid(rootDimension);
             CellGroupGrids = new CellGroupGrid[ParentCellGridLevel];
-            CellGroupGrids[0] = new CellGroupGrid(ParticleCellGrid, _gameState.Service.PlayerCount());
+            CellGroupGrids[0] = new CellGroupGrid(ParticleCellGrid, _partakState.Service.PlayerCount());
             for (int i = 1; i < CellGroupGrids.Length; ++i)
-                CellGroupGrids[i] = new CellGroupGrid(CellGroupGrids[i - 1], _gameState.Service.PlayerCount());
+                CellGroupGrids[i] = new CellGroupGrid(CellGroupGrids[i - 1], _partakState.Service.PlayerCount());
 
             int combinedFlatCellGroupCount = 0;
             for (int i = 0; i < CellGroupGrids.Length; ++i)

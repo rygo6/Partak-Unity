@@ -13,7 +13,7 @@ namespace GeoTetra.Partak
         private ComponentContainerReference _componentContainer;
         
         [SerializeField]
-        private GameStateRef _gameState;
+        private PartakStateRef _partakState;
         
         [SerializeField] private int _fps = 60;
         [SerializeField] private bool _deserializeLevelOnStart;
@@ -68,11 +68,11 @@ namespace GeoTetra.Partak
 
         private async void Start()
         {
-            await _gameState.Cache();
+            await _partakState.Cache();
             
             if (_deserializeLevelOnStart)
             {
-                string levelId = _gameState.Service.GetSelectedLevelId();
+                string levelId = _partakState.Service.GetSelectedLevelId();
                 Deserialize(levelId, false);
             }
         }

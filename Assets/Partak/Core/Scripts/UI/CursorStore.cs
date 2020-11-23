@@ -12,7 +12,7 @@ namespace GeoTetra.Partak
         private ComponentContainerReference _componentContainer;
         
         [SerializeField]
-        private GameStateRef _gameState;
+        private PartakStateRef _partakState;
         
         [SerializeField] private LevelConfig _levelConfig;
         [SerializeField] private Transform[] _cursorTranforms;
@@ -30,17 +30,18 @@ namespace GeoTetra.Partak
 
         private async void Start()
         {
-            await _gameState.Cache();
+            await _partakState.Cache();
             
-            CursorPositions = new Vector3[_gameState.Service.PlayerCount()];
+            CursorPositions = new Vector3[_partakState.Service.PlayerCount()];
             _skinnedMeshRenderers = new SkinnedMeshRenderer[_cursorTranforms.Length];
             for (int i = 0; i < CursorPositions.Length; ++i)
             {
                 _skinnedMeshRenderers[i] = _cursorTranforms[i].GetComponent<SkinnedMeshRenderer>();
                 CursorPositions[i] = _cursorTranforms[i].position;
-                _skinnedMeshRenderers[i].materials[1].color = _gameState.Service.PlayerStates[i].PlayerColor;
+                _skinnedMeshRenderers[i].materials[1].color = _partakState.Service.PlayerStates[i].PlayerColor;
             }
             
+            LevelConfigOnLevelDeserialized();
             _levelConfig.SizeChanged += LevelConfigOnLevelDeserialized;
         }
 

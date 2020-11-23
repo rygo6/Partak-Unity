@@ -10,7 +10,7 @@ namespace GeoTetra.Partak
 {
     public class CellParticleSpawn : SubscribableBehaviour
     {
-        [SerializeField] private GameStateRef _gameState;
+        [SerializeField] private PartakStateRef _partakState;
         [SerializeField] private CellHiearchy _cellHiearchy;
         [SerializeField] private CellParticleEngine _cellParticleMover;
         [SerializeField] private CellParticleStore _cellParticleStore;
@@ -21,13 +21,11 @@ namespace GeoTetra.Partak
 
         public async Task Initialize()
         {
-            await _gameState.Cache();
-            TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
-            StartCoroutine(Initialize(_levelConfig.Datum.ParticleCount, _gameState.Service.PlayerStates, tcs));
-            await tcs.Task;
+            await _partakState.Cache();
+            await Initialize(_levelConfig.Datum.ParticleCount, _partakState.Service.PlayerStates);
         }
 
-        public IEnumerator Initialize(int particleCount, GameState.PlayerState[] PlayerStates, TaskCompletionSource<bool> tcs = null)
+        public async Task Initialize(int particleCount, PartakState.PlayerState[] PlayerStates)
         {
             SpawnSuccessful = true;
             
@@ -41,7 +39,7 @@ namespace GeoTetra.Partak
                 }
             }
             
-            YieldInstruction[] spawnYield = new YieldInstruction[playerCount];
+            Task[] spawnYield = new Task[playerCount];
             int spawnCount = particleCount / playerCount;
             int startIndex = 0;
             int trailingSpawn = 0;
@@ -63,26 +61,20 @@ namespace GeoTetra.Partak
 
                     int particleIndex = CellUtility.WorldPositionToGridIndex(_cursorStore.CursorPositions[playerIndex].x, _cursorStore.CursorPositions[playerIndex].z, _cellHiearchy.ParticleCellGrid.Dimension);
                     ParticleCell startParticleCell = _cellHiearchy.ParticleCellGrid.Grid[particleIndex];
-                    spawnYield[playerIndex] = StartCoroutine(SpawnPlayerParticles(startParticleCell, playerIndex, startIndex, spawnCount + trailingSpawn));
+                    
+                    spawnYield[playerIndex] = SpawnPlayerParticles(startParticleCell, playerIndex, startIndex, spawnCount + trailingSpawn);
                     startIndex += spawnCount + trailingSpawn;
                 }
             }
 
-            for (int i = 0; i < spawnYield.Length; ++i)
-            {
-                if (spawnYield[i] != null)
-                {
-                    yield return spawnYield[i];
-                }
-            }
-            
-            tcs?.SetResult(true);
+            await Task.WhenAll(spawnYield);
+            Debug.Log(spawnYield);
         }
 
-        private IEnumerator SpawnPlayerParticles(ParticleCell startParticleCell, int playerIndex, int startIndex, int spawnCount)
+        private async Task SpawnPlayerParticles(ParticleCell startParticleCell, int playerIndex, int startIndex, int spawnCount)
         {
-            yield return null;
-            yield return null;
+            await Task.Yield();
+            await Task.Yield();
 
             int currentIndex = startIndex;
             int endIndex = startIndex + spawnCount;
@@ -99,7 +91,7 @@ namespace GeoTetra.Partak
                 if (currentCellParticle == null)
                 {
                     SpawnSuccessful = false;
-                    yield break;
+                    return;
                 }
                 _cellParticleStore.CellParticleArray[currentIndex] = currentCellParticle;
                 for (int d = 0; d < Direction12.Count; ++d)
@@ -114,10 +106,8 @@ namespace GeoTetra.Partak
                 }
 
                 currentIndex++;
-                if (currentIndex % 16 == 0) yield return null;
+                if (currentIndex % 16 == 0) await Task.Yield();
             }
-
-            yield return null;
         }
     }
 }

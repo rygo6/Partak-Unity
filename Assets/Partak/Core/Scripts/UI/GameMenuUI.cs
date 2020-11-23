@@ -16,15 +16,15 @@ namespace GeoTetra.Partak.UI
         private ComponentContainerReference _componentContainer;
         
         [SerializeField] 
-        [AssetReferenceComponentRestriction(typeof(SceneLoadSystem))]
-        private SceneLoadSystemReference _sceneLoadSystem;
+        [AssetReferenceComponentRestriction(typeof(SceneTransit))]
+        private SceneTransitRef _sceneTransit;
         
         [SerializeField] 
         [AssetReferenceComponentRestriction(typeof(AnalyticsRelay))]
         private AnalyticsRelayReference _analyticsRelay;
         
         [SerializeField]
-        private GameStateRef _gameState;
+        private PartakStateRef _partakState;
         
         [SerializeField] 
         [AssetReferenceComponentRestriction(typeof(PartakDatabase))]
@@ -70,7 +70,7 @@ namespace GeoTetra.Partak.UI
 
         private async void Start()
         {
-            await _gameState.Cache();
+            await _partakState.Cache();
             
             _pauseMessages = new[] {"Main Menu", "Skip Level", "Resume"};
             _pauseActions = new Action[] {MainMenu, Skip, Resume};
@@ -141,7 +141,7 @@ namespace GeoTetra.Partak.UI
         {
             CurrentlyRenderedBy.Flush(() =>
             {
-                _sceneLoadSystem.Service.Load(_gameSessionScene, _mainMenuScene);
+                _sceneTransit.Service.Load(_gameSessionScene, _mainMenuScene);
             }, UIRenderer.TransitionType.Fade);
         }
 
@@ -150,29 +150,29 @@ namespace GeoTetra.Partak.UI
             _analyticsRelay.Service.GamePlayerCount();
             CurrentlyRenderedBy.Flush(() =>
             {
-                _sceneLoadSystem.Service.Load(_gameSessionScene, _gameSessionScene);
+                _sceneTransit.Service.Load(_gameSessionScene, _gameSessionScene);
             }, UIRenderer.TransitionType.Fade);
         }
 
         private void Skip()
         {
-            _gameState.Service.LevelIndex++;
+            _partakState.Service.LevelIndex++;
             _analyticsRelay.Service.GamePlayerCount();
             
             CurrentlyRenderedBy.Flush(() =>
             {
-                _sceneLoadSystem.Service.Load(_gameSessionScene, _gameSessionScene);
+                _sceneTransit.Service.Load(_gameSessionScene, _gameSessionScene);
             }, UIRenderer.TransitionType.Fade);
         }
 
         private void Next()
         {
-            _gameState.Service.LevelIndex++;
+            _partakState.Service.LevelIndex++;
             _analyticsRelay.Service.GamePlayerCount();
             
             CurrentlyRenderedBy.Flush(() =>
             {
-                _sceneLoadSystem.Service.Load(_gameSessionScene, _gameSessionScene);
+                _sceneTransit.Service.Load(_gameSessionScene, _gameSessionScene);
             }, UIRenderer.TransitionType.Fade);
         }
     }

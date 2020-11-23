@@ -8,7 +8,7 @@ namespace GeoTetra.Partak
     public class GameClock : MonoBehaviour
     {
         [SerializeField] private AnalyticsRelayReference _analyticsRelay;
-        [SerializeField] private GameStateRef _gameState;
+        [SerializeField] private PartakStateRef _partakState;
         [SerializeField] private Material _surroundMaterial;
         [SerializeField] private CellParticleEngine _cellParticleMover;
         [SerializeField] private CellParticleStore _cellParticleStore;
@@ -24,15 +24,15 @@ namespace GeoTetra.Partak
 
         private async void Start()
         {
-            await _gameState.Cache();
+            await _partakState.Cache();
             
-            _initialColors = new Color[_gameState.Service.PlayerCount()];
+            _initialColors = new Color[_partakState.Service.PlayerCount()];
             for (int i = 0; i < _initialColors.Length; ++i)
             {
-                _initialColors[i] = _gameState.Service.PlayerStates[i].PlayerColor;
+                _initialColors[i] = _partakState.Service.PlayerStates[i].PlayerColor;
             }
             
-            SetTimeLimit(_gameState.Service.TimeLimitMinutes);
+            SetTimeLimit(_partakState.Service.TimeLimitMinutes);
             _cellParticleStore.WinEvent += Win;
             Invoke(nameof(FastKillTimeOut), _fastKillTimeLimit);
             Invoke(nameof(TimeOut), _timeLimit);
@@ -48,9 +48,9 @@ namespace GeoTetra.Partak
             if (_cellParticleStore != null) _cellParticleStore.WinEvent -= Win;
             _surroundMaterial.SetFloat(BlendProperty, 0f);
             _surroundMaterial.SetTexture(Texture2Property, null);
-            for (int i = 0; i < _gameState.Service.PlayerCount(); ++i)
+            for (int i = 0; i < _partakState.Service.PlayerCount(); ++i)
             {
-                _gameState.Service.PlayerStates[i].PlayerColor = _initialColors[i];
+                _partakState.Service.PlayerStates[i].PlayerColor = _initialColors[i];
             }
         }
 
@@ -87,10 +87,10 @@ namespace GeoTetra.Partak
             while (true)
             {
                 winningPlayer = _cellParticleStore.WinningPlayer();
-                _gameState.Service.PlayerStates[winningPlayer].PlayerColor += new Color(.3f, .3f, .3f, .3f);
+                _partakState.Service.PlayerStates[winningPlayer].PlayerColor += new Color(.3f, .3f, .3f, .3f);
                 yield return null;
                 yield return null;
-                _gameState.Service.PlayerStates[winningPlayer].PlayerColor = _initialColors[winningPlayer];
+                _partakState.Service.PlayerStates[winningPlayer].PlayerColor = _initialColors[winningPlayer];
                 yield return new WaitForSeconds(0.4f);
             }
         }

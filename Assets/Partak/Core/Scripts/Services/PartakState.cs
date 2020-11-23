@@ -6,14 +6,14 @@ using UnityEngine;
 namespace GeoTetra.Partak
 {
     [Serializable]
-    public class GameStateRef : ServiceObjectReferenceT<GameState>
+    public class PartakStateRef : ServiceObjectReferenceT<PartakState>
     {
-        public GameStateRef(string guid) : base(guid)
+        public PartakStateRef(string guid) : base(guid)
         { }
     }
     
-    [CreateAssetMenu(menuName = "GeoTetra/Partak/Services/GameState")]
-    public class GameState : ServiceObject
+    [CreateAssetMenu(menuName = "GeoTetra/Services/GameState")]
+    public class PartakState : ServiceObject
     {
         [SerializeField] private string _version = "2.0.5";
         [SerializeField] private PlayerState[] _playerStates;

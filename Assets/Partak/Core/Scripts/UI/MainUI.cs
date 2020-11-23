@@ -7,7 +7,7 @@ namespace GeoTetra.Partak
 {
     public class MainUI : StackUI
     {
-        [SerializeField] private GameStateRef _gameState;
+        [SerializeField] private PartakStateRef _partakState;
         [SerializeField] private Button _playButton;
         [SerializeField] private AssetReference _playUI;
         [SerializeField] private Button _levelButton;
@@ -17,11 +17,11 @@ namespace GeoTetra.Partak
 
         protected override async void Awake()
         {
-            await _gameState.Cache();
+            await _partakState.Cache();
             
             _playButton.onClick.AddListener(() =>
             {
-                if (_gameState.Service.LevelCatalogDatum.LevelIDs.Count == 0)
+                if (_partakState.Service.LevelCatalogDatum.LevelIDs.Count == 0)
                 {
                     CurrentlyRenderedBy.DisplayMessageModal("You have no levels loaded! Go into the level editor to download or create levels.");
                 }

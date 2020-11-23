@@ -16,7 +16,7 @@ namespace GeoTetra.Partak
         private ComponentContainerReference _componentContainer;
         
         [SerializeField]
-        private GameStateRef _gameSate;
+        private PartakStateRef _partakSate;
         
         [SerializeField] private LevelConfig _levelConfig;
         
@@ -33,7 +33,7 @@ namespace GeoTetra.Partak
         
         private const float MaxTestWaitTime = 5;
         private const int TestPlayerCount = 4;
-        private GameState.PlayerState[] _playerStates;
+        private PartakState.PlayerState[] _playerStates;
 
         public enum TestResult
         {
@@ -54,14 +54,14 @@ namespace GeoTetra.Partak
 
         private async void Initialize()
         {
-            await _gameSate.Cache();
+            await _partakSate.Cache();
             
-            _playerStates = new GameState.PlayerState[TestPlayerCount];
+            _playerStates = new PartakState.PlayerState[TestPlayerCount];
             for (int i = 0; i < _playerStates.Length; ++i)
             {
-                _playerStates[i] = new GameState.PlayerState
+                _playerStates[i] = new PartakState.PlayerState
                 {
-                    PlayerColor = _gameSate.Service.PlayerStates[i].PlayerColor
+                    PlayerColor = _partakSate.Service.PlayerStates[i].PlayerColor
                 };
             }
             
@@ -93,7 +93,7 @@ namespace GeoTetra.Partak
 
             _cellGradient.StartThread();
             yield return new WaitUntil(() => _cellParticleStore.Initialize().IsCompleted);
-            yield return StartCoroutine(_cellParticleSpawn.Initialize(_levelConfig.Datum.ParticleCount, _playerStates));
+            yield return new WaitUntil(() => _cellParticleSpawn.Initialize(_levelConfig.Datum.ParticleCount, _playerStates).IsCompleted);
             if (!_cellParticleSpawn.SpawnSuccessful)
             {
                 ClearTest();

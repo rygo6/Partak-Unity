@@ -6,14 +6,14 @@ namespace GeoTetra.Partak.UI
     public class InputPadGroup : MonoBehaviour
     {
         [SerializeField] private ComponentContainerReference _componentContainer;
-        [SerializeField] private GameStateRef _gameState;
+        [SerializeField] private PartakStateRef _partakState;
         [SerializeField] private InputPad[] _inputPads;
         [SerializeField] private GameObject _horizontalTop;
         [SerializeField] private GameObject _horizontalBottom ;
         
         public async void Initialize()
         {
-            await _gameState.Cache();
+            await _partakState.Cache();
             
             for (int i = 0; i < _inputPads.Length; ++i)
             {
@@ -22,7 +22,7 @@ namespace GeoTetra.Partak.UI
             
             for (int i = 0; i < _inputPads.Length; ++i)
             {
-                if (_gameState.Service.PlayerStates[i].PlayerMode != PlayerMode.Human)
+                if (_partakState.Service.PlayerStates[i].PlayerMode != PlayerMode.Human)
                 {
                     _inputPads[i].gameObject.SetActive(false);
                 }
