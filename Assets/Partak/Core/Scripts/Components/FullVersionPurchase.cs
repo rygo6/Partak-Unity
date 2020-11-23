@@ -7,7 +7,7 @@ namespace GeoTetra.Partak
     public class FullVersionPurchase : MonoBehaviour
     {
         [SerializeField]
-        private GameStateRef _gameState;
+        private PartakStateRef _partakState;
         
         [SerializeField] 
         private IAPListener _iapListener;
@@ -20,7 +20,7 @@ namespace GeoTetra.Partak
 
         private async void OnPurchasesComplete(Product product)
         {
-            await _gameState.Cache();
+            await _partakState.Cache();
             
             Debug.Log("Purchase Recieved " + product.definition.id);
             //May receive callback before all services init.
@@ -29,8 +29,8 @@ namespace GeoTetra.Partak
 
         private IEnumerator EnableFullVersion()
         {
-            yield return new WaitUntil(() => _gameState.IsDone);
-            _gameState.Service.EnableFullVersion();
+            yield return new WaitUntil(() => _partakState.IsDone);
+            _partakState.Service.EnableFullVersion();
         }
 
         private void OnPurchaseFail(Product product, PurchaseFailureReason reason)

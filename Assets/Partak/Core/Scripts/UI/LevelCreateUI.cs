@@ -13,8 +13,8 @@ namespace GeoTetra.Partak
     public class LevelCreateUI : StackUI
     {
         [SerializeField] private AnalyticsRelayReference _analyticsRelay;
-        [SerializeField] private GameStateRef _gameState;
-        [SerializeField] private SceneLoadSystemReference _sceneLoadSystem;
+        [SerializeField] private PartakStateRef _partakState;
+        [SerializeField] private SceneTransitRef _sceneTransit;
         [SerializeField] private ComponentContainerReference _componentContainer;
         [SerializeField] private PartakDatabaseReference _database;
         [SerializeField] private AssetReference _mainMenuScene;
@@ -62,7 +62,7 @@ namespace GeoTetra.Partak
 
         private async void Start()
         {
-            await _gameState.Cache();
+            await _partakState.Cache();
         }
 
         public override void OnTransitionInFinish()
@@ -72,7 +72,7 @@ namespace GeoTetra.Partak
             _levelTester = _componentContainer.Service.Get<LevelTester>();
             _itemCatalogUI.Initialize();
 
-            _editingLevelId = _gameState.Service.GetEditingLevelId();
+            _editingLevelId = _partakState.Service.GetEditingLevelId();
             string levelPath = LevelUtility.LevelPath(_editingLevelId);
             
             if (!System.IO.File.Exists(levelPath))
@@ -121,14 +121,14 @@ namespace GeoTetra.Partak
         private void OnCloseClick()
         {
             OnBackClicked();
-            _sceneLoadSystem.Service.Load(_newLevelScene, _mainMenuScene);
+            _sceneTransit.Service.Load(_newLevelScene, _mainMenuScene);
             _analyticsRelay.Service.CreateLevelCancelled();
         }
 
         private void SerializeLevel()
         {
             _levelConfig.Serialize(_editingLevelId, true);
-            _gameState.Service.AddLevelId(_editingLevelId);
+            _partakState.Service.AddLevelId(_editingLevelId);
         }
 
         private void SaveLevel()

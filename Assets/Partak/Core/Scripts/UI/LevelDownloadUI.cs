@@ -23,7 +23,7 @@ namespace GeoTetra.Partak
         private PartakDatabaseReference _partakDatabase;
         
         [SerializeField]
-        private GameStateRef _gameState;
+        private PartakStateRef _partakState;
         
         [SerializeField] 
         [AssetReferenceComponentRestriction(typeof(AdvertisementDispatch))]
@@ -61,7 +61,7 @@ namespace GeoTetra.Partak
         
         private async void Start()
         {
-            await _gameState.Cache();
+            await _partakState.Cache();
         }
 
         public override void OnTransitionInFinish()
@@ -119,7 +119,7 @@ namespace GeoTetra.Partak
                 levelButton.Image.texture = texture2D;
             }
 
-            if (_gameState.Service.LevelCatalogDatum.LevelIDs.Contains(levelButton.LevelDatum.LevelID))
+            if (_partakState.Service.LevelCatalogDatum.LevelIDs.Contains(levelButton.LevelDatum.LevelID))
             {
                 levelButton.Text.text = "Downloaded";
                 levelButton.Image.color = Color.gray;
@@ -183,7 +183,7 @@ namespace GeoTetra.Partak
         {
             _selectedLevelButton = levelButton;
 
-            if (_gameState.Service.FullVersion)
+            if (_partakState.Service.FullVersion)
             {
                 CurrentlyRenderedBy.DisplayLoadModal();
                 DownloadLevel();
@@ -214,9 +214,9 @@ namespace GeoTetra.Partak
             await _partakDatabase.Service.DownloadLevel(_selectedLevelButton.LevelDatum.LevelID);
             
             //Reset level index so play menu doesn't load on empty level.
-            _gameState.Service.LevelIndex = 0;
+            _partakState.Service.LevelIndex = 0;
             
-            _gameState.Service.AddLevelId(_selectedLevelButton.LevelDatum.LevelID);
+            _partakState.Service.AddLevelId(_selectedLevelButton.LevelDatum.LevelID);
             CurrentlyRenderedBy.CloseModal();
             OnBackClicked();
             _analyticsRelay.Service.LevelDownloaded();

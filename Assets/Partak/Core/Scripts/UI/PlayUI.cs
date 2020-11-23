@@ -12,12 +12,11 @@ namespace GeoTetra.Partak
 {
     public class PlayUI : StackUI
     {
-        [SerializeField] 
-        [AssetReferenceComponentRestriction(typeof(SceneLoadSystem))]
-        private SceneLoadSystemReference _loadSystem;
+        [SerializeField]
+        private SceneTransitRef _sceneTransitRef;
         
         [SerializeField]
-        private GameStateRef _gameStateRef;
+        private PartakStateRef _partakStateRef;
         
         [SerializeField] private AssetReference _gameSessionScene;
         [SerializeField] private AssetReference _mainMenuScene;
@@ -26,20 +25,20 @@ namespace GeoTetra.Partak
         protected override async void Awake()
         {
             base.Awake();
-            await _gameStateRef.Cache();
+            await _partakStateRef.Cache();
             _startButton.onClick.AddListener(OnStartClick);
         }
 
         private void OnStartClick()
         {
             int activeCount = 0;
-            for (int i = 0; i < _gameStateRef.Service.PlayerCount(); ++i)
+            for (int i = 0; i < _partakStateRef.Service.PlayerCount(); ++i)
             {
-                if (_gameStateRef.Service.PlayerStates[i].PlayerMode != PlayerMode.None)
+                if (_partakStateRef.Service.PlayerStates[i].PlayerMode != PlayerMode.None)
                     activeCount++;
             }
 
-            string levelId = _gameStateRef.Service.GetSelectedLevelId();
+            string levelId = _partakStateRef.Service.GetSelectedLevelId();
 
             if (activeCount < 2)
             {
@@ -55,9 +54,10 @@ namespace GeoTetra.Partak
             }
         }
 
-        private void Load()
+        private async void Load()
         {
-            _loadSystem.Service.Load(_mainMenuScene, _gameSessionScene);
+            await _sceneTransitRef.Cache();
+            _sceneTransitRef.Service.Load(_mainMenuScene, _gameSessionScene);
         }
     }
 }

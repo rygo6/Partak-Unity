@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using GeoTetra.GTPooling;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -10,13 +11,14 @@ using UnityEngine.SceneManagement;
 namespace GeoTetra.GTUI
 {
     [System.Serializable]
-    public class SceneLoadSystemReference : ServiceReferenceT<SceneLoadSystem>
+    public class SceneTransitRef : ServiceObjectReferenceT<SceneTransit>
     {
-        public SceneLoadSystemReference(string guid) : base(guid)
+        public SceneTransitRef(string guid) : base(guid)
         { }
     }
     
-    public class SceneLoadSystem : ServiceBehaviour
+    [CreateAssetMenu(menuName = "GeoTetra/Services/SceneTransit")]
+    public class SceneTransit : ServiceObject
     {
         [SerializeField]
         [AssetReferenceComponentRestriction(typeof(UIRenderer))]
@@ -25,8 +27,17 @@ namespace GeoTetra.GTUI
         [SerializeField] 
         private AssetReference _loadModalUI;
         
-        
         private readonly Dictionary<string, AsyncOperationHandle<SceneInstance>> _loadedSceneInstances = new Dictionary<string,  AsyncOperationHandle<SceneInstance>>();
+        
+        protected override async Task OnServiceAwake()
+        {
+            
+        }
+
+        protected override void OnServiceEnd()
+        {
+
+        }
         
         public void Load(AssetReference unloadScene, AssetReference loadScene)
         {

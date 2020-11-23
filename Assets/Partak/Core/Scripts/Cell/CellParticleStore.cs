@@ -13,7 +13,7 @@ namespace GeoTetra.Partak
     public class CellParticleStore : SubscribableBehaviour
     {
         [SerializeField] private ComponentContainerReference _componentContainer;
-        [SerializeField] private GameStateRef _gameState;
+        [SerializeField] private PartakStateRef _partakState;
         [SerializeField] private CursorStore _cursorStore;
         [SerializeField] private LevelConfig _levelConfig;
         public event Action WinEvent;
@@ -33,12 +33,12 @@ namespace GeoTetra.Partak
 
         public async Task Initialize()
         {
-           await _gameState.Cache();
+           await _partakState.Cache();
             
-            PlayerLost = new bool[_gameState.Service.PlayerCount()];
-            PlayerParticleCount = new int[_gameState.Service.PlayerCount()];
+            PlayerLost = new bool[_partakState.Service.PlayerCount()];
+            PlayerParticleCount = new int[_partakState.Service.PlayerCount()];
             CellParticleArray = new CellParticle[_levelConfig.Datum.ParticleCount];
-            _startParticleCount = _levelConfig.Datum.ParticleCount / _gameState.Service.ActivePlayerCount();
+            _startParticleCount = _levelConfig.Datum.ParticleCount / _partakState.Service.ActivePlayerCount();
             
             if (_calcualtePercentagesCoroutine != null) {StopCoroutine(_calcualtePercentagesCoroutine);}
             _calcualtePercentagesCoroutine = StartCoroutine(CalculatePercentages());

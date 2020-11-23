@@ -29,12 +29,10 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Service
-    m_MainAsset: {fileID: 4052390160905014476, guid: 54735e5a6ecfe0f4f8a088d0ed1c0234,
-      type: 3}
-    m_TargetAsset: {fileID: 4052390160905014476, guid: 54735e5a6ecfe0f4f8a088d0ed1c0234,
-      type: 3}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   - m_GUID: 625ab5b2f33bcc84eb0e432234848ab8
-    m_Address: GameState
+    m_Address: PartakState
     m_ReadOnly: 0
     m_SerializedLabels:
     - Service
@@ -47,8 +45,8 @@ MonoBehaviour:
     - Service
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
-  - m_GUID: e7493b24c6eeb9c4f9473b3eb0a29207
-    m_Address: SceneLoadSystem
+  - m_GUID: 9258987f623cfac49875a2e99d681548
+    m_Address: SceneTransit
     m_ReadOnly: 0
     m_SerializedLabels:
     - Service
