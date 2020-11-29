@@ -59,9 +59,10 @@ namespace GeoTetra.Partak
             _fullVersionDialogActions = new Action[] {PurchaseFullVersion, PlayAd, Cancel};
         }
         
-        private async void Start()
+        protected override async Task StartAsync()
         {
             await _partakState.Cache();
+            await base.StartAsync();
         }
 
         public override void OnTransitionInFinish()

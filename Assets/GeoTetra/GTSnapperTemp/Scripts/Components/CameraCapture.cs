@@ -1,4 +1,5 @@
-﻿using GeoTetra.GTCommon.Components;
+﻿using System.Threading.Tasks;
+using GeoTetra.GTCommon.Components;
 using GeoTetra.GTPooling;
 using UnityEngine;
 
@@ -32,7 +33,7 @@ namespace GeoTetra.GTSnapper
 			if (_componentContainer.Asset != null) _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
 		}
 
-		private void Start()
+		protected override async Task StartAsync()
 		{
 #if  UNITY_EDITOR
 			if (_saveOnStart)
@@ -42,6 +43,7 @@ namespace GeoTetra.GTSnapper
 				SaveScreenshotToFile(path);
 			}
 #endif
+			await base.StartAsync();
 		}
 
 		private int CoordinateToGridIndex(int x, int y, int xMax, int yMax)

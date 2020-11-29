@@ -40,6 +40,7 @@ namespace GeoTetra.Partak
                     _randomRotate[i] = Random.Range(-1, 1);
             
             if (startThread) StartThread(_levelConfig.Datum.MoveCycleTime);
+            await Task.Yield();
         }
 
         public void StartThread(int moveCycleTime)

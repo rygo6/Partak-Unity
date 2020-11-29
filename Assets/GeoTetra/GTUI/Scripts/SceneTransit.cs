@@ -21,8 +21,7 @@ namespace GeoTetra.GTUI
     public class SceneTransit : ServiceObject
     {
         [SerializeField]
-        [AssetReferenceComponentRestriction(typeof(UIRenderer))]
-        private UIRendererReference _uiRenderer;
+        private UIRendererServiceRef _uiRendererService;
         
         [SerializeField] 
         private AssetReference _loadModalUI;
@@ -31,7 +30,7 @@ namespace GeoTetra.GTUI
         
         protected override async Task OnServiceAwake()
         {
-            
+            await _uiRendererService.Cache();
         }
 
         protected override void OnServiceEnd()
@@ -41,7 +40,7 @@ namespace GeoTetra.GTUI
         
         public void Load(AssetReference unloadScene, AssetReference loadScene)
         {
-            _uiRenderer.Service.InstantiateAndDisplayModalUI(_loadModalUI, () => {
+            _uiRendererService.Service.OverlayUI.InstantiateAndDisplayModalUI(_loadModalUI, () => {
                 LoadCoroutine(unloadScene, loadScene);
             });
         }
@@ -67,7 +66,7 @@ namespace GeoTetra.GTUI
             await handle.Task;
             if (loadLocation == null) Debug.LogWarning($"Can't find location of {handle.Result.Scene.name}'");
             else _loadedSceneInstances.Add(loadLocation.PrimaryKey, handle);
-            _uiRenderer.Service.CloseModal();
+            _uiRendererService.Service.OverlayUI.CloseModal();
         }
         
         //below should be moved to UTIL class? Or could this whole thing be put in Pooling?

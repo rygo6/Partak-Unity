@@ -11,15 +11,8 @@ using UnityEngine.Events;
 
 namespace GeoTetra.GTUI
 {
-    [Serializable]
-    public class UIRendererReference : ServiceReferenceT<UIRenderer>
-    {
-        public UIRendererReference(string guid) : base(guid)
-        { }
-    }
-    
     [RequireComponent(typeof(AudioSource))]
-    public class UIRenderer : ServiceBehaviour
+    public class UIRenderer : SubscribableBehaviour
     {
         [SerializeField] private AddressablesPool _addressablesPool;
         [SerializeField] private Camera _uiCamera;
@@ -48,12 +41,7 @@ namespace GeoTetra.GTUI
         public AudioSource AudioSource => _audioSource;
         public AddressablesPool Pool => _addressablesPool;
         public StackUI CurrentStackUI => _currentStackUI;
-
-        private void Awake()
-        {    
-            OnLoadComplete();
-        }
-
+        
         private void OnValidate()
         {
             if (_audioSource == null) _audioSource = GetComponent<AudioSource>();

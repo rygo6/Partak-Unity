@@ -45,6 +45,7 @@ SkinnedMeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -129,6 +130,7 @@ SkinnedMeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -216,10 +218,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _componentContainer:
-    m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
+    m_AssetGUID: 
     m_SubObjectName: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakState:
+    m_AssetGUID: 
     m_SubObjectName: 
   _levelConfig: {fileID: 0}
   _cursorTranforms:
@@ -273,6 +275,7 @@ SkinnedMeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -357,6 +360,7 @@ SkinnedMeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

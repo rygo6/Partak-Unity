@@ -151,10 +151,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _componentContainer:
-    m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
+    m_AssetGUID: 
     m_SubObjectName: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakState:
+    m_AssetGUID: 
     m_SubObjectName: 
   _fps: 60
   _deserializeLevelOnStart: 0
@@ -1068,7 +1068,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16c9e83f2d8d4bc4eb6911aaa93d8d8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uiRenderer:
+  _uiRendererService:
     m_AssetGUID: 
     m_SubObjectName: 
   _onlyDisplayIfEmpty: 0
@@ -1275,6 +1275,11 @@ PrefabInstance:
       propertyPath: _itemRoot
       value: 
       objectReference: {fileID: 1286567769}
+    - target: {fileID: 6595894874887153957, guid: 2866778916b6ff54a863e9c85e73ce85,
+        type: 3}
+      propertyPath: _componentContainer.m_AssetGUID
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2866778916b6ff54a863e9c85e73ce85, type: 3}
 --- !u!1001 &8503495098352223310

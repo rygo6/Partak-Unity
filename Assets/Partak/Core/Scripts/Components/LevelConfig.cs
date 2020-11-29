@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using GeoTetra.GTCommon.Components;
 using GeoTetra.GTPooling;
 using GeoTetra.GTSnapper;
@@ -66,7 +67,7 @@ namespace GeoTetra.Partak
             }
         }
 
-        private async void Start()
+        protected override async Task StartAsync()
         {
             await _partakState.Cache();
             
@@ -75,6 +76,8 @@ namespace GeoTetra.Partak
                 string levelId = _partakState.Service.GetSelectedLevelId();
                 Deserialize(levelId, false);
             }
+            
+            await base.StartAsync();
         }
 
         public void Deserialize(string levelId, bool editing)

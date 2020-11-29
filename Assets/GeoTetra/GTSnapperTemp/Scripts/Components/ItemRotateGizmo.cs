@@ -13,8 +13,6 @@ namespace GeoTetra.GTSnapper
         private float _startAngle;
         private float _priorAngle;
 
-        private Plane _plane;
-        
         public void OnBeginDrag(PointerEventData eventData)
         {
             float angle = Vector3Utility.AngleAroundLocalAxis(_parentItemGizmoRoot.transform, eventData.pointerCurrentRaycast.worldPosition);

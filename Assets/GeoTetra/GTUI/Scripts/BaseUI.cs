@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using GeoTetra.GTCommon.Components;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace GeoTetra.GTUI
 {
-    public class BaseUI : MonoBehaviour
+    public class BaseUI : SubscribableBehaviour
     {
         [SerializeField] protected Selectable _focusSelectable;
         [SerializeField] private RectTransform _transitionRoot;

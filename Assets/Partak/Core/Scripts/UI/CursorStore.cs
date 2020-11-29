@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Threading.Tasks;
 using GeoTetra.GTCommon.Components;
 using GeoTetra.GTPooling;
 
@@ -28,7 +29,7 @@ namespace GeoTetra.Partak
             _componentContainer.Service.RegisterComponent(this);
         }
 
-        private async void Start()
+        protected override async Task StartAsync()
         {
             await _partakState.Cache();
             
@@ -41,11 +42,13 @@ namespace GeoTetra.Partak
                 _skinnedMeshRenderers[i].materials[1].color = _partakState.Service.PlayerStates[i].PlayerColor;
             }
             
-            LevelConfigOnLevelDeserialized();
-            _levelConfig.SizeChanged += LevelConfigOnLevelDeserialized;
+            _levelConfig.SizeChanged += LevelSizeChanged;
+            LevelSizeChanged();
+
+            await base.StartAsync();
         }
 
-        private void LevelConfigOnLevelDeserialized()
+        private void LevelSizeChanged()
         {
             _levelBounds = _levelConfig.LevelBounds;
             SetCursorsToStartPosition();

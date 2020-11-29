@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Threading.Tasks;
 using GeoTetra.GTCommon.Attributes;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
@@ -22,11 +23,11 @@ namespace GeoTetra.Partak
         [SerializeField] private AssetReference _mainMenuScene;
         [SerializeField] private Button _startButton;
 
-        protected override async void Awake()
+        protected override async Task StartAsync()
         {
-            base.Awake();
             await _partakStateRef.Cache();
             _startButton.onClick.AddListener(OnStartClick);
+            await base.StartAsync();
         }
 
         private void OnStartClick()

@@ -6,23 +6,23 @@ namespace GeoTetra.Partak
 {
     public class BackgroundCubes : MonoBehaviour
     {
-        [SerializeField] 
-        [AssetReferenceComponentRestriction(typeof(UIRenderer))]
-        private UIRendererReference _uiRenderer;
+        [SerializeField]
+        private UIRendererServiceRef _uiRendererService;
         
         [SerializeField] private string _fadeInState = "FadeIn";
         [SerializeField] private string _straightToPerspectiveState = "StraightToPerspective";
         [SerializeField] private string _perspectiveToStraightState = "PerspectiveToStraight";
         [SerializeField] private Animator _animator;
         
-        public void AddTransitionListener()
+        public async void AddTransitionListener()
         {
-            _uiRenderer.Service.StackTransitionOccured.AddListener(ToggleCubePerspective);
+            await _uiRendererService.Cache();
+            _uiRendererService.Service.OverlayUI.StackTransitionOccured.AddListener(ToggleCubePerspective);
         }
 
         private void OnDestroy()
         {
-            _uiRenderer.Service.StackTransitionOccured.RemoveListener(ToggleCubePerspective);
+            _uiRendererService.Service.OverlayUI.StackTransitionOccured.RemoveListener(ToggleCubePerspective);
         }
 
         public void ToggleCubePerspective()

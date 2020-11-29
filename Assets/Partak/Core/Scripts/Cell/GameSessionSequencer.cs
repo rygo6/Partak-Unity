@@ -26,14 +26,14 @@ namespace GeoTetra.Partak
 
         private void Awake()
         {
-            _levelConfig.LevelDeserialized += () =>
+            _levelConfig.LevelDeserialized += async () =>
             {
                 Debug.Log("Starting GameSessionSequencer");
-                Initialize();
+                await Initialize();
             };
         }
 
-        public async Task Initialize()
+        private async Task Initialize()
         {
             await _cellHiearchy.Initialize();
             await _cellGradient.Initialize(true);
