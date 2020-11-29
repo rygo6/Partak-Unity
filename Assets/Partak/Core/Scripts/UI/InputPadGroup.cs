@@ -1,9 +1,10 @@
-﻿using GeoTetra.GTPooling;
+﻿using GeoTetra.GTCommon.Components;
+using GeoTetra.GTPooling;
 using UnityEngine;
 
 namespace GeoTetra.Partak.UI
 {
-    public class InputPadGroup : MonoBehaviour
+    public class InputPadGroup : SubscribableBehaviour
     {
         [SerializeField] private ComponentContainerReference _componentContainer;
         [SerializeField] private PartakStateRef _partakState;
@@ -13,7 +14,7 @@ namespace GeoTetra.Partak.UI
         
         public async void Initialize()
         {
-            await _partakState.Cache();
+            await _partakState.Cache(this);
             
             for (int i = 0; i < _inputPads.Length; ++i)
             {

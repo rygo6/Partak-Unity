@@ -1,13 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using System.Threading.Tasks;
-using GeoTetra.GTCommon.Attributes;
-using GeoTetra.GTCommon.ScriptableObjects;
-using GeoTetra.GTPooling;
 using GeoTetra.GTUI;
 using UnityEngine.AddressableAssets;
-using UnityEngine.SceneManagement;
 
 namespace GeoTetra.Partak
 {
@@ -25,7 +20,7 @@ namespace GeoTetra.Partak
 
         protected override async Task StartAsync()
         {
-            await _partakStateRef.Cache();
+            await _partakStateRef.Cache(this);
             _startButton.onClick.AddListener(OnStartClick);
             await base.StartAsync();
         }
@@ -57,7 +52,7 @@ namespace GeoTetra.Partak
 
         private async void Load()
         {
-            await _sceneTransitRef.Cache();
+            await _sceneTransitRef.Cache(this);
             _sceneTransitRef.Service.Load(_mainMenuScene, _gameSessionScene);
         }
     }

@@ -26,7 +26,7 @@ namespace GeoTetra.GTSnapper
 
         private readonly List<ItemDrag> ItemDragList = new List<ItemDrag>();
         private readonly List<Item> ItemHighlightList = new List<Item>();
-        private List<AsyncOperationHandle<ItemReference>> _referenceHandles = new List<AsyncOperationHandle<ItemReference>>();
+        private readonly List<AsyncOperationHandle<ItemReference>> _referenceHandles = new List<AsyncOperationHandle<ItemReference>>();
         private ItemRootDatum _itemRootDatum;
         
         public int IgnoreLayer { get; private set; }
@@ -51,7 +51,6 @@ namespace GeoTetra.GTSnapper
 
         protected override void OnDestroy()
         {
-            base.OnDestroy();
             foreach (KeyValuePair<string,MonoBehaviour> pair in UniqueTickDictionary)
             {
                 if (pair.Value is Item)
@@ -59,6 +58,12 @@ namespace GeoTetra.GTSnapper
                     Addressables.ReleaseInstance(pair.Value.gameObject);
                 }
             }
+
+            foreach (AsyncOperationHandle<ItemReference> referenceHandle in _referenceHandles)
+            {
+                Addressables.Release(referenceHandle);
+            }
+            base.OnDestroy();
         }
 
         public void BeginDragging(ItemDrag itemDrag)
@@ -232,6 +237,7 @@ namespace GeoTetra.GTSnapper
 
         private void OnItemReferenceComplete(AsyncOperationHandle<ItemReference> reference, ItemDatum itemDatum)
         {
+            _referenceHandles.Add(reference);
             Addressables.InstantiateAsync(reference.Result.AssetPrefabName, new InstantiationParameters(itemDatum._position, itemDatum._rotation, transform))
                 .Completed += handle => OnInstantiateComplete(handle.Result, reference.Result, itemDatum);
         }

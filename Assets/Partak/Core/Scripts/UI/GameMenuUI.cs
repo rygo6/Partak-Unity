@@ -71,8 +71,8 @@ namespace GeoTetra.Partak.UI
 
         protected override async Task StartAsync()
         {
-            await _partakState.Cache();
-            await _sceneTransit.Cache();
+            await _partakState.Cache(this);
+            await _sceneTransit.Cache(this);
             
             _pauseMessages = new[] {"Main Menu", "Skip Level", "Resume"};
             _pauseActions = new Action[] {MainMenu, Skip, Resume};

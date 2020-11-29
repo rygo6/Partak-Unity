@@ -1,10 +1,11 @@
-﻿using GeoTetra.GTPooling;
+﻿using GeoTetra.GTCommon.Components;
+using GeoTetra.GTPooling;
 using GeoTetra.GTUI;
 using UnityEngine;
 
 namespace GeoTetra.Partak
 {
-    public class BackgroundCubes : MonoBehaviour
+    public class BackgroundCubes : SubscribableBehaviour
     {
         [SerializeField]
         private UIRendererServiceRef _uiRendererService;
@@ -16,11 +17,11 @@ namespace GeoTetra.Partak
         
         public async void AddTransitionListener()
         {
-            await _uiRendererService.Cache();
+            await _uiRendererService.Cache(this);
             _uiRendererService.Service.OverlayUI.StackTransitionOccured.AddListener(ToggleCubePerspective);
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             _uiRendererService.Service.OverlayUI.StackTransitionOccured.RemoveListener(ToggleCubePerspective);
         }

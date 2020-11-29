@@ -1,4 +1,5 @@
 ﻿using System;
+using GeoTetra.GTCommon.Components;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using GeoTetra.GTUI;
@@ -9,7 +10,7 @@ using UnityEngine.UI;
 
 namespace GeoTetra.Partak.UI
 {
-    public class PlayerModeButton : MonoBehaviour, IPointerClickHandler, ISubmitHandler
+    public class PlayerModeButton : SubscribableBehaviour, IPointerClickHandler, ISubmitHandler
     {
         [SerializeField] 
         private PartakStateRef _partakStateRef;
@@ -31,7 +32,7 @@ namespace GeoTetra.Partak.UI
 
         private async void Awake()
         {
-            await _partakStateRef.Cache();
+            await _partakStateRef.Cache(this);
             PlayerMode mode = (PlayerMode) PlayerPrefs.GetInt("PlayerMode" + _playerIndex);
             _text.text = mode.ToString();
             _partakStateRef.Service.PlayerStates[_playerIndex].PlayerMode = mode;

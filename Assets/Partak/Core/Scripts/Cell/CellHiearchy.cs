@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Amazon.Auth.AccessControlPolicy.ActionIdentifiers;
+using GeoTetra.GTCommon.Components;
 using GeoTetra.GTPooling;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ namespace GeoTetra.Partak
     /// <summary>
     /// Entry point of quadtree data structure.
     /// </summary>
-    public class CellHiearchy : MonoBehaviour
+    public class CellHiearchy : SubscribableBehaviour
     {
         [SerializeField] private PartakStateRef _partakState;
         [SerializeField] private LevelConfig _levelConfig;
@@ -23,7 +24,7 @@ namespace GeoTetra.Partak
         public async Task Initialize()
         {
             Debug.Log("Initialize Cell Hierarchy");
-            await _partakState.Cache();
+            await _partakState.Cache(this);
             
             int x = _levelConfig.Datum.LevelSize.x;
             int y = _levelConfig.Datum.LevelSize.y;

@@ -33,7 +33,7 @@ namespace GeoTetra.Partak
 
         public async Task Initialize()
         {
-           await _partakState.Cache();
+           await _partakState.Cache(this);
             
             PlayerLost = new bool[_partakState.Service.PlayerCount()];
             PlayerParticleCount = new int[_partakState.Service.PlayerCount()];

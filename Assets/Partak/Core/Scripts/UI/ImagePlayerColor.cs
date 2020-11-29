@@ -1,25 +1,29 @@
 ﻿using System;
+using System.Threading.Tasks;
+using GeoTetra.GTCommon.Components;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GeoTetra.Partak
 {
-    public class ImagePlayerColor : MonoBehaviour
+    public class ImagePlayerColor : SubscribableBehaviour
     {
         [SerializeField] private PartakStateRef _partakStateRef;
         [SerializeField] private int _playerIndex;
         [SerializeField] private bool _constantUpdate;
         [SerializeField] private Image _image;
 
-        private async void Start()
+        protected override async Task StartAsync()
         {
-            await _partakStateRef.Cache();
+            await _partakStateRef.Cache(this);
             
             _image.color = _image.color.SetRGB(_partakStateRef.Service.PlayerStates[_playerIndex].PlayerColor);
             if (_constantUpdate)
             {
                 _partakStateRef.Service.PlayerStates[_playerIndex].ColorChanged += UpdateColor;
             }
+
+            await base.StartAsync();
         }
 
         private void OnValidate()
@@ -27,9 +31,10 @@ namespace GeoTetra.Partak
             if (_image == null) _image = GetComponent<Image>();
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             _partakStateRef.Service.PlayerStates[_playerIndex].ColorChanged -= UpdateColor;
+            base.OnDestroy();
         }
 
         private void UpdateColor(Color color)

@@ -28,16 +28,12 @@ namespace GeoTetra.GTUI
         
         private readonly Dictionary<string, AsyncOperationHandle<SceneInstance>> _loadedSceneInstances = new Dictionary<string,  AsyncOperationHandle<SceneInstance>>();
         
-        protected override async Task OnServiceAwake()
+        protected override async Task OnServiceStart()
         {
-            await _uiRendererService.Cache();
+            await _uiRendererService.Cache(this);
+            await base.OnServiceStart();
         }
 
-        protected override void OnServiceEnd()
-        {
-
-        }
-        
         public void Load(AssetReference unloadScene, AssetReference loadScene)
         {
             _uiRendererService.Service.OverlayUI.InstantiateAndDisplayModalUI(_loadModalUI, () => {

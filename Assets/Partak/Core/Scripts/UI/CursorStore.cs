@@ -31,7 +31,7 @@ namespace GeoTetra.Partak
 
         protected override async Task StartAsync()
         {
-            await _partakState.Cache();
+            await _partakState.Cache(this);
             
             CursorPositions = new Vector3[_partakState.Service.PlayerCount()];
             _skinnedMeshRenderers = new SkinnedMeshRenderer[_cursorTranforms.Length];

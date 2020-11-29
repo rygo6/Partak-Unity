@@ -70,7 +70,7 @@ namespace GeoTetra.Partak
 
         public async void GamePlayerCount()
         {
-            await _partakState.Cache();
+            await _partakState.Cache(this);
             
             Analytics.CustomEvent("GamePlayerCount", new Dictionary<string, object>
             {

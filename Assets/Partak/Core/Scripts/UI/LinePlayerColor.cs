@@ -1,24 +1,27 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System.Threading.Tasks;
+using GeoTetra.GTCommon.Components;
+using UnityEngine;
 
 namespace GeoTetra.Partak
 {
-    public class LinePlayerColor : MonoBehaviour
+    public class LinePlayerColor : SubscribableBehaviour
     {
         [SerializeField] private PartakStateRef _partakStateRef;
         [SerializeField] private int _playerIndex;
         [SerializeField] private bool _constantUpdate;
         [SerializeField] private LineRenderer _lineRenderer;
 
-        private async void Start()
+        protected override async Task StartAsync()
         {
-            await _partakStateRef.Cache();
+            await _partakStateRef.Cache(this);
             
             _lineRenderer.material.color = _lineRenderer.material.color.SetRGB(_partakStateRef.Service.PlayerStates[_playerIndex].PlayerColor);
             if (_constantUpdate)
             {
                 _partakStateRef.Service.PlayerStates[_playerIndex].ColorChanged += UpdateColor;
             }
+
+            await base.StartAsync();
         }
 
         private void OnValidate()
@@ -26,9 +29,10 @@ namespace GeoTetra.Partak
             if (_lineRenderer == null) _lineRenderer = GetComponent<LineRenderer>();
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             _partakStateRef.Service.PlayerStates[_playerIndex].ColorChanged -= UpdateColor;
+            base.OnDestroy();
         }
 
         private void UpdateColor(Color color)

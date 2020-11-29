@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Threading.Tasks;
+using GeoTetra.GTCommon.Components;
 using GeoTetra.GTPooling;
 using UnityEngine;
 using UnityEngine.Audio;
 
 namespace GeoTetra.Partak
 {
-    public class GameMusic : MonoBehaviour
+    public class GameMusic : SubscribableBehaviour
     {
         [SerializeField] private PartakStateRef _partakState;
         [SerializeField] private AudioMixerGroup _audioMixerGroup;
@@ -21,7 +22,7 @@ namespace GeoTetra.Partak
         
         public async Task Initialize()
         {
-            await _partakState.Cache();
+            await _partakState.Cache(this);
             
             _music = new AudioClip[_partakState.Service.PlayerCount(), 3];
             _audioSource = new AudioSource[_partakState.Service.PlayerCount(), 3];

@@ -69,7 +69,7 @@ namespace GeoTetra.Partak
 
         protected override async Task StartAsync()
         {
-            await _partakState.Cache();
+            await _partakState.Cache(this);
             
             if (_deserializeLevelOnStart)
             {
