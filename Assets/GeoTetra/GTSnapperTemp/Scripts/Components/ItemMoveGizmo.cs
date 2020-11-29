@@ -13,8 +13,6 @@ namespace GeoTetra.GTSnapper
         private Vector3 _startPosition;
         private Vector3 _priorPosition;
 
-        private Plane _plane;
-        
         public void OnBeginDrag(PointerEventData eventData)
         {
             _startPosition = eventData.pointerCurrentRaycast.worldPosition;

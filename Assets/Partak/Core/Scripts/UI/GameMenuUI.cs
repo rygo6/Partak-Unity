@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Threading.Tasks;
 using GeoTetra.GTBackend;
 using GeoTetra.GTPooling;
 using GeoTetra.GTUI;
@@ -68,12 +69,15 @@ namespace GeoTetra.Partak.UI
             _thumbsDown.onClick.AddListener(ThumbsDown);
         }
 
-        private async void Start()
+        protected override async Task StartAsync()
         {
             await _partakState.Cache();
+            await _sceneTransit.Cache();
             
             _pauseMessages = new[] {"Main Menu", "Skip Level", "Resume"};
             _pauseActions = new Action[] {MainMenu, Skip, Resume};
+
+            await base.StartAsync();
         }
 
         public override void OnTransitionInStart(UIRenderer uiRenderer)

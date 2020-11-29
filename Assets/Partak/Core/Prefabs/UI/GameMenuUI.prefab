@@ -1137,6 +1137,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5525812420337585833}
   - component: {fileID: 5525812420337585834}
+  - component: {fileID: 35267019567632847}
   m_Layer: 11
   m_Name: Line
   m_TagString: Untagged
@@ -1264,6 +1265,24 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &35267019567632847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5525812420337585832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8bb0d1ff32968846b36a7d14e5980c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _partakStateRef:
+    m_AssetGUID: 
+    m_SubObjectName: 
+  _playerIndex: 1
+  _constantUpdate: 0
+  _lineRenderer: {fileID: 5525812420337585834}
 --- !u!1 &5525812420351613269
 GameObject:
   m_ObjectHideFlags: 0
@@ -1365,11 +1384,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
   _playerIndex: 1
   _constantUpdate: 0
+  _image: {fileID: 5525812420351613265}
 --- !u!1 &5525812420352053571
 GameObject:
   m_ObjectHideFlags: 0
@@ -1592,11 +1612,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
   _playerIndex: 2
   _constantUpdate: 0
+  _image: {fileID: 5525812420417187122}
 --- !u!1 &5525812420431940537
 GameObject:
   m_ObjectHideFlags: 0
@@ -1778,11 +1799,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
   _playerIndex: 3
   _constantUpdate: 0
+  _image: {fileID: 5525812420479799496}
 --- !u!1 &5525812420563611745
 GameObject:
   m_ObjectHideFlags: 0
@@ -1870,11 +1892,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
   _playerIndex: 2
   _constantUpdate: 0
+  _image: {fileID: 5525812420563611804}
 --- !u!1 &5525812420637597063
 GameObject:
   m_ObjectHideFlags: 0
@@ -2033,11 +2056,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
   _playerIndex: 1
   _constantUpdate: 0
+  _image: {fileID: 5525812420660012947}
 --- !u!1 &5525812420665685311
 GameObject:
   m_ObjectHideFlags: 0
@@ -2125,11 +2149,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
   _playerIndex: 1
   _constantUpdate: 0
+  _image: {fileID: 5525812420665685306}
 --- !u!1 &5525812420735598989
 GameObject:
   m_ObjectHideFlags: 0
@@ -2217,11 +2242,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
   _playerIndex: 1
   _constantUpdate: 0
+  _image: {fileID: 5525812420735598984}
 --- !u!1 &5525812420752930625
 GameObject:
   m_ObjectHideFlags: 0
@@ -2309,11 +2335,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
   _playerIndex: 3
   _constantUpdate: 0
+  _image: {fileID: 5525812420752930684}
 --- !u!1 &5525812420782911297
 GameObject:
   m_ObjectHideFlags: 0
@@ -2443,6 +2470,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5525812420821584881}
   - component: {fileID: 5525812420821584882}
+  - component: {fileID: 683539232854051949}
   m_Layer: 11
   m_Name: Line
   m_TagString: Untagged
@@ -2570,6 +2598,24 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &683539232854051949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5525812420821584880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8bb0d1ff32968846b36a7d14e5980c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _partakStateRef:
+    m_AssetGUID: 
+    m_SubObjectName: 
+  _playerIndex: 0
+  _constantUpdate: 0
+  _lineRenderer: {fileID: 5525812420821584882}
 --- !u!1 &5525812420884098470
 GameObject:
   m_ObjectHideFlags: 0
@@ -2880,11 +2926,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
   _playerIndex: 3
   _constantUpdate: 0
+  _image: {fileID: 5525812421064567592}
 --- !u!1 &5525812421080467936
 GameObject:
   m_ObjectHideFlags: 0
@@ -2972,11 +3019,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
   _playerIndex: 2
   _constantUpdate: 0
+  _image: {fileID: 5525812421080467939}
 --- !u!1 &5525812421154566354
 GameObject:
   m_ObjectHideFlags: 0
@@ -3098,14 +3146,14 @@ MonoBehaviour:
   _componentContainer:
     m_AssetGUID: 54735e5a6ecfe0f4f8a088d0ed1c0234
     m_SubObjectName: 
-  _sceneLoadSystem:
-    m_AssetGUID: e7493b24c6eeb9c4f9473b3eb0a29207
+  _sceneTransit:
+    m_AssetGUID: 
     m_SubObjectName: 
   _analyticsRelay:
     m_AssetGUID: f20d2729430a81e4396945f2ba552f34
     m_SubObjectName: 
-  _gameState:
-    m_AssetGUID: 6d44730f364928b48b8810b26eaf3e43
+  _partakState:
+    m_AssetGUID: 
     m_SubObjectName: 
   _partakDatabase:
     m_AssetGUID: 00b19c5ddf295004aafaf7a05cc500a4
@@ -3215,11 +3263,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
   _playerIndex: 3
   _constantUpdate: 0
+  _image: {fileID: 5525812421202105132}
 --- !u!1 &5525812421355706798
 GameObject:
   m_ObjectHideFlags: 0
@@ -3349,6 +3398,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5525812421594168505}
   - component: {fileID: 5525812421594168506}
+  - component: {fileID: 8755710027814651589}
   m_Layer: 11
   m_Name: Line
   m_TagString: Untagged
@@ -3476,6 +3526,24 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &8755710027814651589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5525812421594168504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8bb0d1ff32968846b36a7d14e5980c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _partakStateRef:
+    m_AssetGUID: 
+    m_SubObjectName: 
+  _playerIndex: 2
+  _constantUpdate: 0
+  _lineRenderer: {fileID: 5525812421594168506}
 --- !u!1 &5525812421697468181
 GameObject:
   m_ObjectHideFlags: 0
@@ -3563,11 +3631,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
   _playerIndex: 3
   _constantUpdate: 0
+  _image: {fileID: 5525812421697468176}
 --- !u!1 &5525812421701524523
 GameObject:
   m_ObjectHideFlags: 0
@@ -3655,11 +3724,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
   _playerIndex: 0
   _constantUpdate: 0
+  _image: {fileID: 5525812421701524518}
 --- !u!1 &5525812421770609505
 GameObject:
   m_ObjectHideFlags: 0
@@ -3747,11 +3817,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
   _playerIndex: 1
   _constantUpdate: 0
+  _image: {fileID: 5525812421770609564}
 --- !u!1 &5525812421781596509
 GameObject:
   m_ObjectHideFlags: 0
@@ -3839,11 +3910,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
   _playerIndex: 0
   _constantUpdate: 0
+  _image: {fileID: 5525812421781596504}
 --- !u!1 &5525812421807744194
 GameObject:
   m_ObjectHideFlags: 0
@@ -3961,8 +4033,8 @@ MonoBehaviour:
   _componentContainer:
     m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
     m_SubObjectName: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakState:
+    m_AssetGUID: 
     m_SubObjectName: 
   _inputPads:
   - {fileID: 5525812420782911356}
@@ -4218,11 +4290,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
   _playerIndex: 2
   _constantUpdate: 0
+  _image: {fileID: 5525812421855972212}
 --- !u!1 &5525812421884051331
 GameObject:
   m_ObjectHideFlags: 0
@@ -4381,11 +4454,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
   _playerIndex: 0
   _constantUpdate: 0
+  _image: {fileID: 5525812421988077735}
 --- !u!1 &5525812422038209542
 GameObject:
   m_ObjectHideFlags: 0
@@ -4581,11 +4655,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
   _playerIndex: 0
   _constantUpdate: 0
+  _image: {fileID: 5525812422053567027}
 --- !u!1 &5525812422082414306
 GameObject:
   m_ObjectHideFlags: 0
@@ -4662,6 +4737,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5525812422084571430}
   - component: {fileID: 5525812422084571431}
+  - component: {fileID: 8934307938967621788}
   m_Layer: 11
   m_Name: Line
   m_TagString: Untagged
@@ -4789,6 +4865,24 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &8934307938967621788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5525812422084571429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8bb0d1ff32968846b36a7d14e5980c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _partakStateRef:
+    m_AssetGUID: 
+    m_SubObjectName: 
+  _playerIndex: 3
+  _constantUpdate: 0
+  _lineRenderer: {fileID: 5525812422084571431}
 --- !u!1 &5525812422096130104
 GameObject:
   m_ObjectHideFlags: 0
@@ -5143,11 +5237,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
   _playerIndex: 2
   _constantUpdate: 0
+  _image: {fileID: 5525812422243944961}
 --- !u!1 &5525812422258431548
 GameObject:
   m_ObjectHideFlags: 0
@@ -5235,11 +5330,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
   _playerIndex: 0
   _constantUpdate: 0
+  _image: {fileID: 5525812422258431551}
 --- !u!1 &7371836766329368424
 GameObject:
   m_ObjectHideFlags: 0

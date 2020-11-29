@@ -52,8 +52,8 @@ MonoBehaviour:
     - Service
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
-  - m_GUID: ee4750cb362a0e84ca03a025a3bb2107
-    m_Address: UIRenderer
+  - m_GUID: d68549652640a50458437dbb6bc40a26
+    m_Address: UIRendererService
     m_ReadOnly: 0
     m_SerializedLabels:
     - Service

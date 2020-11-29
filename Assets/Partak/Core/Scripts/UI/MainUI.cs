@@ -1,4 +1,5 @@
-﻿using GeoTetra.GTUI;
+﻿using System.Threading.Tasks;
+using GeoTetra.GTUI;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
@@ -15,7 +16,7 @@ namespace GeoTetra.Partak
         [SerializeField] private Button _optionButton;
         [SerializeField] private AssetReference _optionsUI;
 
-        protected override async void Awake()
+        protected override async Task StartAsync()
         {
             await _partakState.Cache();
             
@@ -32,6 +33,8 @@ namespace GeoTetra.Partak
             });
             InstantiateAndDisplayStackUIOnClick(_levelButton, _levelUI);
             InstantiateAndDisplayStackUIOnClick(_optionButton, _optionsUI);
+
+            await base.StartAsync();
         }
     }
 }

@@ -1,21 +1,20 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace GeoTetra.Partak
 {
-    public class ImagePlayerColor : MonoBehaviour
+    public class LinePlayerColor : MonoBehaviour
     {
         [SerializeField] private PartakStateRef _partakStateRef;
         [SerializeField] private int _playerIndex;
         [SerializeField] private bool _constantUpdate;
-        [SerializeField] private Image _image;
+        [SerializeField] private LineRenderer _lineRenderer;
 
         private async void Start()
         {
             await _partakStateRef.Cache();
             
-            _image.color = _image.color.SetRGB(_partakStateRef.Service.PlayerStates[_playerIndex].PlayerColor);
+            _lineRenderer.material.color = _lineRenderer.material.color.SetRGB(_partakStateRef.Service.PlayerStates[_playerIndex].PlayerColor);
             if (_constantUpdate)
             {
                 _partakStateRef.Service.PlayerStates[_playerIndex].ColorChanged += UpdateColor;
@@ -24,7 +23,7 @@ namespace GeoTetra.Partak
 
         private void OnValidate()
         {
-            if (_image == null) _image = GetComponent<Image>();
+            if (_lineRenderer == null) _lineRenderer = GetComponent<LineRenderer>();
         }
 
         private void OnDestroy()
@@ -34,8 +33,8 @@ namespace GeoTetra.Partak
 
         private void UpdateColor(Color color)
         {
-            if (!_image.color.RGBEquals(color))
-                _image.color = color;
+            if (!_lineRenderer.material.color.RGBEquals(color))
+                _lineRenderer.material.color = color;
         }
     }
 }

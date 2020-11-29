@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Threading.Tasks;
 using GeoTetra.GTBackend;
 using UnityEngine;
 using UnityEngine.UI;
@@ -60,9 +61,11 @@ namespace GeoTetra.Partak
             _validateButton.onClick.AddListener(OnValidateClick);
         }
 
-        private async void Start()
+        protected override async Task StartAsync()
         {
             await _partakState.Cache();
+            await _sceneTransit.Cache();
+            await base.StartAsync();
         }
 
         public override void OnTransitionInFinish()

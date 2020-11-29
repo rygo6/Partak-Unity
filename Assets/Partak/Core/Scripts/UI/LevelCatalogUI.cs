@@ -1,23 +1,11 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Amazon.DynamoDBv2.DocumentModel;
-using GeoTetra.GTBackend;
-using GeoTetra.GTCommon.Attributes;
-using GeoTetra.GTCommon.ScriptableObjects;
-using GeoTetra.GTPooling;
 using GeoTetra.GTUI;
 using UnityEngine.AddressableAssets;
-using UnityEngine.Analytics;
-using UnityEngine.SceneManagement;
-using Debug = UnityEngine.Debug;
 
 namespace GeoTetra.Partak
 {
@@ -53,9 +41,12 @@ namespace GeoTetra.Partak
             _emptyLevelClickActions = new Action[] {DownloadExistingLevel, CreateNewLevel, Cancel};
         }
 
-        private async void Start()
+        protected override async Task StartAsync()
         {
             await _partakState.Cache();
+            await _sceneTransit.Cache();
+
+            await base.StartAsync();
         }
 
         public override void OnTransitionInStart(UIRenderer uiRenderer)

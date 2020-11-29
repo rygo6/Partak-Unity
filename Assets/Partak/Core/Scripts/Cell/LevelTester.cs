@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Threading.Tasks;
 using GeoTetra.GTCommon.Components;
 using GeoTetra.GTPooling;
 using GeoTetra.GTSnapper;
@@ -82,7 +83,8 @@ namespace GeoTetra.Partak
             _itemRoot.UnHighlightAll();
             
             //reconstruct hiearchy
-            yield return new WaitUntil(() => _cellHiearchy.Initialize().IsCompleted);
+            Task hiearchyTask = _cellHiearchy.Initialize();
+            yield return new WaitUntil(() => hiearchyTask.IsCompleted);
             if (AnyCursorPositionBlocked())
             {
                 _itemDrop.gameObject.SetActive(true);
@@ -92,8 +94,10 @@ namespace GeoTetra.Partak
             }
 
             _cellGradient.StartThread();
-            yield return new WaitUntil(() => _cellParticleStore.Initialize().IsCompleted);
-            yield return new WaitUntil(() => _cellParticleSpawn.Initialize(_levelConfig.Datum.ParticleCount, _playerStates).IsCompleted);
+            Task storeTask = _cellParticleStore.Initialize();
+            yield return new WaitUntil(() => storeTask.IsCompleted);
+            Task spawnTask = _cellParticleSpawn.Initialize(_levelConfig.Datum.ParticleCount, _playerStates);
+            yield return new WaitUntil(() => spawnTask.IsCompleted);
             if (!_cellParticleSpawn.SpawnSuccessful)
             {
                 ClearTest();
@@ -101,7 +105,7 @@ namespace GeoTetra.Partak
                 yield break;
             }
             
-            _cursorStore.SetCursorsTo(_cursorStore.CursorPositions[0]);
+            _cursorStore.SetCursorsTo(_levelConfig.LevelBounds.center);
             _cellParticleEngine.StartThread(0);
 
             float counter = 0;
