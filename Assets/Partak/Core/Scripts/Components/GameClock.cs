@@ -1,11 +1,13 @@
 ﻿using System.Collections;
+using System.Threading.Tasks;
+using GeoTetra.GTCommon.Components;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using UnityEngine;
 
 namespace GeoTetra.Partak
 {
-    public class GameClock : MonoBehaviour
+    public class GameClock : SubscribableBehaviour
     {
         [SerializeField] private AnalyticsRelayReference _analyticsRelay;
         [SerializeField] private PartakStateRef _partakState;
@@ -22,9 +24,9 @@ namespace GeoTetra.Partak
         
         public float GameTime { get; private set; }
 
-        private async void Start()
+        protected override async Task StartAsync()
         {
-            await _partakState.Cache();
+            await _partakState.Cache(this);
             
             _initialColors = new Color[_partakState.Service.PlayerCount()];
             for (int i = 0; i < _initialColors.Length; ++i)
@@ -36,6 +38,8 @@ namespace GeoTetra.Partak
             _cellParticleStore.WinEvent += Win;
             Invoke(nameof(FastKillTimeOut), _fastKillTimeLimit);
             Invoke(nameof(TimeOut), _timeLimit);
+
+            await base.StartAsync();
         }
 
         private void Update()
@@ -43,7 +47,7 @@ namespace GeoTetra.Partak
             GameTime += Time.deltaTime;
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             if (_cellParticleStore != null) _cellParticleStore.WinEvent -= Win;
             _surroundMaterial.SetFloat(BlendProperty, 0f);
@@ -52,6 +56,7 @@ namespace GeoTetra.Partak
             {
                 _partakState.Service.PlayerStates[i].PlayerColor = _initialColors[i];
             }
+            base.OnDestroy();
         }
 
         public void SetTimeLimit(int minutes)

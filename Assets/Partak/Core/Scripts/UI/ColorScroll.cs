@@ -1,12 +1,12 @@
-﻿using GeoTetra.GTCommon.ScriptableObjects;
-using GeoTetra.GTPooling;
+﻿using System.Threading.Tasks;
+using GeoTetra.GTCommon.Components;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace GeoTetra.Partak
 {
-    public class ColorScroll : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+    public class ColorScroll : SubscribableBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
         [SerializeField] private PartakStateRef _partakStateRef;
 
@@ -27,13 +27,14 @@ namespace GeoTetra.Partak
             PlayerPrefs.SetFloat(PartakState.ColorScrollKey, _rawImage.uvRect.x);
         }
 
-        private void Start()
+        protected override async Task StartAsync()
         {
             _rawImage = GetComponent<RawImage>();
             _texture = (Texture2D) _rawImage.texture;
             var newRect = _rawImage.uvRect;
             newRect.x = PlayerPrefs.GetFloat(PartakState.ColorScrollKey, -.125f);
             _rawImage.uvRect = newRect;
+            await base.StartAsync();
         }
 
         public void StartScrollRight()
@@ -67,7 +68,7 @@ namespace GeoTetra.Partak
             var newRect = _rawImage.uvRect;
             newRect.x += amount;
             _rawImage.uvRect = newRect;
-            await _partakStateRef.Cache();
+            await _partakStateRef.Cache(this);
             _partakStateRef.Service.SetColors(_rawImage.uvRect.x);
         }
     }

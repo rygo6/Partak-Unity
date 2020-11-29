@@ -1,5 +1,7 @@
 using System.Collections;
 using System.IO;
+using System.Threading.Tasks;
+using GeoTetra.GTCommon.Components;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using UnityEngine;
@@ -7,7 +9,7 @@ using UnityEngine.UI;
 
 namespace GeoTetra.Partak.UI
 {
-    public class LevelGallery : MonoBehaviour
+    public class LevelGallery : SubscribableBehaviour
     {
         [SerializeField] private PartakStateRef _partakStateRef;
         [SerializeField] public Button _leftButton;
@@ -16,9 +18,9 @@ namespace GeoTetra.Partak.UI
         
         private Material _material;
 
-        private async void Awake()
+        protected override async Task StartAsync()
         {
-            await _partakStateRef.Cache();
+            await _partakStateRef.Cache(this);
             
             _leftButton.onClick.AddListener(GalleryLeft);
             _rightButton.onClick.AddListener(GalleryRight);
@@ -34,6 +36,8 @@ namespace GeoTetra.Partak.UI
                 
                 _material.SetTexture("_Texture1", image);
             }
+
+            await base.StartAsync();
         }
 
         private void GalleryRight()
@@ -102,7 +106,7 @@ namespace GeoTetra.Partak.UI
             return _partakStateRef.Service.LevelCatalogDatum.LevelIDs.Count;
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             _material.SetTexture("_Texture1", null);
             _material.SetTexture("_Texture2", null);

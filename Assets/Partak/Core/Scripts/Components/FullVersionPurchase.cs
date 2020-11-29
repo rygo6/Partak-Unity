@@ -1,10 +1,11 @@
 ﻿using System.Collections;
+using GeoTetra.GTCommon.Components;
 using UnityEngine;
 using UnityEngine.Purchasing;
 
 namespace GeoTetra.Partak
 {
-    public class FullVersionPurchase : MonoBehaviour
+    public class FullVersionPurchase : SubscribableBehaviour
     {
         [SerializeField]
         private PartakStateRef _partakState;
@@ -20,7 +21,7 @@ namespace GeoTetra.Partak
 
         private async void OnPurchasesComplete(Product product)
         {
-            await _partakState.Cache();
+            await _partakState.Cache(this);
             
             Debug.Log("Purchase Recieved " + product.definition.id);
             //May receive callback before all services init.

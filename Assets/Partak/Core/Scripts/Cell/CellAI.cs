@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using GeoTetra.GTCommon.Components;
 using GeoTetra.GTPooling;
 using GT.Threading;
 using UnityEngine;
@@ -6,9 +7,9 @@ using Random = System.Random;
 
 namespace GeoTetra.Partak
 {
-    public class CellAI : MonoBehaviour
+    public class CellAI : SubscribableBehaviour
     {
-        [SerializeField] private PartakStateRef _partakState;
+        [SerializeField] private  PartakStateRef _partakState;
         [SerializeField] private CursorStore _cursorStore;
         [SerializeField] private CellParticleStore _cellParticleStore;
         [SerializeField] private CellParticleSpawn _cellParticleSpawn;
@@ -31,7 +32,7 @@ namespace GeoTetra.Partak
         /// </summary>
         public async Task Initialize()
         {
-            await _partakState.Cache();
+            await _partakState.Cache(this);
             
             _aiCellParticleIndex = new int[_partakState.Service.PlayerCount()];
             _aiCursorTarget = new Vector3[_partakState.Service.PlayerCount()];
@@ -55,10 +56,11 @@ namespace GeoTetra.Partak
             if (Initialized) MoveAICursorUpdate();
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             if (_loopThread != null)
                 _loopThread.Stop();
+            base.OnDestroy();
         }
 
         public void MoveAICursorUpdate()

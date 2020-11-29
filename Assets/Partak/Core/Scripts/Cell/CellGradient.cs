@@ -2,6 +2,7 @@
 
 using System;
 using System.Threading.Tasks;
+using GeoTetra.GTCommon.Components;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using GT.Threading;
@@ -14,7 +15,7 @@ namespace GeoTetra.Partak
     ///     Calculates the gradient for all players.
     ///     All players are done in one class for ease of multithreading.
     /// </summary>
-    public class CellGradient : MonoBehaviour
+    public class CellGradient : SubscribableBehaviour
     {
         [SerializeField] private PartakStateRef _partakState;
         [SerializeField] private CellParticleStore _cellParticleStore;
@@ -63,13 +64,13 @@ namespace GeoTetra.Partak
 
         public async Task Initialize(bool startThread)
         {
-            await _partakState.Cache();
+            await _partakState.Cache(this);
             await Initialize(startThread, _partakState.Service.PlayerStates);
         }
 
         public async Task Initialize(bool startThread, PartakState.PlayerState[] playerStates)
         {
-            await _partakState.Cache();
+            await _partakState.Cache(this);
             
             _playerStates = playerStates;
             PriorStartCell = new CellGroup[_playerStates.Length];
@@ -86,10 +87,11 @@ namespace GeoTetra.Partak
             _loopThread.Start();
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             if (_loopThread != null)
                 _loopThread.Stop();
+            base.OnDestroy();
         }
 
         private void CalculateGradient()

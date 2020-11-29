@@ -55,7 +55,7 @@ namespace GeoTetra.Partak
 
         private async void Initialize()
         {
-            await _partakSate.Cache();
+            await _partakSate.Cache(this);
             
             _playerStates = new PartakState.PlayerState[TestPlayerCount];
             for (int i = 0; i < _playerStates.Length; ++i)

@@ -1,11 +1,12 @@
 ﻿using System.Threading.Tasks;
+using GeoTetra.GTCommon.Components;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using UnityEngine;
 
 namespace GeoTetra.Partak
 {
-    public class CellParticleDisplay : MonoBehaviour
+    public class CellParticleDisplay : SubscribableBehaviour
     {
         [SerializeField] private PartakStateRef _partakState;
         [SerializeField] private CellHiearchy _cellHiearchy;
@@ -19,7 +20,7 @@ namespace GeoTetra.Partak
 
         public async Task Initialize()
         {
-            await _partakState.Cache();
+            await _partakState.Cache(this);
             
             int systemCount = _cellHiearchy.CellGroupGrids.Length;
 

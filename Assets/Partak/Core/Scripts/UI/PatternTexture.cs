@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections;
+using System.Threading.Tasks;
+using GeoTetra.GTCommon.Components;
 using GeoTetra.GTCommon.ScriptableObjects;
 using GeoTetra.GTPooling;
 using UnityEngine;
 
 namespace GeoTetra.Partak
 {
-    public class PatternTexture : MonoBehaviour
+    public class PatternTexture : SubscribableBehaviour
     {
         [SerializeField] private PartakStateRef _partakState;
         [SerializeField] private Material _applyMaterial;
@@ -17,26 +19,29 @@ namespace GeoTetra.Partak
         private Texture2D _texture2D;
         private Coroutine _updateCoroutine;
 
-        private async void Awake()
+        protected override async Task StartAsync()
         {
             _texture2D = new Texture2D(TextureSize, TextureSize, TextureFormat.RGBA32, false, false);
             _applyMaterial.mainTexture = _texture2D;
             
-            await _partakState.Cache();
+            await _partakState.Cache(this);
             
             foreach (PartakState.PlayerState playerState in _partakState.Service.PlayerStates)
             {
                 playerState.ColorChanged += UpdateTexture;
             }
             StartCoroutine(SetTexture());
+
+            await base.StartAsync();
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             foreach (PartakState.PlayerState playerState in _partakState.Service.PlayerStates)
             {
                 playerState.ColorChanged -= UpdateTexture;
             }
+            base.OnDestroy();
         }
 
         private void UpdateTexture(Color color)

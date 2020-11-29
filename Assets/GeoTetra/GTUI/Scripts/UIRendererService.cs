@@ -19,17 +19,13 @@ namespace GeoTetra.GTUI
         
         public UIRenderer OverlayUI { get; private set; }
         
-        protected override async Task OnServiceAwake()
+        protected override async Task OnServiceStart()
         {
             OverlayUI = Instantiate(_uiRendererPrefab);
             //Await Two frames for Awake and Start
             await Task.Yield();
             await Task.Yield();
-        }
-
-        protected override void OnServiceEnd()
-        {
-            
+            await base.OnServiceStart();
         }
     }
 }

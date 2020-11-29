@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using System.Threading.Tasks;
-using GeoTetra.GTPooling;
+﻿using System.Threading.Tasks;
+using GeoTetra.GTCommon.Components;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
 
 namespace GeoTetra.GTUI
 {
-    public class DisplayUIOnStart : MonoBehaviour
+    public class DisplayUIOnStart : SubscribableBehaviour
     {
         [SerializeField]
         private UIRendererServiceRef _uiRendererService;
@@ -18,9 +17,9 @@ namespace GeoTetra.GTUI
         [SerializeField] private float _delay = .5f;
         [SerializeField] UnityEvent _transitionFinished = new UnityEvent();
 
-        private async void Awake()
+        protected override async Task StartAsync()
         {
-            await _uiRendererService.Cache();
+            await _uiRendererService.Cache(this);
             await Task.Delay((int)(_delay * 1000));
             if (_onlyDisplayIfEmpty)
             {
@@ -30,6 +29,7 @@ namespace GeoTetra.GTUI
             {
                 _uiRendererService.Service.OverlayUI.InstantiateAndDisplayStackUI(_stackUIReference, _transitionType, OnTransitionFinish);
             }
+            await base.StartAsync();
         }
 
         private void OnTransitionFinish()

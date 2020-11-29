@@ -63,8 +63,8 @@ namespace GeoTetra.Partak
 
         protected override async Task StartAsync()
         {
-            await _partakState.Cache();
-            await _sceneTransit.Cache();
+            await _partakState.Cache(this);
+            await _sceneTransit.Cache(this);
             await base.StartAsync();
         }
 

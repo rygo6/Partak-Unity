@@ -8,11 +8,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2.DocumentModel;
 using GeoTetra.GTBackend;
-using GeoTetra.GTPooling;
 using GeoTetra.GTUI;
 using UnityEngine.AddressableAssets;
-using UnityEngine.Playables;
-using UnityEngine.Purchasing;
 
 namespace GeoTetra.Partak
 {
@@ -61,7 +58,7 @@ namespace GeoTetra.Partak
         
         protected override async Task StartAsync()
         {
-            await _partakState.Cache();
+            await _partakState.Cache(this);
             await base.StartAsync();
         }
 

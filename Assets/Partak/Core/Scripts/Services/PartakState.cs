@@ -96,7 +96,7 @@ namespace GeoTetra.Partak
             }
         }
         
-        protected override async Task OnServiceAwake()
+        protected override async Task OnServiceStart()
         {
             _levelIndex = PlayerPrefs.GetInt("LevelIndex", 0);
 
@@ -118,13 +118,10 @@ namespace GeoTetra.Partak
             _levelCatalogDatum = LevelCatalogDatum.LoadLevelCatalogDatum();
 
             SetColors(PlayerPrefs.GetFloat(ColorScrollKey, -.125f));
+
+            await base.OnServiceStart();
         }
 
-        protected override void OnServiceEnd()
-        {
-
-        }
-        
 
         public void EnableFullVersion()
         {
