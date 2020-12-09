@@ -28,13 +28,13 @@ namespace GeoTetra.Partak
         {
             await _partakState.Cache(this);
             
-            _initialColors = new Color[_partakState.Service.PlayerCount()];
+            _initialColors = new Color[_partakState.Ref.PlayerCount()];
             for (int i = 0; i < _initialColors.Length; ++i)
             {
-                _initialColors[i] = _partakState.Service.PlayerStates[i].PlayerColor;
+                _initialColors[i] = _partakState.Ref.PlayerStates[i].PlayerColor;
             }
             
-            SetTimeLimit(_partakState.Service.TimeLimitMinutes);
+            SetTimeLimit(_partakState.Ref.TimeLimitMinutes);
             _cellParticleStore.WinEvent += Win;
             Invoke(nameof(FastKillTimeOut), _fastKillTimeLimit);
             Invoke(nameof(TimeOut), _timeLimit);
@@ -52,9 +52,9 @@ namespace GeoTetra.Partak
             if (_cellParticleStore != null) _cellParticleStore.WinEvent -= Win;
             _surroundMaterial.SetFloat(BlendProperty, 0f);
             _surroundMaterial.SetTexture(Texture2Property, null);
-            for (int i = 0; i < _partakState.Service.PlayerCount(); ++i)
+            for (int i = 0; i < _partakState.Ref.PlayerCount(); ++i)
             {
-                _partakState.Service.PlayerStates[i].PlayerColor = _initialColors[i];
+                _partakState.Ref.PlayerStates[i].PlayerColor = _initialColors[i];
             }
             base.OnDestroy();
         }
@@ -92,10 +92,10 @@ namespace GeoTetra.Partak
             while (true)
             {
                 winningPlayer = _cellParticleStore.WinningPlayer();
-                _partakState.Service.PlayerStates[winningPlayer].PlayerColor += new Color(.3f, .3f, .3f, .3f);
+                _partakState.Ref.PlayerStates[winningPlayer].PlayerColor += new Color(.3f, .3f, .3f, .3f);
                 yield return null;
                 yield return null;
-                _partakState.Service.PlayerStates[winningPlayer].PlayerColor = _initialColors[winningPlayer];
+                _partakState.Ref.PlayerStates[winningPlayer].PlayerColor = _initialColors[winningPlayer];
                 yield return new WaitForSeconds(0.4f);
             }
         }

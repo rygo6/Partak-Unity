@@ -65,7 +65,7 @@ namespace GeoTetra.Partak
         public async Task Initialize(bool startThread)
         {
             await _partakState.Cache(this);
-            await Initialize(startThread, _partakState.Service.PlayerStates);
+            await Initialize(startThread, _partakState.Ref.PlayerStates);
         }
 
         public async Task Initialize(bool startThread, PartakState.PlayerState[] playerStates)
@@ -96,7 +96,7 @@ namespace GeoTetra.Partak
 
         private void CalculateGradient()
         {
-            for (int playerIndex = 0; playerIndex < _partakState.Service.PlayerCount(); playerIndex++)
+            for (int playerIndex = 0; playerIndex < _partakState.Ref.PlayerCount(); playerIndex++)
             {
                 if (_playerStates[playerIndex].PlayerMode != PlayerMode.None)
                 {

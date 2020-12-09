@@ -28,13 +28,13 @@ namespace GeoTetra.Partak
         private void OnStartClick()
         {
             int activeCount = 0;
-            for (int i = 0; i < _partakStateRef.Service.PlayerCount(); ++i)
+            for (int i = 0; i < _partakStateRef.Ref.PlayerCount(); ++i)
             {
-                if (_partakStateRef.Service.PlayerStates[i].PlayerMode != PlayerMode.None)
+                if (_partakStateRef.Ref.PlayerStates[i].PlayerMode != PlayerMode.None)
                     activeCount++;
             }
 
-            string levelId = _partakStateRef.Service.GetSelectedLevelId();
+            string levelId = _partakStateRef.Ref.GetSelectedLevelId();
 
             if (activeCount < 2)
             {
@@ -53,7 +53,7 @@ namespace GeoTetra.Partak
         private async void Load()
         {
             await _sceneTransitRef.Cache(this);
-            await _sceneTransitRef.Service.Load(_mainMenuScene, _gameSessionScene);
+            await _sceneTransitRef.Ref.Load(_mainMenuScene, _gameSessionScene);
         }
     }
 }

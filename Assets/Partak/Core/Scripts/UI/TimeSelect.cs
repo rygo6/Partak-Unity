@@ -23,7 +23,7 @@ namespace GeoTetra.Partak
             await _partakStateRef.Cache(this);
             _minutes = PlayerPrefs.GetInt("GameTime", 3);
             _minutesText.text = _minutes.ToString();
-            _partakStateRef.Service.TimeLimitMinutes = _minutes;
+            _partakStateRef.Ref.TimeLimitMinutes = _minutes;
             await base.StartAsync();
         }
 
@@ -42,7 +42,7 @@ namespace GeoTetra.Partak
                     break;
             }
 
-            _partakStateRef.Service.TimeLimitMinutes = _minutes;
+            _partakStateRef.Ref.TimeLimitMinutes = _minutes;
             _minutesText.text = _minutes.ToString();
             PlayerPrefs.SetInt("GameTime", _minutes);
         }

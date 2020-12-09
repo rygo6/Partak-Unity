@@ -18,12 +18,12 @@ namespace GeoTetra.Partak
         public async void AddTransitionListener()
         {
             await _uiRendererService.Cache(this);
-            _uiRendererService.Service.OverlayUI.StackTransitionOccured.AddListener(ToggleCubePerspective);
+            _uiRendererService.Ref.OverlayUI.StackTransitionOccured.AddListener(ToggleCubePerspective);
         }
 
         protected override void OnDestroy()
         {
-            _uiRendererService.Service.OverlayUI.StackTransitionOccured.RemoveListener(ToggleCubePerspective);
+            if (_uiRendererService) _uiRendererService.Ref.OverlayUI.StackTransitionOccured.RemoveListener(ToggleCubePerspective);
         }
 
         public void ToggleCubePerspective()

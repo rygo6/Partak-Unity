@@ -31,7 +31,7 @@ namespace GeoTetra.Partak
         private IEnumerator EnableFullVersion()
         {
             yield return new WaitUntil(() => _partakState.IsDone);
-            _partakState.Service.EnableFullVersion();
+            _partakState.Ref.EnableFullVersion();
         }
 
         private void OnPurchaseFail(Product product, PurchaseFailureReason reason)

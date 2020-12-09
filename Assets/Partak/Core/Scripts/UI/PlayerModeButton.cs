@@ -35,7 +35,7 @@ namespace GeoTetra.Partak.UI
             await _partakStateRef.Cache(this);
             PlayerMode mode = (PlayerMode) PlayerPrefs.GetInt("PlayerMode" + _playerIndex);
             _text.text = mode.ToString();
-            _partakStateRef.Service.PlayerStates[_playerIndex].PlayerMode = mode;
+            _partakStateRef.Ref.PlayerStates[_playerIndex].PlayerMode = mode;
         }
         
         private void OnValidate()
@@ -57,13 +57,13 @@ namespace GeoTetra.Partak.UI
                 () => { SetPlayerMode(PlayerMode.Comp); },
                 () => { SetPlayerMode(PlayerMode.None); }
             };
-            _parentStackUI.CurrentlyRenderedBy.DisplaySelectionModal("Player Type:", messages, actions, (int)  _partakStateRef.Service.PlayerStates[_playerIndex].PlayerMode);
+            _parentStackUI.CurrentlyRenderedBy.DisplaySelectionModal("Player Type:", messages, actions, (int)  _partakStateRef.Ref.PlayerStates[_playerIndex].PlayerMode);
         }
 
         private void SetPlayerMode(PlayerMode mode)
         {
             GetComponent<Button>().GetComponentInChildren<Text>().text = mode.ToString();
-            _partakStateRef.Service.PlayerStates[_playerIndex].PlayerMode = mode;
+            _partakStateRef.Ref.PlayerStates[_playerIndex].PlayerMode = mode;
             PlayerPrefs.SetInt("PlayerMode" + _playerIndex, (int) mode);
         }
     }

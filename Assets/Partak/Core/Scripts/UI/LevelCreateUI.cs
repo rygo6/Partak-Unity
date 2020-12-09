@@ -78,7 +78,7 @@ namespace GeoTetra.Partak
             _levelTester = await _componentContainer.AwaitRegister<LevelTester>();
             _itemCatalogUI.Initialize();
 
-            _editingLevelId = _partakState.Service.GetEditingLevelId();
+            _editingLevelId = _partakState.Ref.GetEditingLevelId();
             string levelPath = LevelUtility.LevelPath(_editingLevelId);
             
             if (!System.IO.File.Exists(levelPath))
@@ -127,14 +127,14 @@ namespace GeoTetra.Partak
         private void OnCloseClick()
         {
             OnBackClicked();
-            _sceneTransit.Service.Load(_newLevelScene, _mainMenuScene);
+            _sceneTransit.Ref.Load(_newLevelScene, _mainMenuScene);
             _analyticsRelay.Service.CreateLevelCancelled();
         }
 
         private void SerializeLevel()
         {
             _levelConfig.Serialize(_editingLevelId, true);
-            _partakState.Service.AddLevelId(_editingLevelId);
+            _partakState.Ref.AddLevelId(_editingLevelId);
         }
 
         private void SaveLevel()

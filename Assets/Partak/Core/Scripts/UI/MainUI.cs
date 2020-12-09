@@ -22,7 +22,7 @@ namespace GeoTetra.Partak
             
             _playButton.onClick.AddListener(() =>
             {
-                if (_partakState.Service.LevelCatalogDatum.LevelIDs.Count == 0)
+                if (_partakState.Ref.LevelCatalogDatum.LevelIDs.Count == 0)
                 {
                     CurrentlyRenderedBy.DisplayMessageModal("You have no levels loaded! Go into the level editor to download or create levels.");
                 }

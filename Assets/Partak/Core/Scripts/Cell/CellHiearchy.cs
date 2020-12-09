@@ -47,9 +47,9 @@ namespace GeoTetra.Partak
             Vector2Int rootDimension = _levelConfig.Datum.LevelSize;
             ParticleCellGrid = new ParticleCellGrid(rootDimension);
             CellGroupGrids = new CellGroupGrid[ParentCellGridLevel];
-            CellGroupGrids[0] = new CellGroupGrid(ParticleCellGrid, _partakState.Service.PlayerCount());
+            CellGroupGrids[0] = new CellGroupGrid(ParticleCellGrid, _partakState.Ref.PlayerCount());
             for (int i = 1; i < CellGroupGrids.Length; ++i)
-                CellGroupGrids[i] = new CellGroupGrid(CellGroupGrids[i - 1], _partakState.Service.PlayerCount());
+                CellGroupGrids[i] = new CellGroupGrid(CellGroupGrids[i - 1], _partakState.Ref.PlayerCount());
 
             int combinedFlatCellGroupCount = 0;
             for (int i = 0; i < CellGroupGrids.Length; ++i)

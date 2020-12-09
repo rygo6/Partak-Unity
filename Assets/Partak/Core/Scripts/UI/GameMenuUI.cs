@@ -124,7 +124,7 @@ namespace GeoTetra.Partak.UI
         private void ShowPauseMenu()
         {
             CurrentlyRenderedBy.DisplaySelectionModal("", _pauseMessages, _pauseActions, 0);
-            _componentContainer.Service.Get<CellParticleEngine>().Pause = true;
+            _componentContainer.Ref.Get<CellParticleEngine>().Pause = true;
         }
 
         private void ShowWinMenu()
@@ -138,14 +138,14 @@ namespace GeoTetra.Partak.UI
 
         private void Resume()
         {
-            _componentContainer.Service.Get<CellParticleEngine>().Pause = false;
+            _componentContainer.Ref.Get<CellParticleEngine>().Pause = false;
         }
 
         private void MainMenu()
         {
             CurrentlyRenderedBy.Flush(() =>
             {
-                _sceneTransit.Service.Load(_gameSessionScene, _mainMenuScene);
+                _sceneTransit.Ref.Load(_gameSessionScene, _mainMenuScene);
             }, UIRenderer.TransitionType.Fade);
         }
 
@@ -154,29 +154,29 @@ namespace GeoTetra.Partak.UI
             _analyticsRelay.Service.GamePlayerCount();
             CurrentlyRenderedBy.Flush(() =>
             {
-                _sceneTransit.Service.Load(_gameSessionScene, _gameSessionScene);
+                _sceneTransit.Ref.Load(_gameSessionScene, _gameSessionScene);
             }, UIRenderer.TransitionType.Fade);
         }
 
         private void Skip()
         {
-            _partakState.Service.LevelIndex++;
+            _partakState.Ref.LevelIndex++;
             _analyticsRelay.Service.GamePlayerCount();
             
             CurrentlyRenderedBy.Flush(() =>
             {
-                _sceneTransit.Service.Load(_gameSessionScene, _gameSessionScene);
+                _sceneTransit.Ref.Load(_gameSessionScene, _gameSessionScene);
             }, UIRenderer.TransitionType.Fade);
         }
 
         private void Next()
         {
-            _partakState.Service.LevelIndex++;
+            _partakState.Ref.LevelIndex++;
             _analyticsRelay.Service.GamePlayerCount();
             
             CurrentlyRenderedBy.Flush(() =>
             {
-                _sceneTransit.Service.Load(_gameSessionScene, _gameSessionScene);
+                _sceneTransit.Ref.Load(_gameSessionScene, _gameSessionScene);
             }, UIRenderer.TransitionType.Fade);
         }
     }

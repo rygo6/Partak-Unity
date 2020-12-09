@@ -79,19 +79,19 @@ namespace GeoTetra.Partak
 
         private Task<bool> DownloadNextSet(List<List<LocalLevelDatum>> datumLists, CancellationToken cancellationToken)
         {
-            if (!_partakState.Service.FullVersion && _catalogDatumIndex >= 3)
+            if (!_partakState.Ref.FullVersion && _catalogDatumIndex >= 3)
             {
                 return Task.FromResult(true);
             }
             
-            if (_catalogDatumIndex >= _partakState.Service.LevelCatalogDatum.LevelIDs.Count) return Task.FromResult(true);
+            if (_catalogDatumIndex >= _partakState.Ref.LevelCatalogDatum.LevelIDs.Count) return Task.FromResult(true);
             
             List<LocalLevelDatum> levelDatumList = new List<LocalLevelDatum>();
             for (int i = 0; i < _levelButtonScrollRect.ColumnCount; ++i)
             {
-                if (_catalogDatumIndex >= _partakState.Service.LevelCatalogDatum.LevelIDs.Count) break;
+                if (_catalogDatumIndex >= _partakState.Ref.LevelCatalogDatum.LevelIDs.Count) break;
 
-                string levelPath = LevelUtility.LevelPath(_partakState.Service.LevelCatalogDatum.LevelIDs[_catalogDatumIndex]);
+                string levelPath = LevelUtility.LevelPath(_partakState.Ref.LevelCatalogDatum.LevelIDs[_catalogDatumIndex]);
                 string json = File.ReadAllText(levelPath);
                 LocalLevelDatum levelDatum = JsonUtility.FromJson<LocalLevelDatum>(json);
                 levelDatumList.Add(levelDatum);
@@ -99,7 +99,7 @@ namespace GeoTetra.Partak
             }
             datumLists.Add(levelDatumList);
 
-            return Task.FromResult(_catalogDatumIndex >= _partakState.Service.LevelCatalogDatum.LevelIDs.Count);
+            return Task.FromResult(_catalogDatumIndex >= _partakState.Ref.LevelCatalogDatum.LevelIDs.Count);
         }
 
         private void FinalButton(LevelButton levelButton)
@@ -108,7 +108,7 @@ namespace GeoTetra.Partak
             levelButton.Image.texture = null;
             levelButton.Button.interactable = true;
             
-            if (!_partakState.Service.FullVersion && _catalogDatumIndex >= 3)
+            if (!_partakState.Ref.FullVersion && _catalogDatumIndex >= 3)
             {
                 levelButton.Text.text = "Unlock\nLevel Slot";
             }
@@ -124,7 +124,7 @@ namespace GeoTetra.Partak
             
             if (levelButton.LevelDatum == null)
             {
-                if (!_partakState.Service.FullVersion && _catalogDatumIndex >= 3)
+                if (!_partakState.Ref.FullVersion && _catalogDatumIndex >= 3)
                 {
                     PurchaseFullVersion();
 //                    CurrentlyRenderedBy.DisplayMessageModal("Purchase full version to unlock unlimited level slots, unlock the ability to edit levels and disable all ads.", PurchaseFullVersion);
@@ -156,40 +156,40 @@ namespace GeoTetra.Partak
             string imagePath = LevelUtility.LevelImagePath(_selectedLevelButton.LevelDatum.LevelID);
             System.IO.File.Delete(levelPath);
             System.IO.File.Delete(imagePath);
-            _partakState.Service.RemoveLevelId(_selectedLevelButton.LevelDatum.LevelID);
+            _partakState.Ref.RemoveLevelId(_selectedLevelButton.LevelDatum.LevelID);
             _catalogDatumIndex = 0;
             _levelButtonScrollRect.Clear();
             _levelButtonScrollRect.Initialize(DownloadNextSet, PopulateLevelButton, FinalButton);
             _analyticsRelay.Service.LevelDeleted();
             
             //Reset level index so play menu doesn't load on empty level.
-            _partakState.Service.LevelIndex = 0;
+            _partakState.Ref.LevelIndex = 0;
         }
         
         private void EditLevel()
         {
-            _partakState.Service.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
-            _sceneTransit.Service.Load(_mainMenuScene, _newLevelScene);
+            _partakState.Ref.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
+            _sceneTransit.Ref.Load(_mainMenuScene, _newLevelScene);
             
             //Reset level index so play menu doesn't load on empty level.
-            _partakState.Service.LevelIndex = 0;
+            _partakState.Ref.LevelIndex = 0;
         }
         
         private void DownloadExistingLevel()
         {
-            _partakState.Service.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
+            _partakState.Ref.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
             CurrentlyRenderedBy.InstantiateAndDisplayStackUI(_levelDownloadUI);
             _analyticsRelay.Service.DownloadLevelOpened();
         }
 
         private void CreateNewLevel()
         {
-            _partakState.Service.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
-            _sceneTransit.Service.Load(_mainMenuScene, _newLevelScene);
+            _partakState.Ref.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
+            _sceneTransit.Ref.Load(_mainMenuScene, _newLevelScene);
             _analyticsRelay.Service.CreateLevelOpened();
             
             //Reset level index so play menu doesn't load on empty level.
-            _partakState.Service.LevelIndex = 0;
+            _partakState.Ref.LevelIndex = 0;
         }
     }
 }
