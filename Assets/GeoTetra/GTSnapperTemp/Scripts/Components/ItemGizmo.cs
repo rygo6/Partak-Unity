@@ -9,10 +9,13 @@ namespace GeoTetra.GTSnapper
     public class ItemGizmo : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         [SerializeField] private MeshRenderer _meshRenderer;
+        [SerializeField] private Collider _collider;
         
         protected ItemGizmoRoot _parentItemGizmoRoot;
         protected Plane _plane;
         private Color _originalColor;
+
+        public Collider Collider => _collider;
 
         private void Awake()
         {
@@ -27,6 +30,7 @@ namespace GeoTetra.GTSnapper
         private void OnValidate()
         {
             if (_meshRenderer == null) _meshRenderer = GetComponent<MeshRenderer>();
+            if (_collider == null) _collider = GetComponent<Collider>();
         }
         
         public void Initialize(ItemGizmoRoot parentItemGizmoRoot)
@@ -34,14 +38,16 @@ namespace GeoTetra.GTSnapper
             _parentItemGizmoRoot = parentItemGizmoRoot;
         }
 
-        public void OnPointerDown(PointerEventData eventData)
+        public virtual void OnPointerDown(PointerEventData eventData)
         {
             _meshRenderer.sharedMaterial.color = _parentItemGizmoRoot.HighlightColor;
+            _parentItemGizmoRoot.SetIgnoreRaycastLayer();
         }
 
-        public void OnPointerUp(PointerEventData eventData)
+        public virtual void OnPointerUp(PointerEventData eventData)
         {
             _meshRenderer.sharedMaterial.color = _originalColor;
+            _parentItemGizmoRoot.SetItemGizmoLayer();
         }
 
         protected Vector3 RaycastPlane(Plane pane, PointerEventData eventData)

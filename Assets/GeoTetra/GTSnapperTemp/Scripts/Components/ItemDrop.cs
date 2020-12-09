@@ -1,4 +1,4 @@
-//#define LOG
+#define LOG
 
 using UnityEngine;
 using System.Collections.Generic;
@@ -237,9 +237,10 @@ namespace GeoTetra.GTSnapper
 			Debug.Log( "OnPointerEnterAttached " + this.name );
 #endif
 
-            if (data.pointerPress != null)
+            if (_item.ItemRoot.CurrentlyUsedItem != null)
             {
-                Item item = data.pointerPress.GetComponent<Item>(); //TODO nonalloc
+                Item item = _item.ItemRoot.CurrentlyUsedItem;
+                // Item item = data.pointerPress.GetComponent<Item>(); //TODO nonalloc
                 if (item != null && CanAttach(item.TagArray) ||
                     item != null && ContainsItem(item))
                 {

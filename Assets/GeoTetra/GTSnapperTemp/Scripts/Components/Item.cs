@@ -1,4 +1,4 @@
-//#define LOG
+// #define LOG
 
 using System;
 using UnityEngine;
@@ -101,6 +101,7 @@ namespace GeoTetra.GTSnapper
         public void Initialize(ItemRoot itemRoot, ItemReference itemReference, InputCatcher inputCatcher)
         {
             ItemRoot = itemRoot;
+            ItemRoot.ItemCount++;
             transform.SetParent(ItemRoot.transform);
             ItemReference = itemReference;
             _inputCatcher = inputCatcher;
@@ -113,6 +114,7 @@ namespace GeoTetra.GTSnapper
 
         public void Deinitialize()
         {
+            ItemRoot.ItemCount--;
             if (ItemReference != null)
             {
 //                Debug.Log("Releasing " + ItemReference.AssetPrefabName);
@@ -231,6 +233,7 @@ namespace GeoTetra.GTSnapper
 #if LOG
 			Debug.Log( "OnPointerDown " + this.name + " " + State);
 #endif
+            ItemRoot.CurrentlyUsedItem = this;
 
             ItemUtility.StateSwitch(data, State,
                 OnPointerDownAttached,
@@ -312,6 +315,8 @@ namespace GeoTetra.GTSnapper
                 OnPointerUpInstantiate,
                 OnPointerUpNoInstantiate
             );
+            
+            ItemRoot.CurrentlyUsedItem = null;
         }
 
         private void OnPointerUpAttached(PointerEventData data)
