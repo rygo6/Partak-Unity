@@ -34,6 +34,7 @@ namespace GeoTetra.GTSnapper
 
         protected override async Task StartAsync()
         {
+            _scrollItemHighlight.enabled = false;
             await _componentContainer.CacheAndRegister(this);
             await base.StartAsync();
         }

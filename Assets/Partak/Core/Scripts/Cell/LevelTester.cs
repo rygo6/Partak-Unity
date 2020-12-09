@@ -116,7 +116,7 @@ namespace GeoTetra.Partak
             }
 
             _cellGradient.StartThread();
-            Task storeTask = _cellParticleStore.Initialize();
+            Task storeTask = _cellParticleStore.Initialize(_playerStates);
             yield return new WaitUntil(() => storeTask.IsCompleted);
             Task spawnTask = _cellParticleSpawn.Initialize(_levelConfig.Datum.ParticleCount, _playerStates);
             yield return new WaitUntil(() => spawnTask.IsCompleted);

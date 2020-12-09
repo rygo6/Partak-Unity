@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GeoTetra.GTCommon.Components;
-using GeoTetra.GTCommon.ScriptableObjects;
-using GeoTetra.GTPooling;
 using UnityEngine;
 
 namespace GeoTetra.Partak
@@ -26,20 +23,13 @@ namespace GeoTetra.Partak
             await Initialize(_levelConfig.Datum.ParticleCount, _partakState.Ref.PlayerStates);
         }
 
-        public async Task Initialize(int particleCount, PartakState.PlayerState[] PlayerStates)
+        public async Task Initialize(int particleCount, PartakState.PlayerState[] playerStates)
         {
             SpawnSuccessful = true;
             
-            int playerCount = PlayerStates.Length;
-            int activePlayerCount = 0;
-            for (int i = 0; i < PlayerStates.Length; ++i)
-            {
-                if (PlayerStates[i].PlayerMode != PlayerMode.None)
-                {
-                    activePlayerCount++;
-                }
-            }
-            
+            int playerCount = playerStates.Length;
+            int activePlayerCount = playerStates.Count(state => state.PlayerMode != PlayerMode.None);
+
             List<Task> spawnYieldList = new List<Task>();
             int spawnCount = particleCount / activePlayerCount;
             int startIndex = 0;
@@ -47,7 +37,7 @@ namespace GeoTetra.Partak
             bool trailingAdded = false;
             for (int playerIndex = 0; playerIndex < playerCount; ++playerIndex)
             {
-                if (PlayerStates[playerIndex].PlayerMode != PlayerMode.None)
+                if (playerStates[playerIndex].PlayerMode != PlayerMode.None)
                 {
                     //in odd numbers, 3, first player may need a few extra particles to produce an even number of particles and have the system work
                     if (!trailingAdded)

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using GeoTetra.GTCommon.Components;
 using GeoTetra.GTPooling;
 using UnityEngine;
+using System.Linq;
 
 namespace GeoTetra.Partak
 {
@@ -29,15 +30,24 @@ namespace GeoTetra.Partak
         private bool _winEventFired;
 
         public CellParticle[] CellParticleArray { get; private set; }
-        
+
         public async Task Initialize()
+        {
+            await _partakState.Cache(this);
+            await Initialize(_partakState.Ref.PlayerStates);
+        }
+
+        public async Task Initialize(PartakState.PlayerState[] playerStates)
         {
             await _partakState.Cache(this);
             
             PlayerLost = new bool[_partakState.Ref.PlayerCount()];
             PlayerParticleCount = new int[_partakState.Ref.PlayerCount()];
             CellParticleArray = new CellParticle[_levelConfig.Datum.ParticleCount];
-            _startParticleCount = _levelConfig.Datum.ParticleCount / _partakState.Ref.ActivePlayerCount();
+            
+            int activePlayerCount = playerStates.Count(state => state.PlayerMode != PlayerMode.None);
+            
+            _startParticleCount = _levelConfig.Datum.ParticleCount / activePlayerCount;
             
             if (_calcualtePercentagesCoroutine != null) {StopCoroutine(_calcualtePercentagesCoroutine);}
             _calcualtePercentagesCoroutine = StartCoroutine(CalculatePercentages());
