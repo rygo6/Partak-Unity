@@ -34,14 +34,14 @@ namespace GeoTetra.GTUI
             await base.OnServiceStart();
         }
 
-        public void Load(AssetReference unloadScene, AssetReference loadScene)
+        public async Task Load(AssetReference unloadScene, AssetReference loadScene)
         {
-            _uiRendererService.Service.OverlayUI.InstantiateAndDisplayModalUI(_loadModalUI, () => {
-                LoadCoroutine(unloadScene, loadScene);
-            });
+            await Starting;
+            await _uiRendererService.Service.OverlayUI.InstantiateAndDisplayModalUI(_loadModalUI);
+            await LoadCoroutine(unloadScene, loadScene);
         }
 
-        private async void LoadCoroutine(AssetReference unloadScene, AssetReference loadScene)
+        private async Task LoadCoroutine(AssetReference unloadScene, AssetReference loadScene)
         {
             if (unloadScene != null && !string.IsNullOrEmpty(unloadScene.AssetGUID))
             {

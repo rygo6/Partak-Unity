@@ -21,7 +21,7 @@ namespace GeoTetra.GTSnapper
         [SerializeField] private ItemDrag _itemDrag;
         [SerializeField] private ItemDrop _itemDrop;
 
-        public event Action<Item> Selected;
+        // public event Action<Item> Selected;
         
         private InputCatcher _inputCatcher;
 

@@ -1749,34 +1749,44 @@ MonoBehaviour:
   _messageModalUiReference:
     m_AssetGUID: a449b5a172335124cab656b556e9f03d
     m_SubObjectName: 
+    m_SubObjectType: 
   _selectionModalUiReference:
     m_AssetGUID: c01e8933723a2b541b05ddefbf07b07c
     m_SubObjectName: 
+    m_SubObjectType: 
   _backButton: {fileID: 0}
   _analyticsRelay:
     m_AssetGUID: 
     m_SubObjectName: 
-  _gameState:
-    m_AssetGUID: 6d44730f364928b48b8810b26eaf3e43
+    m_SubObjectType: 
+  _partakState:
+    m_AssetGUID: 
     m_SubObjectName: 
-  _sceneLoadSystem:
-    m_AssetGUID: b30141a42589e924e97c08dbbe68ad23
+    m_SubObjectType: 
+  _sceneTransit:
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _componentContainer:
-    m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _database:
-    m_AssetGUID: 276f5bb3082e1654f93a49fb34fe90b4
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _mainMenuScene:
     m_AssetGUID: efa1e429e9b9149c0ace66aa5e10b21d
     m_SubObjectName: 
+    m_SubObjectType: 
   _newLevelScene:
     m_AssetGUID: d296c88181da32247bb22aeb6b5c04e5
     m_SubObjectName: 
+    m_SubObjectType: 
   _loadModalUI:
     m_AssetGUID: 10e4e0a564ea0b54a9e5616acfa15975
     m_SubObjectName: 
+    m_SubObjectType: 
   _itemCatalogUI: {fileID: 7343701488105535539}
   _saveButton: {fileID: 3805812752209072619}
   _cancelButton: {fileID: 1389485752112313248}
@@ -1793,13 +1803,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fcb4a6c891bd5c4a8937be6a1e2f664, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _canvas: {fileID: 7343701488105535541}
-  _gameState:
-    m_AssetGUID: 6d44730f364928b48b8810b26eaf3e43
-    m_SubObjectName: 
   _componentContainer:
-    m_AssetGUID: 54735e5a6ecfe0f4f8a088d0ed1c0234
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
+  _canvas: {fileID: 7343701488105535541}
   _scrollRect: {fileID: 143578182931713571}
   _scrollItemPrefab: {fileID: 263207019947684764, guid: d31dc16f4038f0044892a65209089c40,
     type: 3}

@@ -1,17 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Threading.Tasks;
+using GeoTetra.GTCommon.Components;
 using GeoTetra.GTPooling;
 using UnityEngine.EventSystems;
 
 namespace GeoTetra.Partak.UI
 {
-    public class InputPad : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler,
+    public class InputPad : SubscribableBehaviour, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler,
         IEndDragHandler, IInitializePotentialDragHandler
     {
-        [SerializeField] private ComponentContainerReference _componentContainer;
+        [SerializeField] 
+        private ComponentContainerRef _componentContainer;
+        
         [SerializeField] private LineRenderer _lineRenderer;
         [SerializeField] private CanvasGroup _overlayCanvasGroup;
         [SerializeField] private int _playerIndex;
+        
         private CursorStore _cursorStore;
         private Vector3 _hitPosition;
         private bool _visible = true;
@@ -32,14 +37,15 @@ namespace GeoTetra.Partak.UI
             _overlayCanvasGroup = GetComponentInChildren<CanvasGroup>();
         }
 
-        public void Initialize()
+        public async void Initialize()
         {
+            await _componentContainer.Cache(this);
+            _cursorStore = await _componentContainer.AwaitRegister<CursorStore>();
             _lineRenderer.enabled = false;
             _visible = true;
             _overlayCanvasGroup.alpha = 1;
             _lineRenderer.SetPosition(0, Vector3.zero);
             _lineRenderer.SetPosition(1, Vector3.zero);
-            _cursorStore = _componentContainer.Service.Get<CursorStore>();
         }
 
         public void Visibility(bool state)
@@ -51,6 +57,8 @@ namespace GeoTetra.Partak.UI
 
         private void LateUpdate()
         {
+            if (_cursorStore == null) return;
+
             _cursorStore.SetCursorDeltaPositionClamp(_playerIndex, _deltaPosition);
 
             if (_dragging)

@@ -67,23 +67,24 @@ namespace GeoTetra.Partak
             _levelButtonScrollRect.Clear();
         }
 
-        private async Task PopulateLevelButton(LevelButton levelButton, CancellationToken cancellationToken)
+        private Task PopulateLevelButton(LevelButton levelButton, CancellationToken cancellationToken)
         {
             levelButton.LoadTextureFromDisk(LevelUtility.LevelImagePath(levelButton.LevelDatum.LevelID));
             levelButton.ShowRating(false);
             levelButton.Text.text = "";
             levelButton.Image.color = Color.white;
             levelButton.Button.interactable = true;
+            return Task.CompletedTask;
         }
 
-        private async Task<bool> DownloadNextSet(List<List<LocalLevelDatum>> datumLists, CancellationToken cancellationToken)
+        private Task<bool> DownloadNextSet(List<List<LocalLevelDatum>> datumLists, CancellationToken cancellationToken)
         {
             if (!_partakState.Service.FullVersion && _catalogDatumIndex >= 3)
             {
-                return true;
+                return Task.FromResult(true);
             }
             
-            if (_catalogDatumIndex >= _partakState.Service.LevelCatalogDatum.LevelIDs.Count) return true;
+            if (_catalogDatumIndex >= _partakState.Service.LevelCatalogDatum.LevelIDs.Count) return Task.FromResult(true);
             
             List<LocalLevelDatum> levelDatumList = new List<LocalLevelDatum>();
             for (int i = 0; i < _levelButtonScrollRect.ColumnCount; ++i)
@@ -98,7 +99,7 @@ namespace GeoTetra.Partak
             }
             datumLists.Add(levelDatumList);
 
-            return _catalogDatumIndex >= _partakState.Service.LevelCatalogDatum.LevelIDs.Count;
+            return Task.FromResult(_catalogDatumIndex >= _partakState.Service.LevelCatalogDatum.LevelIDs.Count);
         }
 
         private void FinalButton(LevelButton levelButton)
@@ -117,7 +118,7 @@ namespace GeoTetra.Partak
             }
         }
 
-        private async void OnLevelButtonClicked(LevelButton levelButton)
+        private void OnLevelButtonClicked(LevelButton levelButton)
         {
             _selectedLevelButton = levelButton;
             

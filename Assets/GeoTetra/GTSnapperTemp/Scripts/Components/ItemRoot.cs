@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using GeoTetra.GTCommon.Components;
 using GeoTetra.GTPooling;
 using GeoTetra.GTSnapper.ScriptableObjects;
@@ -13,11 +14,13 @@ namespace GeoTetra.GTSnapper
 {
     public class ItemRoot : SubscribableBehaviour
     {
-        [SerializeField] private ComponentContainerReference _componentContainer;
+        [SerializeField] 
+        private ComponentContainerRef _componentContainer;
+        
         [SerializeField] private InputCatcher _inputCatcher;
         [SerializeField] private ItemSettings _itemSettings;
         [SerializeField] private List<Item> _rootItems;
-        [FormerlySerializedAs("_itemGizmo")] [SerializeField] private ItemGizmoRoot _itemGizmoRoot;
+        [SerializeField] private ItemGizmoRoot _itemGizmoRoot;
         [SerializeField] private Material _highlightMaterial;
 
         public event Action DeserializationComplete;
@@ -40,13 +43,18 @@ namespace GeoTetra.GTSnapper
 
         private void Awake()
         {
-            _componentContainer.Service.RegisterComponent(this);
             IgnoreLayer = LayerMask.NameToLayer("Ignore Raycast");
             ItemLayer = LayerMask.NameToLayer("Item");
             for (int i = 0; i < _rootItems.Count; ++i)
             {
                 _rootItems[i].Initialize(this, null, _inputCatcher);
             }
+        }
+
+        protected override async Task StartAsync()
+        {
+            await _componentContainer.CacheAndRegister(this);
+            await base.StartAsync();
         }
 
         protected override void OnDestroy()

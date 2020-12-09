@@ -43,9 +43,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41001b0cde9cd4787b181bb30fede30f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameStateReference:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakState:
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _cursorStore: {fileID: 0}
   _cellParticleStore: {fileID: 4615143963075930931}
   _cellParticleSpawn: {fileID: 4615143963075929343}
@@ -95,9 +96,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d36438550d341408587a8356dd0e1841, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameStateReference:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakState:
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _levelConfig: {fileID: 0}
 --- !u!1 &4615143963081403881
 GameObject:
@@ -142,9 +144,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d36027acb6b5f4b7c9b9a284da89afb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameStateReference:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakState:
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _cellParticleStore: {fileID: 4615143963075930931}
   _cursorStore: {fileID: 0}
   _cellHiearchy: {fileID: 4615143963075847137}
@@ -193,11 +196,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _componentContainer:
-    m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
+    m_AssetGUID: 
     m_SubObjectName: 
-  _gameStateReference:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+    m_SubObjectType: 
+  _partakState:
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _cursorStore: {fileID: 0}
   _levelConfig: {fileID: 0}
   PlayerLost: 
@@ -245,9 +250,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4568bc849d794a6f87813ce2a5c034d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameStateReference:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakState:
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _cellHiearchy: {fileID: 4615143963075847137}
   _cellParticleSystemPrefab: {fileID: 11428694, guid: 0fbca4a86790a4abdb803558fb304c55,
     type: 3}
@@ -262,7 +268,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4615143963081684435}
   m_Layer: 0
-  m_Name: CellSystem 1
+  m_Name: CellSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -333,8 +339,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _componentContainer:
-    m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _attackMultiplier: 14
   _cellParticleStore: {fileID: 4615143963075930931}
   _cellParticleSpawn: {fileID: 4615143963075929343}
@@ -382,9 +389,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 690e140f5bea045469bfe666ee26d024, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameStateReference:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakState:
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _cellHiearchy: {fileID: 4615143963075847137}
   _cellParticleMover: {fileID: 4615143963075935265}
   _cellParticleStore: {fileID: 4615143963075930931}

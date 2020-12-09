@@ -6,15 +6,21 @@ namespace GeoTetra.Partak.UI
 {
     public class InputPadGroup : SubscribableBehaviour
     {
-        [SerializeField] private ComponentContainerReference _componentContainer;
+        [SerializeField] private ComponentContainerRef _componentContainer;
         [SerializeField] private PartakStateRef _partakState;
         [SerializeField] private InputPad[] _inputPads;
         [SerializeField] private GameObject _horizontalTop;
         [SerializeField] private GameObject _horizontalBottom ;
+
+        private CellParticleStore _cellParticleStore;
         
         public async void Initialize()
         {
             await _partakState.Cache(this);
+            await _componentContainer.Cache(this);
+            _cellParticleStore = await _componentContainer.AwaitRegister<CellParticleStore>();
+            _cellParticleStore.LoseEvent += DisablePad;
+            _cellParticleStore.WinEvent += DisableAllPads;
             
             for (int i = 0; i < _inputPads.Length; ++i)
             {
@@ -51,15 +57,12 @@ namespace GeoTetra.Partak.UI
             {
                 _horizontalBottom.SetActive(true);
             }
-
-            _componentContainer.Service.Get<CellParticleStore>().LoseEvent += DisablePad;
-            _componentContainer.Service.Get<CellParticleStore>().WinEvent += DisableAllPads;
         }
 
         public void Deinitialize()
         {
-            _componentContainer.Service.Get<CellParticleStore>().LoseEvent -= DisablePad;
-            _componentContainer.Service.Get<CellParticleStore>().WinEvent -= DisableAllPads;
+            _cellParticleStore.LoseEvent -= DisablePad;
+            _cellParticleStore.WinEvent -= DisableAllPads;
         }
 
         private void DisableAllPads()

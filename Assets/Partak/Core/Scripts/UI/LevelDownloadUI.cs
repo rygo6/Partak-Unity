@@ -177,7 +177,7 @@ namespace GeoTetra.Partak
             return _search.IsDone;
         }
 
-        private async void OnLevelButtonClicked(LevelButton levelButton)
+        private void OnLevelButtonClicked(LevelButton levelButton)
         {
             _selectedLevelButton = levelButton;
 
@@ -202,7 +202,7 @@ namespace GeoTetra.Partak
         
         private async void PlayAd()
         {
-            CurrentlyRenderedBy.DisplayLoadModal();
+            await CurrentlyRenderedBy.DisplayLoadModal();
             await _advertisementDispatch.Service.ShowRewardedAd();
             DownloadLevel();
         }

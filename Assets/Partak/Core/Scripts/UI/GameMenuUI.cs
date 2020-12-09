@@ -12,12 +12,10 @@ namespace GeoTetra.Partak.UI
 {
     public class GameMenuUI : StackUI
     {
-        [SerializeField] 
-        [AssetReferenceComponentRestriction(typeof(ComponentContainer))]
-        private ComponentContainerReference _componentContainer;
+        [SerializeField]
+        private ComponentContainerRef _componentContainer;
         
-        [SerializeField] 
-        [AssetReferenceComponentRestriction(typeof(SceneTransit))]
+        [SerializeField]
         private SceneTransitRef _sceneTransit;
         
         [SerializeField] 
@@ -48,6 +46,7 @@ namespace GeoTetra.Partak.UI
         private Action[] _pauseActions;
 
         private LevelConfig _levelConfig;
+        private CellParticleStore _cellParticleStore;
         
         protected override void Awake()
         {
@@ -71,6 +70,7 @@ namespace GeoTetra.Partak.UI
 
         protected override async Task StartAsync()
         {
+            await _componentContainer.Cache(this);
             await _partakState.Cache(this);
             await _sceneTransit.Cache(this);
             
@@ -80,29 +80,29 @@ namespace GeoTetra.Partak.UI
             await base.StartAsync();
         }
 
-        public override void OnTransitionInStart(UIRenderer uiRenderer)
+        public override async void OnTransitionInStart(UIRenderer uiRenderer)
         {
             base.OnTransitionInStart(uiRenderer);
-            _levelConfig = _componentContainer.Service.Get<LevelConfig>();
-            _inputPadGroup.Initialize();
-            _componentContainer.Service.Get<CellParticleStore>().WinEvent += ShowWinMenu;
-            StartCoroutine(InitializeDelay());
+            
             _winMenu.gameObject.SetActive(false);
             _rateMenu.gameObject.SetActive(false);
+            
+            await Starting;
+            _levelConfig = await _componentContainer.AwaitRegister<LevelConfig>() as LevelConfig;
+            _cellParticleStore = await _componentContainer.AwaitRegister<CellParticleStore>() as CellParticleStore;
+            
+            _cellParticleStore.WinEvent += ShowWinMenu;
+            
+            _inputPadGroup.Initialize();
+            await Task.Yield();
+            _disableIn.Initialize();
         }
         
         public override void OnTransitionOutStart()
         {
             base.OnTransitionOutStart();
-            _componentContainer.Service.Get<CellParticleStore>().WinEvent -= ShowWinMenu;
+            _cellParticleStore.WinEvent -= ShowWinMenu;
             _inputPadGroup.Deinitialize();
-        }
-
-        private IEnumerator InitializeDelay()
-        {
-            yield return null;
-            //gotta wait one frame for them to be placed.
-            _disableIn.Initialize();
         }
 
         private void ThumbsUp()

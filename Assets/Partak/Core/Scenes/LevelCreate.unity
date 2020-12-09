@@ -153,9 +153,11 @@ MonoBehaviour:
   _componentContainer:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _partakState:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _fps: 60
   _deserializeLevelOnStart: 0
   _itemRoot: {fileID: 1286567769}
@@ -700,8 +702,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _componentContainer:
-    m_AssetGUID: 54735e5a6ecfe0f4f8a088d0ed1c0234
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _crop: 1
   _heightLimitedByWidth: 0
   _camera: {fileID: 870877641}
@@ -829,8 +832,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _componentContainer:
-    m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _inputCatcher: {fileID: 140253005}
   _itemSettings: {fileID: 11400000, guid: 65a59aa8109b1e949b21e61173594d4d, type: 2}
   _rootItems:
@@ -1071,11 +1075,13 @@ MonoBehaviour:
   _uiRendererService:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _onlyDisplayIfEmpty: 0
   _transitionType: 1
   _stackUIReference:
     m_AssetGUID: c948c7d0e87a80342a820fb7bf03ba00
     m_SubObjectName: 
+    m_SubObjectType: 
   _delay: 0.5
   _transitionFinished:
     m_PersistentCalls:
