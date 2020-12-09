@@ -10,7 +10,7 @@ namespace GeoTetra.Partak
     public class CellParticleEngine : SubscribableBehaviour
     {
         [SerializeField] 
-        private ComponentContainerReference _componentContainer;
+        private ComponentContainerRef _componentContainer;
         
         [SerializeField] private int _attackMultiplier = 3;
         [SerializeField] private CellParticleStore _cellParticleStore;
@@ -24,12 +24,7 @@ namespace GeoTetra.Partak
         public bool FastKill { get; set; }
 
         public LoopThread Thread => _loopThread;
-
-        private void Awake()
-        {
-            _componentContainer.Service.RegisterComponent(this);
-        }
-
+        
         public async Task Initialize(bool startThread)
         {
             _randomRotate = new int[128];
@@ -40,7 +35,7 @@ namespace GeoTetra.Partak
                     _randomRotate[i] = Random.Range(-1, 1);
             
             if (startThread) StartThread(_levelConfig.Datum.MoveCycleTime);
-            await Task.Yield();
+            await _componentContainer.CacheAndRegister(this);
         }
 
         public void StartThread(int moveCycleTime)

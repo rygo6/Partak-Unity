@@ -18,17 +18,19 @@ namespace GeoTetra.GTUI
         public CanvasGroup Group => _group;
 
         public UIRenderer CurrentlyRenderedBy { get; private set; }
+        
+        protected virtual void Awake()
+        {
+            // You disable the transition root, rather than the whole GameObject, in case
+            // there is async await logic that must finish.
+            _transitionRoot.gameObject.SetActive(false);
+        }
 
         protected virtual void Reset()
         {
             _transitionRoot = transform.Find("Root") as RectTransform;
             _canvas = GetComponentInChildren<Canvas>();
             _group = GetComponentInChildren<CanvasGroup>();
-        }
-
-        protected virtual void Awake()
-        {
-            gameObject.SetActive(false);
         }
 
         public virtual void OnTransitionInStart(UIRenderer uiRenderer)
@@ -42,6 +44,7 @@ namespace GeoTetra.GTUI
 
             Group.blocksRaycasts = false;
             gameObject.SetActive(true);
+            _transitionRoot.gameObject.SetActive(true);
         }
 
         public virtual void OnTransitionInFinish()

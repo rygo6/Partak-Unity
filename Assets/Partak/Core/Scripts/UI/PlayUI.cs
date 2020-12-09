@@ -53,7 +53,7 @@ namespace GeoTetra.Partak
         private async void Load()
         {
             await _sceneTransitRef.Cache(this);
-            _sceneTransitRef.Service.Load(_mainMenuScene, _gameSessionScene);
+            await _sceneTransitRef.Service.Load(_mainMenuScene, _gameSessionScene);
         }
     }
 }

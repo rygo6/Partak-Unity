@@ -2,19 +2,22 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using GeoTetra.GTCommon.Components;
 using GeoTetra.GTPooling;
 using GeoTetra.GTSnapper.ScriptableObjects;
-using GeoTetra.Partak;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 
 namespace GeoTetra.GTSnapper
 {
-    public class ItemCatalogUI : MonoBehaviour
+    public class ItemCatalogUI : SubscribableBehaviour
     {
+        [SerializeField] 
+        private ComponentContainerRef _componentContainer;
+        
         [SerializeField] private Canvas _canvas;
-        [SerializeField] private ComponentContainerReference _componentContainer;
         [SerializeField] private ScrollRect _scrollRect;
         [SerializeField] private ScrollItem _scrollItemPrefab;
         [SerializeField] private Canvas _scrollItemHighlight;
@@ -29,9 +32,10 @@ namespace GeoTetra.GTSnapper
         public ItemRoot ItemRoot => _itemRoot;
         public Canvas Canvas => _canvas;
 
-        private void Start()
+        protected override async Task StartAsync()
         {
-            _scrollItemHighlight.enabled = false;
+            await _componentContainer.CacheAndRegister(this);
+            await base.StartAsync();
         }
 
         public void Initialize()
@@ -50,9 +54,10 @@ namespace GeoTetra.GTSnapper
             Addressables.Release(_loadHandle);
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             Deinitialize();
+            base.OnDestroy();
         }
 
         public void UnselectSelectedItem()

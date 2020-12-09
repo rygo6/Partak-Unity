@@ -20,7 +20,7 @@ namespace GeoTetra.GTUI
         public async void Load()
         {
             await _sceneTransit.Cache(this);
-            _sceneTransit.Service.Load(null, _sceneReference);
+            await _sceneTransit.Service.Load(null, _sceneReference);
         }
     }
 }

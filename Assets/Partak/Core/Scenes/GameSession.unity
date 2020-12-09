@@ -810,9 +810,11 @@ MonoBehaviour:
   _componentContainer:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _partakState:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _fps: 60
   _deserializeLevelOnStart: 1
   _itemRoot: {fileID: 1296888192}
@@ -856,11 +858,13 @@ MonoBehaviour:
   _uiRendererService:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _onlyDisplayIfEmpty: 0
   _transitionType: 0
   _stackUIReference:
     m_AssetGUID: a91ae41ea06a5ea4581409751e00de50
     m_SubObjectName: 
+    m_SubObjectType: 
   _delay: 0
   _transitionFinished:
     m_PersistentCalls:
@@ -909,8 +913,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _componentContainer:
-    m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _inputCatcher: {fileID: 0}
   _itemSettings: {fileID: 11400000, guid: 65a59aa8109b1e949b21e61173594d4d, type: 2}
   _rootItems:
@@ -1174,6 +1179,7 @@ MonoBehaviour:
   _partakState:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _audioMixerGroup: {fileID: 24370422, guid: d3bfd22e606cb45119db1d7e9c3b5894, type: 2}
   _winAudioSource: {fileID: 1498003437}
   _levelConfig: {fileID: 1050711819}
@@ -1364,9 +1370,11 @@ MonoBehaviour:
   _analyticsRelay:
     m_AssetGUID: 17010a8528f4c0b43a5469286e4a9730
     m_SubObjectName: 
+    m_SubObjectType: 
   _partakState:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _surroundMaterial: {fileID: 2100000, guid: b8ad81ebbf4551448be02e24fbb5c173, type: 2}
   _cellParticleMover: {fileID: 85581948}
   _cellParticleStore: {fileID: 85587822}

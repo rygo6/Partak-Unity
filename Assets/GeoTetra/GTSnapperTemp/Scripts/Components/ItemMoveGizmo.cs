@@ -8,8 +8,6 @@ namespace GeoTetra.GTSnapper
 {
     public class ItemMoveGizmo : ItemGizmo, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
-        [SerializeField] private float _snapIncrement = 45;
-
         private Vector3 _startPosition;
         private Vector3 _priorPosition;
 

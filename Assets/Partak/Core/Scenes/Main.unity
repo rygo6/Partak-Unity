@@ -154,12 +154,13 @@ MonoBehaviour:
   _prePoolReferences:
   - m_AssetGUID: 8188afb85fdf8d54cae8e7d69d367d5e
     m_SubObjectName: 
-  - m_AssetGUID: 54735e5a6ecfe0f4f8a088d0ed1c0234
-    m_SubObjectName: 
-  - m_AssetGUID: 00b19c5ddf295004aafaf7a05cc500a4
-    m_SubObjectName: 
+    m_SubObjectType: 
   - m_AssetGUID: f20d2729430a81e4396945f2ba552f34
     m_SubObjectName: 
+    m_SubObjectType: 
+  - m_AssetGUID: 00b19c5ddf295004aafaf7a05cc500a4
+    m_SubObjectName: 
+    m_SubObjectType: 
   _prePoolingComplete:
     m_PersistentCalls:
       m_Calls:
@@ -231,10 +232,12 @@ MonoBehaviour:
   _sceneTransit:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _onStart: 0
   _sceneReference:
     m_AssetGUID: efa1e429e9b9149c0ace66aa5e10b21d
     m_SubObjectName: 
+    m_SubObjectType: 
 --- !u!4 &1312332010
 Transform:
   m_ObjectHideFlags: 0
@@ -413,6 +416,7 @@ MonoBehaviour:
   _partakState:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _iapListener: {fileID: 1885413436}
 --- !u!114 &1885413436
 MonoBehaviour:

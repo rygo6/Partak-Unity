@@ -11,9 +11,8 @@ namespace GeoTetra.GTSnapper
 {
 	public class CameraCapture : SubscribableBehaviour
 	{
-		[SerializeField] 
-		[AssetReferenceComponentRestriction(typeof(ComponentContainer))]
-		private ServiceReference _componentContainer;
+		[SerializeField]
+		private ComponentContainerRef _componentContainer;
 		
 		[Header("Crop to content.")]
 		[SerializeField] 
@@ -27,12 +26,7 @@ namespace GeoTetra.GTSnapper
 		[SerializeField] private int _resWidth = 256;
 		[SerializeField] private int _resHeight = 256;
 		[SerializeField] private bool _saveOnStart;
-
-		private void Awake()
-		{
-			if (_componentContainer.Asset != null) _componentContainer.Service<ComponentContainer>().RegisterComponent(this);
-		}
-
+		
 		protected override async Task StartAsync()
 		{
 #if  UNITY_EDITOR
@@ -43,6 +37,8 @@ namespace GeoTetra.GTSnapper
 				SaveScreenshotToFile(path);
 			}
 #endif
+			
+			await _componentContainer.CacheAndRegister(this);
 			await base.StartAsync();
 		}
 

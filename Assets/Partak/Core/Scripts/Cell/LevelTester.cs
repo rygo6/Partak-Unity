@@ -12,15 +12,13 @@ namespace GeoTetra.Partak
     /// </summary>
     public class LevelTester : SubscribableBehaviour
     {
-        [SerializeField] 
-        [AssetReferenceComponentRestriction(typeof(ComponentContainer))]
-        private ComponentContainerReference _componentContainer;
+        [SerializeField]
+        private ComponentContainerRef _componentContainer;
         
         [SerializeField]
         private PartakStateRef _partakSate;
         
         [SerializeField] private LevelConfig _levelConfig;
-        
         [SerializeField] private CellHiearchy _cellHiearchy;
         [SerializeField] private CellGradient _cellGradient;
         [SerializeField] private CellParticleDisplay _cellParticleDisplay;
@@ -45,18 +43,26 @@ namespace GeoTetra.Partak
         }
         
         public TestResult Result { get; private set; }
-        
+
         private void Awake()
         {
-            _componentContainer.Service.RegisterComponent(this);
             _levelConfig.LevelDeserialized += Initialize;
             _levelConfig.SizeChanged += Initialize;
         }
 
+        protected override async Task StartAsync()
+        {
+            await Task.WhenAll(
+                _partakSate.Cache(this), 
+                _componentContainer.CacheAndRegister(this)
+            );
+            await base.StartAsync();
+        }
+
         private async void Initialize()
         {
-            await _partakSate.Cache(this);
-            
+            await Starting;
+
             _playerStates = new PartakState.PlayerState[TestPlayerCount];
             for (int i = 0; i < _playerStates.Length; ++i)
             {

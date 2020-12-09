@@ -8,9 +8,8 @@ namespace GeoTetra.Partak
 {
     public class CursorStore : SubscribableBehaviour
     {
-        [SerializeField] 
-        [AssetReferenceComponentRestriction(typeof(ComponentContainer))]
-        private ComponentContainerReference _componentContainer;
+        [SerializeField]
+        private ComponentContainerRef _componentContainer;
         
         [SerializeField]
         private PartakStateRef _partakState;
@@ -23,14 +22,10 @@ namespace GeoTetra.Partak
         private SkinnedMeshRenderer[] _skinnedMeshRenderers;
         private Bounds _levelBounds;
         private bool _updateCursors = true;
-
-        private void Awake()
-        {
-            _componentContainer.Service.RegisterComponent(this);
-        }
-
+        
         protected override async Task StartAsync()
         {
+            await _componentContainer.CacheAndRegister(this);
             await _partakState.Cache(this);
             
             CursorPositions = new Vector3[_partakState.Service.PlayerCount()];
@@ -56,6 +51,8 @@ namespace GeoTetra.Partak
 
         private void LateUpdate()
         {
+            if (!Starting.IsCompleted) return;
+            
             if (_updateCursors)
             {
                 UpdateCursorTransforms();

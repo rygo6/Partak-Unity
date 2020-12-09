@@ -9,9 +9,8 @@ namespace GeoTetra.Partak
 {
     public class LevelConfig : SubscribableBehaviour
     {
-        [SerializeField] 
-        [AssetReferenceComponentRestriction(typeof(ComponentContainer))]
-        private ComponentContainerReference _componentContainer;
+        [SerializeField]
+        private ComponentContainerRef _componentContainer;
         
         [SerializeField]
         private PartakStateRef _partakState;
@@ -56,7 +55,6 @@ namespace GeoTetra.Partak
 
         private void Awake()
         {
-            _componentContainer.Service.RegisterComponent(this);
             Application.targetFrameRate = _fps;
             if (_itemRoot != null)
             {
@@ -69,7 +67,10 @@ namespace GeoTetra.Partak
 
         protected override async Task StartAsync()
         {
-            await _partakState.Cache(this);
+            await Task.WhenAll(
+                _partakState.Cache(this),
+                _componentContainer.CacheAndRegister(this)
+            );
             
             if (_deserializeLevelOnStart)
             {

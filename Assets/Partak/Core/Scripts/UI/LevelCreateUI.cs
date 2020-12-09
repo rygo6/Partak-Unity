@@ -16,7 +16,7 @@ namespace GeoTetra.Partak
         [SerializeField] private AnalyticsRelayReference _analyticsRelay;
         [SerializeField] private PartakStateRef _partakState;
         [SerializeField] private SceneTransitRef _sceneTransit;
-        [SerializeField] private ComponentContainerReference _componentContainer;
+        [SerializeField] private ComponentContainerRef _componentContainer;
         [SerializeField] private PartakDatabaseReference _database;
         [SerializeField] private AssetReference _mainMenuScene;
         [SerializeField] private AssetReference _newLevelScene;
@@ -63,16 +63,19 @@ namespace GeoTetra.Partak
 
         protected override async Task StartAsync()
         {
-            await _partakState.Cache(this);
-            await _sceneTransit.Cache(this);
+            await Task.WhenAll(
+                _componentContainer.Cache(this),
+                _partakState.Cache(this),
+                _sceneTransit.Cache(this)
+            );
             await base.StartAsync();
         }
 
-        public override void OnTransitionInFinish()
+        public override async void OnTransitionInFinish()
         {
             base.OnTransitionInFinish();
-            _levelConfig = _componentContainer.Service.Get<LevelConfig>();
-            _levelTester = _componentContainer.Service.Get<LevelTester>();
+            _levelConfig = await _componentContainer.AwaitRegister<LevelConfig>();
+            _levelTester = await _componentContainer.AwaitRegister<LevelTester>();
             _itemCatalogUI.Initialize();
 
             _editingLevelId = _partakState.Service.GetEditingLevelId();
@@ -84,7 +87,7 @@ namespace GeoTetra.Partak
             }
             else
             {
-                _componentContainer.Service.Get<LevelConfig>().Deserialize(_editingLevelId, true);   
+                _levelConfig.Deserialize(_editingLevelId, true);   
             }
         }
 
@@ -193,7 +196,7 @@ namespace GeoTetra.Partak
 
         private void SizeChanged(Vector2Int newSize)
         {
-            _componentContainer.Service.Get<LevelConfig>().SetLevelSize(newSize, true);
+            _levelConfig.SetLevelSize(newSize, true);
         }
     }
 }

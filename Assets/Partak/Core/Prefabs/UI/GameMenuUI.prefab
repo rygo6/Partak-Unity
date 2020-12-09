@@ -1280,6 +1280,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 1
   _constantUpdate: 0
   _lineRenderer: {fileID: 5525812420337585834}
@@ -1387,6 +1388,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 1
   _constantUpdate: 0
   _image: {fileID: 5525812420351613265}
@@ -1615,6 +1617,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 2
   _constantUpdate: 0
   _image: {fileID: 5525812420417187122}
@@ -1802,6 +1805,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 3
   _constantUpdate: 0
   _image: {fileID: 5525812420479799496}
@@ -1895,6 +1899,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 2
   _constantUpdate: 0
   _image: {fileID: 5525812420563611804}
@@ -2059,6 +2064,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 1
   _constantUpdate: 0
   _image: {fileID: 5525812420660012947}
@@ -2152,6 +2158,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 1
   _constantUpdate: 0
   _image: {fileID: 5525812420665685306}
@@ -2245,6 +2252,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 1
   _constantUpdate: 0
   _image: {fileID: 5525812420735598984}
@@ -2338,6 +2346,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 3
   _constantUpdate: 0
   _image: {fileID: 5525812420752930684}
@@ -2436,8 +2445,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _componentContainer:
-    m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _lineRenderer: {fileID: 5525812420821584882}
   _overlayCanvasGroup: {fileID: 5525812422053567026}
   _playerIndex: 0
@@ -2613,6 +2623,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 0
   _constantUpdate: 0
   _lineRenderer: {fileID: 5525812420821584882}
@@ -2711,8 +2722,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _componentContainer:
-    m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _lineRenderer: {fileID: 5525812421594168506}
   _overlayCanvasGroup: {fileID: 5525812422243944960}
   _playerIndex: 2
@@ -2929,6 +2941,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 3
   _constantUpdate: 0
   _image: {fileID: 5525812421064567592}
@@ -3022,6 +3035,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 2
   _constantUpdate: 0
   _image: {fileID: 5525812421080467939}
@@ -3139,31 +3153,40 @@ MonoBehaviour:
   _messageModalUiReference:
     m_AssetGUID: a449b5a172335124cab656b556e9f03d
     m_SubObjectName: 
+    m_SubObjectType: 
   _selectionModalUiReference:
     m_AssetGUID: c01e8933723a2b541b05ddefbf07b07c
     m_SubObjectName: 
+    m_SubObjectType: 
   _backButton: {fileID: 0}
   _componentContainer:
-    m_AssetGUID: 54735e5a6ecfe0f4f8a088d0ed1c0234
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _sceneTransit:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _analyticsRelay:
     m_AssetGUID: f20d2729430a81e4396945f2ba552f34
     m_SubObjectName: 
+    m_SubObjectType: 
   _partakState:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _partakDatabase:
     m_AssetGUID: 00b19c5ddf295004aafaf7a05cc500a4
     m_SubObjectName: 
+    m_SubObjectType: 
   _mainMenuScene:
     m_AssetGUID: efa1e429e9b9149c0ace66aa5e10b21d
     m_SubObjectName: 
+    m_SubObjectType: 
   _gameSessionScene:
     m_AssetGUID: e13a610edb1f29e458ca513afc1b8c33
     m_SubObjectName: 
+    m_SubObjectType: 
   _inputPadGroup: {fileID: 5525812421816723834}
   _disableIn: {fileID: 5525812422082414364}
   _pauseButtons:
@@ -3266,6 +3289,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 3
   _constantUpdate: 0
   _image: {fileID: 5525812421202105132}
@@ -3364,8 +3388,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _componentContainer:
-    m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _lineRenderer: {fileID: 5525812420337585834}
   _overlayCanvasGroup: {fileID: 5525812420351613264}
   _playerIndex: 1
@@ -3541,6 +3566,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 2
   _constantUpdate: 0
   _lineRenderer: {fileID: 5525812421594168506}
@@ -3634,6 +3660,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 3
   _constantUpdate: 0
   _image: {fileID: 5525812421697468176}
@@ -3727,6 +3754,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 0
   _constantUpdate: 0
   _image: {fileID: 5525812421701524518}
@@ -3820,6 +3848,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 1
   _constantUpdate: 0
   _image: {fileID: 5525812421770609564}
@@ -3913,6 +3942,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 0
   _constantUpdate: 0
   _image: {fileID: 5525812421781596504}
@@ -4031,11 +4061,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _componentContainer:
-    m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _partakState:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _inputPads:
   - {fileID: 5525812420782911356}
   - {fileID: 5525812421355706793}
@@ -4293,6 +4325,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 2
   _constantUpdate: 0
   _image: {fileID: 5525812421855972212}
@@ -4457,6 +4490,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 0
   _constantUpdate: 0
   _image: {fileID: 5525812421988077735}
@@ -4658,6 +4692,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 0
   _constantUpdate: 0
   _image: {fileID: 5525812422053567027}
@@ -4880,6 +4915,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 3
   _constantUpdate: 0
   _lineRenderer: {fileID: 5525812422084571431}
@@ -4978,8 +5014,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _componentContainer:
-    m_AssetGUID: ed956f91a7b883142bf9b588e32e0f1a
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _lineRenderer: {fileID: 5525812422084571431}
   _overlayCanvasGroup: {fileID: 5525812421064567599}
   _playerIndex: 3
@@ -5240,6 +5277,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 2
   _constantUpdate: 0
   _image: {fileID: 5525812422243944961}
@@ -5333,6 +5371,7 @@ MonoBehaviour:
   _partakStateRef:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 0
   _constantUpdate: 0
   _image: {fileID: 5525812422258431551}
