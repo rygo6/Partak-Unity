@@ -187,6 +187,14 @@ namespace GeoTetra.Partak
             {
                 CurrentlyRenderedBy.DisplayMessageModal("All of the particles could not reach each other. Ensure there are open paths for each player's particles to reach every other player's particles.", null);
             }
+            else if (_levelTester.Result == LevelTester.TestResult.TooFewObjects)
+            {
+                CurrentlyRenderedBy.DisplayMessageModal($"Level has too few objects, add more. Minimum 3. Currently {_levelConfig.ItemRoot.ItemCount}", null);
+            } 
+            else if (_levelTester.Result == LevelTester.TestResult.TooManyObjects)
+            {
+                CurrentlyRenderedBy.DisplayMessageModal($"Level has too many objects, add more. Maximum 40. Currently {_levelConfig.ItemRoot.ItemCount}", null);
+            }
         }
         
         private IEnumerator RunTestCoroutine()

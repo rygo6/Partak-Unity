@@ -30,6 +30,7 @@ namespace GeoTetra.Partak
         [SerializeField] private InputCatcher _inputCatcher;
         [SerializeField] private ItemRoot _itemRoot;
         
+        private const float MoveParticleCenter = .2f;
         private const float MaxTestWaitTime = 5;
         private const int TestPlayerCount = 4;
         private PartakState.PlayerState[] _playerStates;
@@ -39,7 +40,9 @@ namespace GeoTetra.Partak
             CursorsBlocked,
             SpawnBlocked,
             ParticlesBlocked,
-            Success
+            Success,
+            TooFewObjects,
+            TooManyObjects
         }
         
         public TestResult Result { get; private set; }
@@ -82,6 +85,17 @@ namespace GeoTetra.Partak
         public IEnumerator RunTest()
         {
             Debug.Log("ItemCount " + _itemRoot.ItemCount);
+            if (_itemRoot.ItemCount < 4)
+            {
+                Result = TestResult.TooFewObjects;
+                yield break;
+            }
+            
+            if (_itemRoot.ItemCount > 40)
+            {
+                Result = TestResult.TooManyObjects;
+                yield break;
+            }
             
             //disable floor collider catcher because right now "no-wall" is discerned by no racyast hit
             _itemDrop.gameObject.SetActive(false);
@@ -112,11 +126,16 @@ namespace GeoTetra.Partak
                 Result = TestResult.SpawnBlocked;
                 yield break;
             }
+
+            Vector3[] cursorPositions = (Vector3[]) _cursorStore.CursorPositions.Clone();
             
-            _cursorStore.SetCursorsTo(_levelConfig.LevelBounds.center);
+            _cursorStore.SetCursorsTo(cursorPositions[0]);
+            
             _cellParticleEngine.StartThread(0);
 
             float counter = 0;
+            float moveCounter = 0;
+            int cursorFocus = 0;
             while (!_cellParticleStore.AllPercentagesChanged() )
             {
                 if (counter > MaxTestWaitTime)
@@ -126,7 +145,16 @@ namespace GeoTetra.Partak
                     yield break;
                 }
                 
+                if (moveCounter > MoveParticleCenter)
+                {
+                    moveCounter = 0;
+                    cursorFocus++;
+                    if (cursorFocus == _cursorStore.CursorPositions.Length) cursorFocus = 0;
+                    _cursorStore.SetCursorsTo(cursorPositions[cursorFocus]);
+                }
+                
                 counter += Time.deltaTime;
+                moveCounter += Time.deltaTime;
                 yield return null;
             }
             
