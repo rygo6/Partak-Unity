@@ -15,20 +15,17 @@ namespace GeoTetra.Partak
 {
     public class LevelDownloadUI : StackUI
     {
-        [SerializeField] 
-        [AssetReferenceComponentRestriction(typeof(PartakDatabase))]
-        private PartakDatabaseReference _partakDatabase;
+        [SerializeField]
+        private PartakAWSRef _partakAWS;
         
         [SerializeField]
         private PartakStateRef _partakState;
         
-        [SerializeField] 
-        [AssetReferenceComponentRestriction(typeof(AdvertisementDispatch))]
-        private AdvertisementDispatchReference _advertisementDispatch;
+        [SerializeField]
+        private AdServiceRef _adService;
         
-        [SerializeField] 
-        [AssetReferenceComponentRestriction(typeof(AnalyticsRelay))]
-        private AnalyticsRelayReference _analyticsRelay;
+        [SerializeField]
+        private AnalyticsServiceRef _analyticsService;
 
         [SerializeField] private AssetReference _fullPurchaseUI;
         [SerializeField] private Button _mostPopularButton;
@@ -58,14 +55,20 @@ namespace GeoTetra.Partak
         
         protected override async Task StartAsync()
         {
-            await _partakState.Cache(this);
+            await Task.WhenAll(
+                _partakState.Cache(this),
+                _partakAWS.Cache(this),
+                _analyticsService.Cache(this)
+            );
+            if (!_partakState.Ref.FullVersion) await _adService.Cache(this);
             await base.StartAsync();
         }
 
-        public override void OnTransitionInFinish()
+        public override async void OnTransitionInFinish()
         {
             base.OnTransitionInFinish();
-            _search = _partakDatabase.Service.QueryLevelsThumbsUp(_levelButtonScrollRect.ColumnCount);
+            await Starting;
+            _search = await _partakAWS.Ref.QueryLevelsThumbsUp(_levelButtonScrollRect.ColumnCount);
             _levelButtonScrollRect.Initialize(DownloadNextSet, PopulateLevelButton, null);
         }
 
@@ -78,17 +81,17 @@ namespace GeoTetra.Partak
             Resources.UnloadUnusedAssets();
         }
 
-        private void OnMostPopularClicked()
+        private async void OnMostPopularClicked()
         {
-            _search = _partakDatabase.Service.QueryLevelsThumbsUp(_levelButtonScrollRect.ColumnCount);
+            _search = await _partakAWS.Ref.QueryLevelsThumbsUp(_levelButtonScrollRect.ColumnCount);
             _levelButtonScrollRect.Clear();
             _levelButtonScrollRect.Initialize(DownloadNextSet, PopulateLevelButton, null);
         }
 
 
-        private void OnMostRecentClicked()
+        private async void OnMostRecentClicked()
         {
-            _search = _partakDatabase.Service.QueryLevelsCreatedAt(_levelButtonScrollRect.ColumnCount);
+            _search = await _partakAWS.Ref.QueryLevelsCreatedAt(_levelButtonScrollRect.ColumnCount);
             _levelButtonScrollRect.Clear();
             _levelButtonScrollRect.Initialize(DownloadNextSet, PopulateLevelButton, null);
         }
@@ -111,7 +114,7 @@ namespace GeoTetra.Partak
                 LocalLevelDatum datum = levelButton.LevelDatum;
                 
                 //Don't cancel downloads so they are available on scroll back.
-                await _partakDatabase.Service.DownloadLevelPreview(levelButton.LevelDatum.LevelID, texture2D);
+                await _partakAWS.Ref.DownloadLevelPreview(levelButton.LevelDatum.LevelID, texture2D);
                 if (datum != levelButton.LevelDatum) return;
                 
                 levelButton.Image.texture = texture2D;
@@ -159,9 +162,9 @@ namespace GeoTetra.Partak
             List<LocalLevelDatum> levelDatumList = new List<LocalLevelDatum>();
             for (int i = 0; i < documentList.Count; ++i)
             {
-                documentList[i].TryGetValue(PartakDatabase.LevelFields.IdKey, out DynamoDBEntry levelId);
-                documentList[i].TryGetValue(PartakDatabase.LevelFields.ThumbsUpKey, out DynamoDBEntry thumbsUp);
-                documentList[i].TryGetValue(PartakDatabase.LevelFields.ThumbsDownKey, out DynamoDBEntry thumbsDown);
+                documentList[i].TryGetValue(PartakAWS.LevelFields.IdKey, out DynamoDBEntry levelId);
+                documentList[i].TryGetValue(PartakAWS.LevelFields.ThumbsUpKey, out DynamoDBEntry thumbsUp);
+                documentList[i].TryGetValue(PartakAWS.LevelFields.ThumbsDownKey, out DynamoDBEntry thumbsDown);
                 
                 LocalLevelDatum levelDatum = new LocalLevelDatum
                 {
@@ -203,13 +206,14 @@ namespace GeoTetra.Partak
         private async void PlayAd()
         {
             await CurrentlyRenderedBy.DisplayLoadModal();
-            await _advertisementDispatch.Service.ShowRewardedAd();
+            await Starting;
+            await _adService.Ref.ShowRewardedAd();
             DownloadLevel();
         }
 
         private async void DownloadLevel()
         {
-            await _partakDatabase.Service.DownloadLevel(_selectedLevelButton.LevelDatum.LevelID);
+            await _partakAWS.Ref.DownloadLevel(_selectedLevelButton.LevelDatum.LevelID);
             
             //Reset level index so play menu doesn't load on empty level.
             _partakState.Ref.LevelIndex = 0;
@@ -217,7 +221,7 @@ namespace GeoTetra.Partak
             _partakState.Ref.AddLevelId(_selectedLevelButton.LevelDatum.LevelID);
             CurrentlyRenderedBy.CloseModal();
             OnBackClicked();
-            _analyticsRelay.Service.LevelDownloaded();
+            _analyticsService.Ref.LevelDownloaded();
         }
 
         private void Cancel()

@@ -603,14 +603,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e455a5ecb50c42e9b554f5f4bc42265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!81 &864875147
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 871717653}
-  m_Enabled: 1
 --- !u!20 &870877641
 Camera:
   m_ObjectHideFlags: 0
@@ -679,7 +671,6 @@ GameObject:
   m_Component:
   - component: {fileID: 871476775}
   - component: {fileID: 870877641}
-  - component: {fileID: 864875147}
   - component: {fileID: 1614582445}
   - component: {fileID: 871717654}
   m_Layer: 0

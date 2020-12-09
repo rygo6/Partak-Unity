@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Threading.Tasks;
 using GeoTetra.GTBackend;
 using GeoTetra.GTPooling;
@@ -18,16 +17,14 @@ namespace GeoTetra.Partak.UI
         [SerializeField]
         private SceneTransitRef _sceneTransit;
         
-        [SerializeField] 
-        [AssetReferenceComponentRestriction(typeof(AnalyticsRelay))]
-        private AnalyticsRelayReference _analyticsRelay;
+        [SerializeField]
+        private AnalyticsServiceRef _analyticsService;
         
         [SerializeField]
         private PartakStateRef _partakState;
         
-        [SerializeField] 
-        [AssetReferenceComponentRestriction(typeof(PartakDatabase))]
-        private PartakDatabaseReference _partakDatabase;
+        [SerializeField]
+        private PartakAWSRef _partakAWS;
         
         [SerializeField] private AssetReference _mainMenuScene;
         [SerializeField] private AssetReference _gameSessionScene;
@@ -70,9 +67,10 @@ namespace GeoTetra.Partak.UI
 
         protected override async Task StartAsync()
         {
-            await _componentContainer.Cache(this);
-            await _partakState.Cache(this);
-            await _sceneTransit.Cache(this);
+            await Task.WhenAll(_componentContainer.Cache(this),
+                _partakState.Cache(this),
+                _sceneTransit.Cache(this),
+                _analyticsService.Cache(this));
             
             _pauseMessages = new[] {"Main Menu", "Skip Level", "Resume"};
             _pauseActions = new Action[] {MainMenu, Skip, Resume};
@@ -105,17 +103,19 @@ namespace GeoTetra.Partak.UI
             _inputPadGroup.Deinitialize();
         }
 
-        private void ThumbsUp()
+        private async void ThumbsUp()
         {
-            _partakDatabase.Service.IncrementThumbsUp(_levelConfig.Datum.LevelID, true);
+            await _partakAWS.Cache(this);
+            await _partakAWS.Ref.IncrementThumbsUp(_levelConfig.Datum.LevelID, true);
             _levelConfig.Datum.Rated = true;
             _levelConfig.Serialize(_levelConfig.Datum.LevelID, false);
             _rateMenu.gameObject.SetActive(false);
         }
 
-        private void ThumbsDown()
+        private async void ThumbsDown()
         {
-            _partakDatabase.Service.IncrementThumbsDown(_levelConfig.Datum.LevelID, true);
+            await _partakAWS.Cache(this);
+            await _partakAWS.Ref.IncrementThumbsDown(_levelConfig.Datum.LevelID, true);
             _levelConfig.Datum.Rated = true;
             _levelConfig.Serialize(_levelConfig.Datum.LevelID, false);
             _rateMenu.gameObject.SetActive(false);
@@ -151,7 +151,7 @@ namespace GeoTetra.Partak.UI
 
         private void Replay()
         {
-            _analyticsRelay.Service.GamePlayerCount();
+            _analyticsService.Ref.GamePlayerCount();
             CurrentlyRenderedBy.Flush(() =>
             {
                 _sceneTransit.Ref.Load(_gameSessionScene, _gameSessionScene);
@@ -161,7 +161,7 @@ namespace GeoTetra.Partak.UI
         private void Skip()
         {
             _partakState.Ref.LevelIndex++;
-            _analyticsRelay.Service.GamePlayerCount();
+            _analyticsService.Ref.GamePlayerCount();
             
             CurrentlyRenderedBy.Flush(() =>
             {
@@ -172,7 +172,7 @@ namespace GeoTetra.Partak.UI
         private void Next()
         {
             _partakState.Ref.LevelIndex++;
-            _analyticsRelay.Service.GamePlayerCount();
+            _analyticsService.Ref.GamePlayerCount();
             
             CurrentlyRenderedBy.Flush(() =>
             {

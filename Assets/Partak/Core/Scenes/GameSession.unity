@@ -1280,7 +1280,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1732042066}
   - component: {fileID: 1730542268}
-  - component: {fileID: 1732346366}
   - component: {fileID: 1737831206}
   m_Layer: 0
   m_Name: MainCamera
@@ -1335,14 +1334,6 @@ Transform:
   m_Father: {fileID: 1732042066}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!81 &1732346366
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1731733600}
-  m_Enabled: 1
 --- !u!114 &1737831206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1367,8 +1358,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a67e9eac441b941f08f9fe9371e5b0a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _analyticsRelay:
-    m_AssetGUID: 17010a8528f4c0b43a5469286e4a9730
+  _analyticsService:
+    m_AssetGUID: 
     m_SubObjectName: 
     m_SubObjectType: 
   _partakState:

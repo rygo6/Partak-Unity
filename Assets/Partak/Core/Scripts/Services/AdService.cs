@@ -7,13 +7,14 @@ using UnityEngine.Advertisements;
 namespace GeoTetra.Partak
 {
     [Serializable]
-    public class AdvertisementDispatchReference : ServiceReferenceT<AdvertisementDispatch>
+    public class AdServiceRef : ServiceObjectReferenceT<AdService>
     {
-        public AdvertisementDispatchReference(string guid) : base(guid)
+        public AdServiceRef(string guid) : base(guid)
         { }
     }
     
-    public class AdvertisementDispatch : ServiceBehaviour, IUnityAdsListener 
+    [CreateAssetMenu(menuName = "GeoTetra/Services/UnityAdService", fileName = "UnityAdService.asset")]
+    public class AdService : ServiceObject, IUnityAdsListener 
     {
         [SerializeField] private string _appleAppStoreId = "1018927";
         [SerializeField] private string _googlePlayStoreId = "1018926";
@@ -21,26 +22,42 @@ namespace GeoTetra.Partak
         [SerializeField] private string _rewardedVideoId = "rewardedVideo";
         
         private int _gameCount;
+        private TaskCompletionSource<bool> _initializeTask;
         private TaskCompletionSource<bool> _rewardedAdTask;
 
-        private void Awake()
+        protected override void OnServiceEnd()
         {
-            Advertisement.AddListener(this);
-            Advertisement.Initialize(Application.platform == RuntimePlatform.Android ? _googlePlayStoreId : _appleAppStoreId, _testMode);
+            _initializeTask = null;
+            _rewardedAdTask = null;
+            base.OnServiceEnd();
+        }
+
+        private Task Initialize()
+        {
+            if (!Advertisement.isInitialized)
+            {
+                _initializeTask = new TaskCompletionSource<bool>();
+                Advertisement.AddListener(this);
+                Advertisement.Initialize(Application.platform == RuntimePlatform.Android ? _googlePlayStoreId : _appleAppStoreId, _testMode);
+                return _initializeTask.Task;
+            }
+
+            return Task.CompletedTask;
         }
 
         [ContextMenu("ShowRewardedAd")]
-        public Task<bool> ShowRewardedAd()
+        public async Task ShowRewardedAd()
         {
+            await Initialize();
             _rewardedAdTask = new TaskCompletionSource<bool>();
             Advertisement.Show(_rewardedVideoId);
-            return _rewardedAdTask.Task;
+            await _rewardedAdTask.Task;
         }
 
         public void OnUnityAdsReady(string placementId)
         {
             Debug.Log("OnUnityAdsReady " + placementId);
-            OnLoadComplete();
+            if (placementId == _rewardedVideoId && !_initializeTask.Task.IsCompleted) _initializeTask.SetResult(true);
         }
 
         public void OnUnityAdsDidError(string message)

@@ -13,11 +13,11 @@ namespace GeoTetra.Partak
 {
     public class LevelCreateUI : StackUI
     {
-        [SerializeField] private AnalyticsRelayReference _analyticsRelay;
+        [SerializeField] private AnalyticsServiceRef _analyticsService;
         [SerializeField] private PartakStateRef _partakState;
         [SerializeField] private SceneTransitRef _sceneTransit;
         [SerializeField] private ComponentContainerRef _componentContainer;
-        [SerializeField] private PartakDatabaseReference _database;
+        [SerializeField] private PartakAWSRef _partakAWS;
         [SerializeField] private AssetReference _mainMenuScene;
         [SerializeField] private AssetReference _newLevelScene;
         [SerializeField] private AssetReference _loadModalUI;
@@ -66,7 +66,9 @@ namespace GeoTetra.Partak
             await Task.WhenAll(
                 _componentContainer.Cache(this),
                 _partakState.Cache(this),
-                _sceneTransit.Cache(this)
+                _sceneTransit.Cache(this),
+                _partakAWS.Cache(this),
+                _analyticsService.Cache(this)
             );
             await base.StartAsync();
         }
@@ -128,7 +130,7 @@ namespace GeoTetra.Partak
         {
             OnBackClicked();
             _sceneTransit.Ref.Load(_newLevelScene, _mainMenuScene);
-            _analyticsRelay.Service.CreateLevelCancelled();
+            _analyticsService.Ref.CreateLevelCancelled();
         }
 
         private void SerializeLevel()
@@ -141,16 +143,16 @@ namespace GeoTetra.Partak
         {
             SerializeLevel();
             OnCloseClick();
-            _analyticsRelay.Service.CreateLevelSaved();
+            _analyticsService.Ref.CreateLevelSaved();
         }
         
         private async void SaveToAWS()
         {
             _levelConfig.Datum.Shared = true;
             SerializeLevel();
-            await _database.Service.SaveLevel(_editingLevelId);
+            await _partakAWS.Ref.SaveLevel(_editingLevelId);
             OnCloseClick();
-            _analyticsRelay.Service.CreateLevelUploaded();
+            _analyticsService.Ref.CreateLevelUploaded();
         }
 
         private void OnValidateClick()

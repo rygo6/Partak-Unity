@@ -21,13 +21,14 @@ using UnityEngine.AddressableAssets;
 namespace GeoTetra.GTBackend
 {
     [Serializable]
-    public class PartakDatabaseReference : ServiceReferenceT<PartakDatabase>
+    public class PartakAWSRef : ServiceObjectReferenceT<PartakAWS>
     {
-        public PartakDatabaseReference(string guid) : base(guid)
+        public PartakAWSRef(string guid) : base(guid)
         { }
     }
     
-    public class PartakDatabase : ServiceBehaviour
+    [CreateAssetMenu(menuName = "GeoTetra/Services/PartakAWS")]
+    public class PartakAWS : ServiceObject
     {
         [SerializeField] private string _identityPoolId = "us-west-2:1c228a7e-eb85-433f-a708-d46b063a488f";
         [SerializeField] private string _regionEndpoint  = "us-west-2";
@@ -58,18 +59,28 @@ namespace GeoTetra.GTBackend
         private AmazonDynamoDBClient _dbClient;
         private TransferUtility _transferUtility;
 
-        private void OnEnable()
+        protected override async Task OnServiceStart()
         {
-#if UNITY_EDITOR
-            if (UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
-#endif
-            Connect();
+            await Connect();
+            await base.OnServiceStart();
+        }
+        
+        protected override void OnServiceEnd()
+        {
+            _table = null;
+            _s3Client = null;
+            _dbClient = null;
+            _transferUtility = null;
+            base.OnServiceEnd();
         }
 
+        /// <summary>
+        /// Connect is called before every operation in order to allow lazy initialization of the AWS calls.
+        /// </summary>
         [ContextMenu("Connect")]
-        private async void Connect()
+        private async Task Connect()
         {
-            if (_table == null)
+            if (_dbClient == null || _table == null || _s3Client == null || _transferUtility == null)
             {
                 LoggingConfig loggingConfig = AWSConfigs.LoggingConfig;
                 loggingConfig.LogTo = LoggingOptions.Console;
@@ -101,6 +112,7 @@ namespace GeoTetra.GTBackend
 
         public async Task DownloadLevel(string levelId)
         {
+            await Connect();
             string levelPath = LevelUtility.LevelPath(levelId);
             string imagePath = LevelUtility.LevelImagePath(levelId);
 
@@ -122,13 +134,15 @@ namespace GeoTetra.GTBackend
             await _transferUtility.DownloadAsync(imagePath, _s3Bucket, imageKey);
         }
         
-        public Search QueryLevelsCreatedAt(int pageSize)
+        public async Task<Search> QueryLevelsCreatedAt(int pageSize)
         {
+            await Connect();
             return QueryLevels(pageSize, _createdAtIndex);
         }
 
-        public Search QueryLevelsThumbsUp(int pageSize)
+        public async Task<Search> QueryLevelsThumbsUp(int pageSize)
         {
+            await Connect();
             return QueryLevels(pageSize, _thumbsUpIndex);
         }
         
@@ -151,6 +165,7 @@ namespace GeoTetra.GTBackend
         
         public async Task DownloadLevelPreview(string id, Texture2D image)
         {
+            await Connect();
             string key = S3LevelImageKey(id);
             byte[] bytes = await GetImageBytesFromS3(key);
             image.LoadImage(bytes, true);
@@ -206,6 +221,8 @@ namespace GeoTetra.GTBackend
 
         public async Task SaveLevel(string levelId)
         {
+            await Connect();
+            
             Debug.Log("Saving level " + levelId);
             string levelPath = LevelUtility.LevelPath(levelId);
             string imagePath = LevelUtility.LevelImagePath(levelId);
@@ -247,13 +264,15 @@ namespace GeoTetra.GTBackend
             }
         }
 
-        public void IncrementThumbsUp(string levelID, bool positive)
+        public async Task IncrementThumbsUp(string levelID, bool positive)
         {
+            await Connect();
             AtomicIncrement(levelID, LevelFields.ThumbsUpKey, positive);
         }
         
-        public void IncrementThumbsDown(string levelID, bool positive)
+        public async Task IncrementThumbsDown(string levelID, bool positive)
         {
+            await Connect();
             AtomicIncrement(levelID, LevelFields.ThumbsDownKey, positive);
         }
 
