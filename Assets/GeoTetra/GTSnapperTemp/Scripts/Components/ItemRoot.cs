@@ -29,11 +29,21 @@ namespace GeoTetra.GTSnapper
 
         private readonly List<ItemDrag> ItemDragList = new List<ItemDrag>();
         private readonly List<Item> ItemHighlightList = new List<Item>();
+        
         private readonly List<AsyncOperationHandle<ItemReference>> _referenceHandles = new List<AsyncOperationHandle<ItemReference>>();
         private ItemRootDatum _itemRootDatum;
         
+        /// <summary>
+        /// The Item which events are currently being forwarded to.
+        /// Necessary because when you manipulate via a Gizmo, the data.pointerPress
+        /// will be the gizmo, and not this.
+        /// </summary>
+        public Item CurrentlyUsedItem { get; set; }
         public int IgnoreLayer { get; private set; }
         public int ItemLayer { get; private set; }
+        public int ItemGizmoLayer { get; private set; }
+        
+        public int ItemCount { get; set; }
 
         public ItemSettings ItemSettings => _itemSettings;
         
@@ -45,6 +55,8 @@ namespace GeoTetra.GTSnapper
         {
             IgnoreLayer = LayerMask.NameToLayer("Ignore Raycast");
             ItemLayer = LayerMask.NameToLayer("Item");
+            ItemGizmoLayer = LayerMask.NameToLayer("ItemGizmo");
+            _itemGizmoRoot.Initialize(this);
             for (int i = 0; i < _rootItems.Count; ++i)
             {
                 _rootItems[i].Initialize(this, null, _inputCatcher);
@@ -79,7 +91,8 @@ namespace GeoTetra.GTSnapper
             ItemDragList.Add(itemDrag);
             if (ItemDragList.Count == 1)
             {
-                _itemGizmoRoot.UntargetItem();
+                _itemGizmoRoot.SetIgnoreRaycastLayer();
+                // _itemGizmoRoot.UntargetItem();
             }
         }
 
@@ -88,7 +101,8 @@ namespace GeoTetra.GTSnapper
             ItemDragList.Remove(itemDrag);
             if (ItemDragList.Count == 0)
             {
-                _itemGizmoRoot.TargetItem(itemDrag.Item);
+                _itemGizmoRoot.SetItemGizmoLayer();
+                // _itemGizmoRoot.TargetItem(itemDrag.Item);
             }
         }
         
@@ -130,7 +144,7 @@ namespace GeoTetra.GTSnapper
 
         public void SetAllActualPositionToTarget()
         {
-            Action<Item> action = delegate(Item item)
+            Action<Item> action = (Item item) =>
             {
                 ItemDrag dragItemMod = item.GetComponent<ItemDrag>();
                 if (dragItemMod != null)

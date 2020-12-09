@@ -81,6 +81,8 @@ namespace GeoTetra.Partak
 
         public IEnumerator RunTest()
         {
+            Debug.Log("ItemCount " + _itemRoot.ItemCount);
+            
             //disable floor collider catcher because right now "no-wall" is discerned by no racyast hit
             _itemDrop.gameObject.SetActive(false);
             _inputCatcher.gameObject.SetActive(false);

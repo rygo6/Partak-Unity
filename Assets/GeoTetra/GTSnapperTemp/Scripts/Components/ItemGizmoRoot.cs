@@ -13,9 +13,10 @@ namespace GeoTetra.GTSnapper
         [SerializeField] private List<ItemRotateGizmo> _itemRotateGizmos;
 
         public Item TargetedItem { get; private set; }
+        public ItemRoot ParentItemRoot { get; private set; }
 
         public Color HighlightColor => _highlightColor;
-
+        
         private void Awake()
         {
             for (int i = 0; i < _itemMoveGizmos.Count; ++i)
@@ -32,6 +33,11 @@ namespace GeoTetra.GTSnapper
             }
 
             gameObject.SetActive(false);
+        }
+
+        public void Initialize(ItemRoot parentItemRoot)
+        {
+            ParentItemRoot = parentItemRoot;
         }
 
         private void LateUpdate()
@@ -72,6 +78,32 @@ namespace GeoTetra.GTSnapper
             newScale  *= (1f + delta);
             newScale = Vector3Utility.Clamp(newScale, TargetedItem.Drag.MinScale, TargetedItem.Drag.MaxScale);
             TargetedItem.Drag.TargetTransform.localScale = newScale;
+        }
+
+        public void SetIgnoreRaycastLayer()
+        {
+            SetGizmoLayer(ParentItemRoot.IgnoreLayer);
+        }
+        
+        public void SetItemGizmoLayer()
+        {
+            SetGizmoLayer(ParentItemRoot.ItemGizmoLayer);
+        }
+
+        public void SetGizmoLayer(int layer)
+        {
+            for (int i = 0; i < _itemMoveGizmos.Count; ++i)
+            {
+                _itemMoveGizmos[i].Collider.gameObject.layer = layer;
+            }
+            for (int i = 0; i < _itemScaleGizmos.Count; ++i)
+            {
+                _itemScaleGizmos[i].Collider.gameObject.layer = layer;
+            }
+            for (int i = 0; i < _itemRotateGizmos.Count; ++i)
+            {
+                _itemRotateGizmos[i].Collider.gameObject.layer = layer;
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-//#define LOG
+#define LOG
 
 using UnityEngine;
 using System.Collections.Generic;
@@ -423,6 +423,7 @@ namespace GeoTetra.GTSnapper
 #if LOG
             Debug.Log( "OnEndDragDragging " + this.name );
 #endif
+            _item.ItemRoot.EndDragging(this);
             
             if (ThisEnteredDropItem == null)
             {
@@ -433,7 +434,6 @@ namespace GeoTetra.GTSnapper
             else
             {
                 ParentItemDrop = ThisEnteredDropItem;
-                _item.ItemRoot.EndDragging(this);
                 AccessoryRendererState = true;
                 _item.SetLayerRecursive(_item.ItemRoot.ItemLayer);
                 _item.State = ItemState.AttachedHighlighted;

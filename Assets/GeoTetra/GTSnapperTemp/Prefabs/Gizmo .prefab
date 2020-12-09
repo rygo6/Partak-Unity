@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 6509874522318861480}
-  _snapIncrement: 45
+  _collider: {fileID: 8564580467072454010}
 --- !u!1 &1718252482356510450
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,6 +217,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 2818515701352164101}
+  _collider: {fileID: 1718252482356510451}
 --- !u!1 &1910247981049892317
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,6 +326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 7912036085386489040}
+  _collider: {fileID: 2127976051892771117}
   _snapIncrement: 45
 --- !u!1 &3078303292480771964
 GameObject:
@@ -434,6 +436,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 5389987659277007742}
+  _collider: {fileID: 197422688428761095}
   _snapIncrement: 45
 --- !u!1 &3239176715769089997
 GameObject:
@@ -583,6 +586,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 4710961015204593201}
+  _collider: {fileID: 982115291570118198}
 --- !u!1 &4472435819244181387
 GameObject:
   m_ObjectHideFlags: 0
@@ -691,6 +695,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 6985946470324245542}
+  _collider: {fileID: 6292827444400970584}
   _snapIncrement: 45
 --- !u!1 &4646356830426489789
 GameObject:
@@ -800,7 +805,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 7642896401196761495}
-  _snapIncrement: 45
+  _collider: {fileID: 6344478324159669388}
 --- !u!1 &5461234585514906751
 GameObject:
   m_ObjectHideFlags: 0
@@ -909,6 +914,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 6634210421075293568}
+  _collider: {fileID: 5461234585514906748}
   _snapIncrement: 45
 --- !u!1 &6127440403738237140
 GameObject:
@@ -1018,6 +1024,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 3807447592426068386}
+  _collider: {fileID: 3352129503118466012}
 --- !u!1 &7290407718882637455
 GameObject:
   m_ObjectHideFlags: 0
@@ -1126,6 +1133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 3971237108548833631}
+  _collider: {fileID: 1823715091533500789}
 --- !u!1 &8567948480648428552
 GameObject:
   m_ObjectHideFlags: 0
@@ -1152,7 +1160,7 @@ Transform:
   m_GameObject: {fileID: 8567948480648428552}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 1920934599831387614}
   m_Father: {fileID: 0}
