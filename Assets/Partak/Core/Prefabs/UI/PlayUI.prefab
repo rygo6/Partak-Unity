@@ -555,9 +555,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68528e7dc12924b32b176a3aa4622126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _parentStackUI: {fileID: 4974690308090156280}
   _selectionModalUi: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
     type: 3}
@@ -2191,9 +2192,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68528e7dc12924b32b176a3aa4622126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _parentStackUI: {fileID: 4974690308090156280}
   _selectionModalUi: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
     type: 3}
@@ -2704,9 +2706,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 481fb6ecd238f4c539bbe151d7d605f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _minutesText: {fileID: 4974690308299312726}
 --- !u!114 &2399452949653627655
 MonoBehaviour:
@@ -2853,11 +2856,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 3
   _constantUpdate: 1
+  _image: {fileID: 4974690307273514245}
 --- !u!1 &4974690307286034244
 GameObject:
   m_ObjectHideFlags: 0
@@ -3065,7 +3070,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parentBaseUI: {fileID: 4974690308090156280}
-  _audioClip: {fileID: 8300000, guid: df718919875942c498b8ec0b06d88cfe, type: 3}
+  _audioClip: {fileID: 8300000, guid: 80c6ffe86a180a74eb0dbb49539143e4, type: 3}
   _volume: 1
 --- !u!1 &4974690307356863499
 GameObject:
@@ -4190,11 +4195,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 2
   _constantUpdate: 1
+  _image: {fileID: 4974690307717696880}
 --- !u!1 &4974690307783550784
 GameObject:
   m_ObjectHideFlags: 0
@@ -4790,9 +4797,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c14611e5f2e442e3b005d4abb53ce61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
 --- !u!1 &4974690307934568852
 GameObject:
   m_ObjectHideFlags: 0
@@ -4877,9 +4885,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa68b8e3c09687e49b3283c31ea70fc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _leftButton: {fileID: 4974690307569558318}
   _rightButton: {fileID: 4974690306919138462}
   _transitionSpeed: 4
@@ -5017,9 +5026,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68528e7dc12924b32b176a3aa4622126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _parentStackUI: {fileID: 4974690308090156280}
   _selectionModalUi: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
     type: 3}
@@ -5289,22 +5299,28 @@ MonoBehaviour:
   _messageModalUiReference:
     m_AssetGUID: a449b5a172335124cab656b556e9f03d
     m_SubObjectName: 
+    m_SubObjectType: 
   _selectionModalUiReference:
     m_AssetGUID: c01e8933723a2b541b05ddefbf07b07c
     m_SubObjectName: 
+    m_SubObjectType: 
   _backButton: {fileID: 4974690307297324498}
-  _loadSystem:
-    m_AssetGUID: e7493b24c6eeb9c4f9473b3eb0a29207
+  _sceneTransitRef:
+    m_AssetGUID: 
     m_SubObjectName: 
-  _gameState:
-    m_AssetGUID: 6d44730f364928b48b8810b26eaf3e43
+    m_SubObjectType: 
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _gameSessionScene:
     m_AssetGUID: e13a610edb1f29e458ca513afc1b8c33
     m_SubObjectName: 
+    m_SubObjectType: 
   _mainMenuScene:
     m_AssetGUID: efa1e429e9b9149c0ace66aa5e10b21d
     m_SubObjectName: 
+    m_SubObjectType: 
   _startButton: {fileID: 4974690306945656473}
 --- !u!223 &4974690308090156284
 Canvas:
@@ -5713,11 +5729,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 1
   _constantUpdate: 1
+  _image: {fileID: 4974690308183374621}
 --- !u!1 &4974690308250222609
 GameObject:
   m_ObjectHideFlags: 0
@@ -6036,11 +6054,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fce6aa74a540f588a07fbf1647888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _playerIndex: 0
   _constantUpdate: 1
+  _image: {fileID: 4974690308394814940}
 --- !u!1 &4974690308405859299
 GameObject:
   m_ObjectHideFlags: 0
@@ -6345,9 +6365,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68528e7dc12924b32b176a3aa4622126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameState:
-    m_AssetGUID: 7c6ed4b39d69fd245b4d46e08295a60d
+  _partakStateRef:
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
   _parentStackUI: {fileID: 4974690308090156280}
   _selectionModalUi: {fileID: 1900360006336580360, guid: c01e8933723a2b541b05ddefbf07b07c,
     type: 3}
