@@ -26,7 +26,7 @@ namespace GeoTetra.Partak.UI
             _rightButton.onClick.AddListener(GalleryRight);
             _material = GetComponent<RawImage>().material;
 
-            string levelId = _partakStateRef.Service.GetSelectedLevelId();
+            string levelId = _partakStateRef.Ref.GetSelectedLevelId();
             if (!string.IsNullOrEmpty(levelId))
             {
                 string imagePath = LevelUtility.LevelImagePath(levelId);
@@ -54,9 +54,9 @@ namespace GeoTetra.Partak.UI
         {
             _rightButton.interactable = false;
             _leftButton.interactable = false;
-            _partakStateRef.Service.LevelIndex += direction;
+            _partakStateRef.Ref.LevelIndex += direction;
 
-            string levelId = _partakStateRef.Service.GetSelectedLevelId();
+            string levelId = _partakStateRef.Ref.GetSelectedLevelId();
             if (string.IsNullOrEmpty(levelId)) yield break;
             string imagePath = LevelUtility.LevelImagePath(levelId);
             
@@ -64,7 +64,7 @@ namespace GeoTetra.Partak.UI
             Texture2D image = new Texture2D(0,0);
             image.LoadImage(imageBytes);
 
-            PlayerPrefs.SetInt("LevelIndex", _partakStateRef.Service.LevelIndex);
+            PlayerPrefs.SetInt("LevelIndex", _partakStateRef.Ref.LevelIndex);
             _material.SetTexture("_Texture2", image);
             yield return null;
             yield return null;
@@ -103,7 +103,7 @@ namespace GeoTetra.Partak.UI
 
         private int GetMaxLevelIndex()
         {
-            return _partakStateRef.Service.LevelCatalogDatum.LevelIDs.Count;
+            return _partakStateRef.Ref.LevelCatalogDatum.LevelIDs.Count;
         }
 
         protected override void OnDestroy()

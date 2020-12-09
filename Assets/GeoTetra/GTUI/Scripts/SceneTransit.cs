@@ -37,7 +37,7 @@ namespace GeoTetra.GTUI
         public async Task Load(AssetReference unloadScene, AssetReference loadScene)
         {
             await Starting;
-            await _uiRendererService.Service.OverlayUI.InstantiateAndDisplayModalUI(_loadModalUI);
+            await _uiRendererService.Ref.OverlayUI.InstantiateAndDisplayModalUI(_loadModalUI);
             await LoadCoroutine(unloadScene, loadScene);
         }
 
@@ -62,7 +62,7 @@ namespace GeoTetra.GTUI
             await handle.Task;
             if (loadLocation == null) Debug.LogWarning($"Can't find location of {handle.Result.Scene.name}'");
             else _loadedSceneInstances.Add(loadLocation.PrimaryKey, handle);
-            _uiRendererService.Service.OverlayUI.CloseModal();
+            _uiRendererService.Ref.OverlayUI.CloseModal();
         }
         
         //below should be moved to UTIL class? Or could this whole thing be put in Pooling?

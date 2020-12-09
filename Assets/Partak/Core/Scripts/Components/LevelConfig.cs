@@ -74,7 +74,7 @@ namespace GeoTetra.Partak
             
             if (_deserializeLevelOnStart)
             {
-                string levelId = _partakState.Service.GetSelectedLevelId();
+                string levelId = _partakState.Ref.GetSelectedLevelId();
                 Deserialize(levelId, false);
             }
             

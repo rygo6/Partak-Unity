@@ -24,11 +24,11 @@ namespace GeoTetra.Partak
         {
             await _partakState.Cache(this);
             
-            _music = new AudioClip[_partakState.Service.PlayerCount(), 3];
-            _audioSource = new AudioSource[_partakState.Service.PlayerCount(), 3];
-            _playingClip = new int[_partakState.Service.PlayerCount()];
+            _music = new AudioClip[_partakState.Ref.PlayerCount(), 3];
+            _audioSource = new AudioSource[_partakState.Ref.PlayerCount(), 3];
+            _playingClip = new int[_partakState.Ref.PlayerCount()];
             int rand;
-            for (int i = 0; i < _partakState.Service.PlayerCount(); i++)
+            for (int i = 0; i < _partakState.Ref.PlayerCount(); i++)
             {
                 rand = Random.Range(0, 4);
                 for (int o = 0; o < 3; o++)
@@ -63,7 +63,7 @@ namespace GeoTetra.Partak
         {
             if (_playMusic)
             {
-                for (int i = 0; i < _partakState.Service.PlayerCount(); i++)
+                for (int i = 0; i < _partakState.Ref.PlayerCount(); i++)
                     if (_cellParticleStore.PlayerParticleCount[i] == -100)
                     {
                         _audioSource[i, 0].mute = true;
@@ -108,7 +108,7 @@ namespace GeoTetra.Partak
             _playMusic = false;
             while (true)
             {
-                for (int i = 0; i < _partakState.Service.PlayerCount(); i++)
+                for (int i = 0; i < _partakState.Ref.PlayerCount(); i++)
                 for (int o = 0; o < 3; o++)
                     _audioSource[i, o].volume -= Time.deltaTime / 4f;
 

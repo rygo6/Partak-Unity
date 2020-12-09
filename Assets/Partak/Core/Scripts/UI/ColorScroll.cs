@@ -69,7 +69,7 @@ namespace GeoTetra.Partak
             newRect.x += amount;
             _rawImage.uvRect = newRect;
             await _partakStateRef.Cache(this);
-            _partakStateRef.Service.SetColors(_rawImage.uvRect.x);
+            _partakStateRef.Ref.SetColors(_rawImage.uvRect.x);
         }
     }
 }

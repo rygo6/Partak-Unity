@@ -34,15 +34,15 @@ namespace GeoTetra.Partak
         {
             await _partakState.Cache(this);
             
-            _aiCellParticleIndex = new int[_partakState.Service.PlayerCount()];
-            _aiCursorTarget = new Vector3[_partakState.Service.PlayerCount()];
-            _aiCursorVelocity = new Vector3[_partakState.Service.PlayerCount()];
-            _randomPullCycle = new int[_partakState.Service.PlayerCount()];
+            _aiCellParticleIndex = new int[_partakState.Ref.PlayerCount()];
+            _aiCursorTarget = new Vector3[_partakState.Ref.PlayerCount()];
+            _aiCursorVelocity = new Vector3[_partakState.Ref.PlayerCount()];
+            _randomPullCycle = new int[_partakState.Ref.PlayerCount()];
 
-            for (int i = 0; i < _partakState.Service.PlayerCount(); ++i)
+            for (int i = 0; i < _partakState.Ref.PlayerCount(); ++i)
             {
                 _aiCellParticleIndex[i] = i * 10;
-                _randomPullCycle[i] = i * (_randomCycleRate / _partakState.Service.PlayerCount());
+                _randomPullCycle[i] = i * (_randomCycleRate / _partakState.Ref.PlayerCount());
             }
             
             _loopThread = LoopThread.Create(UpdateAICursor, "CellAI", Priority.Low);
@@ -65,8 +65,8 @@ namespace GeoTetra.Partak
 
         public void MoveAICursorUpdate()
         {
-            for (int playerIndex = 0; playerIndex < _partakState.Service.PlayerCount(); ++playerIndex)
-                if (_partakState.Service.PlayerStates[playerIndex].PlayerMode == PlayerMode.Comp &&
+            for (int playerIndex = 0; playerIndex < _partakState.Ref.PlayerCount(); ++playerIndex)
+                if (_partakState.Ref.PlayerStates[playerIndex].PlayerMode == PlayerMode.Comp &&
                     !_cellParticleStore.PlayerLost[playerIndex])
                     _cursorStore.SetCursorPositionClamp(playerIndex,
                         Vector3.SmoothDamp(
@@ -82,9 +82,9 @@ namespace GeoTetra.Partak
             int losingPlayerIndex = _cellParticleStore.LosingPlayer();
             int targetPlayerIndex, playerIndex, newIndex;
             int particleLimit = _cellParticleStore.CellParticleArray.Length;
-            int playerLimit = _partakState.Service.PlayerCount();
+            int playerLimit = _partakState.Ref.PlayerCount();
             for (playerIndex = 0; playerIndex < playerLimit; ++playerIndex)
-                if (_partakState.Service.PlayerStates[playerIndex].PlayerMode == PlayerMode.Comp &&
+                if (_partakState.Ref.PlayerStates[playerIndex].PlayerMode == PlayerMode.Comp &&
                     !_cellParticleStore.PlayerLost[playerIndex])
                 {
                     targetPlayerIndex = 0;

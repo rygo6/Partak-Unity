@@ -15,10 +15,10 @@ namespace GeoTetra.Partak
         {
             await _partakStateRef.Cache(this);
             
-            _lineRenderer.material.color = _lineRenderer.material.color.SetRGB(_partakStateRef.Service.PlayerStates[_playerIndex].PlayerColor);
+            _lineRenderer.material.color = _lineRenderer.material.color.SetRGB(_partakStateRef.Ref.PlayerStates[_playerIndex].PlayerColor);
             if (_constantUpdate)
             {
-                _partakStateRef.Service.PlayerStates[_playerIndex].ColorChanged += UpdateColor;
+                _partakStateRef.Ref.PlayerStates[_playerIndex].ColorChanged += UpdateColor;
             }
 
             await base.StartAsync();
@@ -31,7 +31,7 @@ namespace GeoTetra.Partak
 
         protected override void OnDestroy()
         {
-            _partakStateRef.Service.PlayerStates[_playerIndex].ColorChanged -= UpdateColor;
+            _partakStateRef.Ref.PlayerStates[_playerIndex].ColorChanged -= UpdateColor;
             base.OnDestroy();
         }
 

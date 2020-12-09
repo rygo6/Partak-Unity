@@ -34,10 +34,10 @@ namespace GeoTetra.Partak
         {
             await _partakState.Cache(this);
             
-            PlayerLost = new bool[_partakState.Service.PlayerCount()];
-            PlayerParticleCount = new int[_partakState.Service.PlayerCount()];
+            PlayerLost = new bool[_partakState.Ref.PlayerCount()];
+            PlayerParticleCount = new int[_partakState.Ref.PlayerCount()];
             CellParticleArray = new CellParticle[_levelConfig.Datum.ParticleCount];
-            _startParticleCount = _levelConfig.Datum.ParticleCount / _partakState.Service.ActivePlayerCount();
+            _startParticleCount = _levelConfig.Datum.ParticleCount / _partakState.Ref.ActivePlayerCount();
             
             if (_calcualtePercentagesCoroutine != null) {StopCoroutine(_calcualtePercentagesCoroutine);}
             _calcualtePercentagesCoroutine = StartCoroutine(CalculatePercentages());

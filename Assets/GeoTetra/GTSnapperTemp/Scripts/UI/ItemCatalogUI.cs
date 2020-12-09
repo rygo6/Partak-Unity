@@ -40,7 +40,7 @@ namespace GeoTetra.GTSnapper
 
         public void Initialize()
         {
-            _itemRoot = _componentContainer.Service.Get<ItemRoot>();
+            _itemRoot = _componentContainer.Ref.Get<ItemRoot>();
             LoadItemReferencesFromAssets("ItemReference");
         }
         

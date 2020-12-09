@@ -23,11 +23,11 @@ namespace GeoTetra.GTUI
             await Task.Delay((int)(_delay * 1000));
             if (_onlyDisplayIfEmpty)
             {
-                if (_uiRendererService.Service.OverlayUI.CurrentStackUI == null) _uiRendererService.Service.OverlayUI.InstantiateAndDisplayStackUI(_stackUIReference, _transitionType, OnTransitionFinish);
+                if (_uiRendererService.Ref.OverlayUI.CurrentStackUI == null) _uiRendererService.Ref.OverlayUI.InstantiateAndDisplayStackUI(_stackUIReference, _transitionType, OnTransitionFinish);
             }
             else
             {
-                _uiRendererService.Service.OverlayUI.InstantiateAndDisplayStackUI(_stackUIReference, _transitionType, OnTransitionFinish);
+                _uiRendererService.Ref.OverlayUI.InstantiateAndDisplayStackUI(_stackUIReference, _transitionType, OnTransitionFinish);
             }
             await base.StartAsync();
         }

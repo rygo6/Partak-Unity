@@ -29,7 +29,7 @@ namespace GeoTetra.Partak.UI
             
             for (int i = 0; i < _inputPads.Length; ++i)
             {
-                if (_partakState.Service.PlayerStates[i].PlayerMode != PlayerMode.Human)
+                if (_partakState.Ref.PlayerStates[i].PlayerMode != PlayerMode.Human)
                 {
                     _inputPads[i].gameObject.SetActive(false);
                 }

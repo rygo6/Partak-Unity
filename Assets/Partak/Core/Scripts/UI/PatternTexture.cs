@@ -26,7 +26,7 @@ namespace GeoTetra.Partak
             
             await _partakState.Cache(this);
             
-            foreach (PartakState.PlayerState playerState in _partakState.Service.PlayerStates)
+            foreach (PartakState.PlayerState playerState in _partakState.Ref.PlayerStates)
             {
                 playerState.ColorChanged += UpdateTexture;
             }
@@ -37,7 +37,7 @@ namespace GeoTetra.Partak
 
         protected override void OnDestroy()
         {
-            foreach (PartakState.PlayerState playerState in _partakState.Service.PlayerStates)
+            foreach (PartakState.PlayerState playerState in _partakState.Ref.PlayerStates)
             {
                 playerState.ColorChanged -= UpdateTexture;
             }
@@ -73,9 +73,9 @@ namespace GeoTetra.Partak
                     }
                     else
                     {
-                        SetPixelColors(_partakState.Service.PlayerStates[playerIndex].PlayerColor);
+                        SetPixelColors(_partakState.Ref.PlayerStates[playerIndex].PlayerColor);
                         playerIndex++;
-                        if (playerIndex == _partakState.Service.PlayerCount())
+                        if (playerIndex == _partakState.Ref.PlayerCount())
                             playerIndex = 0;
                         xblack = true;
                     }

@@ -22,7 +22,7 @@ namespace GeoTetra.Partak
         public async Task Initialize()
         {
             await _partakState.Cache(this);
-            await Initialize(_levelConfig.Datum.ParticleCount, _partakState.Service.PlayerStates);
+            await Initialize(_levelConfig.Datum.ParticleCount, _partakState.Ref.PlayerStates);
         }
 
         public async Task Initialize(int particleCount, PartakState.PlayerState[] PlayerStates)

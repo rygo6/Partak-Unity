@@ -68,7 +68,7 @@ namespace GeoTetra.Partak
             {
                 _playerStates[i] = new PartakState.PlayerState
                 {
-                    PlayerColor = _partakSate.Service.PlayerStates[i].PlayerColor
+                    PlayerColor = _partakSate.Ref.PlayerStates[i].PlayerColor
                 };
             }
             

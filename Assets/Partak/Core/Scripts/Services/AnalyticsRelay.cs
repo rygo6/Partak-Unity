@@ -74,11 +74,11 @@ namespace GeoTetra.Partak
             
             Analytics.CustomEvent("GamePlayerCount", new Dictionary<string, object>
             {
-                {"PlayerCount", _partakState.Service.ActivePlayerCount()}
+                {"PlayerCount", _partakState.Ref.ActivePlayerCount()}
             });
             Analytics.CustomEvent("HumanPlayerCount", new Dictionary<string, object>
             {
-                {"PlayerCount", _partakState.Service.ActiveHumanPlayerCount()}
+                {"PlayerCount", _partakState.Ref.ActiveHumanPlayerCount()}
             });
         }
     }

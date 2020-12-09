@@ -59,14 +59,14 @@ namespace GeoTetra.Partak
             int parentLevel = cellGroup.CellGroupGrid.ParentLevel;
             int levelCount = _levelCount[parentLevel];
             int playerIndex;
-            int playerLimit = _partakState.Service.PlayerCount();
+            int playerLimit = _partakState.Ref.PlayerCount();
             for (playerIndex = 0; playerIndex < playerLimit; ++playerIndex)
             {
                 if (cellGroup.PlayerParticleCount[playerIndex] > levelCount)
                 {
                     _cellParticleSystems[parentLevel].SetNextParticle(
                         cellGroup.WorldPosition,
-                        _partakState.Service.PlayerStates[playerIndex].PlayerColor);
+                        _partakState.Ref.PlayerStates[playerIndex].PlayerColor);
                     return;
                 }
             }
