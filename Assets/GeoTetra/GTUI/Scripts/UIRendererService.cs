@@ -12,7 +12,7 @@ namespace GeoTetra.GTUI
         { }
     }
     
-    [CreateAssetMenu(menuName = "GeoTetra/Services/UIRendererService")]
+    [CreateAssetMenu(menuName = "GeoTetra/Services/UIRendererService", fileName = "UIRendererService.asset")]
     public class UIRendererService : ServiceObject
     {
         [SerializeField] private UIRenderer _uiRendererPrefab;

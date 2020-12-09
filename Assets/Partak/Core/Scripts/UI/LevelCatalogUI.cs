@@ -11,7 +11,7 @@ namespace GeoTetra.Partak
 {
     public class LevelCatalogUI : StackUI
     {
-        [SerializeField] private AnalyticsRelayReference _analyticsRelay;
+        [SerializeField] private AnalyticsServiceRef _analyticsService;
         [SerializeField] private PartakStateRef _partakState;
         [SerializeField] private SceneTransitRef _sceneTransit;
         [SerializeField] private AssetReference _newLevelScene;
@@ -43,8 +43,9 @@ namespace GeoTetra.Partak
 
         protected override async Task StartAsync()
         {
-            await _partakState.Cache(this);
-            await _sceneTransit.Cache(this);
+            await Task.WhenAll(_partakState.Cache(this),
+                    _sceneTransit.Cache(this),
+                    _analyticsService.Cache(this));
 
             await base.StartAsync();
         }
@@ -160,7 +161,7 @@ namespace GeoTetra.Partak
             _catalogDatumIndex = 0;
             _levelButtonScrollRect.Clear();
             _levelButtonScrollRect.Initialize(DownloadNextSet, PopulateLevelButton, FinalButton);
-            _analyticsRelay.Service.LevelDeleted();
+            _analyticsService.Ref.LevelDeleted();
             
             //Reset level index so play menu doesn't load on empty level.
             _partakState.Ref.LevelIndex = 0;
@@ -179,14 +180,14 @@ namespace GeoTetra.Partak
         {
             _partakState.Ref.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
             CurrentlyRenderedBy.InstantiateAndDisplayStackUI(_levelDownloadUI);
-            _analyticsRelay.Service.DownloadLevelOpened();
+            _analyticsService.Ref.DownloadLevelOpened();
         }
 
         private void CreateNewLevel()
         {
             _partakState.Ref.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
             _sceneTransit.Ref.Load(_mainMenuScene, _newLevelScene);
-            _analyticsRelay.Service.CreateLevelOpened();
+            _analyticsService.Ref.CreateLevelOpened();
             
             //Reset level index so play menu doesn't load on empty level.
             _partakState.Ref.LevelIndex = 0;

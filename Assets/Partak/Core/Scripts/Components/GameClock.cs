@@ -9,7 +9,7 @@ namespace GeoTetra.Partak
 {
     public class GameClock : SubscribableBehaviour
     {
-        [SerializeField] private AnalyticsRelayReference _analyticsRelay;
+        [SerializeField] private AnalyticsServiceRef _analyticsService;
         [SerializeField] private PartakStateRef _partakState;
         [SerializeField] private Material _surroundMaterial;
         [SerializeField] private CellParticleEngine _cellParticleMover;
@@ -26,7 +26,9 @@ namespace GeoTetra.Partak
 
         protected override async Task StartAsync()
         {
-            await _partakState.Cache(this);
+            await Task.WhenAll(_partakState.Cache(this),
+                    _analyticsService.Cache(this)
+                );
             
             _initialColors = new Color[_partakState.Ref.PlayerCount()];
             for (int i = 0; i < _initialColors.Length; ++i)
@@ -71,7 +73,7 @@ namespace GeoTetra.Partak
         private void Win()
         {
             CancelInvoke();
-             _analyticsRelay.Service.GameTime(GameTime);
+             _analyticsService.Ref.GameTime(GameTime);
         }
 
         private void TimeOut()

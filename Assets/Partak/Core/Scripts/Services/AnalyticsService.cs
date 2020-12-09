@@ -9,22 +9,18 @@ using UnityEngine.SceneManagement;
 namespace GeoTetra.Partak
 {
     [Serializable]
-    public class AnalyticsRelayReference : ServiceReferenceT<AnalyticsRelay>
+    public class AnalyticsServiceRef : ServiceObjectReferenceT<AnalyticsService>
     {
-        public AnalyticsRelayReference(string guid) : base(guid)
+        public AnalyticsServiceRef(string guid) : base(guid)
         { }
     }
     
-    public class AnalyticsRelay : ServiceBehaviour
+    [CreateAssetMenu(menuName = "GeoTetra/Services/AnalyticsService", fileName = "AnalyticsService.asset")]
+    public class AnalyticsService : ServiceObject
     {
         [SerializeField]
         private PartakStateRef _partakState;
-
-        private void Awake()
-        {
-            OnLoadComplete();
-        }
-
+        
         public void LevelDownloaded()
         {
             Analytics.CustomEvent("LevelDownloaded");

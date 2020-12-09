@@ -17,7 +17,7 @@ namespace GeoTetra.GTUI
         { }
     }
     
-    [CreateAssetMenu(menuName = "GeoTetra/Services/SceneTransit")]
+    [CreateAssetMenu(menuName = "GeoTetra/Services/SceneTransit", fileName = "SceneTransit.asset")]
     public class SceneTransit : ServiceObject
     {
         [SerializeField]
