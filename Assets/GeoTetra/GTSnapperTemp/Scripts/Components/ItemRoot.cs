@@ -56,7 +56,7 @@ namespace GeoTetra.GTSnapper
             IgnoreLayer = LayerMask.NameToLayer("Ignore Raycast");
             ItemLayer = LayerMask.NameToLayer("Item");
             ItemGizmoLayer = LayerMask.NameToLayer("ItemGizmo");
-            _itemGizmoRoot.Initialize(this);
+            if (_itemGizmoRoot != null) _itemGizmoRoot.Initialize(this);
             for (int i = 0; i < _rootItems.Count; ++i)
             {
                 _rootItems[i].Initialize(this, null, _inputCatcher);

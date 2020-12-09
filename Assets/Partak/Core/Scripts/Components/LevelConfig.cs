@@ -51,6 +51,8 @@ namespace GeoTetra.Partak
             }
         }
 
+        public ItemRoot ItemRoot => _itemRoot;
+
         private LocalLevelDatum _levelDatum;
 
         private void Awake()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GeoTetra.GTCommon.Components;
 using GeoTetra.GTCommon.ScriptableObjects;
@@ -39,8 +40,8 @@ namespace GeoTetra.Partak
                 }
             }
             
-            Task[] spawnYield = new Task[playerCount];
-            int spawnCount = particleCount / playerCount;
+            List<Task> spawnYieldList = new List<Task>();
+            int spawnCount = particleCount / activePlayerCount;
             int startIndex = 0;
             int trailingSpawn = 0;
             bool trailingAdded = false;
@@ -61,14 +62,13 @@ namespace GeoTetra.Partak
 
                     int particleIndex = CellUtility.WorldPositionToGridIndex(_cursorStore.CursorPositions[playerIndex].x, _cursorStore.CursorPositions[playerIndex].z, _cellHiearchy.ParticleCellGrid.Dimension);
                     ParticleCell startParticleCell = _cellHiearchy.ParticleCellGrid.Grid[particleIndex];
-                    
-                    spawnYield[playerIndex] = SpawnPlayerParticles(startParticleCell, playerIndex, startIndex, spawnCount + trailingSpawn);
+
+                    spawnYieldList.Add(SpawnPlayerParticles(startParticleCell, playerIndex, startIndex, spawnCount + trailingSpawn));
                     startIndex += spawnCount + trailingSpawn;
                 }
             }
 
-            await Task.WhenAll(spawnYield);
-            Debug.Log(spawnYield);
+            await Task.WhenAll(spawnYieldList.ToArray());
         }
 
         private async Task SpawnPlayerParticles(ParticleCell startParticleCell, int playerIndex, int startIndex, int spawnCount)
