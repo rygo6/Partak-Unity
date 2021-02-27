@@ -200,7 +200,14 @@ namespace GeoTetra.Partak
         private IEnumerator RunTestCoroutine()
         {
             CurrentlyRenderedBy.InstantiateAndDisplayModalUI(_loadModalUI);
-            yield return StartCoroutine(_levelTester.RunTest());
+            for (int i = 0; i < 4; ++i)
+            {
+                yield return StartCoroutine(_levelTester.RunTest(i));
+                if (_levelTester.Result != LevelTester.TestResult.Success)
+                {
+                    break;
+                }
+            }
             CurrentlyRenderedBy.CloseModal();
         }
 

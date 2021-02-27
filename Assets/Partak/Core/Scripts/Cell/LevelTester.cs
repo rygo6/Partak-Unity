@@ -30,8 +30,7 @@ namespace GeoTetra.Partak
         [SerializeField] private InputCatcher _inputCatcher;
         [SerializeField] private ItemRoot _itemRoot;
         
-        private const float MoveParticleCenter = .2f;
-        private const float MaxTestWaitTime = 5;
+        private const float MaxTestWaitTime = 10;
         private const int TestPlayerCount = 4;
         private PartakState.PlayerState[] _playerStates;
 
@@ -82,7 +81,7 @@ namespace GeoTetra.Partak
             await _cellParticleEngine.Initialize(false);
         }
 
-        public IEnumerator RunTest()
+        public IEnumerator RunTest(int testCursorIndex)
         {
             Debug.Log("ItemCount " + _itemRoot.ItemCount);
             if (_itemRoot.ItemCount < 4)
@@ -128,36 +127,30 @@ namespace GeoTetra.Partak
             }
 
             Vector3[] cursorPositions = (Vector3[]) _cursorStore.CursorPositions.Clone();
-            
-            _cursorStore.SetCursorsTo(cursorPositions[0]);
-            
             _cellParticleEngine.StartThread(0);
-
-            float counter = 0;
-            float moveCounter = 0;
-            int cursorFocus = 0;
-            while (!_cellParticleStore.AllPercentagesChanged() )
-            {
-                if (counter > MaxTestWaitTime)
-                {
-                    ClearTest();
-                    Result = TestResult.ParticlesBlocked;
-                    yield break;
-                }
-                
-                if (moveCounter > MoveParticleCenter)
-                {
-                    moveCounter = 0;
-                    cursorFocus++;
-                    if (cursorFocus == _cursorStore.CursorPositions.Length) cursorFocus = 0;
-                    _cursorStore.SetCursorsTo(cursorPositions[cursorFocus]);
-                }
-                
-                counter += Time.deltaTime;
-                moveCounter += Time.deltaTime;
-                yield return null;
-            }
             
+            for (int cursorFocus = 0; cursorFocus < 4; ++cursorFocus)
+            {
+                if (cursorFocus == testCursorIndex) continue;
+                
+                _cursorStore.CursorPositions[testCursorIndex] = cursorPositions[cursorFocus];
+                
+                float counter = 0;
+                // float moveCounter = 0;
+                while (!_cellParticleStore.PercentageChanged(cursorFocus) )
+                {
+                    if (counter > MaxTestWaitTime)
+                    {
+                        ClearTest();
+                        Result = TestResult.ParticlesBlocked;
+                        yield break;
+                    }
+                    
+                    counter += Time.deltaTime;
+                    yield return null;
+                }
+            }
+
             ClearTest();
             Result = TestResult.Success;
         }
