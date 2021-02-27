@@ -103,13 +103,18 @@ namespace GeoTetra.Partak
         {
             return (PlayerParticleCount[playerIndex] - _startParticleCount) / (float) (_levelConfig.Datum.ParticleCount - _startParticleCount);
         }
+        
+        public bool PercentageChanged(int index)
+        {
+            return !Mathf.Approximately(ParticleCountPercentage(index), 0);
+        }
 
         public bool AllPercentagesChanged()
         {
             bool changed = true;
             for (int playerIndex = 0; playerIndex < PlayerParticleCount.Length; ++playerIndex)
             {
-                if (Mathf.Approximately(ParticleCountPercentage(playerIndex), 0)) changed = false;
+                if (!PercentageChanged(playerIndex)) changed = false;
             }
 
             return changed;

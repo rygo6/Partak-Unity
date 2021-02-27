@@ -1,3 +1,79 @@
+## [2.2.7] - 2021-01-27
+
+### Changed
+
+- Amazon - Include SDK version 2.0.76. Continuing to investigate sensitivity to slow-network conditions.
+
+### Fixed
+- GooglePlay - Purchasing silently failing, showing `Failed to purchase unknown product {0}: System.Collections.Generic.List``1[UnityEngine.AndroidJavaObject]` in log, not calling `IStoreListener.OnPurchaseFailed`, after prior purchase when offline, after Initializing, until app has been restarted.
+- GooglePlay - `IStoreController.FetchAdditionalProducts` cleared receipts inappropriately.
+- Apple - Exception seen when purchasing and initializing with existing purchases (e.g. Non-Consumables) on devices set to Thai language. Internal logging of `DateTime` used `CurrentCulture` instead of `InvariantCulture`. Removed logs.
+
+## [2.2.6] - 2021-01-14
+
+### Changed
+- GooglePlay - OnSetupFailed called immediately when Unity IAP fails to connect to the underlying service. To handle users who are logged-out of Google Play we stop the initialization process quickly.
+
+### Fixed
+- GooglePlay - ConfirmPendingPurchase failed to acknowledge purchases after purchase and app restart.
+- GooglePlay - ProcessPurchase unexpectely called when player backgrounded and foregrounded app before the initialization phase finished.
+- GooglePlay - Initialization incorrectly reported as failing, while race-condition returned fetched product metadata simultaneously.
+- Apple - "ArgumentOutOfRangeException: Not a valid calendar for the given culture" during Apple receipt validation (`CrossPlatformValidator.Validate` > `AppleValidator.Validate` > `AppleReceiptParser.Parse`) on devices set to Thai locale.
+
+## [2.2.5] - 2020-12-14
+
+### Fixed
+- GooglePlay - Fails to initialize when the player has made no purchases
+- GooglePlay - Missing ProcessPurchase callback at app start when the transaction is (1) purchased, (2) processed by the app with a ProcessPurchaseResult.Pending result, (3) the app is terminated, and (4) the app is restarted
+- GooglePlay - NullReferenceException from "FillPurchases" (logged internal API) when returning from background, unpredictably
+- Apple - Unity IAP 2.2.2's Apple Silicon fix not included in release; continuous integration pipeline fixed
+- `StandardPurchasingModule.appStore` returns `AppStore.MacAppStore` for Mac App Store, `AppStore.AppleAppStore` for iOS App Store, and `AppStore.WinRT` for Windows Desktop. (No change to 
+`AppStore.SamsungApps`, `AppStore.AmazonAppStore`, or `AppStore.GooglePlay`.)
+
+## [2.2.4] - 2020-12-03
+
+### Fixed
+- GooglePlay - `IStoreListener.ProcessPurchase` called more than once for any purchase which is not consumed, i.e. when `ProcessPurchaseResult.Pending` is returned, by fixing a race-condition.
+
+### Changed
+- GooglePlay - To receive `ProcessPurchase` calls after foregrounding the app, when a purchase is made outside the app (e.g. in the Play Store app), please upgrade the core package via the Package Manager to `com.unity.purchasing@2.2.1` or higher. 
+
+## [2.2.3] - 2020-12-01
+
+### Fixed
+- GooglePlay - `IStoreListener.OnInitialized` is now called after all purchases have been fetched from the store.
+- GooglePlay - `IStoreListener.OnPurchaseFailed` would not be called in projects where the purchased product's ID differed from its Store Specific ID.
+- GooglePlay - All receipts were corrupt after a purchase of a Consumable, until the next Android `Activity.onResume` lifecycle event, if the user had previously bought a Subscription.
+- GooglePlay - Fix `MissingMethodException` seen in projects using `com.unity.purchasing@2.0.3` through `2.2.0` when a user launches their game after having previously purchased a Product.
+
+## [2.2.2] - 2020-11-20
+
+### Fixed
+- Mac App Store - Support for Apple Silicon, `arm64` slice added to binary
+- GooglePlay - ProductMetadata.localizedPrice no longer floors fractions, e.g. "$19.99" was "$19.00"
+- GooglePlay - Fix several purchasing-flow issues
+   - OnPurchaseFailed not called after canceled purchase
+   - Exceptions shown in logcat after normal purchase
+   - Purchases of consumables left incomplete, resulting in "product already owned" errors
+- GooglePlay - Fix initialization when [Android] "Player Settings > Publishing Settings > Minification: Proguard" is enabled. "AndroidJavaException: java.lang.ClassNotFoundException: com.android.billingclient.api.PurchasesUpdatedListener"
+
+
+## [2.2.1] - 2020-11-13
+
+### Fixed
+- GooglePlay - ProductMetadata.localizedPrice always `0` 
+- GooglePlay - "Main" thread warning seen in IStoreListener.OnInitialized and related callbacks.
+
+### Added
+- GooglePlay - Subscription metadata is now available in `GoogleProductMetadata` from `ProductMetadata.GetGoogleProductMetadata()` via `IStoreController.products`.
+   - For example, use `GoogleProductMetadata googleMetadata = storeController.product.all[0].metadata.GetGoogleProductMetadata();` now instead of the deprecated, `IGooglePlayStoreExtensions.GetProductJSONDictionary`.
+   - string originalJson - Note, a single SkuDetails JSON, instead of multiple from `GetProductJSONDictionary` 
+   - string subscriptionPeriod
+   - string freeTrialPeriod
+   - string introductoryPrice
+   - string introductoryPricePeriod
+   - int introductoryPriceCycles
+
 ## [2.2.0] - 2020-11-06
 
 ### Changed
