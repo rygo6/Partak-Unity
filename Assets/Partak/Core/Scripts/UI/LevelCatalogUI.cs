@@ -143,14 +143,14 @@ namespace GeoTetra.Partak
             }
             else
             {
-                // if (levelButton.LevelDatum.Downloaded)
-                // {
-                //     CurrentlyRenderedBy.DisplaySelectionModal("", _loadedLevelMessages, _loadedLevelActions, 0);
-                // }
-                // else
-                // {
+                if (levelButton.LevelDatum.Downloaded)
+                {
+                    CurrentlyRenderedBy.DisplaySelectionModal("", _loadedLevelMessages, _loadedLevelActions, 0);
+                }
+                else
+                {
                     CurrentlyRenderedBy.DisplaySelectionModal("", _editableLoadedLevelMessages, _editableLoadedLevelActions, 0);
-                // }
+                }
             }
         }
 
@@ -182,18 +182,11 @@ namespace GeoTetra.Partak
         
         private void EditLevel()
         {
-            if (_partakState.Ref.FullVersion || !_selectedLevelButton.LevelDatum.Downloaded)
-            {
-                _partakState.Ref.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
-                _sceneTransit.Ref.Load(_mainMenuScene, _newLevelScene);
+            _partakState.Ref.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
+            _sceneTransit.Ref.Load(_mainMenuScene, _newLevelScene);
 
-                //Reset level index so play menu doesn't load on empty level.
-                _partakState.Ref.LevelIndex = 0;
-            }
-            else
-            {
-                PurchaseFullVersion();
-            }
+            //Reset level index so play menu doesn't load on empty level.
+            _partakState.Ref.LevelIndex = 0;
         }
         
         private void DownloadExistingLevel()
