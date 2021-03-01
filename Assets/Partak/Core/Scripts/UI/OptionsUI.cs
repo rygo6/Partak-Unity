@@ -8,6 +8,7 @@ namespace GeoTetra.Partak
 {
     public class OptionsUI : StackUI
     {
+        [SerializeField] private Button _restorePurchasedButton;
         [SerializeField] private Button _toggleSoundButton;
         [SerializeField] private Button _facebookButton;
         [SerializeField] private Button _privacyPolicyButton;
@@ -15,9 +16,21 @@ namespace GeoTetra.Partak
         protected override void Awake()
         {
             base.Awake();
+            _restorePurchasedButton.onClick.AddListener(RestorePurchases);
             _toggleSoundButton.onClick.AddListener(Mute);
             _facebookButton.onClick.AddListener(Facebook);
             _privacyPolicyButton.onClick.AddListener(PrivacyPolicy);
+        }
+        
+        private void RestorePurchases()
+        {
+            CodelessIAPStoreListener.Instance.ExtensionProvider.GetExtension<IAppleExtensions> ().RestoreTransactions (result => {
+                if (result) {
+                    Debug.Log("Restore Success.");
+                } else {
+                    Debug.Log("Restore Failed.");
+                }
+            });
         }
         
         private void Mute()

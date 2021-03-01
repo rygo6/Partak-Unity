@@ -21,17 +21,17 @@ MonoBehaviour:
   - _playerColor: {r: 0.7100159, g: 0.8566735, b: 0.011764706, a: 1}
     _playerMode: 1
   - _playerColor: {r: 0.011764706, g: 0.4973932, b: 0.7378454, a: 1}
-    _playerMode: 0
+    _playerMode: 1
   _timeLimitMinutes: 3
-  _levelIndex: 2
-  _editingLevelIndex: 0
+  _levelIndex: 0
+  _editingLevelIndex: 2
   _levelCatalogDatum:
     _levelIDs:
     - b9328fa8-71fd-4b30-ba69-d4f4270294d6
-    - 03567dcd-a8f4-403d-9da0-922e2349e0c8
     - f1220d06-e9e4-4ec1-b593-0117ba02c9d2
-  _fullVersion: 1
-  _sessionCount: 2626
+    - 03567dcd-a8f4-403d-9da0-922e2349e0c8
+  _fullVersion: 0
+  _sessionCount: 2634
   _playerColorScrollTexture: {fileID: 2800000, guid: d73a89d5cf8ee451fa0cb41c55c4cb55,
     type: 3}
   _lastUploadedLevelTime: 2021-02-28 22:45:21,760
