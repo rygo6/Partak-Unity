@@ -93,6 +93,7 @@ namespace GeoTetra.Partak.UI
             
             _inputPadGroup.Initialize();
             await Task.Yield();
+            await Task.Yield();
             _disableIn.Initialize();
         }
         
