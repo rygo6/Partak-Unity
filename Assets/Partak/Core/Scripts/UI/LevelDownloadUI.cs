@@ -60,7 +60,6 @@ namespace GeoTetra.Partak
                 _partakAWS.Cache(this),
                 _analyticsService.Cache(this)
             );
-            if (!_partakState.Ref.FullVersion) await _adService.Cache(this);
             await base.StartAsync();
         }
 
@@ -102,6 +101,7 @@ namespace GeoTetra.Partak
             if (_textureCache.Contains(levelButton.LevelDatum.LevelID))
             {
                 levelButton.Image.texture = (Texture2D)_textureCache[levelButton.LevelDatum.LevelID];
+                levelButton.SizeImageFromRatio();
             }
             else
             {
@@ -118,6 +118,7 @@ namespace GeoTetra.Partak
                 if (datum != levelButton.LevelDatum) return;
                 
                 levelButton.Image.texture = texture2D;
+                levelButton.SizeImageFromRatio();
             }
 
             if (_partakState.Ref.LevelCatalogDatum.LevelIDs.Contains(levelButton.LevelDatum.LevelID))
@@ -207,6 +208,7 @@ namespace GeoTetra.Partak
         {
             await CurrentlyRenderedBy.DisplayLoadModal();
             await Starting;
+            await _adService.Cache(this);
             await _adService.Ref.ShowRewardedAd();
             DownloadLevel();
         }

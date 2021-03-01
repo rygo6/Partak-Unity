@@ -39,12 +39,12 @@ MonoBehaviour:
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: 7eea3739fe5e07549b51b7a686b86128
-    m_Address: UnityAdService
+    m_Address: AdService
     m_ReadOnly: 0
     m_SerializedLabels:
     - Service
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
+    m_MainAsset: {fileID: 11400000, guid: 7eea3739fe5e07549b51b7a686b86128, type: 2}
+    m_TargetAsset: {fileID: 11400000, guid: 7eea3739fe5e07549b51b7a686b86128, type: 2}
   - m_GUID: 9258987f623cfac49875a2e99d681548
     m_Address: SceneTransit
     m_ReadOnly: 0
@@ -64,8 +64,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Service
-    m_MainAsset: {fileID: 11400000, guid: 4a967351bc94aef479b2c45e69e7585a, type: 2}
-    m_TargetAsset: {fileID: 11400000, guid: 4a967351bc94aef479b2c45e69e7585a, type: 2}
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8897a9da1308dad4cb94657883af64f0, type: 2}
   m_SchemaSet:

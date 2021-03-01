@@ -53,7 +53,7 @@ namespace GeoTetra.Partak
 
         private void Start()
         {
-            _itemRect = _levelButtonRows[0].LevelButtons[0].Image.rectTransform.rect;
+            _itemRect = _levelButtonRows[0].LevelButtons[0].RectTransform.rect;
             Clear();
         }
 
