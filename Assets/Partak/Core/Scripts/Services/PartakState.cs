@@ -24,7 +24,9 @@ namespace GeoTetra.Partak
         [SerializeField] private bool _fullVersion;
         [SerializeField] private int _sessionCount;
         [SerializeField] private Texture2D _playerColorScrollTexture;
+        [SerializeField] private string _lastUploadedLevelTime;
 
+        public const string dateFormat = "yyyy-MM-dd HH:mm:ss,fff";
         public const string ColorScrollKey = "ColorScrollX";
         private const string LevelIndexPrefKey = "LevelIndex";
         private const string FullVersionKey = "isFullVersion";
@@ -67,7 +69,20 @@ namespace GeoTetra.Partak
             get => _editingLevelIndex;
             set => _editingLevelIndex = value;
         }
-        
+
+        public DateTime LastUploadedLevelTime
+        {
+            get =>
+                string.IsNullOrWhiteSpace(_lastUploadedLevelTime) ? 
+                    new DateTime(0, 0, 0) : 
+                    DateTime.ParseExact(_lastUploadedLevelTime, dateFormat, System.Globalization.CultureInfo.InvariantCulture);
+            set
+            {
+                _lastUploadedLevelTime = value.ToString(dateFormat, System.Globalization.CultureInfo.InvariantCulture);
+                PlayerPrefs.SetString("LastLevelUploadTime", _lastUploadedLevelTime);
+            }
+        }
+
         [System.Serializable]
         public class PlayerState
         {
@@ -105,6 +120,8 @@ namespace GeoTetra.Partak
             _sessionCount = PlayerPrefs.GetInt("SessionCount");
             PlayerPrefs.SetInt("SessionCount", ++_sessionCount);
             
+            _lastUploadedLevelTime = PlayerPrefs.GetString("LastLevelUploadTime", new DateTime(0).ToString(dateFormat, System.Globalization.CultureInfo.InvariantCulture));
+
             switch (PlayerPrefs.GetInt("muted"))
             {
                 case 1:
@@ -122,6 +139,17 @@ namespace GeoTetra.Partak
             await base.OnServiceStart();
         }
 
+        public bool AllowLevelUpload()
+        {
+            if (_fullVersion)
+            { 
+                return (DateTime.Now - LastUploadedLevelTime).TotalDays > 1;
+            }
+            else
+            {
+                return (DateTime.Now - LastUploadedLevelTime).TotalDays > 1;
+            }
+        }
 
         public void EnableFullVersion()
         {
@@ -138,7 +166,7 @@ namespace GeoTetra.Partak
         
         public string GetEditingLevelId()
         {
-            return _editingLevelIndex < LevelCatalogDatum.LevelIDs.Count && LevelCatalogDatum.LevelIDs.Count > 0 && _editingLevelIndex > 0 ? LevelCatalogDatum.LevelIDs[_editingLevelIndex] : Guid.NewGuid().ToString();
+            return _editingLevelIndex < LevelCatalogDatum.LevelIDs.Count && LevelCatalogDatum.LevelIDs.Count > 0 && _editingLevelIndex > -1 ? LevelCatalogDatum.LevelIDs[_editingLevelIndex] : Guid.NewGuid().ToString();
         }
 
         public void AddLevelId(string id)

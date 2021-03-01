@@ -51,10 +51,31 @@ namespace GeoTetra.Partak
         
         public void LoadTextureFromDisk(string path)
         {
-            if (_image.texture  == null) _image.texture  = new Texture2D(0,0, TextureFormat.RGBA32, 0, false);
+            if (_image.texture  == null) _image.texture = new Texture2D(0,0, TextureFormat.RGBA32, 0, false);
             byte[] imageBytes = System.IO.File.ReadAllBytes(path);
             Texture2D textured2d = (Texture2D)_image.texture;
             textured2d.LoadImage(imageBytes, true);;
+            SizeImageFromRatio();
+        }
+
+        public void SizeImageFromRatio()
+        {
+            _image.SetNativeSize();
+            float scaleSize = 1f;
+            float frameRatio = RectTransform.rect.width / RectTransform.rect.height;
+            float imageRatio = (float)_image.texture.width / (float)_image.texture.height;
+
+            if (frameRatio > imageRatio)
+            {
+                scaleSize = RectTransform.rect.height / _image.texture.height;
+            }
+            else
+            {
+                scaleSize = RectTransform.rect.width / _image.texture.width;
+            }
+
+            _image.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _image.rectTransform.rect.width * scaleSize);
+            _image.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, _image.rectTransform.rect.height * scaleSize);
         }
 
         public bool IsIndex(int index0, int index1)
@@ -76,7 +97,7 @@ namespace GeoTetra.Partak
             Index1 = -1;
             Text.text = "";
             _image.texture = null;
-            _image.color = Color.gray;
+            _image.color = Color.clear;
             LevelDatum = null;
             ShowRating(false);
             Button.interactable = false;

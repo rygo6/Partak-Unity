@@ -109,16 +109,16 @@ namespace GeoTetra.Partak
             yield return StartCoroutine(RunTestCoroutine());
             if (_levelTester.Result == LevelTester.TestResult.Success)
             {
-                _levelConfig.Datum.Shared = false;
-                if (_levelConfig.Datum.Shared)
-                {
-                    SerializeLevel();
-                    OnCloseClick();
-                }
-                else
-                {
+                // _levelConfig.Datum.Shared = false;
+                // if (_levelConfig.Datum.Shared)
+                // {
+                //     SerializeLevel();
+                //     OnCloseClick();
+                // }
+                // else
+                // {
                     CurrentlyRenderedBy.DisplaySelectionModal("Share Level Online?", _saveMessages, _saveActions, 0);
-                }
+                // }
             }
             else
             {
@@ -148,11 +148,20 @@ namespace GeoTetra.Partak
         
         private async void SaveToAWS()
         {
-            _levelConfig.Datum.Shared = true;
             SerializeLevel();
-            await _partakAWS.Ref.SaveLevel(_editingLevelId);
-            OnCloseClick();
-            _analyticsService.Ref.CreateLevelUploaded();
+
+            if (_partakState.Ref.AllowLevelUpload())
+            {
+                _levelConfig.Datum.Shared = true;
+                await _partakAWS.Ref.SaveLevel(_editingLevelId);
+                _partakState.Ref.LastUploadedLevelTime = DateTime.Now;
+                _analyticsService.Ref.CreateLevelUploaded();
+                OnCloseClick();
+            }
+            else
+            {
+                CurrentlyRenderedBy.DisplayMessageModal(_partakState.Ref.FullVersion ? "You can only share a level every hour." : "You can only share a level every 24 hours.", OnCloseClick);
+            }
         }
 
         private void OnValidateClick()

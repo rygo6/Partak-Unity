@@ -28,11 +28,17 @@ namespace GeoTetra.Partak
 
         private string[] _loadedLevelMessages;
         private Action[] _loadedLevelActions;
+        
+        private string[] _editableLoadedLevelMessages;
+        private Action[] _editableLoadedLevelActions;
 
         protected override void Awake()
         {
             base.Awake();
             _levelButtonScrollRect.LevelButtonClicked += OnLevelButtonClicked;
+            
+            _editableLoadedLevelMessages = new[] {"Edit Level", "Delete Level", "Cancel"};
+            _editableLoadedLevelActions = new Action[] {EditLevel, ClearLevel, Cancel};
             
             _loadedLevelMessages = new[] {"Delete Level", "Cancel"};
             _loadedLevelActions = new Action[] {ClearLevel, Cancel};
@@ -105,7 +111,7 @@ namespace GeoTetra.Partak
 
         private void FinalButton(LevelButton levelButton)
         {
-            levelButton.Image.color = new Color(1,1,1,.5f);
+            levelButton.Image.color = Color.clear;
             levelButton.Image.texture = null;
             levelButton.Button.interactable = true;
             
@@ -137,7 +143,14 @@ namespace GeoTetra.Partak
             }
             else
             {
-                CurrentlyRenderedBy.DisplaySelectionModal("", _loadedLevelMessages, _loadedLevelActions, 0);
+                // if (levelButton.LevelDatum.Downloaded)
+                // {
+                //     CurrentlyRenderedBy.DisplaySelectionModal("", _loadedLevelMessages, _loadedLevelActions, 0);
+                // }
+                // else
+                // {
+                    CurrentlyRenderedBy.DisplaySelectionModal("", _editableLoadedLevelMessages, _editableLoadedLevelActions, 0);
+                // }
             }
         }
 
@@ -169,11 +182,18 @@ namespace GeoTetra.Partak
         
         private void EditLevel()
         {
-            _partakState.Ref.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
-            _sceneTransit.Ref.Load(_mainMenuScene, _newLevelScene);
-            
-            //Reset level index so play menu doesn't load on empty level.
-            _partakState.Ref.LevelIndex = 0;
+            if (_partakState.Ref.FullVersion || !_selectedLevelButton.LevelDatum.Downloaded)
+            {
+                _partakState.Ref.EditingLevelIndex = _selectedLevelButton.TotalIndex(_levelButtonScrollRect.ColumnCount);
+                _sceneTransit.Ref.Load(_mainMenuScene, _newLevelScene);
+
+                //Reset level index so play menu doesn't load on empty level.
+                _partakState.Ref.LevelIndex = 0;
+            }
+            else
+            {
+                PurchaseFullVersion();
+            }
         }
         
         private void DownloadExistingLevel()
