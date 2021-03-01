@@ -981,6 +981,7 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
   _backButton: {fileID: 2757980105325926105}
+  _restorePurchasedButton: {fileID: 3365851180234739124}
   _toggleSoundButton: {fileID: 3294787904824904289}
   _facebookButton: {fileID: 947509616228341124}
   _privacyPolicyButton: {fileID: 852101679563931343}
