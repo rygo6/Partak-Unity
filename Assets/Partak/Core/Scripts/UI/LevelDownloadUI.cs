@@ -187,7 +187,7 @@ namespace GeoTetra.Partak
 
             if (_partakState.Ref.FullVersion)
             {
-                CurrentlyRenderedBy.DisplayLoadModal();
+                CurrentlyRenderedBy.DisplayLoadModal("Downloading Level...");
                 DownloadLevel();
             }
             else
@@ -206,7 +206,7 @@ namespace GeoTetra.Partak
         
         private async void PlayAd()
         {
-            await CurrentlyRenderedBy.DisplayLoadModal();
+            await CurrentlyRenderedBy.DisplayLoadModal("Playing Ad...");
             await Starting;
             await _adService.Cache(this);
             await _adService.Ref.ShowRewardedAd();

@@ -25,11 +25,13 @@ namespace GeoTetra.Partak
         [SerializeField] private int _sessionCount;
         [SerializeField] private Texture2D _playerColorScrollTexture;
         [SerializeField] private string _lastUploadedLevelTime;
+        [SerializeField] private bool _initialLevelsDownloaded;
 
         public const string dateFormat = "yyyy-MM-dd HH:mm:ss,fff";
         public const string ColorScrollKey = "ColorScrollX";
         private const string LevelIndexPrefKey = "LevelIndex";
         private const string FullVersionKey = "isFullVersion";
+        private const string InitialLevelsDownloadedKey = "InitialLevelsDownloaded";
         
         public LevelCatalogDatum LevelCatalogDatum => _levelCatalogDatum;
         public bool FullVersion => _fullVersion;
@@ -83,6 +85,8 @@ namespace GeoTetra.Partak
             }
         }
 
+        public bool InitialLevelsDownloaded => _initialLevelsDownloaded;
+
         [System.Serializable]
         public class PlayerState
         {
@@ -121,7 +125,7 @@ namespace GeoTetra.Partak
             PlayerPrefs.SetInt("SessionCount", ++_sessionCount);
             
             _lastUploadedLevelTime = PlayerPrefs.GetString("LastLevelUploadTime", new DateTime(0).ToString(dateFormat, System.Globalization.CultureInfo.InvariantCulture));
-
+            
             switch (PlayerPrefs.GetInt("muted"))
             {
                 case 1:
@@ -135,15 +139,23 @@ namespace GeoTetra.Partak
             _levelCatalogDatum = LevelCatalogDatum.LoadLevelCatalogDatum();
 
             SetColors(PlayerPrefs.GetFloat(ColorScrollKey, -.125f));
+            
+            _initialLevelsDownloaded = PlayerPrefs.HasKey(InitialLevelsDownloadedKey);
 
             await base.OnServiceStart();
         }
 
+        public void SetInitialLevelsDownloaded()
+        {
+            PlayerPrefs.SetInt(InitialLevelsDownloadedKey, 1);
+            _initialLevelsDownloaded = true;
+        }
+        
         public bool AllowLevelUpload()
         {
             if (_fullVersion)
             { 
-                return (DateTime.Now - LastUploadedLevelTime).TotalDays > 1;
+                return (DateTime.Now - LastUploadedLevelTime).TotalHours > 1;
             }
             else
             {

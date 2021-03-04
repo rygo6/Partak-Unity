@@ -59,25 +59,38 @@ MonoBehaviour:
   _messageModalUiReference:
     m_AssetGUID: a449b5a172335124cab656b556e9f03d
     m_SubObjectName: 
+    m_SubObjectType: 
   _selectionModalUiReference:
     m_AssetGUID: c01e8933723a2b541b05ddefbf07b07c
     m_SubObjectName: 
+    m_SubObjectType: 
   _backButton: {fileID: 0}
-  _gameState:
+  _partakState:
     m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectType: 
+  _partakAWS:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
   _playButton: {fileID: 7211395504049849691}
   _playUI:
     m_AssetGUID: decd7486ac5492442882f300edeac3a8
     m_SubObjectName: 
+    m_SubObjectType: 
   _levelButton: {fileID: 7211395504204496868}
   _levelUI:
     m_AssetGUID: 6af1bb744bb26734990727768d53ae09
     m_SubObjectName: 
+    m_SubObjectType: 
   _optionButton: {fileID: 7211395504280433874}
   _optionsUI:
     m_AssetGUID: 26d04cd4720b31345bb87388faa14cb3
     m_SubObjectName: 
+    m_SubObjectType: 
+  _initialLevelIds:
+  - b9328fa8-71fd-4b30-ba69-d4f4270294d6
+  - 03567dcd-a8f4-403d-9da0-922e2349e0c8
 --- !u!223 &7211395502732636241
 Canvas:
   m_ObjectHideFlags: 0
