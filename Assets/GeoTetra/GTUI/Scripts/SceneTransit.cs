@@ -37,7 +37,7 @@ namespace GeoTetra.GTUI
         public async Task Load(AssetReference unloadScene, AssetReference loadScene)
         {
             await Starting;
-            await _uiRendererService.Ref.OverlayUI.InstantiateAndDisplayModalUI(_loadModalUI);
+            await _uiRendererService.Ref.OverlayUI.DisplayLoadModal("Loading Scene...");
             await LoadCoroutine(unloadScene, loadScene);
         }
 
