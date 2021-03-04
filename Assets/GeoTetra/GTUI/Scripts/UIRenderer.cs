@@ -65,19 +65,21 @@ namespace GeoTetra.GTUI
             DisplayModalUI(uiInstance, onFinish);
         }
         
-        public async Task DisplayLoadModal()
+        public async Task DisplayLoadModal(string message, Action onFinish = null)
         {
-            await InstantiateAndDisplayModalUI(_loadModalUI);
+            LoadModalUI loadModalUI = await _addressablesPool.PoolInstantiateAsync<LoadModalUI>(_loadModalUI);
+            loadModalUI.Init(message);
+            DisplayModalUI(loadModalUI, onFinish);
         }
 
-        public async void DisplaySelectionModal(string mainMessage, string[] messages, Action[] actions, int focusIndex)
+        public async Task DisplaySelectionModal(string mainMessage, string[] messages, Action[] actions, int focusIndex)
         {
             SelectionModalUI messageModalUi = await _addressablesPool.PoolInstantiateAsync<SelectionModalUI>(_selectionModalUiReference);
             messageModalUi.Init(mainMessage, messages, actions, focusIndex);
             DisplayModalUI(messageModalUi);
         }
 
-        public async void DisplayMessageModal(string message, Action action = null)
+        public async Task DisplayMessageModal(string message, Action action = null)
         {
             MessageModalUI messageModalUi = await _addressablesPool.PoolInstantiateAsync<MessageModalUI>(_messageModalUiReference);
             messageModalUi.Init(message, action);
