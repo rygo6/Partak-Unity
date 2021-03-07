@@ -546,11 +546,6 @@ MonoBehaviour:
     - Unlock
     unlimited level slots.
 
-    - Edit downloaded levels.
-
-    - Upload a level every
-    hour.
-
 '
 --- !u!114 &8194083881556264202
 MonoBehaviour:
