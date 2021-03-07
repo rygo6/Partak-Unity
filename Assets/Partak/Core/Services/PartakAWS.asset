@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf0fb4f044b868c45a9a83580899da84, type: 3}
   m_Name: PartakAWS
   m_EditorClassIdentifier: 
-  _identityPoolId: us-west-2:1c228a7e-eb85-433f-a708-d46b063a488f
+  _accessKeyId: 
+  _secretAccessKey: 
   _regionEndpoint: us-west-2
   _tableName: Partak
   _s3Bucket: partak
