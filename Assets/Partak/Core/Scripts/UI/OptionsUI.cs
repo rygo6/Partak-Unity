@@ -20,6 +20,9 @@ namespace GeoTetra.Partak
             _toggleSoundButton.onClick.AddListener(Mute);
             _facebookButton.onClick.AddListener(Facebook);
             _privacyPolicyButton.onClick.AddListener(PrivacyPolicy);
+#if UNITY_ANDROID
+            _restorePurchasedButton.gameObject.SetActive(false);
+#endif
         }
         
         private void RestorePurchases()
@@ -27,8 +30,14 @@ namespace GeoTetra.Partak
             CodelessIAPStoreListener.Instance.ExtensionProvider.GetExtension<IAppleExtensions> ().RestoreTransactions (result => {
                 if (result) {
                     Debug.Log("Restore Success.");
+                    CurrentlyRenderedBy.DisplayMessageModal(
+                        "Restore Succeeded.",
+                        null);
                 } else {
                     Debug.Log("Restore Failed.");
+                    CurrentlyRenderedBy.DisplayMessageModal(
+                        "Restore Failed.",
+                        null);
                 }
             });
         }
