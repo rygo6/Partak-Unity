@@ -12,7 +12,8 @@ namespace GeoTetra.Partak
     {
 	    [SerializeField] private Button _purchaseButton;
         [SerializeField] private IAPButton _iapButton;
-
+        [SerializeField] private AssetReference _mainUI;
+        
         private Action _action;
  		
  		protected override void Awake()
@@ -31,6 +32,9 @@ namespace GeoTetra.Partak
         private void PurchaseComplete(Product product)
         {
 	        base.Close();
+	        CurrentlyRenderedBy.Flush();
+	        CurrentlyRenderedBy.InstantiateAndDisplayStackUI(_mainUI);
+	        CurrentlyRenderedBy.DisplayMessageModal("Full Version Activated.");
         }
 
         private void PurchaseFail(Product product, PurchaseFailureReason reason)
