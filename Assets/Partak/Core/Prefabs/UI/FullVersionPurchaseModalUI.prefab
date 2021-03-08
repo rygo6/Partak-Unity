@@ -790,6 +790,10 @@ MonoBehaviour:
   - {fileID: 430894003252425788}
   _purchaseButton: {fileID: 1146994255843193926}
   _iapButton: {fileID: 1342062439036282121}
+  _mainUI:
+    m_AssetGUID: 1e03f451607b1c34d84d827613838bd0
+    m_SubObjectName: 
+    m_SubObjectType: 
 --- !u!1 &8646498210684568242
 GameObject:
   m_ObjectHideFlags: 0
