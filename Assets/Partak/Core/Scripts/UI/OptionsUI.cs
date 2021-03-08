@@ -27,6 +27,7 @@ namespace GeoTetra.Partak
         
         private void RestorePurchases()
         {
+            Debug.Log("Restore purchases clicked.");
             CodelessIAPStoreListener.Instance.ExtensionProvider.GetExtension<IAppleExtensions> ().RestoreTransactions (result => {
                 if (result) {
                     Debug.Log("Restore Success.");
