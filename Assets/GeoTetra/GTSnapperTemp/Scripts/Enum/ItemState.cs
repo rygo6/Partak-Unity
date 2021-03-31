@@ -12,4 +12,13 @@ namespace GeoTetra.GTSnapper
 		Instantiate,
 		NoInstantiate,
 	}
+	
+	public enum ItemAction
+	{
+		Down,
+		Up,
+		BeginDrag,
+		Drag,
+		EndDrag,
+	}
 }

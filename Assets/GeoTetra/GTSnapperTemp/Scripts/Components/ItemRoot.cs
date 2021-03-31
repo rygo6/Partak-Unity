@@ -23,6 +23,7 @@ namespace GeoTetra.GTSnapper
         [SerializeField] private ItemGizmoRoot _itemGizmoRoot;
         [SerializeField] private Material _highlightMaterial;
 
+        public event Action<Item, ItemState, ItemAction> ItemEvent;
         public event Action DeserializationComplete;
         
         public readonly Dictionary<string, MonoBehaviour> UniqueTickDictionary = new Dictionary<string, MonoBehaviour>();
@@ -104,6 +105,11 @@ namespace GeoTetra.GTSnapper
                 _itemGizmoRoot.SetItemGizmoLayer();
                 // _itemGizmoRoot.TargetItem(itemDrag.Item);
             }
+        }
+
+        public void OnItemEvent(Item item, ItemState state, ItemAction action)
+        {
+            ItemEvent?.Invoke(item, state, action);
         }
         
         public void Highlight(Item item)
