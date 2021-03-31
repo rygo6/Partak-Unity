@@ -252,7 +252,7 @@ namespace GeoTetra.GTSnapper
 #endif
 
             SetShaderOutline(ItemRoot.ItemSettings.DownHighlightItemColor);
-            ItemRoot.OnItemEvent(this, ItemState.Attached, ItemAction.Down);
+            ItemRoot.OnItemEvent(this, ItemState.Attached, ItemAction.ClickDown);
         }
 
         private void OnPointerDownAttachedHighlighted(PointerEventData data)
@@ -336,7 +336,7 @@ namespace GeoTetra.GTSnapper
                 SetShaderNormal();
             }
             
-            ItemRoot.OnItemEvent(this, ItemState.Attached, ItemAction.Up);
+            ItemRoot.OnItemEvent(this, ItemState.Attached, ItemAction.ClickUp);
         }
 
         private void OnPointerUpAttachedHighlighted(PointerEventData data)
@@ -348,7 +348,7 @@ namespace GeoTetra.GTSnapper
             SetLayerRecursive(ItemRoot.ItemLayer);
             ItemRoot.UnHighlightAll();
             
-            ItemRoot.OnItemEvent(this, ItemState.AttachedHighlighted, ItemAction.Up);
+            ItemRoot.OnItemEvent(this, ItemState.AttachedHighlighted, ItemAction.ClickUp);
         }
 
         private void OnPointerUpDragging(PointerEventData data)
@@ -380,7 +380,7 @@ namespace GeoTetra.GTSnapper
             {
                 SetShaderNormal();
             }
-            ItemRoot.OnItemEvent(this, ItemState.NoInstantiate, ItemAction.Up);
+            ItemRoot.OnItemEvent(this, ItemState.NoInstantiate, ItemAction.ClickUp);
         }
 
         public IEnumerator DestroyItemCoroutine()

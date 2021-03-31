@@ -13,12 +13,20 @@ namespace GeoTetra.GTSnapper
 		NoInstantiate,
 	}
 	
+	public enum ItemHighlight
+	{
+		None,
+		Highlighted
+	}
+
 	public enum ItemAction
 	{
-		Down,
-		Up,
+		ClickDown,
+		ClickHold,
+		ClickUp,
 		BeginDrag,
 		Drag,
 		EndDrag,
+		Drop,
 	}
 }
