@@ -78,6 +78,10 @@ namespace GeoTetra.Partak
 
         public void Clear()
         {
+            _layoutCancelToken?.Cancel();
+            _layoutCancelToken?.Dispose();
+            _layoutCancelToken = null;
+
             _topRowIndex = 0;
             _isDonePopulating = false;
             _populatingNextSet = false;
@@ -103,11 +107,8 @@ namespace GeoTetra.Partak
 
         public async void LayoutUI()
         {
-            if (_layoutCancelToken != null)
-            {
-                if (!_layoutCancelToken.IsCancellationRequested) _layoutCancelToken.Cancel();
-                _layoutCancelToken.Dispose();
-            } 
+            _layoutCancelToken?.Cancel();
+            _layoutCancelToken?.Dispose();
             _layoutCancelToken = new CancellationTokenSource();
             CancellationToken cancellationToken = _layoutCancelToken.Token;
             
@@ -116,20 +117,20 @@ namespace GeoTetra.Partak
             {
                 for (int c = 0; c < _columnCount; ++c)
                 {
-                    if (cancellationToken.IsCancellationRequested) return;
+                    cancellationToken.ThrowIfCancellationRequested();
                     if (_levelButtonRows[r].LevelButtons[c].IsIndex(documentRowIndex, c) && _levelButtonRows[r].LevelButtons[c].LevelDatum != null) continue;
                     
                     if (documentRowIndex >= 0 && documentRowIndex < _datumLists.Count && c < _datumLists[documentRowIndex].Count )
                     {
-                        _levelButtonRows[r].LevelButtons[c].Index0 = documentRowIndex;
-                        _levelButtonRows[r].LevelButtons[c].Index1 = c;
                         _levelButtonRows[r].LevelButtons[c].LevelDatum = _datumLists[documentRowIndex][c];
                         await _populateLevelButton(_levelButtonRows[r].LevelButtons[c], cancellationToken);
-                        if (cancellationToken.IsCancellationRequested) return;
+                        cancellationToken.ThrowIfCancellationRequested();
+                        _levelButtonRows[r].LevelButtons[c].Index0 = documentRowIndex;
+                        _levelButtonRows[r].LevelButtons[c].Index1 = c;
                     }
                     else
                     {
-                        if (cancellationToken.IsCancellationRequested) return;
+                        cancellationToken.ThrowIfCancellationRequested();
                         if (_finalButton != null && (documentRowIndex * ColumnCount) + c == TotalDatumCount())
                         {
                             _levelButtonRows[r].LevelButtons[c].Index0 = documentRowIndex;

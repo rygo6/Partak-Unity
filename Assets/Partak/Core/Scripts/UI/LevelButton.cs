@@ -60,6 +60,8 @@ namespace GeoTetra.Partak
 
         public void SizeImageFromRatio()
         {
+            if (_image.texture == null || _image.texture.width == 0 || _image.texture.height == 0) return;
+            
             _image.SetNativeSize();
             float scaleSize = 1f;
             float frameRatio = RectTransform.rect.width / RectTransform.rect.height;

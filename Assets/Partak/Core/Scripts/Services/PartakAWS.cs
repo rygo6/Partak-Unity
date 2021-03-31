@@ -43,6 +43,7 @@ namespace GeoTetra.GTBackend
         [SerializeField] private string _levelImagesFolder = "LevelImages";
         [SerializeField] private string _createdAtIndex = "pk-created_at-index";
         [SerializeField] private string _thumbsUpIndex = "pk-thumbs_up-index";
+        [SerializeField] private string _aggregateThumbIndex = "pk-thumbs_aggregate-index";
         
         public static class LevelFields
         {
@@ -51,6 +52,7 @@ namespace GeoTetra.GTBackend
             public const string AuthorKey = "author";
             public const string LevelDataKey = "level_data";
             public const string ThumbsUpKey = "thumbs_up";
+            public const string AggregateThumbKey = "thumbs_aggregate"; 
             public const string ThumbsDownKey = "thumbs_down";
             public const string CreatedAtKey = "created_at";
             public const string DownloadedCountKey = "download_count";
@@ -88,9 +90,9 @@ namespace GeoTetra.GTBackend
         [ContextMenu("Connect")]
         private async Task Connect()
         {
-            Debug.Log("Connecting to AWS");
             if (_dbClient == null || _table == null || _s3Client == null || _transferUtility == null)
             {
+                Debug.Log("Connecting to AWS");
                 LoggingConfig loggingConfig = AWSConfigs.LoggingConfig;
                 loggingConfig.LogTo = LoggingOptions.Console;
                 loggingConfig.LogMetrics = true;
@@ -152,36 +154,39 @@ namespace GeoTetra.GTBackend
         
         public async Task<Search> QueryLevelsCreatedAt(int pageSize)
         {
-            // await Connect();
+            await Connect();
             return QueryLevels(pageSize, _createdAtIndex);
         }
 
         public async Task<Search> QueryLevelsThumbsUp(int pageSize)
         {
-            // await Connect();
-            return QueryLevels(pageSize, _thumbsUpIndex);
+            await Connect();
+            return QueryLevels(pageSize, _aggregateThumbIndex);
         }
         
         private Search QueryLevels(int pageSize, string index)
         {
+            if (_table == null) return null;
+
             QueryFilter filter = new QueryFilter(LevelFields.PkKey, QueryOperator.Equal, LevelFields.PkLevelValue);
 
             QueryOperationConfig config = new QueryOperationConfig()
             {
                 Limit = pageSize, 
                 Select = SelectValues.SpecificAttributes,
-                AttributesToGet = new List<string> { LevelFields.IdKey, LevelFields.ThumbsUpKey },
+                AttributesToGet = new List<string> { LevelFields.IdKey, LevelFields.ThumbsUpKey, LevelFields.ThumbsDownKey },
                 ConsistentRead = false,
                 Filter = filter,
                 IndexName = index,
                 BackwardSearch = true,
             };
+            
             return _table.Query(config);
         }
         
         public async Task DownloadLevelPreview(string id, Texture2D image)
         {
-            // await Connect();
+            await Connect();
             string key = S3LevelImageKey(id);
             byte[] bytes = await GetImageBytesFromS3(key);
             image.LoadImage(bytes, true);
@@ -202,7 +207,7 @@ namespace GeoTetra.GTBackend
                     MemoryStream memoryStream = new MemoryStream();
                     using (Stream responseStream = response.ResponseStream)
                     {
-                        responseStream.CopyTo(memoryStream);
+                        await responseStream.CopyToAsync(memoryStream);
                     }
 
                     return memoryStream.ToArray();
@@ -210,7 +215,7 @@ namespace GeoTetra.GTBackend
             });
         }
 
-        private async Task<byte[]> GetImageBytesFromS3(string key, CancellationToken cancellationToken)
+        private async Task<byte[]> GetImageBytesFromS3(string key, CancellationToken ct)
         {
             return await Task.Run( async () =>
             {
@@ -220,19 +225,20 @@ namespace GeoTetra.GTBackend
                     Key = key
                 };
 
-                using (GetObjectResponse response = await _s3Client.GetObjectAsync(request, cancellationToken))
+                using (GetObjectResponse response = await _s3Client.GetObjectAsync(request, ct))
                 {
-                    if (cancellationToken.IsCancellationRequested) return null;
+                    ct.ThrowIfCancellationRequested();
                     
                     MemoryStream memoryStream = new MemoryStream();
                     using (Stream responseStream = response.ResponseStream)
                     {
-                        responseStream.CopyTo(memoryStream);
+                        await responseStream.CopyToAsync(memoryStream);
                     }
-
-                    return cancellationToken.IsCancellationRequested ? null : memoryStream.ToArray();
+                    
+                    ct.ThrowIfCancellationRequested();
+                    return memoryStream.ToArray();
                 }
-            }, cancellationToken);
+            }, ct);
         }
 
         public async Task SaveLevel(string levelId)
@@ -244,18 +250,20 @@ namespace GeoTetra.GTBackend
             string imagePath = LevelUtility.LevelImagePath(levelId);
             string json = File.ReadAllText(levelPath);
 
-            Document level = new Document();
-            level[LevelFields.PkKey] = "level";
-            level[LevelFields.IdKey] = levelId;
-            level[LevelFields.AuthorKey] = SystemInfo.deviceUniqueIdentifier;
-            level[LevelFields.LevelDataKey] = json;
-            level[LevelFields.ThumbsUpKey] = 0;
-            level[LevelFields.ThumbsDownKey] = 0;
-            level[LevelFields.CreatedAtKey] = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            level[LevelFields.DownloadedCountKey] = 0;
-            level[LevelFields.DeleteCountKey] = 0;
-            level[LevelFields.PlayCountKey] = 0;
-            level[LevelFields.LastPlayedKey] = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            Document level = new Document
+            {
+                [LevelFields.PkKey] = "level",
+                [LevelFields.IdKey] = levelId,
+                [LevelFields.AuthorKey] = SystemInfo.deviceUniqueIdentifier,
+                [LevelFields.LevelDataKey] = json,
+                [LevelFields.ThumbsUpKey] = 0,
+                [LevelFields.ThumbsDownKey] = 0,
+                [LevelFields.CreatedAtKey] = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                [LevelFields.DownloadedCountKey] = 0,
+                [LevelFields.DeleteCountKey] = 0,
+                [LevelFields.PlayCountKey] = 0,
+                [LevelFields.LastPlayedKey] = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+            };
 
             try
             {
@@ -280,16 +288,54 @@ namespace GeoTetra.GTBackend
             }
         }
 
-        public async Task IncrementThumbsUp(string levelID, bool positive)
+        public async Task IncrementThumbsUp(string levelID)
         {
-            // await Connect();
-            AtomicIncrement(levelID, LevelFields.ThumbsUpKey, positive);
+            AtomicIncrement(levelID, LevelFields.ThumbsUpKey, true);
+            AtomicIncrement(levelID, LevelFields.AggregateThumbKey, true);
         }
         
-        public async Task IncrementThumbsDown(string levelID, bool positive)
+        public async Task IncrementThumbsDown(string levelID)
         {
-            // await Connect();
-            AtomicIncrement(levelID, LevelFields.ThumbsDownKey, positive);
+            AtomicIncrement(levelID, LevelFields.ThumbsDownKey, true);
+            AtomicIncrement(levelID, LevelFields.AggregateThumbKey, false);
+        }
+        
+        public async void UpdateAggregate(string levelId, int value)
+        {
+#if !UNITY_EDITOR
+            return; // I will just run the editor periodically until new build is ubiquitis
+#endif
+            
+            Debug.Log($"Updating aggregate {levelId} {value}" );
+            
+            var request = new UpdateItemRequest
+            {
+                Key = new Dictionary<string, AttributeValue>()
+                {
+                    { "pk", new AttributeValue { S = LevelFields.PkLevelValue } },
+                    { "id", new AttributeValue { S = levelId } },
+                },
+                ExpressionAttributeNames = new Dictionary<string, string>()
+                {
+                    {"#F", LevelFields.AggregateThumbKey}
+                },
+                ExpressionAttributeValues = new Dictionary<string, AttributeValue>()
+                {
+                    {":val",new AttributeValue {N = value.ToString() }}
+                },
+                UpdateExpression = "SET #F = :val",
+                TableName = _tableName
+            };
+
+            try
+            {
+                UpdateItemResponse response = await _dbClient.UpdateItemAsync(request);
+                Debug.Log($"Updating aggregate Response: {response}");
+            }
+            catch (Exception ex)
+            {
+                Debug.Log(ex);
+            }
         }
 
         private async void AtomicIncrement(string levelId, string field, bool positive)
@@ -407,9 +453,6 @@ public class Encryption {
     {
         byte[] keybytes = {233,183,206,63,183,107,201,0,208,76,37,194,66,43,199,70,1,29,155,50,154,21,247,44,229,105,212,88,68,34,146,183};
         byte[] iv = {47,16,90,33,110,27,57,223,77,48,98,236,250,218,217,179};
-        
-        // var keybytes = Encoding.UTF8.GetBytes("[�/V)����e�L`��\t�����>g�6�");
-        // var iv = Encoding.UTF8.GetBytes("{1�\"���{ܐek^�");
 
         var encrypted = Convert.FromBase64String(cipherText);
         var decriptedFromJavascript = DecryptStringFromBytes(encrypted, keybytes, iv);

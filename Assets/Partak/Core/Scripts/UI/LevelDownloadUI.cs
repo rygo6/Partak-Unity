@@ -71,6 +71,11 @@ namespace GeoTetra.Partak
             _levelButtonScrollRect.Initialize(DownloadNextSet, PopulateLevelButton, null);
         }
 
+        public override void OnTransitionOutStart()
+        {
+            base.OnTransitionOutStart();
+        }
+
         public override void OnTransitionOutFinish()
         {
             base.OnTransitionOutFinish();
@@ -95,7 +100,7 @@ namespace GeoTetra.Partak
             _levelButtonScrollRect.Initialize(DownloadNextSet, PopulateLevelButton, null);
         }
 
-        private async Task PopulateLevelButton(LevelButton levelButton, CancellationToken cancellationToken)
+        private async Task PopulateLevelButton(LevelButton levelButton, CancellationToken ct)
         {
             levelButton.Image.color = Color.clear;
             if (_textureCache.Contains(levelButton.LevelDatum.LevelID))
@@ -115,12 +120,13 @@ namespace GeoTetra.Partak
                 
                 //Don't cancel downloads so they are available on scroll back.
                 await _partakAWS.Ref.DownloadLevelPreview(levelButton.LevelDatum.LevelID, texture2D);
+                
                 if (datum != levelButton.LevelDatum) return;
                 
                 levelButton.Image.texture = texture2D;
                 levelButton.SizeImageFromRatio();
             }
-
+            
             if (_partakState.Ref.LevelCatalogDatum.LevelIDs.Contains(levelButton.LevelDatum.LevelID))
             {
                 levelButton.Text.text = "Downloaded";
@@ -158,7 +164,7 @@ namespace GeoTetra.Partak
                 Debug.LogError(ex.Message);
             }
 
-            if (cancellationToken.IsCancellationRequested) return false;
+            cancellationToken.ThrowIfCancellationRequested();
 
             List<LocalLevelDatum> levelDatumList = new List<LocalLevelDatum>();
             for (int i = 0; i < documentList.Count; ++i)
@@ -173,6 +179,9 @@ namespace GeoTetra.Partak
                     ThumbsUp = thumbsUp?.AsInt() ?? 0,
                     ThumbsDown = thumbsDown?.AsInt() ?? 0
                 };
+
+                _partakAWS.Ref.UpdateAggregate(levelId, thumbsUp.AsInt() - thumbsDown.AsInt());
+                
                 levelDatumList.Add(levelDatum);
             }
 

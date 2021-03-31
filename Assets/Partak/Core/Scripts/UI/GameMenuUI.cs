@@ -107,7 +107,7 @@ namespace GeoTetra.Partak.UI
         private async void ThumbsUp()
         {
             await _partakAWS.Cache(this);
-            await _partakAWS.Ref.IncrementThumbsUp(_levelConfig.Datum.LevelID, true);
+            await _partakAWS.Ref.IncrementThumbsUp(_levelConfig.Datum.LevelID);
             _levelConfig.Datum.Rated = true;
             _levelConfig.Serialize(_levelConfig.Datum.LevelID, false);
             _rateMenu.gameObject.SetActive(false);
@@ -116,7 +116,7 @@ namespace GeoTetra.Partak.UI
         private async void ThumbsDown()
         {
             await _partakAWS.Cache(this);
-            await _partakAWS.Ref.IncrementThumbsDown(_levelConfig.Datum.LevelID, true);
+            await _partakAWS.Ref.IncrementThumbsDown(_levelConfig.Datum.LevelID);
             _levelConfig.Datum.Rated = true;
             _levelConfig.Serialize(_levelConfig.Datum.LevelID, false);
             _rateMenu.gameObject.SetActive(false);
