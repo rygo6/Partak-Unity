@@ -1,4 +1,4 @@
-// #define LOG
+#define LOG
 
 using System;
 using UnityEngine;
@@ -252,6 +252,7 @@ namespace GeoTetra.GTSnapper
 #endif
 
             SetShaderOutline(ItemRoot.ItemSettings.DownHighlightItemColor);
+            ItemRoot.OnItemEvent(this, ItemState.Attached, ItemAction.Down);
         }
 
         private void OnPointerDownAttachedHighlighted(PointerEventData data)
@@ -334,6 +335,8 @@ namespace GeoTetra.GTSnapper
             {
                 SetShaderNormal();
             }
+            
+            ItemRoot.OnItemEvent(this, ItemState.Attached, ItemAction.Up);
         }
 
         private void OnPointerUpAttachedHighlighted(PointerEventData data)
@@ -344,6 +347,8 @@ namespace GeoTetra.GTSnapper
 
             SetLayerRecursive(ItemRoot.ItemLayer);
             ItemRoot.UnHighlightAll();
+            
+            ItemRoot.OnItemEvent(this, ItemState.AttachedHighlighted, ItemAction.Up);
         }
 
         private void OnPointerUpDragging(PointerEventData data)
@@ -375,6 +380,7 @@ namespace GeoTetra.GTSnapper
             {
                 SetShaderNormal();
             }
+            ItemRoot.OnItemEvent(this, ItemState.NoInstantiate, ItemAction.Up);
         }
 
         public IEnumerator DestroyItemCoroutine()

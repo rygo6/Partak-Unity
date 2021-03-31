@@ -38,15 +38,17 @@ namespace GeoTetra.GTSnapper
             await _componentContainer.CacheAndRegister(this);
             await base.StartAsync();
         }
-
+        
         public void Initialize()
         {
             _itemRoot = _componentContainer.Ref.Get<ItemRoot>();
+            _itemRoot.ItemEvent += ItemRootOnItemEvent;
             LoadItemReferencesFromAssets("ItemReference");
         }
         
         public void Deinitialize()
         {
+            _itemRoot.ItemEvent -= ItemRootOnItemEvent;
             _itemRoot = null;
             foreach (ScrollItem scrollItem in _scrollItemPool)
             {
@@ -61,6 +63,15 @@ namespace GeoTetra.GTSnapper
             base.OnDestroy();
         }
 
+        private void ItemRootOnItemEvent(Item item, ItemState state, ItemAction action)
+        {
+            // this needs to be thought through more
+            // if ((state == ItemState.NoInstantiate) && action == ItemAction.Up)
+            // {
+            //     UnselectSelectedItem();
+            // }
+        }
+        
         public void UnselectSelectedItem()
         {
             if (_selectedItem != null)
