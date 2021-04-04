@@ -176,8 +176,8 @@ PlayerSettings:
     iPhone: com.technologicalmages.enrgy
     tvOS: com.technologicalmages.enrgy
   buildNumber:
-    iPhone: 8
-  AndroidBundleVersionCode: 9
+    iPhone: 10
+  AndroidBundleVersionCode: 10
   AndroidMinSdkVersion: 29
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
