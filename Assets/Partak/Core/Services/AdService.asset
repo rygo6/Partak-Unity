@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4dc1d536a04ac40958759c627dd7b4fc, type: 3}
-  m_Name: UnityAdService
+  m_Name: AdService
   m_EditorClassIdentifier: 
   _appleAppStoreId: 1018927
   _googlePlayStoreId: 1018926
