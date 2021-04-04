@@ -257,6 +257,7 @@ namespace GeoTetra.GTBackend
                 [LevelFields.AuthorKey] = SystemInfo.deviceUniqueIdentifier,
                 [LevelFields.LevelDataKey] = json,
                 [LevelFields.ThumbsUpKey] = 0,
+                [LevelFields.AggregateThumbKey] = 0,
                 [LevelFields.ThumbsDownKey] = 0,
                 [LevelFields.CreatedAtKey] = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                 [LevelFields.DownloadedCountKey] = 0,
