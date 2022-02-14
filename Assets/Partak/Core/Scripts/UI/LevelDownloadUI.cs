@@ -164,7 +164,8 @@ namespace GeoTetra.Partak
                 Debug.LogError(ex.Message);
             }
 
-            cancellationToken.ThrowIfCancellationRequested();
+            
+            // cancellationToken.ThrowIfCancellationRequested(); // You do NOT want to abort if the cancel token fires because the results need to get added to list!
 
             List<LocalLevelDatum> levelDatumList = new List<LocalLevelDatum>();
             for (int i = 0; i < documentList.Count; ++i)

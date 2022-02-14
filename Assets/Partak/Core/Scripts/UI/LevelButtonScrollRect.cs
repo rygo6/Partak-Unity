@@ -187,7 +187,7 @@ namespace GeoTetra.Partak
             _populatingNextSet = true;
             
             _isDonePopulating = await _populateNextSet(_datumLists, cancellationToken);
-            if (cancellationToken.IsCancellationRequested) return;
+            // if (cancellationToken.IsCancellationRequested) return;
 
             float verticalSize = (_datumLists.Count + (_isDonePopulating ? 0 : 1) + (_finalButton == null ? 0 : 1)) * (_itemRect.height + _rowSpacing);
             _scrollRect.content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, verticalSize);
