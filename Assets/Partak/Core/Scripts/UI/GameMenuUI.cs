@@ -70,7 +70,8 @@ namespace GeoTetra.Partak.UI
             await Task.WhenAll(_componentContainer.Cache(this),
                 _partakState.Cache(this),
                 _sceneTransit.Cache(this),
-                _analyticsService.Cache(this));
+                _analyticsService.Cache(this),
+                _componentContainer.Cache(this));
             
             _pauseMessages = new[] {"Main Menu", "Skip Level", "Resume"};
             _pauseActions = new Action[] {MainMenu, Skip, Resume};
