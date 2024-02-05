@@ -2,7 +2,7 @@
 
 ## Overview
 
-Remake of the the classic open source game 'Liquid Wards'.
+Remake of the classic open source game 'Liquid Wars'.
 
 This game was on the iOS and Google Play stores for about the last 8 hours. I am proud to say during it's during in maintained 4+ stars and had some small handful of users that seemed to enjoy it very much.
 
