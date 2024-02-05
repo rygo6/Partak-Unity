@@ -104,6 +104,13 @@ namespace GeoTetra.GTBackend
                 {
                     RegionEndpoint endpoint = RegionEndpoint.GetBySystemName(_regionEndpoint);
                     
+                    // This worked by sending a request with the authorization 'PartakKey' the the AWS lambda, which would return the actual 
+                    // access key encrypted with AES. Then using the secret hardcoded into this class as separate bytes in the keybytes
+                    // and iv arrays in DecryptStringAES it would produce the actual AWS access keys.
+                    // I don't sell myself as an AWS security expert, but for not terribly important data like a bunch of mobile game levels
+                    // this is probably sufficient.
+                    // Yes you who might be reading this and wonder, all these keys are deleted from the original AWS account and no longer usable.
+                    // The JS lambda I've put at the bottom of this file for archiving purposes.
                     UnityWebRequest request = UnityWebRequest.Get("https://qyqo9ud4hi.execute-api.us-west-2.amazonaws.com/PartakKey");
                     request.SetRequestHeader("Authorization", "PartakKey218931987391793791392793");
                     await request.SendWebRequest();
@@ -559,3 +566,61 @@ public class Encryption {
         return encrypted;
     }
 }
+
+/**** JS for keycode lambda
+
+const AWS = require('aws-sdk');
+const CryptoJS = require("crypto-js");
+
+const key = CryptoJS.enc.Hex.parse("E9B7CE3FB76BC900D04C25C2422BC746011D9B329A15F72CE569D458442292B7");
+const iv = CryptoJS.enc.Hex.parse("2F105A216E1B39DF4D3062ECFADAD9B3");
+
+function encryptUsingAES256() {
+    var encrypted = CryptoJS.AES.encrypt(
+        CryptoJS.enc.Utf8.parse(JSON.stringify("AKIAYESGDVH4CG4D4T6W-KPRXY9sW/60DHvh9FcmmoWOLoBxciWjSwEurugQp")), 
+            key, {
+        keySize: 128 / 8,
+        iv: iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+    });
+    console.log('Encrypted :' + encrypted);
+    decryptUsingAES256(encrypted);
+    return encrypted;
+}
+
+function decryptUsingAES256(decString) {
+    var decrypted = CryptoJS.AES.decrypt(decString, key, {
+        keySize: 128 / 8,
+        iv: iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+    });
+    console.log('Decrypted : ' + decrypted);
+    console.log('utf8 = ' + decrypted.toString(CryptoJS.enc.Utf8));
+}
+
+exports.handler = async (event, context) => {
+
+    let body;
+    let statusCode = '200';
+    const headers = {
+        'Content-Type': 'application/json',
+    };
+
+
+    if (event.headers['authorization'] == 'PartakKey218931987391793791392793') {
+        body = encryptUsingAES256().toString();
+    } else {
+        // fake key
+        body = "KcmumKrJoA6VCqwiJcsxHU3TFcBbOg3ik09bZTblc+ftL3s9kf5t19A7Y6ISQ82ZJ2dsKGyl50TVyqINAfOwDQ==";
+    }
+    
+    return {
+        statusCode,
+        body,
+        headers,
+    };
+};
+
+***/
