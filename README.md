@@ -12,6 +12,9 @@ Also, this was initially written in such an old version of Unity that nothing of
 
 However a bunch of the dependency management code, how I wire up all the UI prefabs and ServiceObjects through Addressables and my GTPooling package, is some newer work that I feel is still a good, and rather fancy, approach to dealing with this in Unity. I may expand on this and write some posts about this approach.
 
+Watch Demo Video:
+[![Watch Demo Video](https://img.youtube.com/vi/G2kN3NSHp7Y/maxresdefault.jpg)](https://youtu.be/G2kN3NSHp7Y)
+
 ## Usage
 
 The project has submodules, so ensure to clone recursively. `git clone git@github.com:rygo6/Partak-Unity.git --recursive`
