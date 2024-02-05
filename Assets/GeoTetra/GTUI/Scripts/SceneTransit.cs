@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GeoTetra.GTPooling;
 using UnityEngine;
@@ -50,7 +51,14 @@ namespace GeoTetra.GTUI
                 {
                     Debug.Log("Removing scene "+ unloadLocation.PrimaryKey);
                     _loadedSceneInstances.Remove(unloadLocation.PrimaryKey);
-                    await Addressables.UnloadSceneAsync(unloadHandle.Result, true).Task;
+                    try
+                    {
+                        await Addressables.UnloadSceneAsync(unloadHandle.Result, true).Task;
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogWarning(e);
+                    }
                 }
                 else
                 {

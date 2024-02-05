@@ -51,8 +51,8 @@ namespace GeoTetra.GTUI
         {
             StackUI uiInstance = await _addressablesPool.PoolInstantiateAsync<StackUI>(ui);
             // Await Awake and Start so any references require are setup for TransitionStart.
-            // await Task.Yield();
-            // await Task.Yield();
+            await Task.Yield();
+            await Task.Yield();
             DisplayStackUI(uiInstance, transitionType, onFinish);
         }
         
@@ -60,8 +60,8 @@ namespace GeoTetra.GTUI
         {
             ModalUI uiInstance = await _addressablesPool.PoolInstantiateAsync<ModalUI>(ui);
             // Await Awake and Start so any references require are setup for TransitionStart.
-            // await Task.Yield();
-            // await Task.Yield();
+            await Task.Yield();
+            await Task.Yield();
             DisplayModalUI(uiInstance, onFinish);
         }
         
