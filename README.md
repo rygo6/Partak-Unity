@@ -4,7 +4,7 @@
 
 Remake of the classic open source game 'Liquid Wars'.
 
-This game was on the iOS and Google Play stores for about the last 8 hours. I am proud to say during it's time it maintained 4+ stars and had a small handful of users that seemed to enjoy it very much.
+This game was on the iOS and Google Play stores for about 8 years. I am proud to say during it's time it maintained 4+ stars and had a small handful of users that seemed to enjoy it very much.
 
 Unfortunately, the game was never profitable, nor really made any money at all. It is also a pain to keep apps updated and maintained to be published on iOS and Google App Stores. So I've decided to fully open source and unlicense it.
 
